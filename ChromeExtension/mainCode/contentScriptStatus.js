@@ -8,73 +8,48 @@ if (userNode) {
     if (currentUser === userName) {
         // 내소스 보기 화면
         // 이미 있는 소스들 중 정답인 개체에 대해 eventlistener 달기
-
-        var userSolutions = document.querySelectorAll('.result-ac')
-        for (const solution of userSolutions) {
-            if (solution.tagName === 'SPAN') {
-
-                solution.addEventListener('click', function () {
-                    var solutionConfigs = solution.closest('tr').childNodes
-                    let domparser = new DOMParser();
-                    var codeData = {
-                        problem_name: solutionConfigs[2].firstChild.getAttribute('data-original-title'),
-                        problem_id: solutionConfigs[2].firstChild.innerText,
-                        memory: solutionConfigs[4].innerText,
-                        time: solutionConfigs[5].innerText,
-                        language: solutionConfigs[6].firstChild.innerText,
-                        len: solutionConfigs[7].innerText
-                    }
-
-                    function reqListener() {
-                        var test = domparser.parseFromString(this.responseText, "text/html")
-                        codeData.code = test.getElementsByClassName("codemirror-textarea")[0].innerHTML;
-                        console.log(codeData)
-                    }
-                    var oReq = new XMLHttpRequest();
-                    oReq.addEventListener("load", reqListener);
-                    oReq.open("GET", "https://www.acmicpc.net/source/" + solutionConfigs[0].innerText);
-                    oReq.send();
-                })
+        const addListener = function (elem) {
+            let domparser = new DOMParser();
+            var codeData = {
+                problem_name: elem[2].firstChild.getAttribute('data-original-title'),
+                problem_id: elem[2].firstChild.innerText,
+                memory: elem[4].innerText,
+                time: elem[5].innerText,
+                language: elem[6].firstChild.innerText,
+                len: elem[7].innerText
             }
+            function reqListener() {
+                var test = domparser.parseFromString(this.responseText, "text/html")
+                codeData.code = test.getElementsByClassName("codemirror-textarea")[0].innerHTML;
+                console.log(codeData)
+            }
+            var oReq = new XMLHttpRequest();
+            oReq.addEventListener("load", reqListener);
+            oReq.open("GET", "https://www.acmicpc.net/source/" + elem[0].innerText);
+            oReq.send();
+        }
+
+        var userSolutions = document.querySelectorAll('span.result-ac')
+        for (const solution of userSolutions) {
+            let solutionConfigs = solution.closest('tr').childNodes
+            // 이렇게 하면 외부 콜백함수에 변수를 담아 사용할 수 있다.
+            var portal = document.createElement('button')
+            portal.innerText = 'Go to SSaLog'
+            solution.innerText = '맞았습니다!!  '
+            solution.append(portal)
+            portal.addEventListener('click', event => addListener(solutionConfigs))
         }
         var target = document.querySelector('.result-text')
         var observer = new MutationObserver(function (mutations) {
             if (target.firstChild.innerText === "맞았습니다!!") {
-
+                var portal = document.createElement('button')
+                portal.innerText = 'Go to SSaLog'
+                target.firstChild.innerText = '맞았습니다!!  '
+                target.firstChild.append(portal)
                 // target.firstChild.innerHTML = '<button id="ssalogTrigger">SSALOG</button>'
                 // const trigger = document.querySelector('#ssalogTrigger')
-                target.firstChild.addEventListener('click', function (event) {
-                    var solutionConfigs = target.closest('tr').childNodes
-                    let domparser = new DOMParser();
-
-                    var codeData = {
-                        problem_name: solutionConfigs[2].firstChild.getAttribute('data-original-title'),
-                        problem_id: solutionConfigs[2].firstChild.innerText,
-                        memory: solutionConfigs[4].innerText,
-                        time: solutionConfigs[5].innerText,
-                        language: solutionConfigs[6].firstChild.innerText,
-                        len: solutionConfigs[7].innerText
-                    }
-
-                    function reqListener() {
-                        var test = domparser.parseFromString(this.responseText, "text/html")
-                        codeData.code = test.getElementsByClassName("codemirror-textarea")[0].innerHTML;
-                        console.log(codeData)
-                    }
-                    var oReq = new XMLHttpRequest();
-                    oReq.addEventListener("load", reqListener);
-                    oReq.open("GET", "https://www.acmicpc.net/source/" + solutionConfigs[0].innerText);
-                    // 내소스 아니거나 오류가 있을 시 소스를 불러올 수 없다고 말해야 함
-                    oReq.send();
-
-
-                    // alert('SSALOG로 이동합니다. \n\n문제번호: ' + data.problem.id +
-                    //     '\n사용언어 : ' + userCode.language +
-                    //     '\n시간 : ' + userCode.time +
-                    //     '\n메모리 : ' + userCode.memory +
-                    //     '\n소스 길이 : ' + userCode.len +
-                    //     '\n소스코드 : \n' + data.submitCode)
-                })
+                let solutionConfigs = target.closest('tr').childNodes
+                portal.addEventListener('click', event => addListener(solutionConfigs))
             }
         });
         var config = {
