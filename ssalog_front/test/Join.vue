@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <label for="username">아이디</label>
-    <input type="email" name="username" id="username" v-model="username" />
+    <input type="email" name="username" id="username" v-model="username" /><button @click="checkid">아이디중복확인</button>
     <br />
     <label for="pass1">비밀번호</label>
     <input type="password" name="password1" id="pass1" v-model="password" />
@@ -13,7 +13,7 @@
     <input type="text" name="nick" id="nick" v-model="nickname" />
     <br />
     <label for="email">이메일</label>
-    <input type="email" name="email" id="email" v-model="email" />
+    <input type="email" name="email" id="email" v-model="email" /><button @click="checkemail">이메일중복확인</button>
     <br />
     <label for="birth">생일</label>
     <input type="date" name="birth" id="birth" v-model="birthDay" />
@@ -41,6 +41,7 @@ const storage = window.sessionStorage;
 
 const ai = axios.create({
   baseURL: "http://localhost:8080"
+//    baseURL: "http://i3b101.p.ssafy.io:8080"
 });
 
 export default {
@@ -70,16 +71,56 @@ export default {
         answer : this.answer
       })
         .then(res => {
-          console.dir(res);
+          console.dir(res.data.success);
+          if(res.data.success){
+            alert("성공");
+          }else{
+            alert("실패");   //아이디가 중복될경우
+          }
           //storage.setItem("accessToken", res.data.accessToken);
-          alert("성공");
           //storage.setItem("login_user", this.email);
           
         })
         .catch(() => {
-          alert("실패");
+          alert("오류");     //이메일이 중복될경우 
         });
     },
+    checkemail(){
+      ai.post("/newuser/checkemail", {
+        email : this.email,
+      })
+        .then(res => {
+          console.dir(res.data);
+          if(res.data){
+            alert("사용가능");
+          }else{
+            alert("사용불가");
+          }
+          //storage.setItem("accessToken", res.data.accessToken);
+          //storage.setItem("login_user", this.email);
+        })
+        .catch((e) => {
+          alert(e);     
+        });
+    },
+    checkid(){
+      ai.post("/newuser/checkid", {
+        username : this.username,
+      })
+        .then(res => {
+          console.dir(res.data);
+          if(res.data){
+            alert("사용가능");
+          }else{
+            alert("사용불가");
+          }
+          //storage.setItem("accessToken", res.data.accessToken);
+          //storage.setItem("login_user", this.email);
+        })
+        .catch((e) => {
+          alert(e);     
+        });
+    }
 
   }
 
