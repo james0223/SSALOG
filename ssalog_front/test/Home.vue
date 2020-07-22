@@ -5,25 +5,25 @@
     <label for="pass">비밀번호</label>
     <input type="password" name="password" id="pass" v-model="password" />
     <input type="submit" value="로그인" id="login" @click="login" />
-        <button value="로그아웃" id="logout" @click="logout" />
+    <button value="로그아웃" id="logout" @click="logout" />
     <hr />
     <span>
       사용자 정보:
-      <span>{{message}}</span>
+      <span>{{ message }}</span>
     </span>
     <hr />
     <table>
       <tr>
         <th>상태</th>
-        <td id="status">{{status}}</td>
+        <td id="status">{{ status }}</td>
       </tr>
       <tr>
         <th>토큰</th>
-        <td id="token">{{token}}</td>
+        <td id="token">{{ token }}</td>
       </tr>
       <tr>
         <th>정보</th>
-        <td id="info">{{info}}</td>
+        <td id="info">{{ info }}</td>
       </tr>
     </table>
   </div>
@@ -31,6 +31,7 @@
 
 <script>
 import axios from "axios";
+
 const storage = window.sessionStorage;
 
 const ai = axios.create({
@@ -69,16 +70,12 @@ export default {
         },
         {
           headers: {
-            Authorization: "Bearer "+storage.getItem("accessToken")
+            Authorization: `Bearer ${storage.getItem("accessToken")}`
           }
         }
       )
         .then(res => {
-          this.setInfo(
-            "정보 조회 성공",
-            res.headers.auth_token,
-            JSON.stringify(res.data)
-          );
+          this.setInfo("정보 조회 성공", res.headers.auth_token, JSON.stringify(res.data));
         })
         .catch(e => {
           this.setInfo("정보 조회 실패", "", e.response.data.msg);
@@ -94,14 +91,9 @@ export default {
         .then(res => {
           console.dir(res.data.accessToken);
           storage.setItem("accessToken", res.data.accessToken);
-          this.setInfo(
-            "성공",
-            res.data.accessToken,
-            "데이터"
-          );
-          storage.setItem("login_user",this.email);
-          this.message = this.email + "로 로그인 되었습니다.";
-
+          this.setInfo("성공", res.data.accessToken, "데이터");
+          storage.setItem("login_user", this.email);
+          this.message = `${this.email}로 로그인 되었습니다.`;
 
           // if (res.data.status) {
           //   this.setInfo(
@@ -116,17 +108,13 @@ export default {
           // }
         })
         .catch(() => {
-          this.setInfo(
-            "로그인실패1",
-            "",
-            "로그인실패2"
-          );
+          this.setInfo("로그인실패1", "", "로그인실패2");
         });
     },
 
     init() {
       if (storage.getItem("accessToken")) {
-        this.message = storage.getItem("login_user") + "로 로그인 되었습니다.";
+        this.message = `${storage.getItem("login_user")}로 로그인 되었습니다.`;
       } else {
         storage.setItem("accessToken", "");
       }
