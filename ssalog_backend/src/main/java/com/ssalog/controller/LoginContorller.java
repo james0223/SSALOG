@@ -126,6 +126,15 @@ public class LoginContorller {
         return map;
     }
     
+    // 1-4. 회원가입 form [중복체크] 버튼 클릭 -> 아이디 중복체크 (DB에 아이디 존재하는지 체킹)
+    @ApiOperation(value = "[회원가입 기능] 중복되는 아이디가 DB에 없는지 확인(check)한다.")
+    @PostMapping(path="/newuser/checkid")
+    public boolean checkId (@RequestBody Map<String, String> m) {
+    	System.out.println("진입");
+        System.out.println("이메일 중복체크 요청 아이디: " + m.get("username"));
+        if (accountRepository.findByUsername(m.get("username")) == null) return true;
+        else return false;
+    }
     
     // 2. 로그인 요청
     @ApiOperation(value = "[로그인 기능] 회원로그인을 진행한다.")
