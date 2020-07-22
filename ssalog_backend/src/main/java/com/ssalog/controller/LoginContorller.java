@@ -290,15 +290,35 @@ public class LoginContorller {
         return new ResponseEntity(HttpStatus.OK);
     }
     
-    @ApiOperation(value = "[비밀번호 찾기기능] 사용자 id와 email을 이용하여 비밀번호 변경 페이지로 넘어간다.")
+    @ApiOperation(value = "[비밀번호 찾기기능] 사용자 id와 email을 이용하여 결과와 질문을 retrun한다")
     @PostMapping(path="/newuser/findpw")
-    public boolean findpw(@RequestBody Account account) {
+    public Map<String, Object> findpw(@RequestBody Account account) {
+       Map<String, Object> map = new HashMap<>();
        Account target = accountRepository.findByUsernameAndEmail(account.getUsername(), account.getEmail());
        if(target == null) {
-          return false;
+    	   map.put("result", false);
+       }else {
+    	   map.put("result", true);
+    	   map.put("username",target.getUsername());
+    	   map.put("question",target.getQuestion());
        }
-       return true;
+       return map;
     }
+    
+    @ApiOperation(value = "[비밀번호 퀴즈풀이] 사용자 id와 answer을 받아내서 인증을 하고 실 사용자인지 true/false 값을 retrun 한다")
+    @PostMapping(path="/newuser/quiz")
+    public boolean quiz(@RequestBody Account account) {
+       Map<String, Object> map = new HashMap<>();
+       Account target = accountRepository.findByUsernameAndAnswer(account.getUsername(), account.getAnswer());
+       if(target == null) {
+    	   return false;
+       }else {
+    	   return true;
+       }
+    }
+    
+    
+    
     
     @ApiOperation(value = "[비밀번호 찾기 - 변경] 비밀번호 찾기기능을 이용해 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
     @PostMapping(path="/newuser/change_pw")
