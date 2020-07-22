@@ -24,4 +24,10 @@ const router = new VueRouter({
   routes
 });
 
+// // login required
+// const requireAuth = () => (from, to, next) => {
+//   const isAuthenticated = false;
+//   if (isAuthenticated) return next();
+//   next("");
+// };
 export default router;
