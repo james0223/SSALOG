@@ -35,7 +35,7 @@ import com.ssalog.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.ApiOperation;
 
-//http://localhost:8080/swagger-ui.html
+//http://i3b101.p.ssafy.io:8080/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping
