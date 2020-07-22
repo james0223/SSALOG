@@ -12,12 +12,16 @@
 
     <v-card v-model="step" width="50vw">
       <v-card-text>
-        <v-text-field label="아이디"></v-text-field>
-        <v-btn text small color="primary">중복검사</v-btn>
-        <v-text-field label="이메일"></v-text-field>
-        <v-text-field label="닉네임"></v-text-field>
-        <v-text-field label="비밀번호" type="password"></v-text-field>
-        <v-text-field label="비밀번호(확인)" type="password"></v-text-field>
+        <v-text-field v-model="userData.id" label="아이디"></v-text-field>
+        <v-btn @click="duplicateCheck" text small color="primary">중복검사</v-btn>
+        <v-text-field v-model="userData.email" label="이메일"></v-text-field>
+        <v-text-field v-model="userData.nickName" label="닉네임"></v-text-field>
+        <v-text-field v-model="userData.password" label="비밀번호" type="password"></v-text-field>
+        <v-text-field
+          v-model="userData.password_check"
+          label="비밀번호(확인)"
+          type="password"
+        ></v-text-field>
         <v-menu
           ref="menu"
           v-model="menu"
@@ -28,7 +32,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date"
+              v-model="userData.birthDay"
               label="생일"
               readonly
               v-bind="attrs"
@@ -37,7 +41,7 @@
           </template>
           <v-date-picker
             ref="picker"
-            v-model="date"
+            v-model="userData.birthDay"
             :max="new Date().toISOString().substr(0, 10)"
             min="1920-01-01"
             @change="save"
@@ -50,9 +54,8 @@
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn :disabled="step === 1" text @click="step--">Back</v-btn>
+      <v-btn color="primary" text @click="submit">회원가입</v-btn>
       <v-spacer></v-spacer>
-      <v-btn :disabled="step === 3" color="primary" depressed @click="step++">Next</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -62,8 +65,16 @@
 export default {
   name: "SignUp",
   data: () => ({
+    userData: {
+      id: "",
+      email: "",
+      nickName: "",
+      password: "",
+      password_check: "",
+      birthDay: ""
+    },
     step: 1,
-    date: null,
+    isDuplicateChecked: false,
     menu: false
   }),
   watch: {
@@ -75,6 +86,16 @@ export default {
     }
   },
   methods: {
+    submit() {
+      if (this.isDuplicateChecked) {
+        console.log("회원가입 성공");
+      } else {
+        console.log("아이디 중복여부 체크해주세요");
+      }
+    },
+    duplicateCheck() {
+      this.isDuplicateChecked = true;
+    },
     save(date) {
       this.$refs.menu.save(date);
     }
