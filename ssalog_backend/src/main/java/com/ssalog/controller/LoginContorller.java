@@ -319,7 +319,6 @@ public class LoginContorller {
     
     
     
-    
     @ApiOperation(value = "[비밀번호 찾기 - 변경] 비밀번호 찾기기능을 이용해 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
     @PostMapping(path="/newuser/change_pw")
     public void find_changepw(@RequestBody Map<String, String> m) {
