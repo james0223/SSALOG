@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header v-if="$route.name !== 'Login' && $route.name !== 'SignUp'"></Header>
+    <Header v-if="$route.name === 'Home'"></Header>
     <v-divider></v-divider>
     <v-container align="center" fill-height>
       <router-view></router-view>
