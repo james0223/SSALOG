@@ -1,17 +1,25 @@
 <template>
   <v-app>
-    <router-link :to="{ name: 'SignUp' }">회원가입</router-link>
-    <router-link :to="{ name: 'Login' }">로그인</router-link>
-    <router-view />
+    <Header v-if="$route.name !== 'Login' && $route.name !== 'SignUp'"></Header>
+    <v-divider></v-divider>
+    <v-container align="center" fill-height>
+      <router-view></router-view>
+    </v-container>
   </v-app>
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
+
 export default {
   name: "App",
 
-  components: {},
+  components: {
+    Header
+  },
 
-  data: () => ({})
+  data: () => ({
+    //
+  })
 };
 </script>
