@@ -1,10 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
+// account
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
-import Home from "@/views/Home.vue";
 import FindPass from "@/views/Account/FindPass.vue";
+// main
+import Home from "@/views/Home.vue";
+// editor
+import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +40,12 @@ const routes = [
     path: "/FindPass",
     name: "FindPass",
     component: FindPass
+  },
+  {
+    path: "/CreateLog",
+    name: "CreateLog",
+    component: CreateLog
+    // beforeEnter: requireAuth()
   }
 ];
 
