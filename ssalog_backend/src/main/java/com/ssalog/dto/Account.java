@@ -38,6 +38,28 @@ public class Account {
     private String answer;	// 답변
     
     private String imgpath; 
+    
+    public Account() {
+		super();
+	}
+    
+	public Account(Long id, String username, String nickname, String email, String birthday, String password,
+			Date regdate, Date updatedate, String role, String question, String answer, String imgpath) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.nickname = nickname;
+		this.email = email;
+		this.birthday = birthday;
+		this.password = password;
+		this.regdate = regdate;
+		this.updatedate = updatedate;
+		this.role = role;
+		this.question = question;
+		this.answer = answer;
+		this.imgpath = imgpath;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -110,9 +132,7 @@ public class Account {
 	public void setImgpath(String imgpath) {
 		this.imgpath = imgpath;
 	}
-	public Account() {
-		super();
-	}
+	
 
 	
 	
