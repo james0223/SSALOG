@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping
 public class MypageController {
 	
-}
 	private Logger logger = LoggerFactory.getLogger(ApplicationRunner.class);
 
 	@Autowired
