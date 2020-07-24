@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.dto.Account;
@@ -135,6 +136,18 @@ public class LoginContorller {
         if (accountRepository.findByUsername(m.get("username")) == null) return true;
         else return false;
     }
+    
+    // 1-5. 회원가입 form [중복체크] 버튼 클릭 -> 닉네임 중복체크 (DB에 같은 닉네임 존재하는지 체킹)
+    @ApiOperation(value = "[회원가입 기능] 중복되는 아이디가 DB에 없는지 확인(check)한다. 사용 가능하면 true  불가능하면 false")
+    @PostMapping(path="/newuser/checkNickname")
+    public boolean checkNickname (@RequestParam("nickname") String nick) {
+    	System.out.println(nick);
+    	if (accountRepository.findByNickname(nick) == null) return true;
+        return false;
+    }
+    
+    
+
     
     // 2. 로그인 요청
     @ApiOperation(value = "[로그인 기능] 회원로그인을 진행한다.")
@@ -356,4 +369,21 @@ public class LoginContorller {
        //System.out.println("변경성공");
        return true;
     }
+    
+    
+    @ApiOperation(value = "[아이디 찾기기능] 사용자 email을 이용하여 결과와 username(=id)를 리턴한다")
+    @PostMapping(path="/newuser/findid")
+    public Map<String, Object> findpw(@RequestParam("email") String email) {
+       Map<String, Object> map = new HashMap<>();
+       Account target = accountRepository.findByEmail(email);
+       if(target == null) {
+    	   map.put("result", false);
+       }else {
+    	   map.put("result", true);
+    	   map.put("username",target.getUsername());
+       }
+       return map;
+    }
+    
+
 }
