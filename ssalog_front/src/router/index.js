@@ -5,10 +5,14 @@ import store from "@/store";
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
 import FindPass from "@/views/Account/FindPass.vue";
+import AccountList from "@/views/Account/AccountList.vue";
+
 // main
 import Home from "@/views/Home.vue";
 // editor
 import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
+// search
+import Search from "@/views/Search/Search.vue";
 
 Vue.use(VueRouter);
 
@@ -20,6 +24,16 @@ const requireAuth = () => (to, from, next) => {
   return next("/Login");
 };
 const routes = [
+  {
+    path: "/Account/List/",
+    name: "AccountList",
+    component: AccountList
+  },
+  {
+    path: "/Search",
+    name: "Search",
+    component: Search
+  },
   {
     path: "/",
     name: "Home",
