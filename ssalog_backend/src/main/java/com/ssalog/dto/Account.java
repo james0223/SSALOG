@@ -37,14 +37,12 @@ public class Account {
     private String question;	// 질문
     private String answer;	// 답변
     
-    private String imgpath; 
-    
-    public Account() {
+	public Account() {
 		super();
 	}
-    
+
 	public Account(Long id, String username, String nickname, String email, String birthday, String password,
-			Date regdate, Date updatedate, String role, String question, String answer, String imgpath) {
+			Date regdate, Date updatedate, String role, String question, String answer) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -57,85 +55,94 @@ public class Account {
 		this.role = role;
 		this.question = question;
 		this.answer = answer;
-		this.imgpath = imgpath;
 	}
 
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getNickname() {
 		return nickname;
 	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getBirthday() {
 		return birthday;
 	}
+
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public Date getRegdate() {
 		return regdate;
 	}
+
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
+
 	public Date getUpdatedate() {
 		return updatedate;
 	}
+
 	public void setUpdatedate(Date updatedate) {
 		this.updatedate = updatedate;
 	}
+
 	public String getRole() {
 		return role;
 	}
+
 	public void setRole(String role) {
 		this.role = role;
 	}
+
 	public String getQuestion() {
 		return question;
 	}
+
 	public void setQuestion(String question) {
 		this.question = question;
 	}
+
 	public String getAnswer() {
 		return answer;
 	}
+
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	public String getImgpath() {
-		return imgpath;
-	}
-	public void setImgpath(String imgpath) {
-		this.imgpath = imgpath;
-	}
-	
-
-	
-	
-	
 
 }
