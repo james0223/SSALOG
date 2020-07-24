@@ -1,6 +1,8 @@
 package com.ssalog.service;
 
+import java.io.File;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
@@ -44,6 +46,29 @@ public class FileServiceImpl implements FileService{
 		}
 		else {
 			return 3;
+		}
+	}
+	public boolean is_exist(String username) {
+		Account acc = accountRepository.findByUsername(username);
+		if(acc == null) {
+			return false;
+		}else {
+			String rootPath = servletContext.getRealPath("/upload");
+			String filename = acc.getImgpath()==null?UUID.randomUUID().toString():acc.getImgpath();
+			return fileRepository.is_exist(username, rootPath, filename);
+		}
+	}
+	public String delete_file(String username) {
+		Account acc = accountRepository.findByUsername(username);
+		if(acc == null) {
+			return "존재하지 않는 사용자 입니다.";
+		}else {
+			String filename = acc.getImgpath()==null?UUID.randomUUID().toString():acc.getImgpath();
+			String rootPath = servletContext.getRealPath("/upload");
+			fileRepository.delete_file(username, rootPath, filename);
+			acc.setImgpath(null);
+			accountRepository.save(acc);
+			return "삭제 완료";
 		}
 	}
 	

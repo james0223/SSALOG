@@ -44,4 +44,25 @@ public class FileRepositoryImpl implements FileRepository{
 		map.put("saveFileSize", fileSize + "");
 		return map;
 	}
+	public boolean is_exist(String username, String rootPath, String filename) {
+		String saveFolder = "resources/upload";
+		String totalSaveFolder = rootPath + File.separator+ saveFolder;
+		File file = new File(totalSaveFolder, filename);
+		if(file.exists()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public void delete_file(String username, String rootPath, String filename) {
+		String saveFolder = "resources/upload";
+		String totalSaveFolder = rootPath + File.separator+ saveFolder;
+		File file = new File(totalSaveFolder, filename);
+		if(file.exists()) {
+			if(file.delete()){ System.out.println("파일삭제 성공"); }
+			else{ System.out.println("파일삭제 실패"); }
+		}else {
+			System.out.println("파일이 존재하지 않습니다.");
+		}
+	}
 }
