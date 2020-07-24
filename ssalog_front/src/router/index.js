@@ -1,11 +1,31 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
+// account
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
+import FindPass from "@/views/Account/FindPass.vue";
+// main
+import Home from "@/views/Home.vue";
+// editor
+import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
 
 Vue.use(VueRouter);
 
+// login required
+const requireAuth = () => (to, from, next) => {
+  if (store.state.accessToken !== null) {
+    return next();
+  }
+  return next("/Login");
+};
 const routes = [
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+    beforeEnter: requireAuth()
+  },
   {
     path: "/SignUp",
     name: "SignUp",
@@ -15,6 +35,17 @@ const routes = [
     path: "/Login",
     name: "Login",
     component: Login
+  },
+  {
+    path: "/FindPass",
+    name: "FindPass",
+    component: FindPass
+  },
+  {
+    path: "/CreateLog",
+    name: "CreateLog",
+    component: CreateLog
+    // beforeEnter: requireAuth()
   }
 ];
 
@@ -24,10 +55,4 @@ const router = new VueRouter({
   routes
 });
 
-// // login required
-// const requireAuth = () => (from, to, next) => {
-//   const isAuthenticated = false;
-//   if (isAuthenticated) return next();
-//   next("");
-// };
 export default router;
