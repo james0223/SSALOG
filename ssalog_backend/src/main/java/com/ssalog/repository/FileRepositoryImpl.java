@@ -8,22 +8,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+@Repository
 public class FileRepositoryImpl implements FileRepository{
-	public Map<String, String> saveFile(MultipartFile multipartFile, String rootPath){
+	public Map<String, String> saveFile(MultipartFile multipartFile, String rootPath, String username){
 		Map<String, String> map = new HashMap<String, String>();
 		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
 		String saveFolder = "resources/upload";
 		String totalSaveFolder = rootPath + File.separator+ saveFolder;
 		
-		System.out.println("totalSaveFolder>>>" + totalSaveFolder);
+		//System.out.println("totalSaveFolder>>>" + totalSaveFolder);
 		File dir = new File(totalSaveFolder);
 		if(!dir.exists())
 			dir.mkdirs();
-		
 		String originFileName = multipartFile.getOriginalFilename();
-		String saveFileName = UUID.randomUUID().toString() + originFileName.substring(originFileName.lastIndexOf('.'));
+		String saveFileName = username +  "." + FilenameUtils.getExtension(originFileName).toString();//UUID.randomUUID().toString() + originFileName.substring(originFileName.lastIndexOf('.'));
 		
 		long fileSize = 0;
 		try {
