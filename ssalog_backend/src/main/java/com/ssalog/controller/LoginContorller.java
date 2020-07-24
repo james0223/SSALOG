@@ -307,24 +307,53 @@ public class LoginContorller {
     
     @ApiOperation(value = "[비밀번호 퀴즈풀이] 사용자 id와 answer을 받아내서 인증을 하고 실 사용자인지 true/false 값을 retrun 한다")
     @PostMapping(path="/newuser/quiz")
-    public boolean quiz(@RequestBody Account account) {
+    public Map<String, Object> quiz(@RequestBody Account account) {
+    	String username = account.getUsername();
        Map<String, Object> map = new HashMap<>();
        Account target = accountRepository.findByUsernameAndAnswer(account.getUsername(), account.getAnswer());
        if(target == null) {
-    	   return false;
+    	   map.put("result", "false");
        }else {
-    	   return true;
+    	   map.put("result", "true");
+           final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+           final String accessToken = jwtTokenUtil.generateAccessToken(userDetails);
+           final String refreshToken = jwtTokenUtil.generateRefreshToken(username);
+
+           Token retok = new Token();
+           retok.setUsername(username);
+           retok.setRefreshToken(refreshToken);
+
+           //발행한 redis에 저장하는 로직으로, hashmap과 같은 key,value 구조임
+           ValueOperations<String, Object> vop = redisTemplate.opsForValue();
+           vop.set(username, retok); // key, value 값으로 redis에 저장
+
+           logger.info("generated access token: " + accessToken);
+           logger.info("generated refresh token: " + refreshToken);
+          
+           map.put("accessToken", accessToken);
+   
        }
+       return map;
     }
     
     
     @ApiOperation(value = "[비밀번호 찾기 - 변경] 비밀번호 찾기기능을 이용해 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
     @PostMapping(path="/newuser/change_pw")
-    public void find_changepw(@RequestBody Map<String, String> m) {
-       Account ac = accountRepository.findByUsername(m.get("username"));
+    public boolean find_changepw(@RequestBody Map<String, String> m) {
+    	String username = null;
+        try {
+            username = jwtTokenUtil.getUsernameFromToken(m.get("accessToken"));
+        } catch (Exception e) {
+            logger.warn("[ERROR] JWT Token을 얻어올 수 없습니다.");
+            return false;
+        }
+        System.out.println("username="+username);
+       Account ac = accountRepository.findByUsername(username);
        //Account change_ac = accountRepository.getOne((int)(long)ac.getId());
        ac.setPassword(bcryptEncoder.encode(m.get("password")));
        accountRepository.save(ac);
+       //System.out.println("변경성공");
+       return true;
     }
     
     
