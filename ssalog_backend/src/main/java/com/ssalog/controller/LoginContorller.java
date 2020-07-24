@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.dto.Account;
@@ -135,6 +136,19 @@ public class LoginContorller {
         if (accountRepository.findByUsername(m.get("username")) == null) return true;
         else return false;
     }
+    
+    
+    // 1-5. 회원가입 form [중복체크] 버튼 클릭 -> 닉네임 중복체크 (DB에 같은 닉네임 존재하는지 체킹)
+    @ApiOperation(value = "[회원가입 기능] 중복되는 아이디가 DB에 없는지 확인(check)한다. 사용 가능하면 true  불가능하면 false")
+    @PostMapping(path="/newuser/checkNickname")
+    public boolean checkNickname (@RequestParam("nickname") String nick) {
+    	System.out.println(nick);
+    	if (accountRepository.findByNickname(nick) == null) return true;
+        return false;
+    }
+    
+    
+    
     
     // 2. 로그인 요청
     @ApiOperation(value = "[로그인 기능] 회원로그인을 진행한다.")
@@ -337,7 +351,6 @@ public class LoginContorller {
     }
     
     
-    
     @ApiOperation(value = "[비밀번호 찾기 - 변경] 비밀번호 찾기기능을 이용해 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
     @PostMapping(path="/newuser/change_pw")
     public boolean find_changepw(@RequestBody Map<String, String> m) {
@@ -356,4 +369,7 @@ public class LoginContorller {
        //System.out.println("변경성공");
        return true;
     }
+    
+    
+    
 }

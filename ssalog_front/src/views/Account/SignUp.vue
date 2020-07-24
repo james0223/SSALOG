@@ -12,12 +12,16 @@
 
     <v-card v-model="step" width="50vw">
       <v-card-text>
-        <v-text-field type="text" v-model="userData.username" label="아이디"></v-text-field>
-        <v-text-field v-model="userData.password" label="비밀번호" type="password"></v-text-field>
-        <v-text-field v-model="passwdcheck" label="비밀번호(확인)" type="password"></v-text-field>
+        <v-text-field v-model="userData.id" label="아이디"></v-text-field>
         <v-btn @click="duplicateCheck" text small color="primary">중복검사</v-btn>
-        <v-text-field type="email" v-model="userData.email" label="이메일"></v-text-field>
-        <v-text-field type="text" v-model="userData.nickname" label="닉네임"></v-text-field>
+        <v-text-field v-model="userData.email" label="이메일"></v-text-field>
+        <v-text-field v-model="userData.nickName" label="닉네임"></v-text-field>
+        <v-text-field v-model="userData.password" label="비밀번호" type="password"></v-text-field>
+        <v-text-field
+          v-model="userData.password_check"
+          label="비밀번호(확인)"
+          type="password"
+        ></v-text-field>
         <v-menu
           ref="menu"
           v-model="menu"
@@ -28,7 +32,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="userData.birthday"
+              v-model="userData.birthDay"
               label="생일"
               readonly
               v-bind="attrs"
@@ -37,22 +41,20 @@
           </template>
           <v-date-picker
             ref="picker"
-            v-model="userData.birthday"
+            v-model="userData.birthDay"
             :max="new Date().toISOString().substr(0, 10)"
             min="1920-01-01"
             @change="save"
             locale="ko-kr"
           ></v-date-picker>
         </v-menu>
-        <v-text-field v-model="userData.question" label="질문" type="text"></v-text-field>
-        <v-text-field v-model="userData.answer" label="답변" type="text"></v-text-field>
       </v-card-text>
     </v-card>
 
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn color="primary" text @click="signUp()">회원가입</v-btn>
+      <v-btn color="primary" text @click="submit">회원가입</v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
   </v-card>
@@ -62,34 +64,40 @@
 /* eslint-disable no-unused-expressions */
 export default {
   name: "SignUp",
-  data() {
-    return {
-      userData: {
-        username: "",
-        password: "",
-        nickname: "",
-        email: "",
-        birthday: "",
-        question: "",
-        answer: ""
-      },
-      passwdcheck: "",
-      step: 1,
-      isDuplicateChecked: false,
-      menu: false
-    };
+  data: () => ({
+    userData: {
+      id: "",
+      email: "",
+      nickName: "",
+      password: "",
+      password_check: "",
+      birthDay: ""
+    },
+    step: 1,
+    isDuplicateChecked: false,
+    menu: false
+  }),
+  watch: {
+    menu(val) {
+      val &&
+        setTimeout(() => {
+          this.$refs.picker.activePicker = "YEAR";
+        });
+    }
   },
   methods: {
-    async signUp() {
-      if (this.userData.password === this.passwdcheck) {
-        try {
-          console.log(this.userData);
-          await this.$store.dispatch("SIGNUP", this.userData);
-          this.$router.push({ name: "Home" });
-        } catch (e) {
-          console.error(e);
-        }
+    submit() {
+      if (this.isDuplicateChecked) {
+        console.log("회원가입 성공");
+      } else {
+        console.log("아이디 중복여부 체크해주세요");
       }
+    },
+    duplicateCheck() {
+      this.isDuplicateChecked = true;
+    },
+    save(date) {
+      this.$refs.menu.save(date);
     }
   }
 };

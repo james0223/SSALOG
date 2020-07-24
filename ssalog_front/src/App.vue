@@ -1,25 +1,17 @@
 <template>
   <v-app>
-    <Header v-if="$route.name === 'Home'"></Header>
-    <v-divider></v-divider>
-    <v-container align="center" fill-height>
-      <router-view></router-view>
-    </v-container>
+    <router-link :to="{ name: 'SignUp' }">회원가입</router-link>
+    <router-link :to="{ name: 'Login' }">로그인</router-link>
+    <router-view />
   </v-app>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-
 export default {
   name: "App",
 
-  components: {
-    Header
-  },
+  components: {},
 
-  data: () => ({
-    //
-  })
+  data: () => ({})
 };
 </script>
