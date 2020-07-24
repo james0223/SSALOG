@@ -1,6 +1,6 @@
 <template>
   <v-card flat height="60vh">
-    <v-row justify="center">
+    <v-row justify="center" bottom>
       <v-avatar color="orange" size="260" class="mt-8">
         <span class="white--text headline">62</span>
       </v-avatar>
@@ -9,8 +9,9 @@
       <h3>uutaein</h3>
     </v-row>
     <v-row justify="center">
-      <v-btn outlined large class="mt-6 mb-5">Edit Profile</v-btn>
+      <v-btn outlined large class="mt-6 mb-5" @click="dialog = true">Edit Profile</v-btn>
     </v-row>
+    <Profile :dialog.sync="dialog" />
     <v-row justify="center">
       <v-btn class="ma-2" text><v-icon left>mdi-account-heart</v-icon>following</v-btn>
       <v-btn class="ma-2" text><v-icon left>mdi-account-arrow-left</v-icon>follower</v-btn>
@@ -22,7 +23,18 @@
 </template>
 
 <script>
-export default {};
+import Profile from "./Profile.vue";
+
+export default {
+  components: {
+    Profile
+  },
+  data() {
+    return {
+      dialog: false
+    };
+  }
+};
 </script>
 
 <style></style>
