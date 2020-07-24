@@ -371,5 +371,20 @@ public class LoginContorller {
     }
     
     
+    @ApiOperation(value = "[아이디 찾기기능] 사용자 email을 이용하여 결과와 username(=id)를 리턴한다")
+    @PostMapping(path="/newuser/findid")
+    public Map<String, Object> findpw(@RequestParam("email") String email) {
+       Map<String, Object> map = new HashMap<>();
+       Account target = accountRepository.findByEmail(email);
+       if(target == null) {
+    	   map.put("result", false);
+       }else {
+    	   map.put("result", true);
+    	   map.put("username",target.getUsername());
+       }
+       return map;
+    }
+    
+    
     
 }
