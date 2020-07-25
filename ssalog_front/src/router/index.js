@@ -10,6 +10,8 @@ import FindPass from "@/views/Account/FindPass.vue";
 import Home from "@/views/Home.vue";
 // editor
 import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
+// ssalog
+import SSALOG from "@/views/SSALOG/SSALOG.vue";
 
 Vue.use(VueRouter);
 
@@ -53,6 +55,11 @@ const routes = [
     name: "CreateLog",
     component: CreateLog
     // beforeEnter: requireAuth()
+  },
+  {
+    path: "/SSALOG",
+    name: "SSALOG",
+    component: SSALOG
   }
 ];
 
