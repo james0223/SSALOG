@@ -1,13 +1,12 @@
-const ssalogDiv = document.createElement('div')
-// ssalogDiv.setAttribute('class', 'job')
-ssalogDiv.style.background = '#FF8000' 
-ssalogDiv.innerHTML = "<a href='#'><span>VISIT<br/>SSALOG</span></a>"
+const ssalogDiv = document.createElement("div");
+ssalogDiv.classList.add("git");
+ssalogDiv.style.right = "-160px";
+ssalogDiv.style.background = "#ffd9b3";
+ssalogDiv.style.width = "80px";
+ssalogDiv.innerHTML =
+  "<a href='http://localhost:8080/' target='_blank'><span>MY<br/>SSALOG</span></a>";
 
-// ssalogButton.innerText = "SSALOG"
-const _header = document.querySelector('.header-inner')
+const _header = document.querySelector(".header-inner");
 if (_header !== null) {
-    _header.appendChild(ssalogDiv)
-    ssalogDiv.addEventListener('click', function() {
-        alert('SSALOG 런칭 준비중입니다!\n일단 기대해주세요')
-    })
+  _header.appendChild(ssalogDiv);
 }
