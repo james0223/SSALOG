@@ -181,6 +181,11 @@ import {
 } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
+import c from "highlight.js/lib/languages/c";
+import clike from "highlight.js/lib/languages/c-like";
+import python from "highlight.js/lib/languages/python";
+import java from "highlight.js/lib/languages/java";
+import javascript from "highlight.js/lib/languages/javascript";
 
 export default {
   components: {
@@ -190,6 +195,7 @@ export default {
   },
   data() {
     return {
+      calledcode: `13241234123412342323`,
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -214,7 +220,12 @@ export default {
           new CodeBlockHighlight({
             languages: {
               cpp,
-              css
+              css,
+              c,
+              clike,
+              python,
+              java,
+              javascript
             }
           }),
           new Focus({
@@ -230,44 +241,34 @@ export default {
           new CodeBlockHighlight({
             languages: {
               cpp,
-              css
+              css,
+              c,
+              clike,
+              python,
+              java,
+              javascript
             }
           }),
           new Code(),
+          new History(),
           new HardBreak(),
           new Heading({ levels: [1, 2, 3] }),
           new Bold(),
           new Italic()
         ],
-        editable: false,
-        content: `
-          <pre><code>#include <bits/stdc++.h>
-using namespace std;
-
-int n, m, a[1001][1001], dp[1001][1001];
-
-int main(void)
-{
-    //freopen("./INPUTS/11048.txt","rt",stdin);
-    ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-    cin >> n >> m;
-    for(int i=1; i<=n; i++){
-        for(int j=1; j<=m; j++){
-            cin >> a[i][j];
-        }
-    }
-    for(int i=1; i<=n; i++){
-        for(int j=1; j<=m; j++){
-            dp[i][j] = a[i][j] + max({dp[i-1][j-1],dp[i][j-1],dp[i-1][j]});
-        }
-    }
-    cout << dp[n][m] << '\\n';
-    return 0;
-}
- </code></pre>
-        `
+        editable: true,
+        content: ``
       })
     };
+  },
+  mounted() {
+    const saved = JSON.parse(sessionStorage.getItem("test"));
+    console.dir(saved);
+
+    const text = saved.code;
+    const transaction = this.codearea.state.tr.insertText(text);
+    this.codearea.view.dispatch(transaction);
+    this.codearea.commands.code_block();
   },
   beforeDestroy() {
     this.editor.destroy();
