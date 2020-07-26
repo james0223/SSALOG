@@ -1,5 +1,9 @@
 package com.ssalog.repository;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssalog.dto.Account;
@@ -13,4 +17,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Long deleteByUsername(String username);		// user 삭제 (admin 사용자만)
     Account findByUsernameAndEmail(String username, String email); // 유저이름과 이메일을 이용한 사용자 찾기
     Account findByUsernameAndAnswer(String username, String answer); // 유저이름과 답변을 이용한 사용자 찾기
+    Page<Account> findByNicknameLike(String nickname, Pageable pageable);
 }
