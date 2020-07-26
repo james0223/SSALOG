@@ -1,7 +1,5 @@
 <template>
-  <div>
-    {{ search }}
-  </div>
+  <SearchBar :category="category" />
 </template>
 
 <script>
