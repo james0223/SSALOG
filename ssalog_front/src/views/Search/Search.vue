@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchBar />
+    <SearchBar SelectedCategoryIdx="0" />
   </div>
 </template>
 
@@ -11,13 +11,6 @@ export default {
   name: "Search",
   components: {
     SearchBar
-  },
-  methods: {
-    goSearch() {
-      if (this.selectedCatagory === "회원") {
-        this.$router.push({ name: "AccountList", query: { search: this.search } });
-      }
-    }
   }
 };
 </script>

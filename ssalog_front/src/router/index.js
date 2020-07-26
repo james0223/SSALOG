@@ -7,6 +7,9 @@ import Login from "@/views/Account/Login.vue";
 import FindPass from "@/views/Account/FindPass.vue";
 import AccountList from "@/views/Account/AccountList.vue";
 
+// problem
+import ProblemList from "@/views/Problem/ProblemList.vue";
+
 // main
 import Home from "@/views/Home.vue";
 // editor
@@ -24,6 +27,11 @@ const requireAuth = () => (to, from, next) => {
   return next("/Login");
 };
 const routes = [
+  {
+    path: "/Problem/List/",
+    name: "ProblemList",
+    component: ProblemList
+  },
   {
     path: "/Account/List/",
     name: "AccountList",
