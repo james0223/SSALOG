@@ -5,7 +5,7 @@
     ></Header>
     <v-divider></v-divider>
     <v-container align="center" fill-height>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </v-container>
   </v-app>
 </template>

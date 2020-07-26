@@ -6,12 +6,19 @@ import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
 import Account from "@/views/Account/Account.vue";
 import FindPass from "@/views/Account/FindPass.vue";
+import AccountList from "@/views/Account/AccountList.vue";
+
+// problem
+import ProblemList from "@/views/Problem/ProblemList.vue";
+
 // main
 import Home from "@/views/Home.vue";
 // editor
 import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
+// search
+import Search from "@/views/Search/Search.vue";
 
 Vue.use(VueRouter);
 
@@ -23,6 +30,21 @@ Vue.use(VueRouter);
 //   return next("/Login");
 // };
 const routes = [
+  {
+    path: "/Problem/List/",
+    name: "ProblemList",
+    component: ProblemList
+  },
+  {
+    path: "/Account/List/",
+    name: "AccountList",
+    component: AccountList
+  },
+  {
+    path: "/Search",
+    name: "Search",
+    component: Search
+  },
   {
     path: "/",
     name: "Home",
