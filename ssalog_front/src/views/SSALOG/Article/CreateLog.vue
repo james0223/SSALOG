@@ -153,6 +153,8 @@
         </div>
       </v-col>
     </v-row>
+    <h3>HTML</h3>
+    <pre><code>{{ html }}</code></pre>
   </v-container>
 </template>
 
@@ -195,7 +197,7 @@ export default {
   },
   data() {
     return {
-      calledcode: `13241234123412342323`,
+      html: "<h1>gps</h1>",
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -234,7 +236,10 @@ export default {
           })
         ],
         autoFocus: true,
-        content: ""
+        content: "",
+        onUpdate: ({ getHTML }) => {
+          this.html = getHTML();
+        }
       }),
       codearea: new Editor({
         extensions: [
