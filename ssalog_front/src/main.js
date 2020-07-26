@@ -9,6 +9,7 @@ import "./assets/tiptap/sass/main.scss";
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
+Vue.prototype.$serverURL = "http://i3b101.p.ssafy.io:8080";
 new Vue({
   router,
   store,

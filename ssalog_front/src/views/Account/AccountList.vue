@@ -2,11 +2,13 @@
   <div>
     사용자 조회 list
     <SearchBar SelectedCategoryIdx="3" />
-    {{ q }}
+    {{ searchData.nickname }}
+    {{ users }}
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import SearchBar from "@/components/SearchBar.vue";
 
 export default {
@@ -16,18 +18,37 @@ export default {
   },
   data() {
     return {
-      page: 0,
-      q: this.$route.query.q,
+      searchData: {
+        direction: 0,
+        // nickname: this.$route.query.q,
+        nickname: "",
+        page: 0,
+        size: 12
+      },
       users: []
     };
   },
-  mounted() {
-    if (!this.q) {
-      // 전체 user 조회
-      this.q = "검색어가 없으므로 걍 전체리스트한다 ㅇㅋ?";
-    } else {
-      // 닉 기반으로 조회
+  methods: {
+    async fetchUserData() {
+      try {
+        const res = await axios.get(
+          "http://i3b101.p.ssafy.io:8080/newuser/search/to_nickname",
+          this.searchData
+        );
+        this.users = res.content;
+      } catch (e) {
+        console.log(e);
+      }
     }
+  },
+  mounted() {
+    this.fetchUserData();
+    // if (!this.q) {
+    //   // 전체 user 조회
+    //   this.q = "검색어가 없으므로 걍 전체리스트한다 ㅇㅋ?";
+    // } else {
+    //   // 닉 기반으로 조회
+    // }
   }
 };
 </script>
