@@ -16,9 +16,10 @@
               <button
                 class="menububble__button"
                 :class="{ 'is-active': isActive.bold() }"
-                @click="commands.bold"
+                @click="menububbleClick"
               >
-                <img class="icon" src="@/assets/tiptap/icons/bold.svg" />
+                <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
+                <h5>옮기기</h5>
               </button>
             </div>
           </editor-menu-bubble>
@@ -175,7 +176,8 @@ import {
   Link,
   Strike,
   Underline,
-  History
+  History,
+  Focus
 } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
@@ -208,6 +210,16 @@ export default {
           new History(),
           new Placeholder({
             showOnlyCurrent: false
+          }),
+          new CodeBlockHighlight({
+            languages: {
+              cpp,
+              css
+            }
+          }),
+          new Focus({
+            className: "has-focus",
+            nested: true
           })
         ],
         autoFocus: true,
@@ -260,7 +272,19 @@ int main(void)
   beforeDestroy() {
     this.editor.destroy();
   },
-  methods: {}
+  methods: {
+    menububbleClick() {
+      //  alert("클릭됨");
+      const { selection, state } = this.codearea;
+      const { from, to } = selection;
+      const text = state.doc.textBetween(from, to);
+      // alert(text);
+      // this.editor.setContent("1");
+      const transaction = this.editor.state.tr.insertText(text);
+      this.editor.view.dispatch(transaction);
+      this.editor.commands.code_block();
+    }
+  }
 };
 </script>
 
@@ -382,6 +406,7 @@ pre {
 }
 // article 부분 style
 .article {
+  padding: 15px 10px;
   border: 3px solid;
   overflow-y: scroll;
   height: 60vh;
@@ -393,5 +418,10 @@ pre {
   pointer-events: none;
   height: 0;
   font-style: italic;
+}
+
+.has-focus {
+  border-radius: 3px;
+  box-shadow: 0 0 0 3px #3ea4ffe6;
 }
 </style>
