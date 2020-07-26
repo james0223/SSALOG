@@ -19,9 +19,8 @@ export default {
   data() {
     return {
       searchData: {
-        direction: 0,
-        // nickname: this.$route.query.q,
-        nickname: "",
+        direction: "ASC",
+        nickname: this.$route.query.q,
         page: 0,
         size: 12
       },
@@ -30,12 +29,23 @@ export default {
   },
   methods: {
     async fetchUserData() {
+      // const options = {
+      //   params: {
+      //     ...this.searchData
+      //   }
+      // }
       try {
         const res = await axios.get(
+          // this.$serverURL
           "http://i3b101.p.ssafy.io:8080/newuser/search/to_nickname",
-          this.searchData
+          {
+            params: {
+              ...this.searchData
+            }
+          }
         );
-        this.users = res.content;
+        this.users = res.data.content;
+        console.log(res);
       } catch (e) {
         console.log(e);
       }
