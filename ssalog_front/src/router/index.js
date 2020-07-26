@@ -10,7 +10,7 @@ import AccountList from "@/views/Account/AccountList.vue";
 
 // problem
 import ProblemList from "@/views/Problem/ProblemList.vue";
-
+import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 // main
 import Home from "@/views/Home.vue";
 // editor
@@ -34,6 +34,11 @@ const routes = [
     path: "/Problem/List/",
     name: "ProblemList",
     component: ProblemList
+  },
+  {
+    path: "/Problem/detail/",
+    name: "ProblemDetail",
+    component: ProblemDetail
   },
   {
     path: "/Account/List/",

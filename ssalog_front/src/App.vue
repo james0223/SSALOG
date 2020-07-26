@@ -1,10 +1,15 @@
 <template>
   <v-app>
     <Header
-      v-if="$route.name === 'Home' || $route.name === 'Account' || $route.name === 'SSALOG'"
+      v-if="
+        $route.name === 'Home' ||
+          $route.name === 'Account' ||
+          $route.name === 'SSALOG' ||
+          $route.name === 'ProblemDetail'
+      "
     ></Header>
     <v-divider></v-divider>
-    <v-container align="center" fill-height>
+    <v-container fill-height>
       <router-view :key="$route.fullPath"></router-view>
     </v-container>
   </v-app>
