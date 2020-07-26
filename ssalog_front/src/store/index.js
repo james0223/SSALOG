@@ -22,7 +22,21 @@ export default new Vuex.Store({
   },
   actions: {
     async LOGIN({ commit }, loginData) {
-      const res = await Axios.post(`${ServerURL}/newuser/login`, loginData);
+      // 이해안될까봐 남겨놓는다.
+      // const options = {
+      //   params: {
+      //     이게 아래 선언한거랑 같은 기능을 한다.
+      //     ...loginData
+
+      //     // username: loginData.username,
+      //     // password: loginData.password
+      //   }
+      // };
+      const res = await Axios.post(`${ServerURL}/newuser/login`, null, {
+        params: {
+          ...loginData
+        }
+      });
       commit("LOGIN", res.data);
     },
     async LOGOUT({ commit }) {

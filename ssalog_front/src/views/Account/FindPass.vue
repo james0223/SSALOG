@@ -100,18 +100,28 @@ export default {
         if (this.account.username === "" || this.account.email === "") {
           alert("아이디와 이메일을 입력해주세요");
         } else {
-          axios
-            .post("http://i3b101.p.ssafy.io:8080/newuser/findpw", this.account)
-            .then(({ data }) => {
-              if (data.result) {
-                this.step = 2;
-                this.question = data.question;
-              } else {
-                alert("아이디와 이메일을 확인해주세요");
-              }
-            })
-            .catch(err => console.log(err));
+          // const options = {
+          //   params: {
+          //     email: this.account.email,
+          //     username: this.account.username
+          //   }
         }
+        axios
+          .post("http://i3b101.p.ssafy.io:8080/newuser/findpw", null, {
+            params: {
+              email: this.account.email,
+              username: this.account.username
+            }
+          })
+          .then(({ data }) => {
+            if (data.result) {
+              this.step = 2;
+              this.question = data.question;
+            } else {
+              alert("아이디와 이메일을 확인해주세요");
+            }
+          })
+          .catch(err => console.log(err));
       } else if (this.step === 2) {
         if (this.account.answer === "") {
           alert("답변을 입력해주세요");
