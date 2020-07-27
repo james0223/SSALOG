@@ -2,16 +2,22 @@ package com.ssalog.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 
 @Document
 public class Post {
+	
 	@Id
+	@Field("_id")
 	private String scoring;
+	
 	private String username;
 	private String code;
 	private String language;
@@ -22,14 +28,16 @@ public class Post {
 	private String time;
 	private String html;
 	private List<String> keyword;
-	
+	private List<Comment> comment;
+	private int like;
 	@CreationTimestamp
-	private Date posttime;
+	private Date regtime;
 	
 	public Post() {}
-	
+
 	public Post(String scoring, String username, String code, String language, String len, String memory,
-			String problemid, String problemname, String time, String html, List<String> keyword, Date posttime) {
+			String problemid, String problemname, String time, String html, List<String> keyword, List<Comment> comment,
+			int like, Date regtime) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -42,7 +50,9 @@ public class Post {
 		this.time = time;
 		this.html = html;
 		this.keyword = keyword;
-		this.posttime = posttime;
+		this.comment = comment;
+		this.like = like;
+		this.regtime = regtime;
 	}
 
 	public String getScoring() {
@@ -133,14 +143,38 @@ public class Post {
 		this.keyword = keyword;
 	}
 
-	public Date getPosttime() {
-		return posttime;
+	public List<Comment> getComment() {
+		return comment;
 	}
 
-	public void setPosttime(Date posttime) {
-		this.posttime = posttime;
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
+
+	public int getLike() {
+		return like;
+	}
+
+	public void setLike(int like) {
+		this.like = like;
+	}
+
+	public Date getRegtime() {
+		return regtime;
+	}
+
+	public void setRegtime(Date regtime) {
+		this.regtime = regtime;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+	      if (!(o instanceof Post)) return false;
+	      Post book = (Post) o;
+	      return Objects.equals(getScoring(), book.getScoring());
+    } 
+
 	
 }
 //code: "사용자가 푼코드 "
