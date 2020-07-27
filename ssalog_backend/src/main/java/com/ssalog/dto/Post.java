@@ -9,13 +9,13 @@ import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 
 @Document
 public class Post {
 	
-	@Id
-	@Field("_id")
+	@MongoId
 	private String scoring;
 	
 	private String username;

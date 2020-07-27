@@ -27,11 +27,22 @@ public class PostServiceImpl implements PostService{
 	
 	@Transactional
 	public void write_comment(String post_pk,Comment comment) {
-		System.out.println("post_pk = " + post_pk);
-		Post p = postRepository.findByUsername("jso");
+		Post p = postRepository.findById(post_pk).get();
 		List<Comment> clist = p.getComment();
 		clist.add(comment);
 		p.setComment(clist);
 		postRepository.save(p);
+	}
+	
+	public void delete_post(String post_pk) {
+		Post p = postRepository.findById(post_pk).get();
+		postRepository.delete(p);
+	}
+	
+	public void update_post(Post p) {
+		boolean flag = postRepository.existsById(p.getScoring());
+		if(flag) {
+			postRepository.save(p);
+		}
 	}
 }
