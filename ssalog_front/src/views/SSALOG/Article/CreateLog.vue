@@ -148,6 +148,19 @@
             </div>
           </editor-menu-bar>
           <editor-content class="editor__content article" :editor="editor" />
+          <div id="example-3">
+            <template v-for="item in items">
+              <input
+                type="checkbox"
+                v-bind:key="item.eng"
+                v-bind:value="item.kor"
+                v-model="keyword"
+              />
+              <label v-bind:key="item.eng" v-bind:for="item.eng">{{ item.kor }}</label>
+            </template>
+            <br />
+            <span>체크한 키워드: {{ keyword }}</span>
+          </div>
           <button class="button">Submit</button>
           <button class="button">Move</button>
         </div>
@@ -197,6 +210,40 @@ export default {
   },
   data() {
     return {
+      keyword: [],
+      items: [
+        { kor: "수학", eng: "math" },
+        { kor: "DP", eng: "dp" },
+        { kor: "그래프", eng: "graph" },
+        { kor: "자료구조", eng: "structure" },
+        { kor: "그리디", eng: "greedy" },
+        { kor: "문자열", eng: "string" },
+        { kor: "브루트포스", eng: "bruteforce" },
+        { kor: "이진탐색", eng: "binarysearch" },
+        { kor: "트리", eng: "tree" },
+        { kor: "정렬", eng: "sort" },
+        { kor: "DFS", eng: "dfs" },
+        { kor: "조합", eng: "comb" },
+        { kor: "다익스트라", eng: "dijkstra" },
+        { kor: "BFS", eng: "bfs" },
+        { kor: "시뮬레이션", eng: "simulation" },
+        { kor: "비트마스킹", eng: "bit" },
+        { kor: "누적합", eng: "sum" },
+        { kor: "집합", eng: "set" },
+        { kor: "메모이제이션", eng: "memoization" },
+        { kor: "분할정복", eng: "divide" },
+        { kor: "백트래킹", eng: "backtrack" },
+        { kor: "우선순위큐", eng: "priority" },
+        { kor: "MST", eng: "mst" },
+        { kor: "플로이드-와샬", eng: "floyd" },
+        { kor: "위상정렬", eng: "topological" },
+        { kor: "재귀", eng: "recursion" },
+        { kor: "KMP", eng: "kmp" },
+        { kor: "벨만포드", eng: "bellman" },
+        { kor: "LIS", eng: "lis" },
+        { kor: "순열", eng: "perm" },
+        { kor: "기타", eng: "etc" }
+      ],
       html: "<h1>gps</h1>",
       editor: new Editor({
         extensions: [
