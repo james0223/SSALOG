@@ -5,6 +5,7 @@
         $route.name === 'Home' ||
           $route.name === 'Account' ||
           $route.name === 'SSALOG' ||
+          $route.name === 'LogDetail' ||
           $route.name === 'ProblemDetail'
       "
     ></Header>

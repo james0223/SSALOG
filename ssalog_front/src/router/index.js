@@ -15,6 +15,7 @@ import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 import Home from "@/views/Home.vue";
 // editor
 import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
+import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 // search
@@ -87,6 +88,11 @@ const routes = [
     path: "/SSALOG",
     name: "SSALOG",
     component: SSALOG
+  },
+  {
+    path: "/SSALOG/detail",
+    name: "LogDetail",
+    component: LogDetail
   }
 ];
 
