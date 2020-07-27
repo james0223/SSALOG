@@ -26,7 +26,7 @@ export default {
   mounted() {
     if (!this.q) {
       // 전체 problem 조회
-      this.q = "검색어가 없으므로 걍 전체리스트한다 ㅇㅋ?";
+      this.q = "검색어가 없으므로 걍 전체리스트한다.";
     } else {
       // 닉 기반으로 조회
     }
