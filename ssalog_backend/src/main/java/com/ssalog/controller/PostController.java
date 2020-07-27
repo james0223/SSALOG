@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,5 +43,19 @@ public class PostController {
 	@ApiOperation(value = "[posting detail] ")
 	public ResponseEntity<Post> get_post(@RequestParam("Scoring") String Scoring){
 		return new ResponseEntity<Post>(postService.read_post(Scoring),HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/delete_post")
+	@ApiOperation(value = "[posting delete] ")
+	public ResponseEntity<String> delete_post(@RequestParam("Scoring") String Scoring){
+		postService.delete_post(Scoring);
+		return new ResponseEntity<String>("삭제 완료", HttpStatus.OK);
+	}
+	
+	@PutMapping("/update_post")
+	@ApiOperation(value = "[posting update] ")
+	public ResponseEntity<String> update_post(@RequestBody Post p){
+		postService.update_post(p);
+		return new ResponseEntity<String>("수정 완료", HttpStatus.OK);
 	}
 }

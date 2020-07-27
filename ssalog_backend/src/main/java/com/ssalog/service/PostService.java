@@ -7,4 +7,6 @@ public interface PostService {
 	public Post write_post(Post post);
 	public void write_comment(String post_pk,Comment comment);
 	public Post read_post(String post_pk);
+	public void delete_post(String post_pk);
+	public void update_post(Post p);
 }
