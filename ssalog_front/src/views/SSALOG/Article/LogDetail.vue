@@ -1,0 +1,174 @@
+<template>
+  <v-container>
+    <v-row justify="center" no-gutters>
+      <v-col cols="1">
+        <div class="code_button">
+          <v-btn outlined fab flat class="mt-3 mb-2" @click.stop="dialog = true"
+            ><v-icon>mdi-code-braces</v-icon></v-btn
+          >
+          <v-btn outlined fab class="mt-2 mb-3"><v-icon>mdi-star</v-icon></v-btn>
+          <!--          dialog 부분-->
+          <v-dialog v-model="dialog" width="50vw" height="50vh">
+            <v-card>
+              <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
+              <editor-content class="editor__content" :editor="codearea" />
+            </v-card>
+          </v-dialog>
+        </div>
+      </v-col>
+      <v-col lg="8" cols="12">
+        <v-toolbar flat class="mx-auto mt-5 mb-3">
+          <h1 class="content-title">{{ contentTitle }}</h1>
+        </v-toolbar>
+        <v-toolbar flat class="mb-5">
+          <v-toolbar-title>
+            <span class="mr-2">{{ writerName }}</span>
+            <span class="mr-2">·</span>
+            <span class="mr-2">{{ updatedDate }}</span>
+            <v-spacer></v-spacer>
+          </v-toolbar-title>
+
+          <v-spacer></v-spacer>
+          <v-toolbar-title>
+            <span class="mr-4">수정</span>
+            <span>삭제</span>
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-card flat class="main_content_wrapper">
+          <div class="main_content" v-html="htmlData"></div>
+        </v-card>
+      </v-col>
+      <v-col lg="2">
+        <v-card class="table_of_contents" height="20vh"> hihihi </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import { Editor, EditorContent } from "tiptap";
+import { CodeBlockHighlight, Code } from "tiptap-extensions";
+import cpp from "highlight.js/lib/languages/cpp";
+import css from "highlight.js/lib/languages/css";
+import c from "highlight.js/lib/languages/c";
+import clike from "highlight.js/lib/languages/c-like";
+import python from "highlight.js/lib/languages/python";
+import java from "highlight.js/lib/languages/java";
+import javascript from "highlight.js/lib/languages/javascript";
+
+export default {
+  name: "LogDetail",
+  components: {
+    EditorContent
+  },
+  data() {
+    return {
+      htmlData:
+        "<h2>Export HTML or JSON</h2>" +
+        "<p>You are able to export your data as " +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<code>HTML</code> or <code>JSON</code>" +
+        "<h1>Export HTML or JSON</h1>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        "<h2>Export HTML or JSON</h2>" +
+        ".</p><p>테스트중입니다</p>",
+      contentTitle: "19541 역학 조사",
+      writerName: "uutaein",
+      updatedDate: "2020-07-27",
+      // code dialog
+      dialog: false,
+      codearea: new Editor({
+        extensions: [
+          new CodeBlockHighlight({
+            languages: {
+              cpp,
+              css,
+              c,
+              clike,
+              python,
+              java,
+              javascript
+            }
+          }),
+          new Code()
+        ],
+        editable: false,
+        content: `while True:
+    a = list(map(int,input().split()))
+    k = a[0]
+    if k == 0:
+        break
+    a = a[1:]
+    ans = [0 for _ in range(6)]
+
+    def lotto(idx1, idx2):
+        if idx2 == 6:
+            print(' '.join(map(str,ans)))
+            return
+        for i in range(idx1,k):
+            ans[idx2] = a[i]
+            lotto(i+1, idx2+1)
+
+    lotto(0,0)
+    print()`
+      })
+    };
+  }
+};
+</script>
+
+<style scoped>
+.content-title {
+  font-size: 3rem;
+  line-height: 1.5;
+  letter-spacing: -0.004em;
+  margin-top: 5vh;
+  font-weight: 800;
+  color: rgb(52, 58, 64);
+  margin-bottom: 2rem;
+  word-break: keep-all;
+}
+.main_content_wrapper {
+  min-height: 200vh;
+}
+.code_button {
+  position: fixed;
+  top: 30vh;
+  width: 4rem;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  background: rgb(248, 249, 250);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(241, 243, 245);
+  border-image: initial;
+  border-radius: 2rem;
+  padding: 0.5rem;
+}
+.table_of_contents {
+  position: fixed;
+  top: 30vh;
+}
+</style>

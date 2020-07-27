@@ -10,11 +10,12 @@ import AccountList from "@/views/Account/AccountList.vue";
 
 // problem
 import ProblemList from "@/views/Problem/ProblemList.vue";
-
+import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 // main
 import Home from "@/views/Home.vue";
 // editor
 import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
+import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 // search
@@ -34,6 +35,11 @@ const routes = [
     path: "/Problem/List/",
     name: "ProblemList",
     component: ProblemList
+  },
+  {
+    path: "/Problem/detail/",
+    name: "ProblemDetail",
+    component: ProblemDetail
   },
   {
     path: "/Account/List/",
@@ -82,6 +88,11 @@ const routes = [
     path: "/SSALOG",
     name: "SSALOG",
     component: SSALOG
+  },
+  {
+    path: "/SSALOG/detail",
+    name: "LogDetail",
+    component: LogDetail
   }
 ];
 
