@@ -6,70 +6,88 @@
 
     <v-card width="50vw">
       <v-card-text>
-        <v-text-field
-          @keyup="checkId"
-          type="text"
-          v-model="userData.username"
-          :rules="idRules"
-          label="아이디"
-        ></v-text-field>
-        <v-text-field v-model="userData.password" label="비밀번호" type="password"></v-text-field>
-        <v-text-field
-          v-model="passwdcheck"
-          :rules="pwRules"
-          label="비밀번호(확인)"
-          type="password"
-        ></v-text-field>
-        <v-text-field
-          @keyup="checkEmail"
-          type="email"
-          :rules="emailRules"
-          v-model="userData.email"
-          label="이메일"
-        ></v-text-field>
-        <v-text-field
-          type="text"
-          @keyup="checkNickname"
-          :rules="nicknameRules"
-          v-model="userData.nickname"
-          label="닉네임"
-        ></v-text-field>
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            @keyup="checkId"
+            type="text"
+            v-model="userData.username"
+            :rules="idRules"
+            label="아이디"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="userData.password"
+            label="비밀번호"
+            :rules="textRules"
+            type="password"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="passwdcheck"
+            :rules="pwRules"
+            label="비밀번호(확인)"
+            type="password"
+            required
+          ></v-text-field>
+          <v-text-field
+            @keyup="checkEmail"
+            type="email"
+            :rules="emailRules"
+            v-model="userData.email"
+            label="이메일"
+            required
+          ></v-text-field>
+          <v-text-field
+            type="text"
+            @keyup="checkNickname"
+            :rules="nicknameRules"
+            v-model="userData.nickname"
+            label="닉네임"
+            required
+          ></v-text-field>
+          <v-menu
+            ref="menu"
+            v-model="menu"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="userData.birthday"
+                label="생일"
+                :rules="textRules"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                required
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              ref="picker"
               v-model="userData.birthday"
-              label="생일"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            ref="picker"
-            v-model="userData.birthday"
-            :max="new Date().toISOString().substr(0, 10)"
-            min="1920-01-01"
-            @change="save"
-            locale="ko-kr"
-          ></v-date-picker>
-        </v-menu>
-        <v-select
-          :items="questions"
-          v-model="userData.question"
-          label="비밀번호 찾기 힌트"
-        ></v-select>
-        <v-text-field
-          v-model="userData.answer"
-          label="비밀번호 찾기 답변"
-          type="text"
-        ></v-text-field>
+              :max="new Date().toISOString().substr(0, 10)"
+              min="1920-01-01"
+              @change="save"
+              locale="ko-kr"
+            ></v-date-picker>
+          </v-menu>
+          <v-select
+            :items="questions"
+            v-model="userData.question"
+            :rules="textRules"
+            label="비밀번호 찾기 힌트"
+            required
+          ></v-select>
+          <v-text-field
+            v-model="userData.answer"
+            label="비밀번호 찾기 답변"
+            :rules="textRules"
+            type="text"
+            required
+          ></v-text-field>
+        </v-form>
       </v-card-text>
     </v-card>
 
@@ -106,8 +124,12 @@ export default {
       isCheckedEmail: false,
       isCheckingNickname: false,
       isCheckedNickname: false,
-      pwRules: [v => this.userData.password === v || "비밀번호 확인이 일치하지 않습니다."],
-      questions: ["나의 어렸을 적 별명은?", "내가 살았던 동네 이름은?", "졸업한 초등학교 이름은?"]
+      pwRules: [
+        v => !!v || "입력이 필요합니다.",
+        v => this.userData.password === v || "비밀번호 확인이 일치하지 않습니다."
+      ],
+      questions: ["나의 어렸을 적 별명은?", "내가 살았던 동네 이름은?", "졸업한 초등학교 이름은?"],
+      textRules: [v => !!v || "입력이 필요합니다."]
     };
   },
   methods: {
@@ -185,12 +207,36 @@ export default {
       }
     },
     async signUp() {
-      if (this.userData.password === this.passwdcheck) {
+      this.$refs.form.validate();
+      if (!this.userData.username) {
+        alert("아이디를 입력해주세요");
+      } else if (!this.isCheckedId) {
+        alert("해당 아이디는 이미 사용중입니다.");
+      } else if (!this.userData.password || !this.passwdcheck) {
+        alert("비밀번호와 확인문자를 입력해주세요");
+      } else if (this.userData.password !== this.passwdcheck) {
+        alert("비밀번호와 확인문자가 일치하지 않습니다.");
+      } else if (!this.userData.email) {
+        alert("이메일을 입력해주세요");
+      } else if (!this.isCheckedEmail) {
+        alert("해당 이메일은 이미 사용중입니다.");
+      } else if (!this.userData.nickname) {
+        alert("닉네임을 입력해주세요");
+      } else if (!this.isCheckedNickname) {
+        alert("해당 닉네임은 이미 사용중입니다.");
+      } else if (!this.userData.birthday) {
+        alert("생일을 입력해주세요");
+      } else if (!this.userData.question) {
+        alert("비밀번호 찾기 힌트를 선택해주세요");
+      } else if (!this.userData.answer) {
+        alert("비밀번호 찾기 힌트의 답을 입력해주세요");
+      } else {
         try {
           console.log(this.userData);
           await this.$store.dispatch("SIGNUP", this.userData);
           this.$router.push({ name: "Home" });
         } catch (e) {
+          alert("오류가 발생했습니다. 다시 접근해주세요 :(");
           console.error(e);
         }
       }
