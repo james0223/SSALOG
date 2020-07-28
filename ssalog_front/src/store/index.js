@@ -23,6 +23,9 @@ export default new Vuex.Store({
     },
     LOGOUT(state) {
       state.accessToken = null;
+    },
+    Thumbnail(state, payload) {
+      state.userThumbnail = payload;
     }
   },
   actions: {
