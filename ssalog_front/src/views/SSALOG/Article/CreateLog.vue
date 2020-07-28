@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="6">
-        <div class="editor">
+        <div class="editor" spellcheck="false">
           <editor-menu-bubble
             :editor="codearea"
             :keep-in-bounds="keepInBounds"
@@ -27,7 +27,7 @@
         </div>
       </v-col>
       <v-col cols="12" md="6">
-        <div class="editor">
+        <div class="editor" spellcheck="false">
           <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
             <div class="menubar">
               <button
