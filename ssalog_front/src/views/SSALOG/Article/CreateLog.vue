@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>{{ obj.problemid }}번 : {{ obj.problemname }}</h1>
     <v-row>
       <v-col cols="12" md="6">
         <div class="editor" spellcheck="false">
@@ -154,20 +155,17 @@
                 type="checkbox"
                 v-bind:key="item.eng"
                 v-bind:value="item.kor"
-                v-model="keyword"
+                v-model="obj.keyword"
               />
               <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
             </template>
             <br />
-            <span>체크한 키워드: {{ keyword }}</span>
+            <span>체크한 키워드: {{ obj.keyword }}</span>
           </div>
-          <button class="button">Submit</button>
-          <button class="button">Move</button>
+          <button class="button" @click="write">write</button>
         </div>
       </v-col>
     </v-row>
-    <h3>HTML</h3>
-    <pre><code>{{ html }}</code></pre>
   </v-container>
 </template>
 
@@ -212,7 +210,7 @@ export default {
   },
   data() {
     return {
-      keyword: [],
+      obj: null,
       items: [
         { kor: "수학", eng: "math" },
         { kor: "DP", eng: "dp" },
@@ -246,7 +244,6 @@ export default {
         { kor: "순열", eng: "perm" },
         { kor: "기타", eng: "etc" }
       ],
-      html: "<h1>gps</h1>",
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -287,7 +284,7 @@ export default {
         autoFocus: true,
         content: "",
         onUpdate: ({ getHTML }) => {
-          this.html = getHTML();
+          this.obj.html = getHTML();
         }
       }),
       codearea: new Editor({
@@ -318,13 +315,16 @@ export default {
   mounted() {
     // console.log(this.$route.query.score);
     const scoring = this.$route.query.score;
-    // const saved = "123455324534";
     // alert(scoring);
     axios
       .get("https://ssalog.gq/newuser/post/get_detail?Scoring=".concat(scoring))
       .then(response => {
         // handle success
-        console.log(response);
+        // console.log(response);
+        this.obj = response.data;
+        console.dir(this.obj);
+        this.obj.keyword = [];
+        this.obj.html = "";
         const text = response.data.code;
         const transaction = this.codearea.state.tr.insertText(text);
         this.codearea.view.dispatch(transaction);
@@ -349,6 +349,18 @@ export default {
       const transaction = this.editor.state.tr.insertText(text);
       this.editor.view.dispatch(transaction);
       this.editor.commands.code_block();
+    },
+    write() {
+      // console.log(JSON.stringify(this.obj));
+      axios
+        .put("https://ssalog.gq/newuser/post/update_post", this.obj)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
     }
   }
 };
