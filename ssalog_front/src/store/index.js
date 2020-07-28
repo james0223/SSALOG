@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     accessToken: null,
-    ServerImgURL: "https://ssalog.gq/upload/resources/",
+    ImgURL: "https://ssalog.gq/upload/",
     ServerURL: "http://i3b101.p.ssafy.io:8080",
     // user data
     username: null,
@@ -24,8 +24,9 @@ export default new Vuex.Store({
       state.accessToken = null;
     },
     Thumbnail(state, payload) {
-      state.userThumbnail = state.ServerImgURL + payload;
-      console.log(state.userThumbnail);
+      // jso 하드타이핑 나중에 수정 필요.
+      console.log(payload);
+      state.userThumbnail = `${state.ImgURL}jso.jpg`;
     }
   },
   actions: {
