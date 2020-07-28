@@ -32,7 +32,7 @@ public class FileServiceImpl implements FileService{
 			String originFileName = multipartFile.getOriginalFilename();
 			String type = FilenameUtils.getExtension(originFileName);
 			if(type.equals("jpg") || type.equals("png") || type.equals("jpeg")) {
-				String rootPath = servletContext.getRealPath("/upload");
+				String rootPath = "~/apps/upload"; //servletContext.getRealPath("/upload");
 				System.out.println("rootpath = " + rootPath);
 				Map<String, String> m = fileRepository.saveFile(multipartFile, rootPath, username);
 
@@ -54,7 +54,7 @@ public class FileServiceImpl implements FileService{
 		if(acc == null) {
 			return false;
 		}else {
-			String rootPath = servletContext.getRealPath("/upload");
+			String rootPath = "~/apps/upload";//servletContext.getRealPath("/upload");
 			String filename = acc.getImgpath()==null?UUID.randomUUID().toString():acc.getImgpath();
 			return fileRepository.is_exist(username, rootPath, filename);
 		}
@@ -65,7 +65,7 @@ public class FileServiceImpl implements FileService{
 			return "존재하지 않는 사용자 입니다.";
 		}else {
 			String filename = acc.getImgpath()==null?UUID.randomUUID().toString():acc.getImgpath();
-			String rootPath = servletContext.getRealPath("/upload");
+			String rootPath = "~/apps/upload";//servletContext.getRealPath("/upload");
 			fileRepository.delete_file(username, rootPath, filename);
 			acc.setImgpath(null);
 			accountRepository.save(acc);
