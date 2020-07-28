@@ -24,9 +24,11 @@
         </v-card>
       </template>
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
+        <v-list-item-group v-model="item" color="primary">
+          <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item-title @click="doFunc(index)">{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-menu>
     <v-btn text>빼엑빼엑</v-btn>
@@ -38,12 +40,34 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  name: "Header",
   data: () => ({
     showMenu: false,
     items: [{ title: "회원정보" }, { title: "로그아웃" }],
     name: "utaein"
-  })
+  }),
+  methods: {
+    doFunc(i) {
+      if (i === 0) {
+        alert("마이페이지로 이동할거임");
+      } else {
+        axios
+          .post(`${this.$serverURL}/newuser/out`, null, {
+            params: {
+              accessToken: this.$store.state.accessToken
+            }
+          })
+          .then(() => {
+            alert("로그아웃 되었다.");
+          })
+          .catch(err => console.error(err));
+        this.$store.commit("LOGOUT");
+      }
+    }
+  }
 };
 </script>
 
