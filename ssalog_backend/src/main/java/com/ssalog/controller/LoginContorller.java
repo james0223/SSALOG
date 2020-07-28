@@ -264,7 +264,7 @@ public class LoginContorller {
         } catch (IllegalArgumentException e) {
         	
         } catch (ExpiredJwtException e) { //access token이 expire됐을 때
-            username = e.getClaims().getSubject();
+            username = e.getClaims().getSubject();  
             logger.info("[access token이 만료된 사용자 이름] " + username);
         }
 

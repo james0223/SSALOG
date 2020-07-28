@@ -31,13 +31,13 @@ public class Post {
 	private List<Comment> comment;
 	private int like;
 	@CreationTimestamp
-	private Date regtime;
+	private Date regdate;
 	
 	public Post() {}
 
 	public Post(String scoring, String username, String code, String language, String len, String memory,
 			String problemid, String problemname, String time, String html, List<String> keyword, List<Comment> comment,
-			int like, Date regtime) {
+			int like, Date regdate) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -52,7 +52,7 @@ public class Post {
 		this.keyword = keyword;
 		this.comment = comment;
 		this.like = like;
-		this.regtime = regtime;
+		this.regdate = regdate;
 	}
 
 	public String getScoring() {
@@ -159,21 +159,14 @@ public class Post {
 		this.like = like;
 	}
 
-	public Date getRegtime() {
-		return regtime;
+	public Date getRegdate() {
+		return regdate;
 	}
 
-	public void setRegtime(Date regtime) {
-		this.regtime = regtime;
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-	      if (!(o instanceof Post)) return false;
-	      Post book = (Post) o;
-	      return Objects.equals(getScoring(), book.getScoring());
-    } 
 
 	
 }
