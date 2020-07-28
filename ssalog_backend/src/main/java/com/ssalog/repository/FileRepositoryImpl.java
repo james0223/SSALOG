@@ -19,7 +19,7 @@ public class FileRepositoryImpl implements FileRepository{
 		Map<String, String> map = new HashMap<String, String>();
 		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
 		String saveFolder = "resources/upload";
-		String totalSaveFolder = rootPath + File.separator+ saveFolder;
+		String totalSaveFolder = rootPath ;//+ File.separator+ saveFolder;
 		
 		//System.out.println("totalSaveFolder>>>" + totalSaveFolder);
 		File dir = new File(totalSaveFolder);
@@ -47,7 +47,7 @@ public class FileRepositoryImpl implements FileRepository{
 	}
 	public boolean is_exist(String username, String rootPath, String filename) {
 		String saveFolder = "resources/upload";
-		String totalSaveFolder = rootPath + File.separator+ saveFolder;
+		String totalSaveFolder = rootPath;//+ File.separator+ saveFolder;
 		File file = new File(totalSaveFolder, filename);
 		if(file.exists()) {
 			return true;
@@ -57,7 +57,7 @@ public class FileRepositoryImpl implements FileRepository{
 	}
 	public void delete_file(String username, String rootPath, String filename) {
 		String saveFolder = "resources/upload";
-		String totalSaveFolder = rootPath + File.separator+ saveFolder;
+		String totalSaveFolder = rootPath;//+ File.separator+ saveFolder;
 		File file = new File(totalSaveFolder, filename);
 		if(file.exists()) {
 			if(file.delete()){ System.out.println("파일삭제 성공"); }
