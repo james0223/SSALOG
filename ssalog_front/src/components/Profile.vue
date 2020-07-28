@@ -115,6 +115,8 @@ export default {
               Authorization: `Bearer ${this.accessToken}`
             }
           });
+          // 업로드 했으면 다시 get 으로 요청해서 header 이미지 새로고침
+          await this.$store.dispatch("Thumbnail", this.username);
         } catch (err) {
           console.error(err);
         }

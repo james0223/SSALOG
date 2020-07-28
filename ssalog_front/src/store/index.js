@@ -19,17 +19,17 @@ export default new Vuex.Store({
     LOGIN(state, payload) {
       state.accessToken = payload.accessToken;
       state.username = payload.username;
-      state.userThumbnail = payload.Thumbnail;
     },
     LOGOUT(state) {
       state.accessToken = null;
     },
     Thumbnail(state, payload) {
-      state.userThumbnail = payload;
+      state.userThumbnail = state.ServerImgURL + payload;
+      console.log(state.userThumbnail);
     }
   },
   actions: {
-    async LOGIN({ commit }, loginData) {
+    async LOGIN({ commit, dispatch }, loginData) {
       // 이해안될까봐 남겨놓는다.
       // const options = {
       //   params: {
@@ -40,19 +40,14 @@ export default new Vuex.Store({
       //     // password: loginData.password
       //   }
       // };
-      const res1 = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
+      const res = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
         }
       });
-      const res2 = await Axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
-        params: {
-          username: loginData.username
-        }
-      });
+      await dispatch("Thumbnail", loginData.username);
       commit("LOGIN", {
-        accessToken: res1.data.accessToken,
-        Thumbnail: res2.data,
+        accessToken: res.data.accessToken,
         username: loginData.username
       });
     },
@@ -61,12 +56,18 @@ export default new Vuex.Store({
     },
     async SIGNUP({ dispatch }, signupData) {
       const SingupRes = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
-      console.log(SingupRes.status);
       if (SingupRes.status === 200) {
         const loginData = { username: signupData.username, password: signupData.password };
-        console.log(loginData);
         await dispatch("LOGIN", loginData);
       }
+    },
+    async Thumbnail({ commit }, payload) {
+      const res = await Axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
+        params: {
+          username: payload
+        }
+      });
+      commit("Thumbnail", res.data);
     }
   },
   modules: {}
