@@ -136,7 +136,7 @@ public class LoginContorller {
     }
     
     // 1-5. 회원가입 form [중복체크] 버튼 클릭 -> 닉네임 중복체크 (DB에 같은 닉네임 존재하는지 체킹)
-    @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 중복되는 아이디가 DB에 없는지 확인(check)한다. 사용 가능하면 true,불가능하면 false")
+    @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 중복되는 닉네임이 DB에 없는지 확인(check)한다. 사용 가능하면 true,불가능하면 false")
     @PostMapping(path="/newuser/checkNickname")
     public boolean checkNickname (@RequestParam("nickname") String nick) {
     	if (accountRepository.findByNickname(nick) == null) return true;
