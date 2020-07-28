@@ -25,12 +25,29 @@ if (userNode) {
           "codemirror-textarea"
         )[0].innerText;
         console.log(codeData);
-        // sessionStorage.setItem("test", JSON.stringify(codeData));
-        var win = window.open(
-          "http://172.30.1.59:8080/CreateLog?no=" + codeData.scoring,
-          "_blank"
+
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+          if (
+            httpRequest.readyState == XMLHttpRequest.DONE &&
+            httpRequest.status == 200
+          ) {
+            alert(httpRequest.responseText);
+          }
+        };
+        httpRequest.open("POST", "https://ssalog.gq/newuser/post/write", true);
+        httpRequest.setRequestHeader(
+          "Content-Type",
+          "application/json; charset=UTF-8"
         );
-        win.focus();
+        httpRequest.send(JSON.stringify(codeData));
+
+        // sessionStorage.setItem("test", JSON.stringify(codeData));
+        // var win = window.open(
+        //   "http://172.30.1.59:8080/CreateLog?no=" + codeData.scoring,
+        //   "_blank"
+        // );
+        // win.focus();
       }
       var oReq = new XMLHttpRequest();
       oReq.addEventListener("load", reqListener);
