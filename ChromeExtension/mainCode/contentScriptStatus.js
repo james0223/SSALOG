@@ -12,8 +12,8 @@ if (userNode) {
       let domparser = new DOMParser();
       var codeData = {
         scoring: elem[0].innerHTML,
-        problem_name: elem[2].firstChild.getAttribute("data-original-title"),
-        problem_id: elem[2].firstChild.innerText,
+        problemname: elem[2].firstChild.getAttribute("data-original-title"),
+        problemid: elem[2].firstChild.innerText,
         memory: elem[4].innerText,
         time: elem[5].innerText,
         language: elem[6].firstChild.innerText,
@@ -43,7 +43,7 @@ if (userNode) {
         httpRequest.send(JSON.stringify(codeData));
 
         var win = window.open(
-          "http://192.168.43.125:8080/createlog?score=" + codeData.scoring,
+          "http://192.168.29.52:8080/createlog?score=" + codeData.scoring,
           "_blank"
         );
         win.focus();
