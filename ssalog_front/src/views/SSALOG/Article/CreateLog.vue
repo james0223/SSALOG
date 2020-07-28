@@ -149,14 +149,14 @@
           </editor-menu-bar>
           <editor-content class="editor__content article" :editor="editor" />
           <div id="example-3">
-            <template v-for="item in items">
+            <template v-for="(item, i) in items">
               <input
                 type="checkbox"
                 v-bind:key="item.eng"
                 v-bind:value="item.kor"
                 v-model="keyword"
               />
-              <label v-bind:key="item.eng" v-bind:for="item.eng">{{ item.kor }}</label>
+              <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
             </template>
             <br />
             <span>체크한 키워드: {{ keyword }}</span>
@@ -201,6 +201,8 @@ import clike from "highlight.js/lib/languages/c-like";
 import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
+
+const axios = require("axios");
 
 export default {
   components: {
@@ -314,13 +316,24 @@ export default {
     };
   },
   mounted() {
-    const saved = JSON.parse(sessionStorage.getItem("test"));
-    console.dir(saved);
-
-    const text = saved.code;
-    const transaction = this.codearea.state.tr.insertText(text);
-    this.codearea.view.dispatch(transaction);
-    this.codearea.commands.code_block();
+    // console.log(this.$route.query.score);
+    const scoring = this.$route.query.score;
+    // const saved = "123455324534";
+    // alert(scoring);
+    axios
+      .get("https://ssalog.gq/newuser/post/get_detail?Scoring=".concat(scoring))
+      .then(response => {
+        // handle success
+        console.log(response);
+        const text = response.data.code;
+        const transaction = this.codearea.state.tr.insertText(text);
+        this.codearea.view.dispatch(transaction);
+        this.codearea.commands.code_block();
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
   },
   beforeDestroy() {
     this.editor.destroy();
