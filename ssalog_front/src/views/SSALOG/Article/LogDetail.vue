@@ -39,7 +39,7 @@
         </v-card>
       </v-col>
       <v-col lg="2">
-        <v-card class="table_of_contents" height="20vh"> hihihi </v-card>
+        <TOC v-bind:content="htmlData" class="toc" />
       </v-col>
     </v-row>
   </v-container>
@@ -55,11 +55,13 @@ import clike from "highlight.js/lib/languages/c-like";
 import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
+import TOC from "@/components/TOC.vue";
 
 export default {
   name: "LogDetail",
   components: {
-    EditorContent
+    EditorContent,
+    TOC
   },
   data() {
     return {
