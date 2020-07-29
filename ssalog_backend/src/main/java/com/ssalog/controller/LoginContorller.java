@@ -252,23 +252,24 @@ public class LoginContorller {
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
     @PostMapping(path="/newuser/refresh")
-    public ResponseEntity<Map<String, Object>> requestForNewAccessToken(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
+    public ResponseEntity<Map<String, Object>> requestForNewAccessToken(@RequestParam("refreshToken") String refreshToken) {
         String refreshTokenFromDb = null;
-        String username = null;
         Map<String, Object> map = new HashMap<>();
         try {
-            logger.info("access token in rnat: " + accessToken);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(accessToken);
-            } catch (IllegalArgumentException e) {
-
-            } catch (ExpiredJwtException e) { //expire됐을 때
-                username = e.getClaims().getSubject();
-                logger.info("username from expired access token: " + username);
-            }
+//            logger.info("access token in rnat: " + accessToken);
+//            try {
+//                username = jwtTokenUtil.getUsernameFromToken(accessToken);
+//            } catch (IllegalArgumentException e) {
+//
+//            } catch (ExpiredJwtException e) { //expire됐을 때
+//                username = e.getClaims().getSubject();
+//                logger.info("username from expired access token: " + username);
+//            }
 
             if (refreshToken != null) { //refresh를 같이 보냈으면.
+            	String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
                 try {
+                	System.out.println("username입니다 !" + username);
                     ValueOperations<String, Object> vop = redisTemplate.opsForValue();
                     Token result = (Token) vop.get(username);
                     refreshTokenFromDb = result.getRefreshToken();
