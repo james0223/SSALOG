@@ -66,17 +66,19 @@ import axios from "axios";
 
 export default {
   name: "FindPass",
-  data: () => ({
-    step: 1,
-    account: {
-      username: "",
-      email: "",
-      passwordCheck: "",
-      password: "",
-      answer: ""
-    },
-    question: ""
-  }),
+  data() {
+    return {
+      step: 1,
+      account: {
+        username: this.$route.query.username,
+        email: this.$route.query.email,
+        passwordCheck: "",
+        password: "",
+        answer: ""
+      },
+      question: ""
+    };
+  },
   methods: {
     updatePasswordReq() {
       if (this.account.password === "" || this.account.passwordCheck === "") {

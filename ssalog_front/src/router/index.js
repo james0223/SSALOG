@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
 import Account from "@/views/Account/Account.vue";
+import FindId from "@/views/Account/FindId.vue";
 import FindPass from "@/views/Account/FindPass.vue";
 import AccountList from "@/views/Account/AccountList.vue";
 
@@ -72,6 +73,11 @@ const routes = [
     name: "Account",
     component: Account
     // beforeEnter: requireAuth()
+  },
+  {
+    path: "/FindId",
+    name: "FindId",
+    component: FindId
   },
   {
     path: "/FindPass",

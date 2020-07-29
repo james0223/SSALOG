@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       loginData: {
-        username: null,
+        username: this.$route.query.username,
         password: null
       }
     };

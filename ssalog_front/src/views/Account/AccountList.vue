@@ -45,11 +45,6 @@ export default {
   },
   methods: {
     async fetchUserData() {
-      // const options = {
-      //   params: {
-      //     ...this.searchData
-      //   }
-      // }
       try {
         const res = await axios.get(`${this.$serverURL}/newuser/search/to_nickname`, {
           params: {
