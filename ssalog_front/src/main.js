@@ -1,4 +1,3 @@
-import "highlight.js/styles/default.css";
 import Vue from "vue";
 import axios from "axios";
 import App from "./App.vue";
@@ -9,6 +8,7 @@ import vuetify from "./plugins/vuetify";
 import "./assets/tiptap/sass/main.scss";
 // eslint-disable-next-line
 import Highlight from "vue-markdown-highlight";
+import "highlight.js/styles/github.css";
 
 Vue.use(Highlight);
 

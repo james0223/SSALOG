@@ -95,12 +95,12 @@ export default {
 };
 </script>
 
-<style scoped>
-pre {
-  background: #f4f4f4;
+<style>
+.v-application code {
+  all: unset;
   border: 1px solid #ddd;
   border-left: 3px solid #f36d33;
-  color: #666;
+  background: #f8f8f8;
   page-break-inside: avoid;
   font-family: monospace;
   line-height: 1.6;
