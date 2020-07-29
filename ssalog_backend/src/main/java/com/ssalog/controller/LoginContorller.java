@@ -239,7 +239,7 @@ public class LoginContorller {
     @ApiOperation(value = "[아이디 찾기기능](p-013_비밀번호찾기) 사용자 email을 이용하여 결과와 username(=id)를 리턴한다")
     @GetMapping(path="/newuser/findid")
     public ResponseEntity<Map<String, Object>> findpw(@RequestParam("email") String email) {
-    	System.out.println("dd");
+    	System.out.println("ds");
        Map<String, Object> map = new HashMap<>();
        Account target = accountRepository.findByEmail(email);
        if(target == null) {
