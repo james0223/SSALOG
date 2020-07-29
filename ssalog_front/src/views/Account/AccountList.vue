@@ -46,7 +46,7 @@ export default {
   methods: {
     async fetchUserData() {
       try {
-        const res = await axios.get(`${this.$serverURL}/newuser/search/to_nickname`, {
+        const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/to_nickname`, {
           params: {
             ...this.searchData
           }

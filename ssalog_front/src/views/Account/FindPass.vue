@@ -15,9 +15,7 @@
         <v-card-text>
           <v-text-field label="아이디" v-model="account.username"></v-text-field>
           <v-text-field label="이메일" v-model="account.email"></v-text-field>
-          <span class="caption grey--text text--darken-1">
-            이메일과 ID를 입력해주세요
-          </span>
+          <span class="caption grey--text text--darken-1">이메일과 ID를 입력해주세요</span>
         </v-card-text>
       </v-window-item>
 
@@ -25,21 +23,25 @@
         <v-card-text>
           질문 : {{ question }}
           <v-text-field label="답변" v-model="account.answer"></v-text-field>
-          <span class="caption grey--text text--darken-1">
-            비밀번호 질문에 대한 답을 작성해주세요
-          </span>
+          <span class="caption grey--text text--darken-1"
+            >비밀번호 질문에 대한 답을 작성해주세요</span
+          >
         </v-card-text>
       </v-window-item>
 
       <v-window-item :value="3">
         <v-card-text>
-          <v-text-field type="password" label="새 비밀번호" v-model="account.password">
-          </v-text-field>
-          <v-text-field type="password" label="비밀번호 확인" v-model="account.passwordCheck">
-          </v-text-field>
-          <span class="caption grey--text text--darken-1">
-            새로운 비밀번호를 입력해주세요
-          </span>
+          <v-text-field
+            type="password"
+            label="새 비밀번호"
+            v-model="account.password"
+          ></v-text-field>
+          <v-text-field
+            type="password"
+            label="비밀번호 확인"
+            v-model="account.passwordCheck"
+          ></v-text-field>
+          <span class="caption grey--text text--darken-1">새로운 비밀번호를 입력해주세요</span>
         </v-card-text>
       </v-window-item>
     </v-window>
@@ -49,14 +51,10 @@
     <v-card-actions>
       <!-- <v-btn :disabled="step === 1" text @click="step--">
         뒤로가기
-      </v-btn> -->
+      </v-btn>-->
       <v-spacer></v-spacer>
-      <v-btn v-if="step <= 2" color="primary" depressed @click="findPassReq()">
-        다음
-      </v-btn>
-      <v-btn v-if="step === 3" color="primary" depressed @click="updatePasswordReq()">
-        완료
-      </v-btn>
+      <v-btn v-if="step <= 2" color="primary" depressed @click="findPassReq()">다음</v-btn>
+      <v-btn v-if="step === 3" color="primary" depressed @click="updatePasswordReq()">완료</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -72,24 +70,26 @@ export default {
       account: {
         username: this.$route.query.username,
         email: this.$route.query.email,
-        passwordCheck: "",
-        password: "",
-        answer: ""
+        passwordCheck: null,
+        password: null,
+        answer: null
       },
-      question: ""
+      question: null
     };
   },
   methods: {
     updatePasswordReq() {
-      if (this.account.password === "" || this.account.passwordCheck === "") {
+      if (!this.account.password || !this.account.passwordCheck) {
         alert("비밀번호와 확인문자를 입력해주세요");
       } else if (this.account.password !== this.account.passwordCheck) {
         alert("비밀번호 확인문자가 일치하지 않습니다.");
       } else {
         axios
-          .post(`${this.$serverURL}/newuser/change_pw`, null, {
+          .put(`${this.$store.state.ServerURL}/user/change_pw`, null, {
+            // headers: {
+            //   Authorization: `Bearer ${this.$store.state.accessToken}`
+            // },
             params: {
-              accessToken: this.$store.state.accessToken,
               password: this.account.password
             }
           })
@@ -109,11 +109,11 @@ export default {
     },
     findPassReq() {
       if (this.step === 1) {
-        if (this.account.username === "" || this.account.email === "") {
+        if (!this.account.username || !this.account.email) {
           alert("아이디와 이메일을 입력해주세요");
         } else {
           axios
-            .post(`${this.$serverURL}/newuser/findpw`, null, {
+            .get(`${this.$store.state.ServerURL}/newuser/findpw`, {
               params: {
                 email: this.account.email,
                 username: this.account.username
@@ -127,21 +127,21 @@ export default {
                 alert("아이디와 이메일을 확인해주세요");
               }
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
         }
       } else if (this.step === 2) {
-        if (this.account.answer === "") {
+        if (!this.account.answer) {
           alert("답변을 입력해주세요");
         } else {
           axios
-            .post(`${this.$serverURL}/newuser/quiz`, null, {
+            .post(`${this.$store.state.ServerURL}/newuser/quiz`, null, {
               params: {
                 answer: this.account.answer,
                 username: this.account.username
               }
             })
             .then(({ data }) => {
-              if (data.result === "true") {
+              if (data.result === true) {
                 this.$store.commit("LOGIN", data);
                 this.step = 3;
                 // 토큰 받아서 로그인처리해야함
