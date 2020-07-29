@@ -67,26 +67,35 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         System.out.println("REQUEST : " + request.getHeader("Authorization"));
         String requestTokenHeader = request.getHeader("Authorization");
-
+        String refreshToken = request.getHeader("refreshToken");
         logger.info("tokenHeader: " + requestTokenHeader);
         String username = null;
         String jwtToken = null;
 
         // Bearer를 앞에 쓰는 이유눈 업계 표준, 함부로 바꿔서 사용하면 안된다. ex) ssalog로 바꿔서 쓰려고 했는데 클날뻔...ㅎㅎ
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            logger.info("token in requestfilter: " + jwtToken);
+        	if(refreshToken != null) {
+        		jwtToken = refreshToken.substring(7);
+        		try {
+        			username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        		} catch (IllegalArgumentException e) {
+        			logger.warn("Unable to get JWT Token");
+        		}
+        	}else {
+        		jwtToken = requestTokenHeader.substring(7);
+        		logger.info("token in requestfilter: " + jwtToken);
 
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                logger.warn("Unable to get JWT Token");
-            }
-            catch (ExpiredJwtException e) {
-            	 username = e.getClaims().getSubject();  
-            	 logger.info("[access token이 만료된 사용자 이름] " + username);
-            	 response.setHeader("error", "expired");
-            }
+        		try {
+        			username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        		} catch (IllegalArgumentException e) {
+        			logger.warn("Unable to get JWT Token");
+        		}
+        		catch (ExpiredJwtException e) {
+        			username = e.getClaims().getSubject();  
+        			logger.info("[access token이 만료된 사용자 이름] " + username);
+        			response.setHeader("error", "expired");
+        		}
+        	}
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
         }

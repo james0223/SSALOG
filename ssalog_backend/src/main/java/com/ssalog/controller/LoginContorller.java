@@ -112,7 +112,7 @@ public class LoginContorller {
     @GetMapping(path="/newuser/checkNickname")
     public ResponseEntity<Boolean> checkNickname (@RequestParam("nickname") String nick) {
     	if (accountRepository.findByNickname(nick) == null) return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     }
     
     // 2. 로그인 요청
@@ -251,11 +251,11 @@ public class LoginContorller {
     }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
-    @PostMapping(path="/newuser/refresh")
-    public ResponseEntity<Map<String, Object>> requestForNewAccessToken(@RequestParam("refreshToken") String refreshToken,HttpServletResponse response) {
+    @PostMapping(path="/user/refresh")
+    public ResponseEntity<Map<String, Object>> requestForNewAccessToken(HttpServletResponse response) {
         String refreshTokenFromDb = null;
         Map<String, Object> map = new HashMap<>();
-        //String refreshToken = response.getHeader("jwtToken");
+        String refreshToken = response.getHeader("jwtToken");
         try {
 //            logger.info("access token in rnat: " + accessToken);
 //            try {
