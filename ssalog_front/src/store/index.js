@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     accessToken: null,
     ImgURL: "https://ssalog.gq/upload/",
-    ServerURL: "http://i3b101.p.ssafy.io:8080",
+    ServerURL: "https://ssalog.gq/api",
     // user data
     username: null,
     userThumbnail: null
@@ -53,7 +53,7 @@ export default new Vuex.Store({
       }
     },
     async Thumbnail({ commit }, payload) {
-      const res = await Axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
+      const res = await Axios.get(`${this.state.ServerURL}/user/get_profile_img`, {
         params: {
           username: payload
         }

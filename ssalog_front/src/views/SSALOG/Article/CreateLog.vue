@@ -329,7 +329,7 @@ export default {
     const scoring = this.$route.query.score;
     // alert(scoring);
     axios
-      .get("https://ssalog.gq/newuser/post/get_detail?Scoring=".concat(scoring))
+      .get("https://ssalog.gq/api/newuser/post/get_detail?Scoring=".concat(scoring))
       .then(response => {
         // handle success
         // console.log(response);
@@ -367,7 +367,7 @@ export default {
       this.obj.SelectedProblemCategory = this.SelectedProblemCategory;
       console.log(this.obj);
       axios
-        .put("https://ssalog.gq/newuser/post/update_post", this.obj)
+        .put("https://ssalog.gq/api/newuser/post/update_post", this.obj)
         .then(response => {
           console.log(response);
         })
