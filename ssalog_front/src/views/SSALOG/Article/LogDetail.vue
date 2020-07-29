@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center" no-gutters>
-      <v-col cols="1">
+      <v-col cols="2">
         <div class="code_button">
           <v-btn outlined fab flat class="mt-3 mb-2" @click.stop="dialog = true"
             ><v-icon>mdi-code-braces</v-icon></v-btn
@@ -16,9 +16,9 @@
           </v-dialog>
         </div>
       </v-col>
-      <v-col lg="8" cols="12">
+      <v-col lg="6" cols="12">
         <v-toolbar flat class="mx-auto mt-5 mb-3">
-          <h1 class="content-title">{{ contentTitle }}</h1>
+          <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1>
         </v-toolbar>
         <v-toolbar flat class="mb-5">
           <v-toolbar-title>
@@ -69,8 +69,10 @@ export default {
     return {
       routeId: null,
       htmlData: null,
+      problemNum: null,
+      problemTitle: null,
       contentTitle: "19541 역학 조사",
-      writerName: "uutaein",
+      writerName: null,
       updatedDate: "2020-07-27",
       // code dialog
       dialog: false,
@@ -107,8 +109,12 @@ export default {
             Scoring: pageId
           }
         });
-        console.log(res);
-        console.log("hihi");
+        this.problemNum = res.data.problemid;
+        this.problemTitle = res.data.problemname;
+        this.writerName = res.data.username;
+        this.codearea.content = res.data.code;
+        this.htmlData = res.data.html;
+        this.codearea.setContent(res.data.code);
       } catch (e) {
         console.error(e);
       }

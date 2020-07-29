@@ -25,8 +25,7 @@ export default new Vuex.Store({
     },
     Thumbnail(state, payload) {
       // jso 하드타이핑 나중에 수정 필요.
-      console.log(payload);
-      state.userThumbnail = `${state.ImgURL}jso.jpg`;
+      state.userThumbnail = `${state.ImgURL}${payload}`;
     }
   },
   actions: {
