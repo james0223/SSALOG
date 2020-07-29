@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping("/newuser/post")
+@RequestMapping("/api/newuser/post")
 public class PostController {
 
 	@Autowired

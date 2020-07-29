@@ -18,7 +18,7 @@ import com.ssalog.service.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin
-@RequestMapping
+@RequestMapping("/api")
 public class NewUserController {
     private Logger logger = LoggerFactory.getLogger(ApplicationRunner.class);
 
