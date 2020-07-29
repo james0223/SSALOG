@@ -55,7 +55,7 @@ public class MypageController {
 			return new ResponseEntity<String>("fail",HttpStatus.OK);
 	}
 	@ApiOperation(value = "[이미지 경로 얻기] (p-014_마이페이지) 기능 : 프로필 사진을 얻을 수 있는 url을 준다.ex) http://localhost:8080/upload/resources/upload/{이 요청으로 얻은 값}")
-	@GetMapping(path="/newuser/get_profile_img")
+	@GetMapping(path="/user/get_profile_img")
 	public ResponseEntity<String> get_profile_img(HttpServletResponse response){
 		String username =  response.getHeader("username");
 		Account acc = accountRepository.findByUsername(username);
