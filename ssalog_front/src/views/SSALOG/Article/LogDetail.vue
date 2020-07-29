@@ -11,7 +11,7 @@
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
               <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
-              <editor-content class="editor__content" :editor="codearea" />
+              <div class="code_content" v-html="codeData" />
             </v-card>
           </v-dialog>
         </div>
@@ -48,26 +48,17 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import { Editor, EditorContent } from "tiptap";
-import { CodeBlockHighlight, Code } from "tiptap-extensions";
-import cpp from "highlight.js/lib/languages/cpp";
-import css from "highlight.js/lib/languages/css";
-import c from "highlight.js/lib/languages/c";
-import clike from "highlight.js/lib/languages/c-like";
-import python from "highlight.js/lib/languages/python";
-import java from "highlight.js/lib/languages/java";
-import javascript from "highlight.js/lib/languages/javascript";
 import TOC from "@/components/TOC.vue";
 
 export default {
   name: "LogDetail",
   components: {
-    EditorContent,
     TOC
   },
   data() {
     return {
       routeId: null,
+      codeData: null,
       htmlData: null,
       problemNum: null,
       problemTitle: null,
@@ -75,25 +66,7 @@ export default {
       writerName: null,
       updatedDate: "2020-07-27",
       // code dialog
-      dialog: false,
-      codearea: new Editor({
-        extensions: [
-          new CodeBlockHighlight({
-            languages: {
-              cpp,
-              css,
-              c,
-              clike,
-              python,
-              java,
-              javascript
-            }
-          }),
-          new Code()
-        ],
-        editable: false,
-        content: null
-      })
+      dialog: false
     };
   },
   computed: mapState(["ServerURL"]),
@@ -112,9 +85,8 @@ export default {
         this.problemNum = res.data.problemid;
         this.problemTitle = res.data.problemname;
         this.writerName = res.data.username;
-        this.codearea.content = res.data.code;
         this.htmlData = res.data.html;
-        this.codearea.setContent(res.data.code);
+        this.codeData = res.data.code;
       } catch (e) {
         console.error(e);
       }
@@ -124,6 +96,23 @@ export default {
 </script>
 
 <style scoped>
+pre {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-left: 3px solid #f36d33;
+  color: #666;
+  page-break-inside: avoid;
+  font-family: monospace;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+  font-size: 1rem;
+  overflow-x: auto;
+}
 .content-title {
   font-size: 3rem;
   line-height: 1.5;
@@ -153,6 +142,7 @@ export default {
   border-radius: 2rem;
   padding: 0.5rem;
 }
+
 .table_of_contents {
   position: fixed;
   top: 30vh;
