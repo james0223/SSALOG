@@ -13,7 +13,7 @@
             <body-1 class="mt-3 ml-3">비밀번호를 변경하기 전에 다시 한번 확인합니다.</body-1>
           </v-row>
           <v-row>
-            <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-dialog v-model="dialog" max-width="600px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn class="mt-5 ml-3 mb-12" v-bind="attrs" v-on="on">비밀번호 변경</v-btn>
               </template>
@@ -41,7 +41,9 @@
                         ></v-text-field>
                       </v-col>
                     </v-row>
-                    <small v-if="changePw.passwordErrorMsg">{{ changePw.passwordErrorMsg }}</small>
+                    <small class="warn" v-if="changePw.passwordErrorMsg">
+                      {{ changePw.passwordErrorMsg }}
+                    </small>
                   </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -73,7 +75,7 @@
 
 <script>
 import UserNav from "@/components/UserNav.vue";
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "Account",
@@ -91,20 +93,28 @@ export default {
     UserNav
   },
   methods: {
-    // async changePassword() {
-    //   if (!this.changePw.password || !this.changePw.passwordCheck) {
-    //     this.changePw.passwordErrorMsg = "새 비밀번호, 확인문자를 입력해주세요";
-    //   } else if (this.changePw.password !== this.changePw.passwordCheck) {
-    //     this.changePw.passwordErrorMsg = "새 비밀번호와 확인문자가 일치하지 않습니다.";
-    //   } else {
-    //     try {
-    //       const res = await axios.put(`${this.$store.state.ServerURL}/user/change_pw`);
-    //       this.dialog = false;
-    //     } catch (e) {
-    //       console.error(e);
-    //     }
-    //   }
-    // }
+    async changePassword() {
+      if (!this.changePw.password || !this.changePw.passwordCheck) {
+        this.changePw.passwordErrorMsg = "새 비밀번호, 확인문자를 입력해주세요";
+      } else if (this.changePw.password !== this.changePw.passwordCheck) {
+        this.changePw.passwordErrorMsg = "새 비밀번호와 확인문자가 일치하지 않습니다.";
+      } else {
+        try {
+          const { data } = await axios.put(`${this.$store.state.ServerURL}/user/change_pw`, null, {
+            params: {
+              password: this.changePw.password
+            }
+          });
+          if (data) {
+            alert("비밀번호가 성공적으로 변경되었습니다!");
+            this.dialog = false;
+          }
+        } catch (e) {
+          this.changePw.passwordErrorMsg = "오류가 발생했습니다.";
+          console.error(e);
+        }
+      }
+    }
   }
 };
 </script>
