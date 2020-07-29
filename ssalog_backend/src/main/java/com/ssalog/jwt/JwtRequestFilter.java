@@ -84,7 +84,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             catch (ExpiredJwtException e) {
             	 username = e.getClaims().getSubject();  
             	 logger.info("[access token이 만료된 사용자 이름] " + username);
-            	 response.setHeader("error", "token expired");
+            	 response.sendError(9999,"token expired");
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");

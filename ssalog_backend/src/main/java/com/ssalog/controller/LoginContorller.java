@@ -146,7 +146,6 @@ public class LoginContorller {
         map.put("refreshToken", refreshToken);
         return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
     }
-    
    
     // 4. 로그아웃 기능
     @ApiOperation(value = "[logout 기능](p-012_로그인) 로그아웃을 진행한다.")
