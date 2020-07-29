@@ -14,7 +14,7 @@ Vue.use(Highlight);
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
-Vue.prototype.$serverURL = "http://i3b101.p.ssafy.io:8080";
+Vue.prototype.$serverURL = "https://ssalog.gq/api";
 new Vue({
   router,
   store,

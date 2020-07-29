@@ -40,7 +40,7 @@ import axios from "axios";
 const storage = window.sessionStorage;
 
 const ai = axios.create({
-  baseURL: "http://localhost:8080"
+  baseURL: "https://ssalog.gq/api"
 //    baseURL: "http://i3b101.p.ssafy.io:8080"
 });
 
