@@ -1,4 +1,4 @@
-import VueHighlightJS from "vue-highlightjs";
+import "highlight.js/styles/default.css";
 import Vue from "vue";
 import axios from "axios";
 import App from "./App.vue";
@@ -7,8 +7,10 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 // import tiptap-style
 import "./assets/tiptap/sass/main.scss";
-// Tell Vue.js to use vue-highlightjs
-Vue.use(VueHighlightJS);
+// eslint-disable-next-line
+import Highlight from "vue-markdown-highlight";
+
+Vue.use(Highlight);
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;

@@ -11,7 +11,7 @@
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
               <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
-              <div class="code_content" v-html="codeData" />
+              <div class="code_content" v-html="codeData" v-highlight />
             </v-card>
           </v-dialog>
         </div>
@@ -35,7 +35,7 @@
           </v-toolbar-title>
         </v-toolbar>
         <v-card flat class="main_content_wrapper">
-          <div class="main_content" v-html="htmlData"></div>
+          <div class="main_content" v-html="htmlData" v-highlight></div>
         </v-card>
       </v-col>
       <v-col lg="2">
