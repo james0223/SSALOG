@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-text-field label="이메일" v-model="email" @keypress.enter="findId"></v-text-field>
-    <sm v-if="faliMsg" class="deep-orange--text">{{ faliMsg }}</sm>
-    <sm v-if="username">회원님의 아이디는 {{ username }} 입니다.</sm>
+    <small v-if="faliMsg" class="deep-orange--text">{{ faliMsg }}</small>
+    <small v-if="username">회원님의 아이디는 {{ username }} 입니다.</small>
     <div>
       <v-btn outlined color="indigo" @click="findId">아이디 찾기</v-btn>
       <v-btn outlined color="success" @click="login">로그인</v-btn>
