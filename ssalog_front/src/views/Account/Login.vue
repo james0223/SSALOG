@@ -19,6 +19,8 @@
               ></v-text-field>
               <v-btn color="success" class="mr-4" @click="onSubmit()">로그인</v-btn>
               <v-btn color="success" class="mr-4" @click="toRegister()">회원 가입</v-btn>
+              <v-btn color="success" class="mr-4" @click="toFindId()">아이디 찾기</v-btn>
+              <v-btn color="success" class="mr-4" @click="toFindPw()">비밀번호 찾기</v-btn>
             </v-form>
           </v-card>
         </v-col>
@@ -50,6 +52,12 @@ export default {
     },
     toRegister() {
       this.$router.push({ name: "SignUp" });
+    },
+    toFindId() {
+      this.$router.push({ name: "FindId" });
+    },
+    toFindPw() {
+      this.$router.push({ name: "FindPass" });
     }
   }
 };
