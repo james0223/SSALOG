@@ -17,7 +17,7 @@ public class Account {
     @Column(nullable=false, unique=true, length=30)
     private String username; 	// 아이디
 	
-	@Column(nullable=false, length=30)
+	@Column(nullable=false, unique=true, length=30)
 	private String nickname; 	// 닉네임
 	 
     @Column(nullable=false, unique=true, length=50)

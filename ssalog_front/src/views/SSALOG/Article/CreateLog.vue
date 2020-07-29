@@ -1,8 +1,9 @@
 <template>
   <v-container>
+    <h1>{{ obj.problemid }}번 : {{ obj.problemname }}</h1>
     <v-row>
       <v-col cols="12" md="6">
-        <div class="editor">
+        <div class="editor" spellcheck="false">
           <editor-menu-bubble
             :editor="codearea"
             :keep-in-bounds="keepInBounds"
@@ -27,7 +28,7 @@
         </div>
       </v-col>
       <v-col cols="12" md="6">
-        <div class="editor">
+        <div class="editor" spellcheck="false">
           <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
             <div class="menubar">
               <button
@@ -148,13 +149,23 @@
             </div>
           </editor-menu-bar>
           <editor-content class="editor__content article" :editor="editor" />
-          <button class="button">Submit</button>
-          <button class="button">Move</button>
+          <div id="example-3">
+            <template v-for="(item, i) in items">
+              <input
+                type="checkbox"
+                v-bind:key="item.eng"
+                v-bind:value="item.kor"
+                v-model="obj.keyword"
+              />
+              <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
+            </template>
+            <br />
+            <span>체크한 키워드: {{ obj.keyword }}</span>
+          </div>
+          <button class="button" @click="write">write</button>
         </div>
       </v-col>
     </v-row>
-    <h3>HTML</h3>
-    <pre><code>{{ html }}</code></pre>
   </v-container>
 </template>
 
@@ -189,6 +200,8 @@ import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
 
+const axios = require("axios");
+
 export default {
   components: {
     EditorContent,
@@ -197,7 +210,40 @@ export default {
   },
   data() {
     return {
-      html: "<h1>gps</h1>",
+      obj: null,
+      items: [
+        { kor: "수학", eng: "math" },
+        { kor: "DP", eng: "dp" },
+        { kor: "그래프", eng: "graph" },
+        { kor: "자료구조", eng: "structure" },
+        { kor: "그리디", eng: "greedy" },
+        { kor: "문자열", eng: "string" },
+        { kor: "브루트포스", eng: "bruteforce" },
+        { kor: "이진탐색", eng: "binarysearch" },
+        { kor: "트리", eng: "tree" },
+        { kor: "정렬", eng: "sort" },
+        { kor: "DFS", eng: "dfs" },
+        { kor: "조합", eng: "comb" },
+        { kor: "다익스트라", eng: "dijkstra" },
+        { kor: "BFS", eng: "bfs" },
+        { kor: "시뮬레이션", eng: "simulation" },
+        { kor: "비트마스킹", eng: "bit" },
+        { kor: "누적합", eng: "sum" },
+        { kor: "집합", eng: "set" },
+        { kor: "메모이제이션", eng: "memoization" },
+        { kor: "분할정복", eng: "divide" },
+        { kor: "백트래킹", eng: "backtrack" },
+        { kor: "우선순위큐", eng: "priority" },
+        { kor: "MST", eng: "mst" },
+        { kor: "플로이드-와샬", eng: "floyd" },
+        { kor: "위상정렬", eng: "topological" },
+        { kor: "재귀", eng: "recursion" },
+        { kor: "KMP", eng: "kmp" },
+        { kor: "벨만포드", eng: "bellman" },
+        { kor: "LIS", eng: "lis" },
+        { kor: "순열", eng: "perm" },
+        { kor: "기타", eng: "etc" }
+      ],
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -238,7 +284,7 @@ export default {
         autoFocus: true,
         content: "",
         onUpdate: ({ getHTML }) => {
-          this.html = getHTML();
+          this.obj.html = getHTML();
         }
       }),
       codearea: new Editor({
@@ -267,13 +313,27 @@ export default {
     };
   },
   mounted() {
-    const saved = JSON.parse(sessionStorage.getItem("test"));
-    console.dir(saved);
-
-    const text = saved.code;
-    const transaction = this.codearea.state.tr.insertText(text);
-    this.codearea.view.dispatch(transaction);
-    this.codearea.commands.code_block();
+    // console.log(this.$route.query.score);
+    const scoring = this.$route.query.score;
+    // alert(scoring);
+    axios
+      .get("https://ssalog.gq/newuser/post/get_detail?Scoring=".concat(scoring))
+      .then(response => {
+        // handle success
+        // console.log(response);
+        this.obj = response.data;
+        console.dir(this.obj);
+        this.obj.keyword = [];
+        this.obj.html = "";
+        const text = response.data.code;
+        const transaction = this.codearea.state.tr.insertText(text);
+        this.codearea.view.dispatch(transaction);
+        this.codearea.commands.code_block();
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
   },
   beforeDestroy() {
     this.editor.destroy();
@@ -289,6 +349,18 @@ export default {
       const transaction = this.editor.state.tr.insertText(text);
       this.editor.view.dispatch(transaction);
       this.editor.commands.code_block();
+    },
+    write() {
+      // console.log(JSON.stringify(this.obj));
+      axios
+        .put("https://ssalog.gq/newuser/post/update_post", this.obj)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
     }
   }
 };

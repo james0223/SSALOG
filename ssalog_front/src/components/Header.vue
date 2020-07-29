@@ -24,9 +24,11 @@
         </v-card>
       </template>
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
+        <v-list-item-group v-model="item" color="primary">
+          <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item-title @click="doFunc(index)">{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-menu>
     <v-btn text>빼엑빼엑</v-btn>
@@ -41,6 +43,7 @@
 import { mapState } from "vuex";
 
 export default {
+  name: "Header",
   data: () => ({
     showMenu: false,
     items: [{ title: "회원정보" }, { title: "로그아웃" }]

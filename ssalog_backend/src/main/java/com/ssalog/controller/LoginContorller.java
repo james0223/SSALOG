@@ -136,7 +136,7 @@ public class LoginContorller {
     }
     
     // 1-5. 회원가입 form [중복체크] 버튼 클릭 -> 닉네임 중복체크 (DB에 같은 닉네임 존재하는지 체킹)
-    @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 중복되는 아이디가 DB에 없는지 확인(check)한다. 사용 가능하면 true,불가능하면 false")
+    @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 중복되는 닉네임이 DB에 없는지 확인(check)한다. 사용 가능하면 true,불가능하면 false")
     @PostMapping(path="/newuser/checkNickname")
     public boolean checkNickname (@RequestParam("nickname") String nick) {
     	if (accountRepository.findByNickname(nick) == null) return true;
@@ -149,18 +149,7 @@ public class LoginContorller {
     // 2. 로그인 요청
     @ApiOperation(value = "[로그인 기능](p-012_로그인) 회원로그인을 진행한다.")
     @PostMapping(path = "/newuser/login")
-    public Map<String, Object> login(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
-//        final String username = m.get("username");
-//        final String password = m.get("password");
-//        
-//        // 디버깅용
-//        Iterator<String> mapIter = m.keySet().iterator();
-//        while(mapIter.hasNext()){
-//            String key = mapIter.next();
-//            String value = m.get( key );
-//            System.out.println(key+" : "+value);
-//        }
-//        
+    public ResponseEntity<Map<String, Object>> login(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
         try {
         	// 현재 사용자가 입력한 username과 password가 내 DB의 정보와 일치하는가?
             am.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -186,12 +175,12 @@ public class LoginContorller {
         Map<String, Object> map = new HashMap<>();
         map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
-        return map;
+        return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
     }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
     @PostMapping(path="/newuser/refresh")
-    public Map<String, Object>  requestForNewAccessToken(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
+    public Map<String, Object> requestForNewAccessToken(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
         String refreshTokenFromDb = null;
         String username = null;
         Map<String, Object> map = new HashMap<>();
@@ -264,7 +253,7 @@ public class LoginContorller {
         } catch (IllegalArgumentException e) {
         	
         } catch (ExpiredJwtException e) { //access token이 expire됐을 때
-            username = e.getClaims().getSubject();
+            username = e.getClaims().getSubject();  
             logger.info("[access token이 만료된 사용자 이름] " + username);
         }
 

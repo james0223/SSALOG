@@ -47,9 +47,9 @@
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn :disabled="step === 1" text @click="step--">
+      <!-- <v-btn :disabled="step === 1" text @click="step--">
         뒤로가기
-      </v-btn>
+      </v-btn> -->
       <v-spacer></v-spacer>
       <v-btn v-if="step <= 2" color="primary" depressed @click="findPassReq()">
         다음
@@ -82,13 +82,23 @@ export default {
       if (this.account.password === "" || this.account.passwordCheck === "") {
         alert("비밀번호와 확인문자를 입력해주세요");
       } else if (this.account.password !== this.account.passwordCheck) {
-        alert("비밀번호 확인이 일치하지 않습니다.");
+        alert("비밀번호 확인문자가 일치하지 않습니다.");
       } else {
         axios
-          .post("http://i3b101.p.ssafy.io:8080/newuser/change_pw", this.account)
-          .then(() => {
-            alert("변경 성공!");
-            // 메인페이지로 리다이렉트
+          .post(`${this.$serverURL}/newuser/change_pw`, null, {
+            params: {
+              accessToken: this.$store.state.accessToken,
+              password: this.account.password
+            }
+          })
+          .then(({ data }) => {
+            if (data) {
+              alert("변경성공! 홈페이지로 이동합니다.");
+              this.$router.push({ name: "Home" });
+              // 메인페이지로 리다이렉트
+            } else {
+              alert("뭔가 잘못됬습니다...");
+            }
           })
           .catch(err => {
             console.error(err);
@@ -100,36 +110,37 @@ export default {
         if (this.account.username === "" || this.account.email === "") {
           alert("아이디와 이메일을 입력해주세요");
         } else {
-          // const options = {
-          //   params: {
-          //     email: this.account.email,
-          //     username: this.account.username
-          //   }
+          axios
+            .post(`${this.$serverURL}/newuser/findpw`, null, {
+              params: {
+                email: this.account.email,
+                username: this.account.username
+              }
+            })
+            .then(({ data }) => {
+              if (data.result) {
+                this.step = 2;
+                this.question = data.question;
+              } else {
+                alert("아이디와 이메일을 확인해주세요");
+              }
+            })
+            .catch(err => console.log(err));
         }
-        axios
-          .post("http://i3b101.p.ssafy.io:8080/newuser/findpw", null, {
-            params: {
-              email: this.account.email,
-              username: this.account.username
-            }
-          })
-          .then(({ data }) => {
-            if (data.result) {
-              this.step = 2;
-              this.question = data.question;
-            } else {
-              alert("아이디와 이메일을 확인해주세요");
-            }
-          })
-          .catch(err => console.log(err));
       } else if (this.step === 2) {
         if (this.account.answer === "") {
           alert("답변을 입력해주세요");
         } else {
           axios
-            .post("http://i3b101.p.ssafy.io:8080/newuser/quiz", this.account)
+            .post(`${this.$serverURL}/newuser/quiz`, null, {
+              params: {
+                answer: this.account.answer,
+                username: this.account.username
+              }
+            })
             .then(({ data }) => {
-              if (data === true) {
+              if (data.result === "true") {
+                this.$store.commit("LOGIN", data);
                 this.step = 3;
                 // 토큰 받아서 로그인처리해야함
               } else {
