@@ -47,6 +47,7 @@ export default {
         await this.$store.dispatch("LOGIN", this.loginData);
         this.$router.push({ name: "Home" });
       } catch (e) {
+        alert("아이디 또는 비밀번호를 확인해주세요");
         console.error(e);
       }
     },

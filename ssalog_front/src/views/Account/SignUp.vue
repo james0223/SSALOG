@@ -139,7 +139,7 @@ export default {
         this.isCheckingEmail = true;
         setTimeout(() => {
           axios
-            .post(`${this.$store.state.ServerURL}/newuser/checkemail`, null, {
+            .get(`${this.$store.state.ServerURL}/newuser/checkemail`, {
               params: {
                 email: this.userData.email
               }
@@ -163,7 +163,7 @@ export default {
         this.isCheckingId = true;
         setTimeout(() => {
           axios
-            .post(`${this.$store.state.ServerURL}/newuser/checkid`, null, {
+            .get(`${this.$store.state.ServerURL}/newuser/checkid`, {
               params: {
                 username: this.userData.username
               }
@@ -187,7 +187,7 @@ export default {
         this.isCheckingNickname = true;
         setTimeout(() => {
           axios
-            .post(`${this.$store.state.ServerURL}/newuser/checkNickname`, null, {
+            .get(`${this.$store.state.ServerURL}/newuser/checkNickname`, {
               params: {
                 nickname: this.userData.nickname
               }

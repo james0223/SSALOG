@@ -19,7 +19,6 @@ export default new Vuex.Store({
     LOGIN(state, payload) {
       state.accessToken = payload.accessToken;
       state.username = payload.username;
-      // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
       Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
     LOGOUT(state) {
@@ -28,31 +27,21 @@ export default new Vuex.Store({
     Thumbnail(state, payload) {
       // jso 하드타이핑 나중에 수정 필요.
       console.log(payload);
-      state.userThumbnail = `${state.ImgURL}jso.jpg`;
+      state.userThumbnail = `${state.ImgURL}${payload}`;
     }
   },
   actions: {
     async LOGIN({ commit, dispatch }, loginData) {
-      // 이해안될까봐 남겨놓는다.
-      // const options = {
-      //   params: {
-      //     이게 아래 선언한거랑 같은 기능을 한다.
-      //     ...loginData
-
-      //     // username: loginData.username,
-      //     // password: loginData.password
-      //   }
-      // };
       const res = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
         }
       });
-      await dispatch("Thumbnail", loginData.username);
       commit("LOGIN", {
         accessToken: res.data.accessToken,
         username: loginData.username
       });
+      await dispatch("Thumbnail", loginData.username);
     },
     async LOGOUT({ commit }) {
       commit("LOGOUT");
