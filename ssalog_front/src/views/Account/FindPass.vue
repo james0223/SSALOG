@@ -86,14 +86,12 @@ export default {
       } else {
         axios
           .put(`${this.$store.state.ServerURL}/user/change_pw`, null, {
-            // headers: {
-            //   Authorization: `Bearer ${this.$store.state.accessToken}`
-            // },
             params: {
               password: this.account.password
             }
           })
           .then(({ data }) => {
+            console.log(data);
             if (data) {
               alert("변경성공! 홈페이지로 이동합니다.");
               this.$router.push({ name: "Home" });
@@ -104,6 +102,7 @@ export default {
           })
           .catch(err => {
             console.error(err);
+            alert("뭔가 잘못됬습니다...");
           });
       }
     },
