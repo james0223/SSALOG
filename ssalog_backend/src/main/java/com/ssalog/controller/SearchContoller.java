@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping("/api/newuser/search")
+@RequestMapping("newuser/search")
 public class SearchContoller {
 	private Logger logger = LoggerFactory.getLogger(ApplicationRunner.class);
 	@Autowired

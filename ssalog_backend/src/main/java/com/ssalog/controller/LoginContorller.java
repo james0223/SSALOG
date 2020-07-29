@@ -41,7 +41,7 @@ import io.swagger.annotations.ResponseHeader;
 //http://i3b101.p.ssafy.io:8080/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class LoginContorller {
     private Logger logger = LoggerFactory.getLogger(ApplicationRunner.class);
 	
