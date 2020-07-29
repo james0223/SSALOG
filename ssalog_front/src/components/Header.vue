@@ -56,11 +56,7 @@ export default {
         this.$router.push({ name: "Account" });
       } else {
         axios
-          .post(`${this.$serverURL}/newuser/out`, null, {
-            params: {
-              accessToken: this.$store.state.accessToken
-            }
-          })
+          .post(`${this.$store.state.serverURL}/user/out`)
           .then(() => {
             alert("로그아웃 되었다.");
           })
