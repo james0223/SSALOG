@@ -112,7 +112,7 @@ public class LoginContorller {
     @GetMapping(path="/newuser/checkNickname")
     public ResponseEntity<Boolean> checkNickname (@RequestParam("nickname") String nick) {
     	if (accountRepository.findByNickname(nick) == null) return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     }
     
     // 2. 로그인 요청
@@ -239,6 +239,7 @@ public class LoginContorller {
     @ApiOperation(value = "[아이디 찾기기능](p-013_비밀번호찾기) 사용자 email을 이용하여 결과와 username(=id)를 리턴한다")
     @GetMapping(path="/newuser/findid")
     public ResponseEntity<Map<String, Object>> findpw(@RequestParam("email") String email) {
+    	System.out.println("ds");
        Map<String, Object> map = new HashMap<>();
        Account target = accountRepository.findByEmail(email);
        if(target == null) {
@@ -251,10 +252,11 @@ public class LoginContorller {
     }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
-    @PostMapping(path="/newuser/refresh")
-    public ResponseEntity<Map<String, Object>> requestForNewAccessToken(@RequestParam("refreshToken") String refreshToken) {
+    @PostMapping(path="/user/refresh")
+    public ResponseEntity<Map<String, Object>> requestForNewAccessToken(HttpServletResponse response) {
         String refreshTokenFromDb = null;
         Map<String, Object> map = new HashMap<>();
+        String refreshToken = response.getHeader("jwtToken");
         try {
 //            logger.info("access token in rnat: " + accessToken);
 //            try {

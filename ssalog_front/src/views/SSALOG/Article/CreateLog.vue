@@ -148,6 +148,16 @@
               </button>
             </div>
           </editor-menu-bar>
+          <v-select
+            v-model="SelectedProblemCategory"
+            :items="ProblemCategory"
+            :item-text="'kor'"
+            :item-value="'kor'"
+            attach
+            chips
+            label="알고리즘 분류"
+            multiple
+          ></v-select>
           <editor-content class="editor__content article" :editor="editor" />
           <div id="example-3">
             <template v-for="(item, i) in items">
@@ -160,7 +170,7 @@
               <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
             </template>
             <br />
-            <span>체크한 키워드: {{ obj.keyword }}</span>
+            <span>체크한 키워드: {{ SelectedProblemCategory }}</span>
           </div>
           <button class="button" @click="write">write</button>
         </div>
@@ -199,6 +209,7 @@ import clike from "highlight.js/lib/languages/c-like";
 import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
+import "highlight.js/styles/github.css";
 
 const axios = require("axios");
 
@@ -211,7 +222,8 @@ export default {
   data() {
     return {
       obj: null,
-      items: [
+      SelectedProblemCategory: [],
+      ProblemCategory: [
         { kor: "수학", eng: "math" },
         { kor: "DP", eng: "dp" },
         { kor: "그래프", eng: "graph" },
@@ -323,7 +335,7 @@ export default {
         // console.log(response);
         this.obj = response.data;
         console.dir(this.obj);
-        this.obj.keyword = [];
+        this.obj.SelectedProblemCategory = [];
         this.obj.html = "";
         const text = response.data.code;
         const transaction = this.codearea.state.tr.insertText(text);
@@ -352,6 +364,8 @@ export default {
     },
     write() {
       // console.log(JSON.stringify(this.obj));
+      this.obj.SelectedProblemCategory = this.SelectedProblemCategory;
+      console.log(this.obj);
       axios
         .put("https://ssalog.gq/newuser/post/update_post", this.obj)
         .then(response => {
@@ -366,11 +380,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 // eliminate vuetify settings
 .v-application code {
   all: unset;
-  color: #eee;
 }
 
 .icon {
@@ -417,70 +430,11 @@ symbol {
   }
 }
 
-pre {
-  &::before {
-    content: attr(data-language);
-    text-transform: uppercase;
-    display: block;
-    text-align: right;
-    font-weight: bold;
-    font-size: 1rem;
-  }
-  code {
-    font-size: 1rem;
-    .hljs-comment,
-    .hljs-quote {
-      color: #999999;
-    }
-    .hljs-variable,
-    .hljs-template-variable,
-    .hljs-attribute,
-    .hljs-tag,
-    .hljs-name,
-    .hljs-regexp,
-    .hljs-link,
-    .hljs-name,
-    .hljs-selector-id,
-    .hljs-selector-class {
-      color: #f2777a;
-    }
-    .hljs-number,
-    .hljs-meta,
-    .hljs-built_in,
-    .hljs-builtin-name,
-    .hljs-literal,
-    .hljs-type,
-    .hljs-params {
-      color: #f99157;
-    }
-    .hljs-string,
-    .hljs-symbol,
-    .hljs-bullet {
-      color: #99cc99;
-    }
-    .hljs-title,
-    .hljs-section {
-      color: #ffcc66;
-    }
-    .hljs-keyword,
-    .hljs-selector-tag {
-      color: #6699cc;
-    }
-    .hljs-emphasis {
-      font-style: italic;
-    }
-    .hljs-strong {
-      font-weight: 700;
-    }
-  }
-}
 //code 부분 style
 .usercode {
-  border: 3px solid;
   text-align: left;
   overflow-y: scroll;
-  height: 70vh;
-  background-color: black;
+  height: 80vh;
 }
 // article 부분 style
 .article {
@@ -492,7 +446,6 @@ pre {
 .editor *.is-empty:nth-child(1)::before {
   content: attr(data-empty-text);
   float: left;
-  color: #aaa;
   pointer-events: none;
   height: 0;
   font-style: italic;
