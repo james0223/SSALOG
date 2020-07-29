@@ -86,7 +86,7 @@ export default {
         this.problemTitle = res.data.problemname;
         this.writerName = res.data.username;
         this.htmlData = res.data.html;
-        this.codeData = res.data.code;
+        this.codeData = `<pre><code>${res.data.code}</code></pre>`;
       } catch (e) {
         console.error(e);
       }
