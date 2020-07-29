@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class MypageController {
 	
 	private Logger logger = LoggerFactory.getLogger(ApplicationRunner.class);
