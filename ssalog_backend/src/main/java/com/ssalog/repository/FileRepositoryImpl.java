@@ -22,7 +22,7 @@ public class FileRepositoryImpl implements FileRepository{
 		String totalSaveFolder = rootPath;// + File.separator;//+ saveFolder;
 		
 		//System.out.println("totalSaveFolder>>>" + totalSaveFolder);
-		System.out.println("savefolder = " + totalSaveFolder + ":" );
+		//System.out.println("savefolder = " + totalSaveFolder + ":" );
 		File dir = new File(totalSaveFolder);
 		if(!dir.exists())
 			dir.mkdirs();
@@ -47,11 +47,9 @@ public class FileRepositoryImpl implements FileRepository{
 		return map;
 	}
 	public boolean is_exist(String username, String rootPath, String filename) {
-		String saveFolder = "resources/upload";
+		//String saveFolder = "resources/upload";
 		String totalSaveFolder = rootPath;//+ File.separator+ saveFolder;
 		File file = new File(totalSaveFolder, filename);
-		System.out.println("path = " + file.getPath());
-		System.out.println("is_exist = " + totalSaveFolder + ":" + filename + " == " + file.exists());
 		if(file.exists()) {
 			return true;
 		}else {
@@ -59,11 +57,9 @@ public class FileRepositoryImpl implements FileRepository{
 		}
 	}
 	public void delete_file(String username, String rootPath, String filename) {
-		String saveFolder = "resources/upload";
+		//String saveFolder = "resources/upload";
 		String totalSaveFolder = rootPath;//+ File.separator+ saveFolder;
 		File file = new File(totalSaveFolder, filename);
-		System.out.println("deletefolder = " + totalSaveFolder + ":" + filename + " == " + file.exists());
-		
 		if(file.exists()) {
 			if(file.delete()){ System.out.println("파일삭제 성공"); }
 			else{ System.out.println("파일삭제 실패"); }
