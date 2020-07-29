@@ -4,24 +4,33 @@ import Axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
-const ServerURL = "http://i3b101.p.ssafy.io:8080";
-
 export default new Vuex.Store({
   state: {
-    accessToken: null
+    accessToken: null,
+    ImgURL: "https://ssalog.gq/upload/",
+    ServerURL: "http://i3b101.p.ssafy.io:8080",
+    // user data
+    username: null,
+    userThumbnail: null
   },
   plugins: [createPersistedState()],
   getters: {},
   mutations: {
-    LOGIN(state, { accessToken }) {
-      state.accessToken = accessToken;
+    LOGIN(state, payload) {
+      state.accessToken = payload.accessToken;
+      state.username = payload.username;
     },
     LOGOUT(state) {
       state.accessToken = null;
+    },
+    Thumbnail(state, payload) {
+      // jso 하드타이핑 나중에 수정 필요.
+      console.log(payload);
+      state.userThumbnail = `${state.ImgURL}jso.jpg`;
     }
   },
   actions: {
-    async LOGIN({ commit }, loginData) {
+    async LOGIN({ commit, dispatch }, loginData) {
       // 이해안될까봐 남겨놓는다.
       // const options = {
       //   params: {
@@ -32,24 +41,34 @@ export default new Vuex.Store({
       //     // password: loginData.password
       //   }
       // };
-      const res = await Axios.post(`${ServerURL}/newuser/login`, null, {
+      const res = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
         }
       });
-      commit("LOGIN", res.data);
+      await dispatch("Thumbnail", loginData.username);
+      commit("LOGIN", {
+        accessToken: res.data.accessToken,
+        username: loginData.username
+      });
     },
     async LOGOUT({ commit }) {
       commit("LOGOUT");
     },
     async SIGNUP({ dispatch }, signupData) {
-      const SingupRes = await Axios.post(`${ServerURL}/newuser/add`, signupData);
-      console.log(SingupRes.status);
+      const SingupRes = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
       if (SingupRes.status === 200) {
         const loginData = { username: signupData.username, password: signupData.password };
-        console.log(loginData);
         await dispatch("LOGIN", loginData);
       }
+    },
+    async Thumbnail({ commit }, payload) {
+      const res = await Axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
+        params: {
+          username: payload
+        }
+      });
+      commit("Thumbnail", res.data);
     }
   },
   modules: {}

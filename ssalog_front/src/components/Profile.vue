@@ -13,6 +13,11 @@
           </v-toolbar-items>
         </v-toolbar>
         <v-list three-line subheader>
+          <v-file-input
+            v-model="imgFile"
+            label="File input"
+            accept="image/png, image/jpeg, image/jpg"
+          ></v-file-input>
           <v-subheader>User Controls</v-subheader>
           <v-list-item>
             <v-list-item-content>
@@ -74,6 +79,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapState } from "vuex";
+
 export default {
   props: {
     dialog: {
@@ -84,12 +92,35 @@ export default {
     return {
       notifications: false,
       sound: true,
-      widgets: false
+      widgets: false,
+      imgFile: null
     };
   },
+  computed: mapState(["ServerURL", "username", "accessToken"]),
   methods: {
     closeDialog() {
       this.$emit("update:dialog", false);
+    }
+  },
+  watch: {
+    async imgFile(file) {
+      if (file !== undefined) {
+        const formData = new FormData();
+        formData.append("filename", file);
+        formData.append("username", this.username);
+        try {
+          await axios.post(`${this.ServerURL}/user/upload_profile_img`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${this.accessToken}`
+            }
+          });
+          // 업로드 했으면 다시 get 으로 요청해서 header 이미지 새로고침
+          await this.$store.dispatch("Thumbnail", this.username);
+        } catch (err) {
+          console.error(err);
+        }
+      }
     }
   }
 };

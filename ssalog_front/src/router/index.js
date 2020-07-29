@@ -90,7 +90,7 @@ const routes = [
     component: SSALOG
   },
   {
-    path: "/SSALOG/detail",
+    path: "/SSALOG/Solution/:id",
     name: "LogDetail",
     component: LogDetail
   }

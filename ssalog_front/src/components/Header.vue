@@ -13,11 +13,11 @@
           <v-row>
             <v-col cols="4">
               <v-avatar>
-                <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+                <img :src="userThumbnail" alt="" />
               </v-avatar>
             </v-col>
             <v-col cols="8">
-              <div class="justify-space-between subtitle">{{ name }}</div>
+              <div class="justify-space-between subtitle">{{ username }}</div>
               <div class="justify-space-between caption">님 환영합니다</div>
             </v-col>
           </v-row>
@@ -40,34 +40,15 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   name: "Header",
   data: () => ({
     showMenu: false,
-    items: [{ title: "회원정보" }, { title: "로그아웃" }],
-    name: "utaein"
+    items: [{ title: "회원정보" }, { title: "로그아웃" }]
   }),
-  methods: {
-    doFunc(i) {
-      if (i === 0) {
-        alert("마이페이지로 이동할거임");
-      } else {
-        axios
-          .post(`${this.$serverURL}/newuser/out`, null, {
-            params: {
-              accessToken: this.$store.state.accessToken
-            }
-          })
-          .then(() => {
-            alert("로그아웃 되었다.");
-          })
-          .catch(err => console.error(err));
-        this.$store.commit("LOGOUT");
-      }
-    }
-  }
+  computed: mapState(["userThumbnail", "username"])
 };
 </script>
 

@@ -39,13 +39,15 @@
         </v-card>
       </v-col>
       <v-col lg="2">
-        <v-card class="table_of_contents" height="20vh"> hihihi </v-card>
+        <TOC v-bind:content="htmlData" class="toc" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
+import { mapState } from "vuex";
 import { Editor, EditorContent } from "tiptap";
 import { CodeBlockHighlight, Code } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
@@ -55,43 +57,18 @@ import clike from "highlight.js/lib/languages/c-like";
 import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
+import TOC from "@/components/TOC.vue";
 
 export default {
   name: "LogDetail",
   components: {
-    EditorContent
+    EditorContent,
+    TOC
   },
   data() {
     return {
-      htmlData:
-        "<h2>Export HTML or JSON</h2>" +
-        "<p>You are able to export your data as " +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<code>HTML</code> or <code>JSON</code>" +
-        "<h1>Export HTML or JSON</h1>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        "<h2>Export HTML or JSON</h2>" +
-        ".</p><p>테스트중입니다</p>",
+      routeId: null,
+      htmlData: null,
       contentTitle: "19541 역학 조사",
       writerName: "uutaein",
       updatedDate: "2020-07-27",
@@ -113,26 +90,29 @@ export default {
           new Code()
         ],
         editable: false,
-        content: `while True:
-    a = list(map(int,input().split()))
-    k = a[0]
-    if k == 0:
-        break
-    a = a[1:]
-    ans = [0 for _ in range(6)]
-
-    def lotto(idx1, idx2):
-        if idx2 == 6:
-            print(' '.join(map(str,ans)))
-            return
-        for i in range(idx1,k):
-            ans[idx2] = a[i]
-            lotto(i+1, idx2+1)
-
-    lotto(0,0)
-    print()`
+        content: null
       })
     };
+  },
+  computed: mapState(["ServerURL"]),
+  mounted() {
+    this.getSSALOG(this.$route.params.id);
+  },
+  methods: {
+    async getSSALOG(pageId) {
+      try {
+        console.log(this.ServerURL);
+        const res = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
+          params: {
+            Scoring: pageId
+          }
+        });
+        console.log(res);
+        console.log("hihi");
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 };
 </script>
