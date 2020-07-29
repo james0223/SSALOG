@@ -40,15 +40,35 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
   name: "Header",
   data: () => ({
     showMenu: false,
-    items: [{ title: "회원정보" }, { title: "로그아웃" }]
+    items: [{ title: "마이페이지" }, { title: "로그아웃" }]
   }),
-  computed: mapState(["userThumbnail", "username"])
+  computed: mapState(["userThumbnail", "username"]),
+  methods: {
+    doFunc(i) {
+      if (i === 0) {
+        this.$router.push({ name: "Account" });
+      } else {
+        axios
+          .post(`${this.$serverURL}/newuser/out`, null, {
+            params: {
+              accessToken: this.$store.state.accessToken
+            }
+          })
+          .then(() => {
+            alert("로그아웃 되었다.");
+          })
+          .catch(err => console.error(err));
+        this.$store.commit("LOGOUT");
+      }
+    }
+  }
 };
 </script>
 

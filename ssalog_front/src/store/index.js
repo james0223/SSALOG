@@ -19,6 +19,8 @@ export default new Vuex.Store({
     LOGIN(state, payload) {
       state.accessToken = payload.accessToken;
       state.username = payload.username;
+      // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
+      Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
     LOGOUT(state) {
       state.accessToken = null;
