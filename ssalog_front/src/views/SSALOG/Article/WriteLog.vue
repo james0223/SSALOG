@@ -347,7 +347,7 @@ export default {
     },
     write() {
       axios
-        .put("https://ssalog.gq/newuser/post/update_post", this.resData)
+        .put("https://ssalog.gq/api/newuser/post/update_post", this.resData)
         .then(response => {
           console.log(response);
         })
