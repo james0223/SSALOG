@@ -352,7 +352,8 @@ export default {
           console.log(response);
           this.$router.push({
             name: "LogDetail",
-            params: { id: this.resData.problemid }
+            // eslint-disable-next-line
+            params: { id: this.resData._id }
           });
         })
         .catch(function(error) {
