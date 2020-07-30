@@ -2,7 +2,7 @@
   <v-container>
     <v-row no-gutters>
       <v-col cols="5">
-        <v-card class="pa-9" height="70vh" align="center">
+        <v-card rounded="false" outlined class="pa-9" height="70vh" align="center">
           <v-card-title class="pa-0 mb-7">
             <h1 class="ma-0">Hi, SSaLog</h1>
             <v-img
@@ -14,22 +14,44 @@
           </v-card-title>
           <v-form ref="form">
             <v-text-field
-              class="mb-3"
+              class="my-3"
               v-model="loginData.username"
               label="아이디"
               required
+              @keypress.enter="onSubmit()"
             ></v-text-field>
             <v-text-field
               type="password"
               v-model="loginData.password"
               label="비밀번호"
               required
+              @keypress.enter="onSubmit()"
             ></v-text-field>
-            <v-btn color="success" class="mr-4" @click="onSubmit()">로그인</v-btn>
-            <v-btn color="success" class="mr-4" @click="toRegister()">회원 가입</v-btn>
-            <v-btn color="success" class="mr-4" @click="toFindId()">아이디 찾기</v-btn>
-            <v-btn color="success" class="mr-4" @click="toFindPw()">비밀번호 찾기</v-btn>
-            로그인이 어려우신가요?
+            <v-card-text style="height: 16px;">
+              <small class="red--text">{{ errorMsg }}</small>
+            </v-card-text>
+            <v-card-actions class="px-0 mt-3">
+              <v-btn block color="success" tile @click="onSubmit()">로그인</v-btn>
+            </v-card-actions>
+            <v-card-actions class="px-0 mt-3">
+              <v-btn block color="blue-grey" class="white--text" tile @click="onSubmit()">
+                <v-icon>mdi-google</v-icon> Google 로그인</v-btn
+              >
+            </v-card-actions>
+            <v-card-actions class="px-0 mt-3">
+              <v-btn block color="info" tile @click="onSubmit()">
+                <v-icon>mdi-facebook</v-icon>
+                FaceBook 로그인</v-btn
+              >
+            </v-card-actions>
+            <v-card-actions class="px-0 my-3">
+              <v-btn block color="primary" tile @click="toRegister()">회원 가입</v-btn>
+            </v-card-actions>
+
+            <!-- <v-btn color="success" @click="toFindId()">아이디 찾기</v-btn>
+            <v-btn color="success" @click="toFindPw()">비밀번호 찾기</v-btn> -->
+
+            <small>로그인이 어려우신가요?</small>
           </v-form>
         </v-card>
       </v-col>
@@ -48,22 +70,26 @@ export default {
       loginData: {
         username: this.$route.query.username,
         password: null
-      }
+      },
+      errorMsg: null
     };
   },
   methods: {
     async onSubmit() {
-      try {
-        await this.$store.dispatch("LOGIN", this.loginData);
-        console.log(this.$store.state.formerLink);
-        if (this.$store.state.formerLink) {
-          this.$router.push(this.$store.state.formerLink);
-        } else {
-          this.$router.push({ name: "Home" });
+      if (!this.loginData.username || !this.loginData.password) {
+        this.errorMsg = "아이디 또는 비밀번호를 입력해주세요";
+      } else {
+        try {
+          await this.$store.dispatch("LOGIN", this.loginData);
+          if (this.$store.state.formerLink) {
+            this.$router.push(this.$store.state.formerLink);
+          } else {
+            this.$router.push({ name: "Home" });
+          }
+        } catch (e) {
+          this.errorMsg = "아이디 또는 비밀번호를 확인해주세요";
+          console.error(e);
         }
-      } catch (e) {
-        alert("아이디 또는 비밀번호를 확인해주세요");
-        console.error(e);
       }
     },
     toRegister() {
