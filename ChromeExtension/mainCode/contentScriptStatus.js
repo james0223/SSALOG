@@ -43,7 +43,7 @@ if (userNode) {
         httpRequest.send(JSON.stringify(codeData));
 
         var win = window.open(
-          "http://192.168.29.52:8080/createlog?score=" + codeData.scoring,
+          "https://ssalog.gq/createlog?score=" + codeData.scoring,
           "_blank"
         );
         win.focus();
