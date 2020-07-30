@@ -2,17 +2,15 @@ package com.ssalog.dto;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document
 public class Comment {
-	@Id
+	@MongoId
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Field("_id") 
-	private Long post_id;
+	private Long _id;
 	private String userid;
 	private String message;
 	@CreationTimestamp
@@ -21,21 +19,24 @@ public class Comment {
 	
 	public Comment() {}
 	
-	public Comment(Long post_id, String userid, String message, String time, int like) {
+	public Comment(Long _id, String userid, String message, String time, int like) {
 		super();
-		this.post_id = post_id;
+		this._id = _id;
 		this.userid = userid;
 		this.message = message;
 		this.time = time;
 		this.like = like;
 	}
 
-	public Long getPost_id() {
-		return post_id;
+	
+	public Long get_id() {
+		return _id;
 	}
-	public void setPost_id(Long post_id) {
-		this.post_id = post_id;
+
+	public void set_id(Long _id) {
+		this._id = _id;
 	}
+
 	public String getUserid() {
 		return userid;
 	}
