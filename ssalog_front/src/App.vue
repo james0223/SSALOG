@@ -6,7 +6,10 @@
           $route.name === 'Account' ||
           $route.name === 'SSALOG' ||
           $route.name === 'LogDetail' ||
-          $route.name === 'ProblemDetail'
+          $route.name === 'ProblemDetail' ||
+          $route.name === 'Login' ||
+          $route.name === 'SignUp' ||
+          $route.name === 'Search'
       "
     ></Header>
     <v-divider></v-divider>
