@@ -93,4 +93,10 @@ public class PostController {
 	public ResponseEntity<Boolean> is_post(@RequestParam("Scoring") String Scoring){
 		return new ResponseEntity<Boolean>(postService.is_post(Scoring), HttpStatus.OK);
 	}
+	
+	@GetMapping("newuser/temp")
+	@ApiOperation(value = "jenkins 테스트")
+	public ResponseEntity<Boolean> hello(){
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
 }
