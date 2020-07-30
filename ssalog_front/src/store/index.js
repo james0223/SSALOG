@@ -50,11 +50,11 @@ export default new Vuex.Store({
           ...loginData
         }
       });
-      await dispatch("Thumbnail", loginData.username);
       commit("LOGIN", {
         accessToken: res.data.accessToken,
         username: loginData.username
       });
+      await dispatch("Thumbnail", loginData.username);
     },
     async LOGOUT({ commit }) {
       commit("LOGOUT");

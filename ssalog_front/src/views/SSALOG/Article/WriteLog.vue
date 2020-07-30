@@ -298,10 +298,10 @@ export default {
           })
         ],
         autoFocus: true,
-        content: "",
-        onUpdate: ({ getHTML }) => {
-          this.obj.html = getHTML();
-        }
+        content: ""
+        // onUpdate: ({ getHTML }) => {
+        //   this.obj.html = getHTML();
+        // }
       }),
       codearea: new Editor({
         extensions: [
@@ -346,11 +346,8 @@ export default {
       this.editor.commands.code_block();
     },
     write() {
-      // console.log(JSON.stringify(this.obj));
-      this.obj.SelectedProblemCategory = this.SelectedProblemCategory;
-      console.log(this.obj);
       axios
-        .put("https://ssalog.gq/newuser/post/update_post", this.obj)
+        .put("https://ssalog.gq/newuser/post/update_post", this.resData)
         .then(response => {
           console.log(response);
         })

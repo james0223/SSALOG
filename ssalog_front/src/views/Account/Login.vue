@@ -45,8 +45,9 @@ export default {
       // LOGIN action execute
       try {
         await this.$store.dispatch("LOGIN", this.loginData);
-        if (this.$store.state.formerLink !== "/") {
-          this.$route.push(this.$store.state.formerLink);
+        console.log(this.$store.state.formerLink);
+        if (this.$store.state.formerLink) {
+          this.$router.push(this.$store.state.formerLink);
         } else {
           this.$router.push({ name: "Home" });
         }
