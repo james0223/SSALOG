@@ -35,7 +35,11 @@ if (userNode) {
         //     alert(httpRequest.responseText);
         //   }
         // };
-        httpRequest.open("POST", "https://ssalog.gq/newuser/post/write/", true);
+        httpRequest.open(
+          "POST",
+          "https://ssalog.gq/api/newuser/post/write/",
+          true
+        );
         httpRequest.setRequestHeader(
           "Content-Type",
           "application/json; charset=UTF-8"
