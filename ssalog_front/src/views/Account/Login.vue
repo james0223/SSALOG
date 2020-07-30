@@ -1,32 +1,43 @@
 <template>
-  <v-img src="@/assets/images/intro-visual-bg01.jpg">
-    <v-container>
-      <v-row>
-        <v-col cols="12" lg="2" offset-lg="3" class="pt-16">
-          <v-card class="pa-5 mt-16" height="40vh" align="center">
-            <v-form ref="form" lazy-validation>
-              <v-text-field
-                v-model="loginData.username"
-                :counter="10"
-                label="아이디"
-                required
-              ></v-text-field>
-              <v-text-field
-                type="password"
-                v-model="loginData.password"
-                label="비밀번호"
-                required
-              ></v-text-field>
-              <v-btn color="success" class="mr-4" @click="onSubmit()">로그인</v-btn>
-              <v-btn color="success" class="mr-4" @click="toRegister()">회원 가입</v-btn>
-              <v-btn color="success" class="mr-4" @click="toFindId()">아이디 찾기</v-btn>
-              <v-btn color="success" class="mr-4" @click="toFindPw()">비밀번호 찾기</v-btn>
-            </v-form>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-img>
+  <v-container>
+    <v-row no-gutters>
+      <v-col cols="5">
+        <v-card class="pa-9" height="70vh" align="center">
+          <v-card-title class="pa-0 mb-7">
+            <h1 class="ma-0">Hi, SSaLog</h1>
+            <v-img
+              :src="require('@/assets/images/header-logo.png')"
+              max-width="5vw"
+              max-height="10vh"
+              alt="홈페이지 아이콘"
+            />
+          </v-card-title>
+          <v-form ref="form">
+            <v-text-field
+              class="mb-3"
+              v-model="loginData.username"
+              label="아이디"
+              required
+            ></v-text-field>
+            <v-text-field
+              type="password"
+              v-model="loginData.password"
+              label="비밀번호"
+              required
+            ></v-text-field>
+            <v-btn color="success" class="mr-4" @click="onSubmit()">로그인</v-btn>
+            <v-btn color="success" class="mr-4" @click="toRegister()">회원 가입</v-btn>
+            <v-btn color="success" class="mr-4" @click="toFindId()">아이디 찾기</v-btn>
+            <v-btn color="success" class="mr-4" @click="toFindPw()">비밀번호 찾기</v-btn>
+            로그인이 어려우신가요?
+          </v-form>
+        </v-card>
+      </v-col>
+      <v-col cols="7">
+        <v-img src="@/assets/images/login_main.jpg" height="70vh"></v-img>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -42,7 +53,6 @@ export default {
   },
   methods: {
     async onSubmit() {
-      // LOGIN action execute
       try {
         await this.$store.dispatch("LOGIN", this.loginData);
         console.log(this.$store.state.formerLink);
