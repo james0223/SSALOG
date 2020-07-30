@@ -13,7 +13,12 @@
       <b>검색</b>
     </v-btn>
     <v-btn text class="mx-10">Community</v-btn>
-    <v-menu v-model="showMenu" offset-y>
+    <v-row v-if="!$store.state.accessToken">
+      <v-col class="pa-0" cols="5" @click="$router.push({ name: 'Login' })">로그인</v-col>
+      <v-col class="pa-0" cols="2">|</v-col>
+      <v-col class="pa-0" cols="5" @click="$router.push({ name: 'SignUp' })">회원가입</v-col>
+    </v-row>
+    <v-menu v-if="$store.state.accessToken" v-model="showMenu" offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-card v-bind="attrs" v-on="on" flat width="8vw">
           <v-row>
