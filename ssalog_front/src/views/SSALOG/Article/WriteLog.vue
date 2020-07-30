@@ -350,6 +350,10 @@ export default {
         .put("https://ssalog.gq/api/newuser/post/update_post", this.resData)
         .then(response => {
           console.log(response);
+          this.$router.push({
+            name: "LogDetail",
+            params: { id: this.resData.problemid }
+          });
         })
         .catch(function(error) {
           // handle error
