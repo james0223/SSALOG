@@ -1,9 +1,15 @@
 <template>
   <v-app-bar flat height="100vh" color="white" class="mx-auto">
-    <v-img :src="require('@/assets/images/header-logo.jpg')" max-width="5vw" max-height="10vh" />
-    <v-btn text class="mx-10">SSALOG</v-btn>
-    <v-btn text class="mx-10">GROUP</v-btn>
-    <v-btn text class="mx-10">
+    <v-img
+      :src="require('@/assets/images/header-logo.jpg')"
+      @click="changeRoute(0)"
+      max-width="5vw"
+      max-height="10vh"
+      id="HomeButton"
+    />
+    <v-btn text class="mx-10" @click="changeRoute(1)">SSALOG</v-btn>
+    <v-btn text class="mx-10" @click="changeRoute(2)">GROUP</v-btn>
+    <v-btn text class="mx-10" @click="changeRoute(3)">
       <b>검색</b>
     </v-btn>
     <v-btn text class="mx-10">Community</v-btn>
@@ -63,9 +69,24 @@ export default {
           .catch(err => console.error(err));
         this.$store.commit("LOGOUT");
       }
+    },
+    changeRoute(i) {
+      if (i === 0) {
+        this.$router.push({ name: "Home" });
+      } else if (i === 1) {
+        this.$router.push({ name: "SSALOG" });
+      } else if (i === 2) {
+        alert("그룹 기능은 준비중입니다!");
+      } else if (i === 3) {
+        this.$router.push({ name: "Search" });
+      }
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#HomeButton {
+  cursor: pointer;
+}
+</style>
