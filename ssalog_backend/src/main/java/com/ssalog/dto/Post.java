@@ -32,12 +32,14 @@ public class Post {
 	private int like;
 	@CreationTimestamp
 	private Date regdate;
+	private Boolean iswrite;
 	
 	public Post() {}
 
+	
 	public Post(String scoring, String username, String code, String language, String len, String memory,
 			String problemid, String problemname, String time, String html, List<String> keyword, List<Comment> comment,
-			int like, Date regdate) {
+			int like, Date regdate, Boolean iswrite) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -53,7 +55,19 @@ public class Post {
 		this.comment = comment;
 		this.like = like;
 		this.regdate = regdate;
+		this.iswrite = iswrite;
 	}
+
+	
+	public Boolean getIswrite() {
+		return iswrite;
+	}
+
+
+	public void setIswrite(Boolean iswrite) {
+		this.iswrite = iswrite;
+	}
+
 
 	public String getScoring() {
 		return scoring;

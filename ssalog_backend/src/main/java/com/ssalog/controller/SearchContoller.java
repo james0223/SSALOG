@@ -35,12 +35,6 @@ public class SearchContoller {
 	@Autowired
 	private PostService postService;
 	
-//	@ApiOperation(value = "[회원 조회] (p-022_마이페이지) 기능: page(몇 페이지), size(개수), direction(ASC:오름차순) 인자를 입력해 회원을 조회한다. 현재는 회원가입 일자를 기준으로 정렬함")
-//	@GetMapping("/all_members")
-//	public ResponseEntity<Page<Account>> find_All_members(PageRequest pageable){
-//		return new ResponseEntity<Page<Account>>(accountService.findAll(pageable.of()), HttpStatus.OK);
-//	}
-	
 	@ApiOperation(value = "[회원 조회] (p-022_마이페이지) 기능: page(몇 페이지), size(개수), direction(ASC:오름차순) 인자를 입력해 회원을 조회한다. 회원 nickname을 입력받으면, nickname 기준으로 검색한다., nickname값이 없으면, 모든 회원을 조회한다 ")
 	@GetMapping("/to_nickname")
 	public ResponseEntity<Page<Account>> findToNickname(@RequestParam(required=false) String nickname, PageRequest pageable){
