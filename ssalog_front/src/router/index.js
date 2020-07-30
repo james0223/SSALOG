@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import store from "@/store";
 // account
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
@@ -21,6 +20,7 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 // search
 import Search from "@/views/Search/Search.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -31,6 +31,7 @@ Vue.use(VueRouter);
 //   }
 //   return next("/Login");
 // };
+
 const routes = [
   {
     path: "/Problem/List/",
@@ -56,7 +57,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home
-    // beforeEnter: requireAuth()
   },
   {
     path: "/SignUp",
@@ -71,8 +71,8 @@ const routes = [
   {
     path: "/Account",
     name: "Account",
-    component: Account
-    // beforeEnter: requireAuth()
+    component: Account,
+    meta: { authRequired: true }
   },
   {
     path: "/FindId",
@@ -87,13 +87,14 @@ const routes = [
   {
     path: "/CreateLog",
     name: "CreateLog",
-    component: CreateLog
-    // beforeEnter: requireAuth()
+    component: CreateLog,
+    meta: { authRequired: true }
   },
   {
     path: "/SSALOG",
     name: "SSALOG",
-    component: SSALOG
+    component: SSALOG,
+    meta: { authRequired: true }
   },
   {
     path: "/SSALOG/Solution/:id",
@@ -108,4 +109,17 @@ const router = new VueRouter({
   routes
 });
 
+// global guard (login required)
+router.beforeEach(function(to, from, next) {
+  if (
+    to.matched.some(function(routeInfo) {
+      return routeInfo.meta.authRequired;
+    })
+  ) {
+    if (store.state.accessToken == null) next("/Login");
+    else next();
+  } else {
+    next();
+  }
+});
 export default router;
