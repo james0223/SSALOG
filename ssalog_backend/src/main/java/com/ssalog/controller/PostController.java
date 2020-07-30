@@ -31,7 +31,7 @@ public class PostController {
 	@Autowired
 	PostService postService;
 	
-	@PostMapping("user/post/write")
+	@PostMapping("newuser/post/write")
 	@ApiOperation(value = "[posting작성] 토큰에서 아이디를 찾아서 검사한다.")
 	public Post write(HttpServletResponse response,@RequestBody Post post) {
 		String username = response.getHeader("username"); 
