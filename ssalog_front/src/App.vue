@@ -7,7 +7,6 @@
           $route.name === 'SSALOG' ||
           $route.name === 'LogDetail' ||
           $route.name === 'ProblemDetail' ||
-          $route.name === 'Login' ||
           $route.name === 'SignUp' ||
           $route.name === 'Search'
       "
