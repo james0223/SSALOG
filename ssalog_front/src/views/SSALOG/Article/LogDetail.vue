@@ -3,7 +3,7 @@
     <v-row justify="center" no-gutters>
       <v-col cols="2">
         <div class="code_button">
-          <v-btn outlined fab flat class="mt-3 mb-2" @click.stop="dialog = true"
+          <v-btn outlined fab icon class="mt-3 mb-2" @click.stop="dialog = true"
             ><v-icon>mdi-code-braces</v-icon></v-btn
           >
           <v-btn outlined fab class="mt-2 mb-3"><v-icon>mdi-star</v-icon></v-btn>
@@ -70,7 +70,7 @@ export default {
     };
   },
   computed: mapState(["ServerURL"]),
-  mounted() {
+  created() {
     this.getSSALOG(this.$route.params.id);
   },
   methods: {

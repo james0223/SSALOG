@@ -14,7 +14,7 @@ import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 // main
 import Home from "@/views/Home.vue";
 // editor
-import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
+import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
@@ -85,10 +85,10 @@ const routes = [
     component: FindPass
   },
   {
-    path: "/CreateLog",
-    name: "CreateLog",
-    component: CreateLog,
-    meta: { authRequired: true }
+    path: "/WriteLog/:id",
+    name: "WriteLog",
+    component: WriteLog
+    // meta: { authRequired: true }
   },
   {
     path: "/SSALOG",
