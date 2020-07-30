@@ -78,15 +78,15 @@ public class PostServiceImpl implements PostService{
 	public int update_post(Post p, String username) {
 		Optional<Post> p1 = postRepository.findById(p.getScoring());
 		if(p1.isPresent()) {
-			System.out.println(username + " 사람이름? " + p.getUsername() );
-			if(p1.get().getUsername().equals(username)) {
+			//System.out.println(username + " 사람이름? " + p.getUsername() );
+			//if(p1.get().getUsername().equals(username)) {
 				System.out.println("여기아냐?");
 				postRepository.save(p);
 				return 1;
-			}else {
-				System.out.println("여기라고?");
-				return 2;
-			}
+			//}else {
+			//	System.out.println("여기라고?");
+			//	return 2;
+			//}
 		}else {
 			return 3;
 		}
