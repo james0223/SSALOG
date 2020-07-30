@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import store from "@/store";
 // account
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
@@ -15,22 +14,22 @@ import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 // main
 import Home from "@/views/Home.vue";
 // editor
-import CreateLog from "@/views/SSALOG/Article/CreateLog.vue";
+import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 // search
 import Search from "@/views/Search/Search.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
-// login required
-// const requireAuth = () => (to, from, next) => {
-//   if (store.state.accessToken !== null) {
-//     return next();
-//   }
-//   return next("/Login");
+// saving former path
+// const savingPath = () => (to, from, next) => {
+//   console.log(from);
+//   return next();
 // };
+
 const routes = [
   {
     path: "/Problem/List/",
@@ -56,7 +55,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home
-    // beforeEnter: requireAuth()
   },
   {
     path: "/SignUp",
@@ -71,8 +69,8 @@ const routes = [
   {
     path: "/Account",
     name: "Account",
-    component: Account
-    // beforeEnter: requireAuth()
+    component: Account,
+    meta: { authRequired: true }
   },
   {
     path: "/FindId",
@@ -85,15 +83,16 @@ const routes = [
     component: FindPass
   },
   {
-    path: "/CreateLog",
-    name: "CreateLog",
-    component: CreateLog
-    // beforeEnter: requireAuth()
+    path: "/WriteLog/:id",
+    name: "WriteLog",
+    component: WriteLog,
+    meta: { authRequired: true }
   },
   {
     path: "/SSALOG",
     name: "SSALOG",
-    component: SSALOG
+    component: SSALOG,
+    meta: { authRequired: true }
   },
   {
     path: "/SSALOG/Solution/:id",
@@ -108,4 +107,19 @@ const router = new VueRouter({
   routes
 });
 
+// global guard (login required)
+router.beforeEach(function(to, from, next) {
+  if (
+    to.matched.some(function(routeInfo) {
+      return routeInfo.meta.authRequired;
+    })
+  ) {
+    if (store.state.accessToken == null) {
+      store.commit("FormerLink", to);
+      next("/Login");
+    } else next();
+  } else {
+    next();
+  }
+});
 export default router;

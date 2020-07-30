@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>{{ obj.problemid }}번 : {{ obj.problemname }}</h1>
+    <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
     <v-row>
       <v-col cols="12" md="6">
         <div class="editor" spellcheck="false">
@@ -170,9 +170,9 @@
               <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
             </template>
             <br />
-            <span>체크한 키워드: {{ SelectedProblemCategory }}</span>
           </div>
-          <button class="button" @click="write">write</button>
+          <button v-if="isUpdating" class="button" @click="write">수정하기</button>
+          <button v-else class="button" @click="write">작성하기</button>
         </div>
       </v-col>
     </v-row>
@@ -180,6 +180,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from "tiptap";
 import {
   CodeBlockHighlight,
@@ -211,7 +212,8 @@ import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
 
-const axios = require("axios");
+import axios from "axios";
+import getSSALOG from "../../../utils/SSALOG";
 
 export default {
   components: {
@@ -221,6 +223,8 @@ export default {
   },
   data() {
     return {
+      isUpdating: false,
+      resData: undefined,
       obj: null,
       SelectedProblemCategory: [],
       ProblemCategory: [
@@ -313,6 +317,7 @@ export default {
             }
           }),
           new Code(),
+          new CodeBlock(),
           new History(),
           new HardBreak(),
           new Heading({ levels: [1, 2, 3] }),
@@ -324,29 +329,7 @@ export default {
       })
     };
   },
-  mounted() {
-    // console.log(this.$route.query.score);
-    const scoring = this.$route.query.score;
-    // alert(scoring);
-    axios
-      .get("https://ssalog.gq/api/newuser/post/get_detail?Scoring=".concat(scoring))
-      .then(response => {
-        // handle success
-        // console.log(response);
-        this.obj = response.data;
-        console.dir(this.obj);
-        this.obj.SelectedProblemCategory = [];
-        this.obj.html = "";
-        const text = response.data.code;
-        const transaction = this.codearea.state.tr.insertText(text);
-        this.codearea.view.dispatch(transaction);
-        this.codearea.commands.code_block();
-      })
-      .catch(function(error) {
-        // handle error
-        console.log(error);
-      });
-  },
+  computed: mapState(["ServerURL"]),
   beforeDestroy() {
     this.editor.destroy();
   },
@@ -367,7 +350,7 @@ export default {
       this.obj.SelectedProblemCategory = this.SelectedProblemCategory;
       console.log(this.obj);
       axios
-        .put("https://ssalog.gq/api/newuser/post/update_post", this.obj)
+        .put("https://ssalog.gq/newuser/post/update_post", this.obj)
         .then(response => {
           console.log(response);
         })
@@ -375,7 +358,28 @@ export default {
           // handle error
           console.log(error);
         });
+    },
+    /*eslint-disable */
+    async getData(that) {
+      that.resData = await getSSALOG(that.$route.params.id);
+      // 이미 작성한 것을 수정할때
+      that.isUpdating = that.resData.hasOwnProperty("html");
+      if (!that.isUpdating) { // 속성이 없다면.
+        // 속성 추가해주기
+        that.resData.SelectedProblemCategory = [];
+        that.resData.html = "";
+      } else {
+        const transCode = that.codearea.state.tr.insertText(that.resData.code);
+        that.codearea.view.dispatch(transCode);
+        that.codearea.commands.code_block();
+        that.SelectedProblemCategory = that.resData.keyword;
+        that.editor.setContent(that.resData.html);
+      }
     }
+    /* eslint-enable */
+  },
+  created() {
+    this.getData(this);
   }
 };
 </script>
