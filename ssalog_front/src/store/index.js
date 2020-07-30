@@ -9,6 +9,8 @@ export default new Vuex.Store({
     accessToken: null,
     ImgURL: "https://ssalog.gq/upload/",
     ServerURL: "http://i3b101.p.ssafy.io:8080",
+    // login 이전 링크 저장용
+    formerLink: null,
     // user data
     username: null,
     userThumbnail: null
@@ -28,6 +30,9 @@ export default new Vuex.Store({
     Thumbnail(state, payload) {
       // jso 하드타이핑 나중에 수정 필요.
       state.userThumbnail = `${state.ImgURL}${payload}`;
+    },
+    FormerLink(state, payload) {
+      state.formerLink = payload;
     }
   },
   actions: {

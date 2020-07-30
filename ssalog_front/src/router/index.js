@@ -24,12 +24,10 @@ import store from "@/store";
 
 Vue.use(VueRouter);
 
-// login required
-// const requireAuth = () => (to, from, next) => {
-//   if (store.state.accessToken !== null) {
-//     return next();
-//   }
-//   return next("/Login");
+// saving former path
+// const savingPath = () => (to, from, next) => {
+//   console.log(from);
+//   return next();
 // };
 
 const routes = [
@@ -87,8 +85,8 @@ const routes = [
   {
     path: "/WriteLog/:id",
     name: "WriteLog",
-    component: WriteLog
-    // meta: { authRequired: true }
+    component: WriteLog,
+    meta: { authRequired: true }
   },
   {
     path: "/SSALOG",
@@ -116,8 +114,10 @@ router.beforeEach(function(to, from, next) {
       return routeInfo.meta.authRequired;
     })
   ) {
-    if (store.state.accessToken == null) next("/Login");
-    else next();
+    if (store.state.accessToken == null) {
+      store.commit("FormerLink", to);
+      next("/Login");
+    } else next();
   } else {
     next();
   }
