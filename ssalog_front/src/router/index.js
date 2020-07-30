@@ -12,7 +12,7 @@ import AccountList from "@/views/Account/AccountList.vue";
 import ProblemList from "@/views/Problem/ProblemList.vue";
 import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 // main
-import Home from "@/views/Home.vue";
+import Home from "@/views/narutoHome.vue";
 // editor
 import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
