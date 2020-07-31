@@ -35,7 +35,7 @@
           </v-toolbar-title>
         </v-toolbar>
         <v-card flat class="main_content_wrapper">
-          <div class="main_content" v-html="htmlData" v-highlight></div>
+          <div class="main_content ProseMirror" v-html="htmlData"></div>
         </v-card>
       </v-col>
       <v-col lg="2">

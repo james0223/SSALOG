@@ -298,10 +298,10 @@ export default {
           })
         ],
         autoFocus: true,
-        content: ""
-        // onUpdate: ({ getHTML }) => {
-        //   this.obj.html = getHTML();
-        // }
+        content: "",
+        onUpdate: ({ getHTML }) => {
+          this.resData.html = getHTML();
+        }
       }),
       codearea: new Editor({
         extensions: [
@@ -347,13 +347,13 @@ export default {
     },
     write() {
       axios
-        .put("https://ssalog.gq/api/newuser/post/update_post", this.resData)
+        .put("https://ssalog.gq/api/user/post/update_post", this.resData)
         .then(response => {
           console.log(response);
           this.$router.push({
             name: "LogDetail",
             // eslint-disable-next-line
-            params: { id: this.resData._id }
+            params: { Scoring: this.resData._id }
           });
         })
         .catch(function(error) {
@@ -366,7 +366,8 @@ export default {
       that.resData = await getSSALOG(that.$route.params.id);
       // 이미 작성한 것을 수정할때
       that.isUpdating = that.resData.hasOwnProperty("html");
-      if (!that.isUpdating) { // 속성이 없다면.
+      if (!that.isUpdating) {
+        // 속성이 없다면.
         // 속성 추가해주기
         that.resData.SelectedProblemCategory = [];
         that.resData.html = "";
