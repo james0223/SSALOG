@@ -50,8 +50,20 @@
 
             <!-- <v-btn color="success" @click="toFindId()">아이디 찾기</v-btn>
             <v-btn color="success" @click="toFindPw()">비밀번호 찾기</v-btn> -->
-
-            <small>로그인이 어려우신가요?</small>
+            <v-menu v-model="showMenu" absolute offset-y style="max-width: 600px">
+              <template v-slot:activator="{ on, attrs }">
+                <small v-bind="attrs" v-on="on">로그인에 문제가 있나요?</small>
+              </template>
+              <v-list>
+                <v-list-item @click="$router.push({ name: 'FindId' })">
+                  <v-list-item-title>아이디 찾기</v-list-item-title>
+                </v-list-item>
+                <v-divider></v-divider>
+                <v-list-item @click="$router.push({ name: 'FindPass' })">
+                  <v-list-item-title>비밀번호 찾기</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-form>
         </v-card>
       </v-col>
@@ -71,7 +83,8 @@ export default {
         username: this.$route.query.username,
         password: null
       },
-      errorMsg: null
+      errorMsg: null,
+      showMenu: false
     };
   },
   methods: {
