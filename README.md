@@ -48,6 +48,45 @@ java -jar SSalog_ver1.0-0.0.1-SNAPSHOT.jar
 
 ## 📒 Tech Log
 
+~~~text
+<details>
+1주차 - 서비스 기획 + 개발 세팅 + 브랜치 전략 ( 7/9 ~ 7/17)
+
+기획 ,  어떤 아이템으로 정할 것인가?
+
+- **SSalog (알고리즘 풀이 정리 블로그)**
+
+  ```
+   - 기술 블로그라는 주제에 적합
+  
+   - SSAFY생들을 타겟으로 배포를 통해, 직접적인 유저층을 확보하기 쉽다.
+  
+   - 기존에 존재하지 않던 서비스라서 참신함을 느낄 수 있음
+  
+   - Vue를 이용한 프론트 화면 개발과 Rest api 서버를 구현해 적용가능
+  
+   - ChromeExtension 영역을 공부해 볼 수 있음
+  ```
+
+- **개발 세팅 (개발 도구, 개발 환경)**
+
+  - 개발 도구 : VSCode, Spring STS, Intellij
+  - 개발 환경 : AWS server, ubuntu
+
+- **이슈 관리 도구, CI 도구**
+
+  ```
+   - 이슈 관리 도구 : Git Lab 프로젝트, Jira, MatterMost
+  
+   -  CI 도구 : jenkins
+  ```
+
+- **브랜치 전략**
+
+  [참고문서](https://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html)
+</details>
+~~~
+
 1주차 - 서비스 기획 + 개발 세팅 + 브랜치 전략 ( 7/9 ~ 7/17)
 
 기획 ,  어떤 아이템으로 정할 것인가?
@@ -176,6 +215,8 @@ java -jar SSalog_ver1.0-0.0.1-SNAPSHOT.jar
   
   - 에러 처리와 로직 꼼꼼하게 구현
   ```
+
+
 
 ## 🗃Project Folder
 
