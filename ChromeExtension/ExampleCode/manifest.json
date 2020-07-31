@@ -1,0 +1,14 @@
+{
+  "name": "Example",
+  "version": "1.0",
+  "description": "알고리즘 포트폴리로 작성을 도와주는 Chrome 확장프로그램",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ]
+}
