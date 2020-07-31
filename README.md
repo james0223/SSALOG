@@ -81,7 +81,99 @@ java -jar SSalog_ver1.0-0.0.1-SNAPSHOT.jar
 
   [참고문서](https://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html)
 
-2주차 -  ( 7/9 ~ 7/17)
+2주차 -  SSalog ver 1.0 pre.ver 개발 ( 7/13 ~ 7/19)
+
+명세서 작성 및 기능 구현
+
+- **명세서 작성 ( 참고 : 명세서 1.2.docx )**
+
+2주차에 개발할 내용
+
+```
+  - 로그인
+
+  - 회원가입
+
+  - MyPage 설정
+
+  - Chrome extension 개발
+```
+
+- **front-side**
+
+  ```
+  - Vue.js와 Vuetify를 활용한, SPA 구조로 개발
+  
+  - 로그인 페이지 단 구상 및 component 구현
+  ```
+
+- 회원가입 페이지 단 구상 및 component 구현
+
+- Mypage 단 구상 및 component 구현
+
+- 각 페이지에서 필요한 데이터를 Rest api가 주는 곳으로 연결
+
+- **server-side**
+
+  ```
+   - jwt 인증방식을 이용한 로그인 구현
+  
+   - Spring Security와 JPA를 이용해 로그인, 회원가입 과정 구현
+  
+   - 파일 업로드 로직 구현
+  ```
+
+- **ChromeExtension**
+
+  ```
+   - JavaScript를 이용해 backjoon online judge에서 원하는 정보 얻어오기 구현
+  ```
+
+3주차 -  SSalog ver 1.0 개발 ( 7/20 ~ 7/26)
+
+기능 구현 및 배포를 위한 작업 진행
+
+3주차에 개발할 내용
+
+```
+  - 게시물 포스팅
+
+  -  aws 서버 환경설정 및 필요한 툴 설치
+
+  - Chrome Extension 마무리
+```
+
+- **front-side**
+
+  ```
+  - Vue.js와 Vuetify를 활용한, SPA 구조로 개발
+  
+  - 로그인 페이지 단 구상 및 component 구현
+  ```
+
+- 회원가입 페이지 단 구상 및 component 구현
+
+- Mypage 단 구상 및 component 구현
+
+- 각 페이지에서 필요한 데이터를 Rest api가 주는 곳으로 연결
+
+- **server-side**
+
+  ```
+   - 게시물 포스팅 CRUD 구현
+  
+   - 게시물 검색 기능 구현 ( 조건별 검색, 회원 이름 검색, 키워드 검색 등)
+  
+   - AWS 서버 환경설정 및 필요한 툴 
+  ```
+
+- **ChromeExtension**
+
+  ```text
+  - 유의미한 데이터를 가공해 Rest api와 연결
+  
+  - 에러 처리와 로직 꼼꼼하게 구현
+  ```
 
 ## 🗃Project Folder
 
@@ -108,7 +200,7 @@ java -jar SSalog_ver1.0-0.0.1-SNAPSHOT.jar
 │ 
 📁server
 ├── 📁src
-│   └── 📁main
+│   ├── 📁main
 │	│	├── 📁java
 │	│	│	├── 📁Application
 │	│	│	├── 📁config
