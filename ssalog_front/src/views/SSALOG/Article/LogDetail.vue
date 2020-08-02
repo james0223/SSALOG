@@ -11,7 +11,7 @@
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
               <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
-              <div class="code_content" v-html="codeData" v-highlight />
+              <editor-content class="main_content editor__content article" :editor="codeview" />
             </v-card>
           </v-dialog>
         </div>
@@ -95,6 +95,24 @@ export default {
         editable: false,
         autoFocus: true,
         content: ""
+      }),
+      codeview: new Editor({
+        extensions: [
+          new CodeBlockHighlight({
+            languages: {
+              cpp,
+              css,
+              c,
+              clike,
+              python,
+              java,
+              javascript
+            }
+          })
+        ],
+        editable: false,
+        autoFocus: true,
+        content: ""
       })
     };
   },
@@ -117,6 +135,7 @@ export default {
         this.htmlData = res.data.html;
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
         this.editor.setContent(this.htmlData);
+        this.codeview.setContent(this.codeData);
       } catch (e) {
         console.error(e);
       }
