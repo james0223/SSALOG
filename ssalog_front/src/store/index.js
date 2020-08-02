@@ -29,8 +29,11 @@ export default new Vuex.Store({
       state.userThumbnail = `${state.ImgURL}/default.png`;
     },
     TOKEN(state, payload) {
-      state.accessToken = payload.accessToken;
-      state.refreshToken = payload.refreshToken;
+      const { accessToken, refreshToken } = payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      console.log(`Token${state.refreshToken}`);
+      console.log(`Token${state.accessToken}`);
       // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
       Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
@@ -70,34 +73,30 @@ export default new Vuex.Store({
       dispatch("autoRefresh");
     },
     // eslint-disable-next-line
-    autoRefresh({ state, dispatch }) {
-      console.log("auto re 시작");
+    autoRefresh({ state, dispatch, commit }) {
       const { accessToken, refreshToken } = state;
-      const { exp } = jwt_decode(accessToken);
+      console.log(accessToken);
+      console.log(refreshToken);
+      const { exp } = jwt_decode(accessToken, { header: true });
       const now = Date.now() / 1000;
       // eslint-disable-next-line
       let timeUntilRef = exp - now;
       timeUntilRef -= 5 * 60;
-      console.log(exp);
       const res = () => {
         // eslint-disable-next-line
         Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
         Axios.post(`${this.state.ServerURL}/user/refresh`, null, {
           headers: {
-            jwtToken: `${refreshToken}`
+            refreshToken: `Bearer ${refreshToken}`
           }
         })
           .then(result => {
             console.log(result);
-            // res 로 토큰 오면 토큰 새로 재설정해야함
-            // commit ( Token ) 이런식으로 새로 들어온 토큰 재설정
-            // 문제 해결 안되서 이런식으로 써둠.
-            // refresh 끝났으니 다시 accessToken 으로 헤더 재설정
+            commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
           })
           .catch(err => console.error(err));
       };
-      console.log(timeUntilRef);
       setTimeout(res, 1000);
     },
     async LOGOUT({ commit }) {
