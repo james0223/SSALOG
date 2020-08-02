@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Optional;
+import com.ssalog.config.webhook;
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.service.PostService;
@@ -93,5 +94,4 @@ public class PostController {
 	public ResponseEntity<Boolean> is_post(@RequestParam("Scoring") String Scoring){
 		return new ResponseEntity<Boolean>(postService.is_post(Scoring), HttpStatus.OK);
 	}
-	
 }
