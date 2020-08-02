@@ -1,12 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Axios from "axios";
+// eslint-disable-next-line
+import jwt_decode from "jwt-decode";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     accessToken: null,
+    refreshToken: null,
     ImgURL: "https://ssalog.gq/upload/",
     ServerURL: "https://ssalog.gq/api",
     // user data
@@ -17,13 +20,22 @@ export default new Vuex.Store({
   getters: {},
   mutations: {
     LOGIN(state, payload) {
-      state.accessToken = payload.accessToken;
       state.username = payload.username;
-      // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
-      Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
     LOGOUT(state) {
       state.accessToken = null;
+      state.refreshToken = null;
+      state.username = null;
+      state.userThumbnail = `${state.ImgURL}/default.png`;
+    },
+    TOKEN(state, payload) {
+      const { accessToken, refreshToken } = payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      console.log(`Token${state.refreshToken}`);
+      console.log(`Token${state.accessToken}`);
+      // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
+      Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
     Thumbnail(state, payload) {
       // jso 하드타이핑 나중에 수정 필요.
@@ -51,10 +63,41 @@ export default new Vuex.Store({
         }
       });
       commit("LOGIN", {
-        accessToken: res.data.accessToken,
         username: loginData.username
       });
+      commit("TOKEN", {
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken
+      });
       await dispatch("Thumbnail", loginData.username);
+      dispatch("autoRefresh");
+    },
+    // eslint-disable-next-line
+    autoRefresh({ state, dispatch, commit }) {
+      const { accessToken, refreshToken } = state;
+      console.log(accessToken);
+      console.log(refreshToken);
+      const { exp } = jwt_decode(accessToken, { header: true });
+      const now = Date.now() / 1000;
+      // eslint-disable-next-line
+      let timeUntilRef = exp - now;
+      timeUntilRef -= 5 * 60;
+      const res = () => {
+        // eslint-disable-next-line
+        Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+        Axios.post(`${this.state.ServerURL}/user/refresh`, null, {
+          headers: {
+            refreshToken: `Bearer ${refreshToken}`
+          }
+        })
+          .then(result => {
+            console.log(result);
+            commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
+            dispatch("autoRefresh");
+          })
+          .catch(err => console.error(err));
+      };
+      setTimeout(res, 1000);
     },
     async LOGOUT({ commit }) {
       commit("LOGOUT");

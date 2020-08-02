@@ -11,7 +11,7 @@
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
               <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
-              <div class="code_content" v-html="codeData" v-highlight />
+              <editor-content class="main_content editor__content article" :editor="codeview" />
             </v-card>
           </v-dialog>
         </div>
@@ -35,7 +35,7 @@
           </v-toolbar-title>
         </v-toolbar>
         <v-card flat class="main_content_wrapper">
-          <div class="main_content ProseMirror" v-html="htmlData"></div>
+          <editor-content class="main_content editor__content article" :editor="editor" />
         </v-card>
       </v-col>
       <v-col lg="2">
@@ -49,10 +49,21 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import TOC from "@/components/TOC.vue";
+import { Editor, EditorContent } from "tiptap";
+import { CodeBlockHighlight } from "tiptap-extensions";
+import cpp from "highlight.js/lib/languages/cpp";
+import css from "highlight.js/lib/languages/css";
+import c from "highlight.js/lib/languages/c";
+import clike from "highlight.js/lib/languages/c-like";
+import python from "highlight.js/lib/languages/python";
+import java from "highlight.js/lib/languages/java";
+import javascript from "highlight.js/lib/languages/javascript";
+import "highlight.js/styles/github.css";
 
 export default {
   name: "LogDetail",
   components: {
+    EditorContent,
     TOC
   },
   data() {
@@ -66,7 +77,43 @@ export default {
       writerName: null,
       updatedDate: "2020-07-27",
       // code dialog
-      dialog: false
+      dialog: false,
+      editor: new Editor({
+        extensions: [
+          new CodeBlockHighlight({
+            languages: {
+              cpp,
+              css,
+              c,
+              clike,
+              python,
+              java,
+              javascript
+            }
+          })
+        ],
+        editable: false,
+        autoFocus: true,
+        content: ""
+      }),
+      codeview: new Editor({
+        extensions: [
+          new CodeBlockHighlight({
+            languages: {
+              cpp,
+              css,
+              c,
+              clike,
+              python,
+              java,
+              javascript
+            }
+          })
+        ],
+        editable: false,
+        autoFocus: true,
+        content: ""
+      })
     };
   },
   computed: mapState(["ServerURL"]),
@@ -87,6 +134,8 @@ export default {
         this.writerName = res.data.username;
         this.htmlData = res.data.html;
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
+        this.editor.setContent(this.htmlData);
+        this.codeview.setContent(this.codeData);
       } catch (e) {
         console.error(e);
       }
