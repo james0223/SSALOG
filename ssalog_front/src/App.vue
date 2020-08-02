@@ -36,6 +36,7 @@ export default {
     // 이거 안해놓고 새로고침하면 헤더 설정 다 날아감 ^^ㅗ
     if (this.$store.state.accessToken) {
       Axios.defaults.headers.common.Authorization = `Bearer ${this.$store.state.accessToken}`;
+      this.$store.dispatch("autoRefresh");
     }
   }
 };
