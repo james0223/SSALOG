@@ -329,7 +329,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL"]),
+  computed: mapState(["ServerURL", "username"]),
   beforeDestroy() {
     this.editor.destroy();
   },
@@ -346,6 +346,7 @@ export default {
       this.editor.commands.code_block();
     },
     write() {
+      this.resData.username = this.username;
       axios
         .put("https://ssalog.gq/api/user/post/update_post", this.resData)
         .then(response => {
