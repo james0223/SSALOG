@@ -26,6 +26,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ssalog.config.webhook;
+
 import io.jsonwebtoken.ExpiredJwtException;
 
 
@@ -71,11 +73,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         logger.info("tokenHeader: " + requestTokenHeader);
         String username = null;
         String jwtToken = null;
-
+        String jwtToken2 = null;
         // Bearer를 앞에 쓰는 이유눈 업계 표준, 함부로 바꿔서 사용하면 안된다. ex) ssalog로 바꿔서 쓰려고 했는데 클날뻔...ㅎㅎ
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
         	if(refreshToken != null) {
-        		jwtToken = refreshToken.substring(7);
+        		jwtToken2 = refreshToken.substring(7);
+        		jwtToken = requestTokenHeader.substring(7);
         		try {
         			username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         		} catch (IllegalArgumentException e) {
@@ -94,6 +97,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         			username = e.getClaims().getSubject();  
         			logger.info("[access token이 만료된 사용자 이름] " + username);
         			response.setHeader("error", "expired");
+        			webhook w = new webhook();
+        			w.send(e.toString() + "\n토큰 만료 error");
         		}
         	}
         } else {
@@ -110,6 +115,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             //만든 authentication 객체로 매번 인증받기
             SecurityContextHolder.getContext().setAuthentication(authen);
             response.setHeader("jwtToken", jwtToken);
+            response.setHeader("jwtToken2", jwtToken2);
             response.setHeader("username", username);
         }
         chain.doFilter(request, response);

@@ -256,17 +256,8 @@ public class LoginContorller {
     public ResponseEntity<Map<String, Object>> requestForNewAccessToken(HttpServletResponse response) {
         String refreshTokenFromDb = null;
         Map<String, Object> map = new HashMap<>();
-        String refreshToken = response.getHeader("jwtToken");
+        String refreshToken = response.getHeader("jwtToken2");
         try {
-//            logger.info("access token in rnat: " + accessToken);
-//            try {
-//                username = jwtTokenUtil.getUsernameFromToken(accessToken);
-//            } catch (IllegalArgumentException e) {
-//
-//            } catch (ExpiredJwtException e) { //expire됐을 때
-//                username = e.getClaims().getSubject();
-//                logger.info("username from expired access token: " + username);
-//            }
 
             if (refreshToken != null) { //refresh를 같이 보냈으면.
             	String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
