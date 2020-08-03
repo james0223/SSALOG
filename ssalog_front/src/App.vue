@@ -8,11 +8,12 @@
           $route.name === 'LogDetail' ||
           $route.name === 'ProblemDetail' ||
           $route.name === 'SignUp' ||
+          $route.name === 'AccountList' ||
           $route.name === 'Search'
       "
     ></Header>
     <v-divider></v-divider>
-    <v-container fill-height>
+    <v-container>
       <router-view :key="$route.fullPath"></router-view>
     </v-container>
   </v-app>
