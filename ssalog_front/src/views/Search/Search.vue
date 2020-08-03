@@ -1,9 +1,8 @@
 <template>
-  <div>
-    검색
+  <v-container>
     <SearchBar SelectedCategoryIdx="0" />
     최근에 많이 검색된 내용
-  </div>
+  </v-container>
 </template>
 
 <script>
