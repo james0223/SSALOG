@@ -53,13 +53,29 @@ export default {
     };
   },
   computed: mapState(["ServerURL"]),
+  mounted() {
+    this.getComments();
+  },
   methods: {
+    async getComments() {
+      const { ServerURL } = this;
+      try {
+        const res = await axios.get(`${ServerURL}/newuser/post/get_cooment`, {
+          params: {
+            Scoring: this.$route.params.id
+          }
+        });
+        console.log(res);
+      } catch (e) {
+        console.error(e);
+      }
+    },
     async createComment() {
       // eslint-disable-next-line
       const {ServerURL} = this;
       try {
         if (this.myComment !== "") {
-          const res = await axios.post(
+          await axios.post(
             `${ServerURL}/user/post/write_comment`,
             {
               comment: this.myComment
@@ -70,7 +86,7 @@ export default {
               }
             }
           );
-          console.log(res);
+          this.myComment = "";
         }
       } catch (e) {
         console.error(e);
