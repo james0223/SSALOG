@@ -12,8 +12,8 @@ if (userNode) {
       let domparser = new DOMParser();
       var codeData = {
         scoring: elem[0].innerHTML,
-        problemname: elem[2].firstChild.getAttribute("data-original-title"),
-        problemid: elem[2].firstChild.innerText,
+        problemname: elem[2].lastChild.getAttribute("data-original-title"),
+        problemid: elem[2].lastChild.innerText,
         memory: elem[4].innerText,
         time: elem[5].innerText,
         language: elem[6].firstChild.innerText,
