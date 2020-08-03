@@ -127,7 +127,6 @@ export default {
   methods: {
     async getSSALOG(pageId) {
       try {
-        console.log(this.ServerURL);
         const res = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
           params: {
             Scoring: pageId
