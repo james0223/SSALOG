@@ -12,7 +12,7 @@ import AccountList from "@/views/Account/AccountList.vue";
 import ProblemList from "@/views/Problem/ProblemList.vue";
 import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 // main
-import Home from "@/views/narutoHome.vue";
+import Home from "@/views/Home.vue";
 // editor
 import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
@@ -34,83 +34,83 @@ const routes = [
   {
     path: "/Problem/List/",
     name: "ProblemList",
-    component: ProblemList
+    component: ProblemList,
   },
   {
     path: "/Problem/detail/",
     name: "ProblemDetail",
-    component: ProblemDetail
+    component: ProblemDetail,
   },
   {
     path: "/Account/List/",
     name: "AccountList",
-    component: AccountList
+    component: AccountList,
   },
   {
     path: "/Search",
     name: "Search",
-    component: Search
+    component: Search,
   },
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
   },
   {
     path: "/SignUp",
     name: "SignUp",
-    component: SignUp
+    component: SignUp,
   },
   {
     path: "/Login",
     name: "Login",
-    component: Login
+    component: Login,
   },
   {
     path: "/Account",
     name: "Account",
     component: Account,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
     path: "/FindId",
     name: "FindId",
-    component: FindId
+    component: FindId,
   },
   {
     path: "/FindPass",
     name: "FindPass",
-    component: FindPass
+    component: FindPass,
   },
   {
     path: "/WriteLog/:id",
     name: "WriteLog",
     component: WriteLog,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
     path: "/SSALOG",
     name: "SSALOG",
     component: SSALOG,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
     path: "/SSALOG/Solution/:id",
     name: "LogDetail",
-    component: LogDetail
-  }
+    component: LogDetail,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 // global guard (login required)
-router.beforeEach(function(to, from, next) {
+router.beforeEach(function (to, from, next) {
   if (
-    to.matched.some(function(routeInfo) {
+    to.matched.some(function (routeInfo) {
       return routeInfo.meta.authRequired;
     })
   ) {
