@@ -37,6 +37,7 @@
         <v-card flat class="main_content_wrapper">
           <editor-content class="main_content editor__content article" :editor="editor" />
         </v-card>
+        <Comment />
       </v-col>
       <v-col lg="2">
         <TOC v-bind:content="htmlData" class="toc" />
@@ -47,8 +48,6 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
-import TOC from "@/components/TOC.vue";
 import { Editor, EditorContent } from "tiptap";
 import { CodeBlockHighlight } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
@@ -59,11 +58,16 @@ import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
+import { mapState } from "vuex";
+// component
+import TOC from "@/components/TOC.vue";
+import Comment from "@/components/Comment.vue";
 
 export default {
   name: "LogDetail",
   components: {
     EditorContent,
+    Comment,
     TOC
   },
   data() {
@@ -123,7 +127,6 @@ export default {
   methods: {
     async getSSALOG(pageId) {
       try {
-        console.log(this.ServerURL);
         const res = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
           params: {
             Scoring: pageId

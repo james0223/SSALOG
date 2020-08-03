@@ -32,8 +32,6 @@ export default new Vuex.Store({
       const { accessToken, refreshToken } = payload;
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
-      console.log(`Token${state.refreshToken}`);
-      console.log(`Token${state.accessToken}`);
       // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
       Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
@@ -75,13 +73,12 @@ export default new Vuex.Store({
     // eslint-disable-next-line
     autoRefresh({ state, dispatch, commit }) {
       const { accessToken, refreshToken } = state;
-      console.log(accessToken);
-      console.log(refreshToken);
-      const { exp } = jwt_decode(accessToken, { header: true });
+      const { exp } = jwt_decode(accessToken);
       const now = Date.now() / 1000;
       // eslint-disable-next-line
       let timeUntilRef = exp - now;
       timeUntilRef -= 5 * 60;
+      timeUntilRef *= 1000;
       const res = () => {
         // eslint-disable-next-line
         Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -91,13 +88,12 @@ export default new Vuex.Store({
           }
         })
           .then(result => {
-            console.log(result);
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
           })
           .catch(err => console.error(err));
       };
-      setTimeout(res, 1000);
+      setTimeout(res, timeUntilRef);
     },
     async LOGOUT({ commit }) {
       commit("LOGOUT");
