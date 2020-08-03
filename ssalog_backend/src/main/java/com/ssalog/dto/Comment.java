@@ -1,7 +1,6 @@
 package com.ssalog.dto;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,34 +8,29 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document
 public class Comment {
 	@MongoId
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long _id;
+	private String uniqueid;
 	private String userid;
 	private String message;
 	@CreationTimestamp
 	private String time;
 	private int like;
-	
+	private List<Comment> subcomment;
 	public Comment() {}
-	
-	public Comment(Long _id, String userid, String message, String time, int like) {
+	public Comment(String uniqueid, String userid, String message, String time, int like, List<Comment> subcomment) {
 		super();
-		this._id = _id;
+		this.uniqueid = uniqueid;
 		this.userid = userid;
 		this.message = message;
 		this.time = time;
 		this.like = like;
+		this.subcomment = subcomment;
 	}
-
-	
-	public Long get_id() {
-		return _id;
+	public String getUniqueid() {
+		return uniqueid;
 	}
-
-	public void set_id(Long _id) {
-		this._id = _id;
+	public void setUniqueid(String uniqueid) {
+		this.uniqueid = uniqueid;
 	}
-
 	public String getUserid() {
 		return userid;
 	}
@@ -60,6 +54,12 @@ public class Comment {
 	}
 	public void setLike(int like) {
 		this.like = like;
+	}
+	public List<Comment> getSubcomment() {
+		return subcomment;
+	}
+	public void setSubcomment(List<Comment> subcomment) {
+		this.subcomment = subcomment;
 	}
 	
 }

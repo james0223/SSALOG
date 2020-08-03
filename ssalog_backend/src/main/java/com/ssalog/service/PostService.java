@@ -18,4 +18,6 @@ public interface PostService {
 	public Page<Post> select_by_problemname(String problemname, PageRequest pageable);
 	public Page<Post> select_by_keyword(String keyword, PageRequest pageable);
 	public boolean is_post(String Scoring);
+	public List<Comment> read_comment(String Scoring);
+	//public int write_subcomment(String uniqueid,Comment comment,String username);
 }
