@@ -3,7 +3,7 @@ package com.ssalog.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +20,8 @@ import com.ssalog.repository.PostRepository;
 public class PostServiceImpl implements PostService{
 	@Autowired
 	PostRepository postRepository;
+//	@Autowired
+//	CommentRepository commentRepository;
 
 	@Override
 	public Post write_post(Post post,String username) {
@@ -47,6 +49,8 @@ public class PostServiceImpl implements PostService{
 			if(clist == null) {
 				clist = new ArrayList<>();
 			}
+			String uid = username+UUID.randomUUID().toString();
+			comment.setUniqueid(uid);
 			comment.setUserid(username);
 			clist.add(comment);
 			p1.setComment(clist);
@@ -115,4 +119,36 @@ public class PostServiceImpl implements PostService{
 			return false;
 		}
 	}
+	
+	@Override
+	public List<Comment> read_comment(String Scoring){
+		List<Comment> list = postRepository.findByScoring(Scoring).getComment();
+		if(list == null) {
+			return new ArrayList<Comment>();
+		}else {
+			return list;
+		}
+	}
+//	@Override
+//	@Transactional
+//	public int write_subcomment(String uniqueid,Comment comment,String username) {
+//		Comment com= commentRepository.findByUniqueid(uniqueid);
+//		if(com != null) {
+//			List<Comment> clist = com.getSubcomment();
+//			if(clist == null) {
+//				clist = new ArrayList<>();
+//			}
+//			String uid = username+UUID.randomUUID().toString();
+//			comment.setUniqueid(uid);
+//			comment.setUserid(username);
+//			clist.add(comment);
+//			com.setSubcomment(clist);
+//			commentRepository.save(com);
+//			return 1;
+//		}
+//		else {
+//			return 2;
+//		}
+//	}
+
 }
