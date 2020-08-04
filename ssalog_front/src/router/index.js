@@ -91,8 +91,7 @@ const routes = [
   {
     path: "/SSALOG",
     name: "SSALOG",
-    component: SSALOG,
-    meta: { authRequired: true }
+    component: SSALOG
   },
   {
     path: "/SSALOG/Solution/:id",
