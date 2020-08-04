@@ -119,7 +119,8 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public Page<Post> select_by_keyword(String keyword, PageRequest pageable){
+	public Page<Post> select_by_keyword(List<String> keyword, PageRequest pageable){
+		//System.out.println("keyword = " + keyword);
 		return postRepository.findByKeyword(keyword, pageable);
 	}
 
@@ -173,5 +174,9 @@ public class PostServiceImpl implements PostService{
 			mlist.add(m);
 		}
 		return mlist;
+	}
+	
+	public Page<Post> findMyPost(String username, PageRequest pageable){
+		return postRepository.findByUsername(username, pageable);
 	}
 }
