@@ -134,16 +134,17 @@ public class LoginContorller {
         Token retok = new Token();
         retok.setUsername(username);
         retok.setRefreshToken(refreshToken);
-
+        
         //발행한 redis에 저장하는 로직으로, hashmap과 같은 key,value 구조임
         ValueOperations<String, Object> vop = redisTemplate.opsForValue();
         vop.set(username, retok); // key, value 값으로 redis에 저장
-
+        String nickname = accountRepository.findByUsername(username).getNickname();
         logger.info("generated access token: " + accessToken);
         logger.info("generated refresh token: " + refreshToken);
         Map<String, Object> map = new HashMap<>();
         map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
+        map.put("nickname", nickname);
         return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
     }
    
