@@ -1,10 +1,10 @@
 <template>
-  <div>
-    문제 조회 list
+  <v-container>
     <SearchBar :SelectedCategoryIdx="categoryIdx" />
+    문제 조회 list
     {{ q }}
     {{ categoryIdx }}
-  </div>
+  </v-container>
 </template>
 
 <script>

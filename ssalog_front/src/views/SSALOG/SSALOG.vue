@@ -7,7 +7,7 @@
       <v-divider vertical></v-divider>
       <v-col lg="6" cols="12">
         <v-card flat height="60vh" class="pa-3">
-          <h2 class="font-weight-light mb-1">나의 쌀밭</h2>
+          <h2 class="font-weight-light mb-1">{{ userData.id }}의 쌀밭</h2>
           <v-divider></v-divider>
           <calendar-heatmap
             class="mt-3"
@@ -42,6 +42,10 @@ export default {
   },
   data() {
     return {
+      userData: {
+        id: this.$route.query.id,
+        nickname: null // 지금 없지만 받아온다.
+      },
       HeatmapData: {
         dates: [
           { date: "2020-3-6", count: 6 },
@@ -63,6 +67,16 @@ export default {
         ]
       }
     };
+  },
+  created() {
+    if (!this.userData.id) {
+      if (!this.$store.state.accessToken) {
+        // 로그인 안했는데 내 살로그 가기 누른 경우
+        this.$router.push({ name: "Login" });
+      } else {
+        // 자기 계정 로딩
+      }
+    }
   }
 };
 </script>

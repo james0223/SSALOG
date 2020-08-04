@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-row align="center">
       <v-col class="d-flex" cols="2">
         <v-select v-model="SelectedCategory" :items="category" label="검색유형"></v-select>
@@ -16,7 +16,7 @@
         <v-btn tile block color="primary" @click="goSearch">검색</v-btn>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
