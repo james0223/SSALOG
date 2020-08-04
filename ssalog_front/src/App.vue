@@ -1,17 +1,6 @@
 <template>
   <v-app>
-    <Header
-      v-if="
-        $route.name === 'Home' ||
-          $route.name === 'Account' ||
-          $route.name === 'SSALOG' ||
-          $route.name === 'LogDetail' ||
-          $route.name === 'ProblemDetail' ||
-          $route.name === 'SignUp' ||
-          $route.name === 'AccountList' ||
-          $route.name === 'Search'
-      "
-    ></Header>
+    <Header v-if="$route.name !== 'Login'"></Header>
     <v-divider></v-divider>
     <v-container>
       <router-view :key="$route.fullPath"></router-view>
