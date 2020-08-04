@@ -179,4 +179,8 @@ public class PostServiceImpl implements PostService{
 	public Page<Post> findMyPost(String username, PageRequest pageable){
 		return postRepository.findByUsername(username, pageable);
 	}
+	
+	public Page<Post> findkey(List<String> keyword, PageRequest pageable){
+		return postRepository.findAnyOfTheseValues(keyword, pageable);
+	}
 }

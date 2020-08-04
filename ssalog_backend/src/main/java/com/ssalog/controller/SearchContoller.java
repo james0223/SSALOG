@@ -55,7 +55,7 @@ public class SearchContoller {
 	@ApiOperation(value ="[post keyword 조회]")
 	@GetMapping("/to_keyword")
 	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
-		return new ResponseEntity<Page<Post>>(postService.select_by_keyword(keyword, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<Page<Post>>(postService.findkey(keyword, pageable.of()),HttpStatus.OK);
 	}
 	@ApiOperation(value ="[잔디 심을때 필요한거] 전달한 username에 해당하는 user의 date와 count 값을 가진 json이 list형태로 날아감.")
 	@GetMapping("/get_jandi")
@@ -70,8 +70,9 @@ public class SearchContoller {
 	
 	@ApiOperation(value ="[test]")
 	@GetMapping("/test")
-	public void test(){
-		//postService.find_jandi("jso");
+	public Page<Post> test(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
+		//System.out.println(keyword.get(0));
+		return postService.findkey(keyword, pageable.of());
 	}
 
 }
