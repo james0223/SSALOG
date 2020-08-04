@@ -1,35 +1,30 @@
 <template>
   <v-container class="pa-0">
-    <v-app-bar flat height="100vh" color="white" class="mx-auto">
+    <v-app-bar app color="white" height="95">
       <v-row class="align-center">
-        <v-col cols="1" class="pb--10">
+        <v-avatar class="mr-3" color="lighten-5" size="70">
           <v-img
-            :src="require('@/assets/images/header-logo.png')"
+            contain
+            max-height="100%"
+            src="@/assets/images/logo.jpg"
             @click="changeRoute(0)"
-            max-width="5vw"
-            max-height="10vh"
-            class="pointButton"
-            alt="홈페이지 아이콘"
-          />
-        </v-col>
-        <v-col cols="1.5" class="text-center">
-          <v-btn :ripple="false" class="pa-0 no-background-hover" text @click="changeRoute(1)"
-            >SSALOG</v-btn
-          >
-        </v-col>
-        <v-col cols="1.5" class="text-center">
+          ></v-img>
+        </v-avatar>
+
+        <v-toolbar-title class="font-weight-black headline"> </v-toolbar-title>
+        <!-- <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text @click="changeRoute(2)"
             >GROUP</v-btn
           >
-        </v-col>
+        </v-col> -->
         <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text @click="changeRoute(3)">
             <b>검색</b>
           </v-btn>
         </v-col>
-        <v-col cols="1.5" class="text-center">
+        <!-- <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text>Community</v-btn>
-        </v-col>
+        </v-col> -->
         <v-col cols="2" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
             <v-col cols="5" @click="$router.push({ name: 'Login' })">
@@ -94,7 +89,7 @@ export default {
   name: "Header",
   data: () => ({
     showMenu: false,
-    items: [{ title: "마이페이지" }, { title: "로그아웃" }]
+    items: [{ title: "정보수정" }, { title: "내 쌀로그" }, { title: "로그아웃" }]
   }),
   computed: mapState(["userThumbnail", "username"]),
   methods: {
