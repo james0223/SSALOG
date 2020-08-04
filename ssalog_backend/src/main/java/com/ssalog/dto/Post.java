@@ -30,16 +30,16 @@ public class Post {
 	private List<String> keyword;
 	private List<Comment> comment;
 	private int like;
-	@CreationTimestamp
-	private Date regdate;
+	private String regdate;
+	private String regtime;
 	private Boolean iswrite;
 	
 	public Post() {}
 
-	
+
 	public Post(String scoring, String username, String code, String language, String len, String memory,
 			String problemid, String problemname, String time, String html, List<String> keyword, List<Comment> comment,
-			int like, Date regdate, Boolean iswrite) {
+			int like, String regdate, String regtime, Boolean iswrite) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -55,20 +55,11 @@ public class Post {
 		this.comment = comment;
 		this.like = like;
 		this.regdate = regdate;
+		this.regtime = regtime;
 		this.iswrite = iswrite;
 	}
 
 	
-	public Boolean getIswrite() {
-		return iswrite;
-	}
-
-
-	public void setIswrite(Boolean iswrite) {
-		this.iswrite = iswrite;
-	}
-
-
 	public String getScoring() {
 		return scoring;
 	}
@@ -173,15 +164,30 @@ public class Post {
 		this.like = like;
 	}
 
-	public Date getRegdate() {
+	public String getRegdate() {
 		return regdate;
 	}
 
-	public void setRegdate(Date regdate) {
+	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
-	
 
+	public String getRegtime() {
+		return regtime;
+	}
+
+	public void setRegtime(String regtime) {
+		this.regtime = regtime;
+	}
+
+	public Boolean getIswrite() {
+		return iswrite;
+	}
+
+	public void setIswrite(Boolean iswrite) {
+		this.iswrite = iswrite;
+	}
+	
 	
 }
 //code: "사용자가 푼코드 "

@@ -1,6 +1,9 @@
 package com.ssalog.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
+import com.ssalog.repository.PostRepository;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 
@@ -57,5 +61,20 @@ public class SearchContoller {
 	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("keyword") String keyword, PageRequest pageable){
 		return new ResponseEntity<Page<Post>>(postService.select_by_keyword(keyword, pageable.of()),HttpStatus.OK);
 	}
+	@ApiOperation(value ="[잔디 심을때 필요한거] 전달한 username에 해당하는 user의 date와 count 값을 가진 json이 list형태로 날아감.")
+	@GetMapping("/get_jandi")
+	public ResponseEntity<?> get_jandi(@RequestParam("username") String username){
+		List<Map<String, Object>> result = postService.find_jandi(username);
+		if(result == null) {
+			return new ResponseEntity<String>("not exist", HttpStatus.OK);
+		}else {
+			return new ResponseEntity<List<Map<String, Object>>>(postService.find_jandi(username),HttpStatus.OK);
+		}
+	}
 	
+	@ApiOperation(value ="[test]")
+	@GetMapping("/test")
+	public void test(){
+		//postService.find_jandi("jso");
+	}
 }
