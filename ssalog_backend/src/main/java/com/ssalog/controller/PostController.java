@@ -87,7 +87,7 @@ public class PostController {
 		return new ResponseEntity<Boolean>(postService.is_post(Scoring), HttpStatus.OK);
 	}
 	
-	@GetMapping("newuser/post/get_cooment")
+	@GetMapping("newuser/post/get_comment")
 	@ApiOperation(value = "[댓글리스트가져오기] 풀이번호에 해당하는 게시물에 달린 댓글들을 가져온다.")
 	public ResponseEntity<List<Comment>> read_comment(@RequestParam("Scoring") String Scoring) {
 		return new ResponseEntity<List<Comment>>(postService.read_comment(Scoring), HttpStatus.OK);

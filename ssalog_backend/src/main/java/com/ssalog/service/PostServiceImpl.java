@@ -1,7 +1,11 @@
 package com.ssalog.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.jandi;
 import com.ssalog.repository.PostRepository;
 
 @Service
@@ -25,6 +30,13 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public Post write_post(Post post,String username) {
+		Date date = new Date();
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+		String time1 = format1.format(date);
+		String time2 = format2.format(date);
+		post.setRegdate(time1);
+		post.setRegtime(time2);
 		post.setUsername(username);
 		return postRepository.save(post);
 	}
@@ -149,6 +161,17 @@ public class PostServiceImpl implements PostService{
 //		else {
 //			return 2;
 //		}
-//	}
-
+//	
+	
+	public List<Map<String, Object>> find_jandi(String username){
+		List<jandi> list = postRepository.getJandiCount(username).getMappedResults();
+		List<Map<String,Object>> mlist = new ArrayList<>();
+		for(int i=0; i<list.size(); i++) {
+			Map<String, Object> m = new HashMap<>();
+			m.put("date", list.get(i).get_id());
+			m.put("count", list.get(i).getCount());
+			mlist.add(m);
+		}
+		return mlist;
+	}
 }

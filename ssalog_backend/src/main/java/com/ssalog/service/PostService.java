@@ -1,6 +1,7 @@
 package com.ssalog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,4 +21,5 @@ public interface PostService {
 	public boolean is_post(String Scoring);
 	public List<Comment> read_comment(String Scoring);
 	//public int write_subcomment(String uniqueid,Comment comment,String username);
+	public List<Map<String, Object>> find_jandi(String username);
 }
