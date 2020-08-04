@@ -15,7 +15,7 @@ import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 import Home from "@/views/Home.vue";
 // editor
 import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
-// import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
+import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
@@ -89,6 +89,13 @@ const routes = [
     component: WriteLog,
     meta: { authRequired: true }
   },
+  // 아래 Soultion 보다 위에 놓여야 해당 링크로 라우터가 접근 가능
+  // children component 형식으로 동작하는 것이 아니기에, 이렇게 분리해주어야 함.
+  {
+    path: "/SSALOG/Solution/:id",
+    name: "LogDetail",
+    component: LogDetail
+  },
   {
     path: "/SSALOG",
     name: "SSALOG",
@@ -99,13 +106,13 @@ const routes = [
         path: "Main",
         component: SsalogMain
       }
+      // {
+      //   path: "Solution",
+      //   name: "SolutionList",
+      //   component: SolutionList
+      // }
     ]
   }
-  // {
-  //   path: "/SSALOG/Solution/:id",
-  //   name: "LogDetail",
-  //   component: LogDetail
-  // }
 ];
 
 const router = new VueRouter({

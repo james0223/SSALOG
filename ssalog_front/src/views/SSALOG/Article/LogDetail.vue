@@ -40,7 +40,7 @@
         <Comment />
       </v-col>
       <v-col lg="2">
-        <TOC v-bind:content="htmlData" class="toc" />
+        <!--        <TOC v-bind:content="htmlData" class="toc" />-->
       </v-col>
     </v-row>
   </v-container>
@@ -60,15 +60,15 @@ import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
 import { mapState } from "vuex";
 // component
-import TOC from "@/components/TOC.vue";
+// import TOC from "@/components/TOC.vue";
 import Comment from "@/components/Comment.vue";
 
 export default {
   name: "LogDetail",
   components: {
     EditorContent,
-    Comment,
-    TOC
+    Comment
+    // TOC
   },
   data() {
     return {
