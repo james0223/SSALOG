@@ -2,9 +2,9 @@
   <v-app>
     <Header v-if="$route.name !== 'Login'"></Header>
     <v-divider></v-divider>
-    <v-container>
-      <router-view :key="$route.fullPath"></router-view>
-    </v-container>
+    <!-- <v-container> -->
+    <router-view :key="$route.fullPath"></router-view>
+    <!-- </v-container> -->
   </v-app>
 </template>
 
