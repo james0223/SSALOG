@@ -15,9 +15,10 @@ import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
 import Home from "@/views/Home.vue";
 // editor
 import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
-import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
+// import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
+import SsalogMain from "@/components/SSALOG/Main.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -91,13 +92,19 @@ const routes = [
   {
     path: "/SSALOG",
     name: "SSALOG",
-    component: SSALOG
-  },
-  {
-    path: "/SSALOG/Solution/:id",
-    name: "LogDetail",
-    component: LogDetail
+    component: SSALOG,
+    children: [
+      {
+        path: "Main",
+        component: SsalogMain
+      }
+    ]
   }
+  // {
+  //   path: "/SSALOG/Solution/:id",
+  //   name: "LogDetail",
+  //   component: LogDetail
+  // }
 ];
 
 const router = new VueRouter({
