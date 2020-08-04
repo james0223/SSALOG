@@ -42,7 +42,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-tabs vertical class="my-15" v-model="activeTab">
+          <v-tabs vertical class="my-15 pa-3" v-model="activeTab">
             <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.route" exact>
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
@@ -62,6 +62,17 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      // 왼쪽 thumbnail 관련
+      thumbnailDialog: false,
+      ThumbnailSelect: 0,
+      items: [
+        { text: "사진 업로드", icon: "mdi-camera-enhance" },
+        { text: "기본이미지로 변경", icon: "mdi-camera-off" }
+      ],
+      userData: {
+        id: this.$route.query.id,
+        nickname: null // 지금 없지만 받아온다.
+      },
       activeTab: `/SSALOG/main`,
       tabs: [
         { id: 0, name: "Main", route: `/SSALOG/Main`, icon: "mdi-clipboard-text-play-outline" },

@@ -1,6 +1,6 @@
 <template>
-  <v-card flat height="60vh" class="pa-3">
-    <h2 class="font-weight-light mb-1">{{ userData.id }}의 쌀밭</h2>
+  <v-card flat height="60vh" class="pa-6 mt-8">
+    <h2 class="font-weight-light mb-1">{{ this.$store.state.username }}의 쌀밭</h2>
     <v-divider></v-divider>
     <calendar-heatmap
       class="mt-3"
@@ -22,6 +22,7 @@
 <script>
 import DoughNutChart from "@/components/DoughnutChart.vue";
 import { CalendarHeatmap } from "vue-calendar-heatmap";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -30,24 +31,13 @@ export default {
   },
   data() {
     return {
-      // 왼쪽 thumbnail 관련
-      thumbnailDialog: false,
-      ThumbnailSelect: 0,
-      items: [
-        { text: "사진 업로드", icon: "mdi-camera-enhance" },
-        { text: "기본이미지로 변경", icon: "mdi-camera-off" }
-      ],
-      userData: {
-        id: this.$route.query.id,
-        nickname: null // 지금 없지만 받아온다.
-      },
       HeatmapData: {
         dates: [
           { date: "2020-3-6", count: 6 },
           { date: "2020-3-4", count: 6 }
         ],
-        rangeColor: ["ebedf0", "dae2ef", "#c0ddf9", "#73b3f3", "#3886e1", "#17459e"],
-        endDate: "2020-07-25"
+        rangeColor: ["#FFFDE7", "#FFF9C4", "#FFF59D", "#FFF176", "#FFEE58"],
+        endDate: "2020-08-04"
       },
       chartData: {
         // 해당 내용은 보기용
@@ -62,6 +52,31 @@ export default {
         ]
       }
     };
+  },
+  mounted() {
+    this.getGrassData();
+  },
+  computed: mapState(["ServerURL"]),
+  methods: {
+    async getGrassData() {
+      const res = await this.$http.get(`${this.ServerURL}/newuser/search/get_jandi`, {
+        params: {
+          username: this.$store.state.username
+        }
+      });
+      let date = new Date();
+      date = this.getFormatDate(date);
+      this.endDate = date;
+      this.HeatmapData.dates = res.data;
+    },
+    getFormatDate(date) {
+      const year = date.getFullYear();
+      let month = 1 + date.getMonth();
+      month = month >= 10 ? month : `0${month}`;
+      let day = date.getDate();
+      day = day >= 10 ? day : `0${day}`;
+      return `${year}-${month}-${day}`;
+    }
   }
 };
 </script>
