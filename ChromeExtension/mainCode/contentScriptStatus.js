@@ -63,10 +63,32 @@ if (userNode) {
       let solutionConfigs = solution.closest("tr").childNodes;
       // 이렇게 하면 외부 콜백함수에 변수를 담아 사용할 수 있다.
       var portal = document.createElement("button");
-      portal.innerText = "Go to SSaLog";
+      portal.setAttribute(
+        "style",
+        "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;  border-top-left-radius: 5px; "
+      );
+      portal.innerText = "SSALOG";
+
+      portal.addEventListener("mouseover", (event) => {
+        // console.dir(event.target)
+        event.target.setAttribute(
+          "style",
+          "background-color: green; margin-left : 10px; border: 1px solid green; color : white;  "
+        );
+        event.target.innerText = "Write>>";
+      });
+      portal.addEventListener("mouseout", (event) => {
+        // console.dir(event.target)
+        event.target.setAttribute(
+          "style",
+          "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;  "
+        );
+        event.target.innerText = "SSALOG";
+      });
+      portal.addEventListener("click", (event) => addListener(solutionConfigs));
+
       solution.innerText = "맞았습니다!!  ";
       solution.append(portal);
-      portal.addEventListener("click", (event) => addListener(solutionConfigs));
     }
     var target = document.querySelector(".result-text");
     var observer = new MutationObserver(function (mutations) {
