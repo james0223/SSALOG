@@ -1,7 +1,5 @@
 package com.ssalog.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
-import com.ssalog.repository.PostRepository;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 
@@ -58,7 +54,7 @@ public class SearchContoller {
 	}
 	@ApiOperation(value ="[post keyword 조회]")
 	@GetMapping("/to_keyword")
-	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("keyword") String keyword, PageRequest pageable){
+	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
 		return new ResponseEntity<Page<Post>>(postService.select_by_keyword(keyword, pageable.of()),HttpStatus.OK);
 	}
 	@ApiOperation(value ="[잔디 심을때 필요한거] 전달한 username에 해당하는 user의 date와 count 값을 가진 json이 list형태로 날아감.")
@@ -77,4 +73,5 @@ public class SearchContoller {
 	public void test(){
 		//postService.find_jandi("jso");
 	}
+
 }

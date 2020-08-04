@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Optional;
 import com.ssalog.config.webhook;
 import com.ssalog.dto.Comment;
+import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.service.PostService;
 
@@ -41,7 +42,12 @@ public class PostController {
 		String username = response.getHeader("username"); 
 		return postService.write_post(post,username);
 	}
-	
+	@GetMapping("user/post/my_write_list")
+	@ApiOperation(value = "[post list] 내가 작성한 post의 목록을 가져온다.")
+	public Page<Post> findmypost(HttpServletResponse response, PageRequest pageable) {
+		String username = response.getHeader("username"); 
+		return postService.findMyPost(username,pageable.of());
+	}
 	@GetMapping("newuser/post/get_detail")
 	@ApiOperation(value = "[posting detail] 풀이번호에 해당하는 게시물의 dto를 얻어올 수 있다. 만약 풀이번호에 해당하는 게시물이 존재 하지 않으면 400 error를 발생시킨다. ")
 	public ResponseEntity<?> get_post(@RequestParam("Scoring") String Scoring){
