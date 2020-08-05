@@ -2,7 +2,6 @@
   <v-container>
     <SearchBar :SelectedCategoryIdx="categoryIdx" />
     <h2 class="text-center" v-if="problems.length === 0">검색결과가 없습니다 :(</h2>
-
     <h2 v-if="problems.length !== 0">{{ $route.query.q }}에 대한 검색결과입니다.</h2>
     <!-- <v-col v-for="(problem, i) in problems" :key="i" cols="4">{{ problem }}</v-col> -->
     <v-hover style="cursor:pointer" v-slot:default="{ hover }">
@@ -28,6 +27,7 @@
 
 <script>
 import axios from "axios";
+import qs from "qs";
 import SearchBar from "@/components/SearchBar.vue";
 
 export default {
@@ -37,10 +37,10 @@ export default {
   },
   data() {
     return {
+      isNoProblem: false,
       searchData: {
         direction: "ASC",
         problemid: this.$route.query.q,
-        keyword: this.$route.query.q,
         problemname: this.$route.query.q,
         page: 1,
         size: 24
@@ -71,7 +71,12 @@ export default {
           `${this.$store.state.ServerURL}/newuser/search/${this.searchMethods[this.categoryIdx]}`,
           {
             params: {
-              ...this.searchData
+              ...this.searchData,
+              keyword: this.$route.query.keywords // route.query.keyword 가져와야함
+            },
+            paramsSerializer: params => {
+              console.log(qs.stringify(params));
+              return qs.stringify(params);
             }
           }
         );
@@ -80,11 +85,12 @@ export default {
         this.problem.name = data.content[0].problemname;
       } catch (e) {
         console.error(e);
+        this.isNoProblem = true;
       }
     }
   },
   mounted() {
-    if (this.$route.query.q) {
+    if (this.$route.query.q || this.$route.query.keywords) {
       this.fetchProblems();
     }
   }
