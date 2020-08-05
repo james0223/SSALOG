@@ -76,11 +76,11 @@ export default {
       activeTab: `/SSALOG/main`,
       tabs: [
         { id: 0, name: "Main", route: `/SSALOG/Main`, icon: "mdi-clipboard-text-play-outline" },
-        { id: 1, name: "Solution", route: `/SSALOG/Solution`, icon: "mdi-heart" },
-        { id: 2, name: "Profile", route: `/SSALOG/Profile`, icon: "mdi-heart" },
-        { id: 3, name: "Following", route: `/SSALOG/Following`, icon: "mdi-heart" },
-        { id: 4, name: "Follower", route: `/SSALOG/Follower`, icon: "mdi-heart" },
-        { id: 5, name: "Star", route: `/SSALOG/Star`, icon: "mdi-heart" }
+        { id: 1, name: "Solution", route: `/SSALOG/Solution`, icon: "mdi-ballot" },
+        { id: 2, name: "Profile", route: `/SSALOG/Profile`, icon: "mdi-account" },
+        { id: 3, name: "Following", route: `/SSALOG/Following`, icon: "mdi-account-arrow-right" },
+        { id: 4, name: "Follower", route: `/SSALOG/Follower`, icon: "mdi-account-arrow-left" },
+        { id: 5, name: "Star", route: `/SSALOG/Star`, icon: "mdi-star" }
       ]
     };
   },

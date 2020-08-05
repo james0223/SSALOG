@@ -4,7 +4,7 @@
       <v-col cols="2">
         <div id="relative_wrapper">
           <v-avatar size="260" class="mt-8">
-            <img :src="userThumbnail" />
+            <img :src="writerThumbnail" />
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
@@ -135,6 +135,7 @@ export default {
       // 왼쪽 thumbnail 관련
       thumbnailDialog: false,
       ThumbnailSelect: 0,
+      writerThumbnail: null,
       items: [
         { text: "사진 업로드", icon: "mdi-camera-enhance" },
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
@@ -200,9 +201,10 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL", "userThumbnail"]),
+  computed: mapState(["ServerURL", "ImgURL"]),
   created() {
     this.getSSALOG(this.$route.params.id);
+    this.getThumbnail();
   },
   mounted() {},
   methods: {
@@ -224,6 +226,16 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async getThumbnail() {
+      console.log("hihih");
+      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
+        params: {
+          username: this.writerName
+        }
+      });
+      console.log(this.writerThumbnail);
+      this.writerThumbnail = `${this.ImgURL}${res.data}`;
     },
     setTOC(toc) {
       this.TOC = toc;
@@ -265,7 +277,6 @@ export default {
   min-height: 200vh;
 }
 .code_button {
-  position: fixed;
   top: 10vh;
   width: 4rem;
   display: flex;
@@ -282,7 +293,6 @@ export default {
 }
 
 .table_of_contents {
-  position: fixed;
-  top: 35vh;
+  top: 10vh;
 }
 </style>
