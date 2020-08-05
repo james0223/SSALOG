@@ -40,7 +40,20 @@
         <Comment />
       </v-col>
       <v-col lg="2">
-        <TOC v-bind:content="htmlData" class="toc" />
+        <v-card height="35vh" width="15vw" class="mx-8 table_of_contents" v-once v-if="tocLoaded">
+          <v-list dense>
+            <v-subheader>목 차</v-subheader>
+            <v-list-item-group v-model="TOC" color="primary">
+              <v-list-item v-for="(item, i) in TOC" :key="i">
+                <a @click="$vuetify.goTo(`#${item.id}`)">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.data"> </v-list-item-title>
+                  </v-list-item-content>
+                </a>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -49,7 +62,7 @@
 <script>
 import axios from "axios";
 import { Editor, EditorContent } from "tiptap";
-import { CodeBlockHighlight } from "tiptap-extensions";
+import { CodeBlockHighlight, Heading } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
 import c from "highlight.js/lib/languages/c";
@@ -60,26 +73,29 @@ import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
 import { mapState } from "vuex";
 // component
-import TOC from "@/components/TOC.vue";
 import Comment from "@/components/Comment.vue";
+// TOC
+import { TocHeading, tocData } from "@/plugins/tiptap/TocHeading";
 
 export default {
   name: "LogDetail",
   components: {
     EditorContent,
-    Comment,
-    TOC
+    Comment
   },
   data() {
     return {
+      // tocData
+      tocLoaded: false,
+      TOC: null,
       routeId: null,
       codeData: null,
       htmlData: null,
       problemNum: null,
       problemTitle: null,
-      contentTitle: "19541 역학 조사",
+      contentTitle: null,
       writerName: null,
-      updatedDate: "2020-07-27",
+      updatedDate: null,
       // code dialog
       dialog: false,
       editor: new Editor({
@@ -94,7 +110,9 @@ export default {
               java,
               javascript
             }
-          })
+          }),
+          new Heading({ levels: [1, 2, 3] }),
+          new TocHeading()
         ],
         editable: false,
         autoFocus: true,
@@ -124,6 +142,7 @@ export default {
   created() {
     this.getSSALOG(this.$route.params.id);
   },
+  mounted() {},
   methods: {
     async getSSALOG(pageId) {
       try {
@@ -139,9 +158,14 @@ export default {
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
         this.editor.setContent(this.htmlData);
         this.codeview.setContent(this.codeData);
+        this.setTOC(tocData);
       } catch (e) {
         console.error(e);
       }
+    },
+    setTOC(toc) {
+      this.TOC = toc;
+      this.tocLoaded = true;
     }
   }
 };
@@ -197,6 +221,6 @@ export default {
 
 .table_of_contents {
   position: fixed;
-  top: 30vh;
+  top: 35vh;
 }
 </style>
