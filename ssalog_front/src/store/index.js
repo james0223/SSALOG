@@ -11,8 +11,8 @@ export default new Vuex.Store({
     accessToken: null,
     refreshToken: null,
     ImgURL: "https://ssalog.gq/upload/",
-    // ServerURL: "http://127.0.0.1:8080",
-    ServerURL: "https://ssalog.gq/api",
+    ServerURL: "http://127.0.0.1:8080",
+    // ServerURL: "https://ssalog.gq/api",
     // user data
     username: null,
     userThumbnail: null,
