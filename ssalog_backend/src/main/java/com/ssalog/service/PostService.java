@@ -23,4 +23,5 @@ public interface PostService {
 	//public int write_subcomment(String uniqueid,Comment comment,String username);
 	public List<Map<String, Object>> find_jandi(String username);
 	public Page<Post> findMyPost(String username, PageRequest pageable);
+	public Page<Post> findkey(List<String> keyword, PageRequest pageable);
 }
