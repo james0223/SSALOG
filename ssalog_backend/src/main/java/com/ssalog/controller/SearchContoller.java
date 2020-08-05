@@ -61,6 +61,11 @@ public class SearchContoller {
 	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
 		return new ResponseEntity<Page<Post>>(postService.findkey(keyword, pageable.of()),HttpStatus.OK);
 	}
+	@ApiOperation(value ="[post username 조회]")
+	@GetMapping("/to_username")
+	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("username") String username, PageRequest pageable){
+		return new ResponseEntity<Page<Post>>(postService.select_by_username(username, pageable.of()),HttpStatus.OK);
+	}
 	@ApiOperation(value ="[잔디 심을때 필요한거] 전달한 username에 해당하는 user의 date와 count 값을 가진 json이 list형태로 날아감.")
 	@GetMapping("/get_jandi")
 	public ResponseEntity<?> get_jandi(@RequestParam("username") String username){
