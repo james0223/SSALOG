@@ -161,4 +161,8 @@ public class PostServiceImpl implements PostService{
 	public Page<Post> select_by_keyword(List<String> keyword, PageRequest pageable){
 		return postRepository.findByKeyword(keyword, pageable);
 	}
+	@Override
+	public Page<Post> select_by_username(String username, PageRequest pageable){
+		return postRepository.findByUsername(username, pageable);
+	}
 }
