@@ -4,7 +4,7 @@ ssalogDiv.style.right = "-160px";
 ssalogDiv.style.background = "#ffd9b3";
 ssalogDiv.style.width = "80px";
 ssalogDiv.innerHTML =
-  "<a href='http://localhost:8080/' target='_blank'><span>MY<br/>SSALOG</span></a>";
+  "<a href='https://ssalog.gq/' target='_blank'><span>MY<br/>SSALOG</span></a>";
 
 const _header = document.querySelector(".header-inner");
 if (_header !== null) {
