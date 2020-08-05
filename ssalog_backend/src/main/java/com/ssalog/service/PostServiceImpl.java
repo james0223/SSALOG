@@ -48,29 +48,7 @@ public class PostServiceImpl implements PostService{
 		}
 	}
 
-	@Override
-	@Transactional
-	public int write_comment(String post_pk,Comment comment,String username) {
-		Optional<Post> p = postRepository.findById(post_pk);
-		if(p.isPresent()) {
-			Post p1 = p.get();
-			List<Comment> clist = p1.getComment();
-			if(clist == null) {
-				clist = new ArrayList<>();
-			}
-			String uid = username+UUID.randomUUID().toString();
-			comment.setUniqueid(uid);
-			comment.setUserid(username);
-			clist.add(comment);
-			p1.setComment(clist);
-			postRepository.save(p1);
-			return 1;
-		}
-		else {
-			return 2;
-		}
-	}
-
+	
 	@Override
 	public int delete_post(String post_pk, String username) {
 		Optional<Post> p = postRepository.findById(post_pk);
@@ -119,36 +97,6 @@ public class PostServiceImpl implements PostService{
 		}
 	}
 	
-	@Override
-	public List<Comment> read_comment(String Scoring){
-		List<Comment> list = postRepository.findByScoring(Scoring).getComment();
-		if(list == null) {
-			return new ArrayList<Comment>();
-		}else {
-			return list;
-		}
-	}
-//	@Override
-//	@Transactional
-//	public int write_subcomment(String uniqueid,Comment comment,String username) {
-//		Comment com= commentRepository.findByUniqueid(uniqueid);
-//		if(com != null) {
-//			List<Comment> clist = com.getSubcomment();
-//			if(clist == null) {
-//				clist = new ArrayList<>();
-//			}
-//			String uid = username+UUID.randomUUID().toString();
-//			comment.setUniqueid(uid);
-//			comment.setUserid(username);
-//			clist.add(comment);
-//			com.setSubcomment(clist);
-//			commentRepository.save(com);
-//			return 1;
-//		}
-//		else {
-//			return 2;
-//		}
-//	
 	
 	public List<Map<String, Object>> find_jandi(String username){
 		List<jandi> list = postRepository.getJandiCount(username).getMappedResults();
