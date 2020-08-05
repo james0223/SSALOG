@@ -1,14 +1,14 @@
 <template>
   <v-container>
-    <SearchBar SelectedCategoryIdx="3" />
-    <h2 class="text-center" v-if="users.length === 0">검색결과가 없습니다 :(</h2>
-    <h2 v-if="users.length !== 0">
+    <SearchBar :SelectedCategoryIdx="3" />
+    <h2 class="text-center" v-if="isNoResult">검색결과가 없습니다 :P</h2>
+    <h2 v-if="!isNoResult">
       {{ searchData.nickname ? `${searchData.nickname}님에 대한 검색결과입니다.` : "전체 사용자" }}
     </h2>
     <v-row>
       <v-col v-for="(user, i) in users" :key="i" cols="3">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
-          <v-card @click="visitSalog(user.id)" align="center" :elevation="hover ? 12 : 2">
+          <v-card @click="visitSolutionDetail(user.id)" align="center" :elevation="hover ? 12 : 2">
             <v-card-text>
               <v-avatar size="62">
                 <img
@@ -27,20 +27,24 @@
         </v-hover>
       </v-col>
     </v-row>
-    <div class="text-center" v-if="users.length !== 0">
-      <v-pagination v-model="searchData.page" :length="4" circle></v-pagination>
-    </div>
+    <infinite-loading
+      v-if="limit >= searchData.page"
+      @infinite="infiniteHandler"
+      spinner="waveDots"
+    ></infinite-loading>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
 import SearchBar from "@/components/SearchBar.vue";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "AccountList",
   components: {
-    SearchBar
+    SearchBar,
+    InfiniteLoading
   },
   data() {
     return {
@@ -50,11 +54,19 @@ export default {
         page: 1,
         size: 12
       },
-      users: []
+      limit: 9999,
+      users: [],
+      isNoResult: false
     };
   },
   methods: {
-    visitSalog(id) {
+    infiniteHandler($state) {
+      setTimeout(() => {
+        this.fetchUserData();
+        $state.loaded();
+      }, 2000);
+    },
+    visitSolutionDetail(id) {
       this.$router.push({ name: "SSALOG", query: { id } });
     },
     async fetchUserData() {
@@ -67,22 +79,28 @@ export default {
             }
           }
         );
-        this.users = data.content;
+        if (data.totalElements === 0) {
+          this.isNoResult = true;
+        }
+        this.searchData.page += 1; // lint :(
+        this.users = [...this.users, ...data.content];
+        this.limit = Number(data.totalPages);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
   },
-  watch: {
-    searchData: {
-      deep: true,
-      handler() {
-        this.fetchUserData();
-      }
-    }
-  },
+  // 이거 왜 만들었는지 기억이 안남
+  // watch: {
+  //   searchData: {
+  //     deep: true,
+  //     handler() {
+  //       this.fetchUserData();
+  //     }
+  //   }
+  // },
   mounted() {
-    this.fetchUserData();
+    // this.fetchUserData();
   }
 };
 </script>

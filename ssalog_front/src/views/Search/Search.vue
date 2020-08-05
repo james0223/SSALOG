@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <SearchBar SelectedCategoryIdx="0" />
+    <SearchBar :SelectedCategoryIdx="0" />
   </v-container>
 </template>
 
