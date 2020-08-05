@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.Problem;
 
 public interface PostService {
 	public Post write_post(Post post, String username);
@@ -24,4 +25,7 @@ public interface PostService {
 	public List<Map<String, Object>> find_jandi(String username);
 	public Page<Post> findMyPost(String username, PageRequest pageable);
 	public Page<Post> findkey(List<String> keyword, PageRequest pageable);
+	public Map<String, Object> detail_service(String problemid, String language);
+	public void input_problem(Problem problem);
+	public Map<String, Double> detail_py(String problemid);
 }

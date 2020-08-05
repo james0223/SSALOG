@@ -18,7 +18,8 @@ public interface PostRepository extends MongoRepository<Post,String>, jandiRepos
 	public Post findByScoring(String Scoring);
 	public Page<Post> findByUsername(String username, Pageable pageable);
 	//public Page<Post> findByKeywordIn(List<String> keyword, Pageable pageable);
-	
+	public List<Post> findByProblemidAndLanguage(String problemid, String language);
+	public List<Post> findByProblemid(String problemid);
 	@Query(value = "{ 'keyword' : {$all : [?0] }}")
 	public Page<Post> findAnyOfTheseValues(List<String> keyword,Pageable pageable);
 }

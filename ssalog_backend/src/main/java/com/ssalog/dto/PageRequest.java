@@ -37,5 +37,7 @@ public class PageRequest {
 	public org.springframework.data.domain.PageRequest of() {
 		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "regdate");
 	}
-	
+	public org.springframework.data.domain.PageRequest ofs() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "time");
+	}
 }
