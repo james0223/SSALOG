@@ -33,8 +33,7 @@ public class PostServiceImpl implements PostService{
 	ProblemRepository problemRepository;
 	
 	@Override
-	public Post write_post(Post post,String username) {
-		post.setUsername(username);
+	public Post write_post(Post post) {
 		return postRepository.save(post);
 	}
 
@@ -42,7 +41,7 @@ public class PostServiceImpl implements PostService{
 	public Post read_post(String post_pk) {
 		Optional<Post> p = postRepository.findById(post_pk);
 		if(p.isPresent()) {
-			return postRepository.findById(post_pk).get();
+			return p.get();
 		}else {
 			return null;
 		}
@@ -75,15 +74,43 @@ public class PostServiceImpl implements PostService{
 		String time2 = format2.format(date);
 		p.setRegdate(time1);
 		p.setRegtime(time2);
-		if(p1.isPresent()) {
+		if(p1.isPresent()) { // 이전에 해당 채점번호로 작성한 글이 존재하면?
 			//System.out.println(username + " 사람이름? " + p.getUsername() );
-			if(p1.get().getUsername().equals(username)) {
-				postRepository.save(p);
+			if(p1.get().getUsername().equals(username)) { // 똑같은 작성자인지 확인.
+				postRepository.save(p); // 맞으면 update.
 				return 1;
-			}else {
+			}else { // 자기가 작성한 글이 아니면, 반려
 				return 2;
 			}
-		}else {
+		}else { // 해당 채점번호로 작성한 글이 없으면.
+			Problem problem = new Problem();
+			problem.setAll_cnt(1);
+			problem.setName(p.getProblemname());
+			problem.setProblemid(p.getProblemid());
+			List<String> key = p.getKeyword();
+			if(key!= null) {
+				for(int i=0; i<key.size(); i++) {
+					Map<String,Integer> m1 = new HashMap<>();
+					if(m1.containsKey(key.get(i))) {
+						int key_val = m1.get(key.get(i));
+						key_val +=1;
+						m1.put(key.get(i), key_val);
+					}else {
+						m1.put(key.get(i), 1);
+					}
+				}
+			}
+			Map<String, solvelang> m2 = new HashMap<>();
+			solvelang l = new solvelang();
+			l.setCnt(1);
+			l.setMemory_sum(Integer.parseInt(p.getMemory()));
+			l.setTime_sum(Integer.parseInt(p.getTime()));
+			m2.put(p.getLanguage(), l);
+			problem.setLanguage(m2);
+			input_problem(problem);
+			p.setIswrite(true);
+			p.setUsername(username);
+			postRepository.save(p);
 			return 3;
 		}
 	}
