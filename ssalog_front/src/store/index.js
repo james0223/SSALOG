@@ -106,7 +106,7 @@ export default new Vuex.Store({
       }
     },
     async Thumbnail({ commit }, payload) {
-      const res = await Axios.get(`${this.state.ServerURL}/user/get_profile_img`, {
+      const res = await Axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
         params: {
           username: payload
         }

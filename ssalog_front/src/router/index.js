@@ -7,7 +7,6 @@ import Account from "@/views/Account/Account.vue";
 import FindId from "@/views/Account/FindId.vue";
 import FindPass from "@/views/Account/FindPass.vue";
 import AccountList from "@/views/Account/AccountList.vue";
-
 // problem
 import ProblemList from "@/views/Problem/ProblemList.vue";
 import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
@@ -19,6 +18,7 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
+import SsalogSolution from "@/components/SSALOG/Solution.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -104,13 +104,14 @@ const routes = [
     children: [
       {
         path: "Main",
+        name: "SSalogMain",
         component: SsalogMain
+      },
+      {
+        path: "Solution",
+        name: "SolutionList",
+        component: SsalogSolution
       }
-      // {
-      //   path: "Solution",
-      //   name: "SolutionList",
-      //   component: SolutionList
-      // }
     ]
   }
 ];
@@ -133,7 +134,9 @@ router.beforeEach(function(to, from, next) {
       next("/Login");
     } else next();
   } else {
-    store.commit("FormerLink", to);
+    if (to.name !== "Login") {
+      store.commit("FormerLink", to);
+    }
     next();
   }
 });

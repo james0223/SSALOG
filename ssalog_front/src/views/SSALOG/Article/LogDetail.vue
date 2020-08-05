@@ -229,14 +229,13 @@ export default {
     },
     async getThumbnail() {
       console.log("hihih");
-      // thumbnail 이 login user 권한이라 수정 필요.
-      // const res = await axios.get(`${this.ServerURL}/user/get_profile_img`, {
-      //   params: {
-      //     username: this.writerName
-      //   }
-      // });
-      this.writerThumbnail = `${this.ImgURL}${res.data}`;
+      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
+        params: {
+          username: this.writerName
+        }
+      });
       console.log(this.writerThumbnail);
+      this.writerThumbnail = `${this.ImgURL}${res.data}`;
     },
     setTOC(toc) {
       this.TOC = toc;

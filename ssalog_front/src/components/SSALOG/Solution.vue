@@ -1,4 +1,8 @@
-<template> </template>
+<template>
+  <v-main>
+    hihihihihihih
+  </v-main>
+</template>
 
 <script>
 export default {
