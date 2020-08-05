@@ -40,7 +40,20 @@
         <Comment />
       </v-col>
       <v-col lg="2">
-        <editor-content class="editor__content" :editor="TOC" />
+        <v-card height="35vh" width="15vw" class="mx-8 table_of_contents" v-once v-if="tocLoaded">
+          <v-list dense>
+            <v-subheader>목 차</v-subheader>
+            <v-list-item-group v-model="TOC" color="primary">
+              <v-list-item v-for="(item, i) in TOC" :key="i">
+                <a @click="$vuetify.goTo(`#${item.id}`)">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.data"> </v-list-item-title>
+                  </v-list-item-content>
+                </a>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -62,7 +75,7 @@ import { mapState } from "vuex";
 // component
 import Comment from "@/components/Comment.vue";
 // TOC
-import TocHeading from "../../../plugins/tiptap/TocHeading";
+import { TocHeading, tocData } from "@/plugins/tiptap/TocHeading";
 
 export default {
   name: "LogDetail",
@@ -72,14 +85,17 @@ export default {
   },
   data() {
     return {
+      // tocData
+      tocLoaded: false,
+      TOC: null,
       routeId: null,
       codeData: null,
       htmlData: null,
       problemNum: null,
       problemTitle: null,
-      contentTitle: "19541 역학 조사",
+      contentTitle: null,
       writerName: null,
-      updatedDate: "2020-07-27",
+      updatedDate: null,
       // code dialog
       dialog: false,
       editor: new Editor({
@@ -119,9 +135,6 @@ export default {
         editable: false,
         autoFocus: true,
         content: ""
-      }),
-      TOC: new Editor({
-        extensions: [new TocHeading()]
       })
     };
   },
@@ -129,9 +142,7 @@ export default {
   created() {
     this.getSSALOG(this.$route.params.id);
   },
-  mounted() {
-    this.drawTOC();
-  },
+  mounted() {},
   methods: {
     async getSSALOG(pageId) {
       try {
@@ -147,13 +158,14 @@ export default {
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
         this.editor.setContent(this.htmlData);
         this.codeview.setContent(this.codeData);
+        this.setTOC(tocData);
       } catch (e) {
         console.error(e);
       }
     },
-    drawTOC() {
-      const res = this.editor.content;
-      console.log(res);
+    setTOC(toc) {
+      this.TOC = toc;
+      this.tocLoaded = true;
     }
   }
 };
@@ -209,6 +221,6 @@ export default {
 
 .table_of_contents {
   position: fixed;
-  top: 30vh;
+  top: 35vh;
 }
 </style>

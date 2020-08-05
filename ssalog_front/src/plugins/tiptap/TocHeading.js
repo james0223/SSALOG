@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Heading } from "tiptap-extensions";
 
-export default class TocHeading extends Heading {
+export class TocHeading extends Heading {
   get schema() {
     return {
       attrs: {
@@ -34,14 +34,13 @@ export default class TocHeading extends Heading {
           0
         ];
         node.attrs.id = id;
-        console.log(node);
-        console.log(id);
+        tocData.push({ id: id, data: node.content.content[0].text, level: node.attrs.level });
         return dom;
       }
     };
   }
 }
-
+export let tocData = [];
 function getUuid() {
   let s = [];
   let hexDigits = "0123456789abcdef";
