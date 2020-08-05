@@ -9,6 +9,7 @@
           $route.name === 'ProblemDetail' ||
           $route.name === 'SignUp' ||
           $route.name === 'AccountList' ||
+          $route.name === 'ProblemList' ||
           $route.name === 'Search'
       "
     ></Header>

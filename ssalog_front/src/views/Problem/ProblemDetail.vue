@@ -7,7 +7,7 @@
             <v-card class="mx-auto mb-4">
               <v-card-title>
                 <span class="title mr-4">{{ problemTitle }}</span>
-                <span class="subtitle-1  font-weight-light">{{ problemNumber }}</span>
+                <span class="subtitle-1 font-weight-light">{{ problemNumber }}</span>
               </v-card-title>
               <v-list-item>
                 <v-icon class="mr-3">mdi-alarm</v-icon>
@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import DoughNutChart from "../../components/DoughnutChart.vue";
 
 export default {
@@ -229,6 +230,18 @@ export default {
     };
   },
   methods: {
+    async fetchProblemData() {
+      try {
+        const { data } = await axios.get(`${this.$store.state.ServerURL}/none`, {
+          params: {
+            id: this.$route.query.id
+          }
+        });
+        this.problemData = data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     getColor(exectime) {
       // 여기 avg 인자를 추가로 받아서
       // 각각 평균보다 낮으면 green / +- 20 퍼면 중간 / 더 높으면 red 이런식으로
@@ -236,6 +249,9 @@ export default {
       if (exectime > 200) return "orange";
       return "green";
     }
+  },
+  mounted() {
+    // this.fetchProblemData();
   }
 };
 </script>

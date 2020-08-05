@@ -1,13 +1,33 @@
 <template>
   <v-container>
     <SearchBar :SelectedCategoryIdx="categoryIdx" />
-    문제 조회 list
-    {{ q }}
-    {{ categoryIdx }}
+    <h2 class="text-center" v-if="problems.length === 0">검색결과가 없습니다 :(</h2>
+
+    <h2 v-if="problems.length !== 0">{{ $route.query.q }}에 대한 검색결과입니다.</h2>
+    <!-- <v-col v-for="(problem, i) in problems" :key="i" cols="4">{{ problem }}</v-col> -->
+    <v-hover style="cursor:pointer" v-slot:default="{ hover }">
+      <v-card @click="visitProblemDeatil(problem.id)" :elevation="hover ? 12 : 2">
+        <v-card-title>{{ problem.id }} - {{ problem.name }}</v-card-title>
+        <v-card-text>등록된 리뷰 : {{ problem.solutions }}개</v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-chip-group disabled>
+            <v-chip v-for="tag in tags" :key="tag">
+              {{ tag }}
+            </v-chip>
+          </v-chip-group>
+        </v-card-text>
+      </v-card>
+    </v-hover>
+
+    <div class="text-center">
+      <v-pagination v-model="searchData.page" :length="4" circle></v-pagination>
+    </div>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
 import SearchBar from "@/components/SearchBar.vue";
 
 export default {
@@ -17,18 +37,55 @@ export default {
   },
   data() {
     return {
-      page: 0,
-      q: this.$route.query.q,
+      searchData: {
+        direction: "ASC",
+        problemid: this.$route.query.q,
+        keyword: this.$route.query.q,
+        problemname: this.$route.query.q,
+        page: 1,
+        size: 24
+      },
       categoryIdx: this.$route.query.categoryIdx,
-      problems: []
+      searchMethods: ["to_problemid", "to_problemname", "to_keyword"],
+      problems: [],
+      problem: {
+        id: null,
+        name: null,
+        solutions: 4
+      },
+      tags: ["DFS", "BFS", "DP", "GREEDY"]
     };
   },
+  methods: {
+    visitProblemDeatil(id) {
+      this.$router.push({
+        name: "ProblemDetail",
+        query: {
+          id
+        }
+      });
+    },
+    async fetchProblems() {
+      try {
+        const { data } = await axios.get(
+          `${this.$store.state.ServerURL}/newuser/search/${this.searchMethods[this.categoryIdx]}`,
+          {
+            params: {
+              ...this.searchData
+            }
+          }
+        );
+        this.problems = data.content;
+        this.problem.id = data.content[0].problemid;
+        this.problem.name = data.content[0].problemname;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  },
   mounted() {
-    if (!this.q) {
-      // 전체 problem 조회
-      this.q = "검색어가 없으므로 걍 전체리스트한다.";
-    } else {
-      // 닉 기반으로 조회
+    if (this.$route.query.q) {
+      this.fetchProblems();
     }
   }
 };
