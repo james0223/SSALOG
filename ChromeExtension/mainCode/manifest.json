@@ -14,13 +14,6 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.acmicpc.net/submit/*"
-      ],
-      "run_at": "document_idle",
-      "js": ["contentScriptSubmit.js"]
-    },
-    {
-      "matches": [
         "https://*.acmicpc.net/status*"
       ],
       "run_at": "document_idle",
