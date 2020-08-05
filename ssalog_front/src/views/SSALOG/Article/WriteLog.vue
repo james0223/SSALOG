@@ -315,7 +315,7 @@ export default {
     write() {
       this.resData.username = this.username;
       axios
-        .put("https://ssalog.gq/api/user/post/update_post", this.resData)
+        .put(`${this.ServerURL}/user/post/update_post`, this.resData)
         .then(response => {
           console.log(response);
           this.$router.push({
