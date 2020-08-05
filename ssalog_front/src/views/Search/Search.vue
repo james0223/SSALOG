@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <SearchBar SelectedCategoryIdx="0" />
-    최근에 많이 검색된 내용
   </v-container>
 </template>
 

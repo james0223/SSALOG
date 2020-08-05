@@ -1,6 +1,22 @@
 <template>
   <v-app>
+<<<<<<< HEAD
     <Header v-if="$route.name !== 'Login'"></Header>
+=======
+    <Header
+      v-if="
+        $route.name === 'Home' ||
+          $route.name === 'Account' ||
+          $route.name === 'SSALOG' ||
+          $route.name === 'LogDetail' ||
+          $route.name === 'ProblemDetail' ||
+          $route.name === 'SignUp' ||
+          $route.name === 'AccountList' ||
+          $route.name === 'ProblemList' ||
+          $route.name === 'Search'
+      "
+    ></Header>
+>>>>>>> feat/front/문제리스트페이지
     <v-divider></v-divider>
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>

@@ -14,8 +14,6 @@ Vue.use(Highlight);
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
-// 더이상 이거 쓰지마셈, store에 있는거 써라
-// Vue.prototype.$serverURL = "http://i3b101.p.ssafy.io:8080";
 new Vue({
   router,
   store,
