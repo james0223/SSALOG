@@ -96,6 +96,8 @@ export default {
     doFunc(i) {
       if (i === 0) {
         this.$router.push({ name: "Account" });
+      } else if (i === 1) {
+        this.$router.push({ name: "SSALOG" });
       } else {
         axios
           .post(`${this.$store.state.serverURL}/user/out`)
