@@ -58,8 +58,11 @@ public class SearchContoller {
 	}
 	@ApiOperation(value ="[post keyword 조회]")
 	@GetMapping("/to_keyword")
-	public ResponseEntity<Page<Post>> findBykeyword(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
-		return new ResponseEntity<Page<Post>>(postService.findkey(keyword, pageable.of()),HttpStatus.OK);
+	public void findBykeyword(@RequestParam("keyword") String[] keyword, PageRequest pageable){
+		for(int i=0; i<keyword.length; i++) {
+			System.out.println("keyword 값 = " + keyword[i]);
+		}
+		//return new ResponseEntity<Page<Post>>(postService.findkey(keyword, pageable.of()),HttpStatus.OK);
 	}
 	@ApiOperation(value ="[잔디 심을때 필요한거] 전달한 username에 해당하는 user의 date와 count 값을 가진 json이 list형태로 날아감.")
 	@GetMapping("/get_jandi")

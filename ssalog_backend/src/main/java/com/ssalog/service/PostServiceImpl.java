@@ -29,20 +29,11 @@ import com.ssalog.repository.ProblemRepository;
 public class PostServiceImpl implements PostService{
 	@Autowired
 	PostRepository postRepository;
-//	@Autowired
-//	CommentRepository commentRepository;
 	@Autowired
 	ProblemRepository problemRepository;
 	
 	@Override
 	public Post write_post(Post post,String username) {
-		Date date = new Date();
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
-		String time1 = format1.format(date);
-		String time2 = format2.format(date);
-		post.setRegdate(time1);
-		post.setRegtime(time2);
 		post.setUsername(username);
 		return postRepository.save(post);
 	}
@@ -99,35 +90,24 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public int update_post(Post p, String username) {
 		Optional<Post> p1 = postRepository.findById(p.getScoring());
+		Date date = new Date();
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+		String time1 = format1.format(date);
+		String time2 = format2.format(date);
+		p.setRegdate(time1);
+		p.setRegtime(time2);
 		if(p1.isPresent()) {
 			//System.out.println(username + " 사람이름? " + p.getUsername() );
-			//if(p1.get().getUsername().equals(username)) {
-				System.out.println("여기아냐?");
+			if(p1.get().getUsername().equals(username)) {
 				postRepository.save(p);
 				return 1;
-			//}else {
-			//	System.out.println("여기라고?");
-			//	return 2;
-			//}
+			}else {
+				return 2;
+			}
 		}else {
 			return 3;
 		}
-	}
-
-	@Override
-	public Page<Post> select_by_problemid(String problemid, PageRequest pageable) {
-		return postRepository.findByProblemid(problemid, pageable);
-	}
-
-	@Override
-	public Page<Post> select_by_problemname(String problemname, PageRequest pageable){
-		return postRepository.findByProblemnameLike(problemname, pageable);
-	}
-
-	@Override
-	public Page<Post> select_by_keyword(List<String> keyword, PageRequest pageable){
-		//System.out.println("keyword = " + keyword);
-		return postRepository.findByKeyword(keyword, pageable);
 	}
 
 	public boolean is_post(String Scoring) {
@@ -210,14 +190,27 @@ public class PostServiceImpl implements PostService{
 		long div = problem.getAll_cnt();
 		for (String key : m.keySet()) {
             Integer value = m.get(key);
-            //System.out.println("[key]:" + key + ", [value]:" + value);
             double val = Math.round((((double)value/div)*100)*10)/10.0;
-            //System.out.println("val = " + val);
             result.put(key, val);
         }
 		return result;
 	}
 	public void input_problem(Problem problem){
 		problemRepository.save(problem);
+	}
+	
+	@Override
+	public Page<Post> select_by_problemid(String problemid, PageRequest pageable) {
+		return postRepository.findByProblemid(problemid, pageable);
+	}
+
+	@Override
+	public Page<Post> select_by_problemname(String problemname, PageRequest pageable){
+		return postRepository.findByProblemnameLike(problemname, pageable);
+	}
+
+	@Override
+	public Page<Post> select_by_keyword(List<String> keyword, PageRequest pageable){
+		return postRepository.findByKeyword(keyword, pageable);
 	}
 }
