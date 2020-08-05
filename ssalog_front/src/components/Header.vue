@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0">
-    <v-app-bar app color="white" height="95">
+    <v-app-bar flat color="white" height="95">
       <v-row class="align-center">
         <v-avatar class="mr-3" color="lighten-5" size="70">
           <v-img
