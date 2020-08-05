@@ -4,7 +4,7 @@
       <v-content>
         <section id="hero">
           <v-row no-gutters>
-            <v-img src="@/assets/images/banner3.jpg" height="600px">
+            <v-img src="@/assets/images/banner3.jpg" height="850px">
               <v-theme-provider>
                 <v-container fill-height mt-15 pl-10>
                   <v-row></v-row>
