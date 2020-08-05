@@ -71,27 +71,21 @@ public class SearchContoller {
 			return new ResponseEntity<List<Map<String, Object>>>(postService.find_jandi(username),HttpStatus.OK);
 		}
 	}
-	
-	@ApiOperation(value ="[test]")
-	@GetMapping("/test/{problemid}")
-	public Map<String,Object> test(@PathVariable("problemid") String problemid, String language){
-		//System.out.println(keyword.get(0));
+	@ApiOperation(value ="[detail page] 문제번호와, 언어정보를 주면, 해당 문제의 평균시간, 평균메모리 구하기")
+	@GetMapping("/detail_avg")
+	public Map<String,Object> detail(@RequestParam("problemid") String problemid, String language){
 		return postService.detail_service(problemid, language);
 	}
-	@ApiOperation(value ="[test]")
-	@GetMapping("/test2/{problemid}")
-	public ResponseEntity<Page<Post>> test2(@PathVariable("problemid") String problemid, PageRequest pageable){
-		//System.out.println(keyword.get(0));
+	@ApiOperation(value ="[detail page] 문제번호와, 페이지정보를 주면, 해당 문제를 푼사람의 정보를 보여줌")
+	@GetMapping("/detail_list")
+	public ResponseEntity<Page<Post>> detail_page(@PathVariable("problemid") String problemid, PageRequest pageable){
 		return new ResponseEntity<Page<Post>>(postService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
 	}
+
 	@ApiOperation(value ="[test]")
-	@PostMapping("/test3")
+	@PostMapping("/test")
 	public void test2(@RequestBody Problem problem){
 		postService.input_problem(problem);
 	}
-	@ApiOperation(value ="[test]")
-	@GetMapping("/test4")
-	public ResponseEntity<Map<String, Double>>test2(@RequestParam("problemid") String problemid){
-		return new ResponseEntity<Map<String, Double>>(postService.detail_py(problemid), HttpStatus.OK);
-	}
+	
 }

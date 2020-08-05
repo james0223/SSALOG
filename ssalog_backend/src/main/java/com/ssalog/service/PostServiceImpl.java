@@ -20,6 +20,7 @@ import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
+import com.ssalog.dto.solvelang;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
 
@@ -190,33 +191,28 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	public Map<String, Object> detail_service(String problemid, String language) {
-		List<Post> pid = postRepository.findByProblemidAndLanguage(problemid, language);
 		Map<String, Object> m = new HashMap<>();
-		long t_sum = 0;long m_sum = 0;
-		for(int i=0; i<pid.size(); i++) {
-			int time = Integer.parseInt(pid.get(i).getTime());
-			int memory = Integer.parseInt(pid.get(i).getMemory());
-			t_sum += time;
-			m_sum += memory;
+		Problem problem = problemRepository.findByProblemid(problemid);
+		Map<String, solvelang> map = problem.getLanguage();
+		if(map!=null) {
+			solvelang lang = map.get(language);
+			double avg_t = Math.round((double)lang.getTime_sum()/lang.getCnt());
+			double avg_m = Math.round((double)lang.getMemory_sum()/lang.getCnt());
+			m.put("avg_time", avg_t);
+			m.put("avg_memory", avg_m);
 		}
-		double avg_t = t_sum/pid.size();
-		double avg_m = m_sum/pid.size();
-		m.put("avg_time", avg_t);
-		m.put("avg_memory", avg_m);
 		return m;
 	}
 	public Map<String, Double> detail_py(String problemid){
 		Problem problem = problemRepository.findByProblemid(problemid);
-		
 		Map<String, Integer> m = problem.getKey();
 		Map<String, Double> result = new TreeMap<String, Double>();
 		long div = problem.getAll_cnt();
 		for (String key : m.keySet()) {
             Integer value = m.get(key);
-            System.out.println("value = " + value + " " + div);
-            System.out.println("[key]:" + key + ", [value]:" + value);
-            double val = (value/div)*100;
-            System.out.println("val = " + val);
+            //System.out.println("[key]:" + key + ", [value]:" + value);
+            double val = Math.round((((double)value/div)*100)*10)/10.0;
+            //System.out.println("val = " + val);
             result.put(key, val);
         }
 		return result;
