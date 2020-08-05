@@ -27,14 +27,6 @@ if (userNode) {
         console.log(codeData);
 
         var httpRequest = new XMLHttpRequest();
-        // httpRequest.onreadystatechange = function () {
-        //   if (
-        //     httpRequest.readyState == XMLHttpRequest.DONE &&
-        //     httpRequest.status == 200
-        //   ) {
-        //     alert(httpRequest.responseText);
-        //   }
-        // };
         httpRequest.open(
           "POST",
           "https://ssalog.gq/api/newuser/post/write/",
@@ -113,22 +105,3 @@ if (userNode) {
     observer.observe(target, config);
   }
 }
-
-// chrome.storage.sync.get(function (data) {
-//     // 일단 필요없음
-// });
-
-//무작정 이렇게 떼버리면 새로고침하면 작동안함
-// chrome.storage.sync.remove('isSubmit');
-
-// if (document.getElementById("status-table").lastChild.firstChild.getElementsByClassName('result-wait').length !== 0) {
-//     // 진행중인 경우 result-judging 도 넣어야 할 거 같은데
-//     // c로 바로 끝나는거 확인
-//     alert('문제를 풀러 왔구나')
-//     // document.getElementsByClassName('result-text')[0].firstChild.addEventListener('load', function(event) {
-//     //     alert('how do i know')
-//     // })
-
-// } else {
-//     alert('문제를 풀지 않는구나')
-// }
