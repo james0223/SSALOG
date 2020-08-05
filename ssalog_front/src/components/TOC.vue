@@ -1,20 +1,7 @@
 <template>
-  <v-navigation-drawer
-    id="documentation-toc"
-    v-scroll="onScroll"
-    :floating="structure === false"
-    :right="!$vuetify.rtl"
-    app
-    clipped
-  >
+  <v-card id="documentation-toc" v-scroll="onScroll" app clipped>
     <template v-if="structure !== false">
       <ul class="pt-8 mb-6 documentation-toc">
-        <li class="mb-4">
-          <h3 class="caption font-weight-bold text-uppercase grey--text">
-            <base-markdown>Vuetify.Toc.onThisPage</base-markdown>
-          </h3>
-        </li>
-
         <template v-for="(item, i) in internalToc">
           <li
             v-if="item.visible"
@@ -40,27 +27,28 @@
         </template>
       </ul>
     </template>
-  </v-navigation-drawer>
+  </v-card>
 </template>
 
 <script>
 // Utilities
-import kebabCase from "lodash/kebabCase";
-import { goTo } from "@/util/helpers";
-import { get, sync } from "vuex-pathify";
 export default {
-  name: "DocumentationToc",
+  name: "DocumentToc",
   data: () => ({
+    hashTags: false,
     activeIndex: 0,
     currentOffset: 0,
     internalToc: [],
     tocTimeout: 0
   }),
+  props: ["htmlData"],
   computed: {
-    ...get("documentation", ["headings", "namespace", "page"]),
-    structure: sync("documentation/structure"),
-    supporters: sync("app/supporters"),
     toc() {
+      const hTags = document.querySelectorAll("h1, h2, h3");
+      console.log(hTags);
+      if (hTags.length >= 2) {
+        console.log("로딩됨");
+      }
       const t = string => this.$t(`${this.namespace}.${this.page}.${string}`);
       return this.headings
         .map(h => {
@@ -72,7 +60,7 @@ export default {
           const isHeading = !isSubheading && translation.substring(0, 2) === "##";
           const isIntroduction = !isHeading && translation.charAt(0) === "#";
           return {
-            id: kebabCase(text),
+            id: text,
             subheader: isSubheading,
             text,
             visible: isSubheading || isHeading || isIntroduction
@@ -86,12 +74,12 @@ export default {
       immediate: true,
       handler(val) {
         if (!val.length) return;
+        // eslint-disable-next-line
         this.$nextTick(() => (this.internalToc = this.toc.slice()));
       }
     }
   },
   methods: {
-    goTo,
     findActiveIndex() {
       if (this.currentOffset < 100) {
         this.activeIndex = 0;

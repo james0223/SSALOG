@@ -40,7 +40,7 @@
         <Comment />
       </v-col>
       <v-col lg="2">
-        <!--        <TOC v-bind:content="htmlData" class="toc" />-->
+        <editor-content class="editor__content" :editor="TOC" />
       </v-col>
     </v-row>
   </v-container>
@@ -49,7 +49,7 @@
 <script>
 import axios from "axios";
 import { Editor, EditorContent } from "tiptap";
-import { CodeBlockHighlight } from "tiptap-extensions";
+import { CodeBlockHighlight, Heading } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
 import c from "highlight.js/lib/languages/c";
@@ -60,15 +60,15 @@ import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
 import { mapState } from "vuex";
 // component
-// import TOC from "@/components/TOC.vue";
 import Comment from "@/components/Comment.vue";
+// TOC
+import TocHeading from "../../../plugins/tiptap/TocHeading";
 
 export default {
   name: "LogDetail",
   components: {
     EditorContent,
     Comment
-    // TOC
   },
   data() {
     return {
@@ -94,7 +94,9 @@ export default {
               java,
               javascript
             }
-          })
+          }),
+          new Heading({ levels: [1, 2, 3] }),
+          new TocHeading()
         ],
         editable: false,
         autoFocus: true,
@@ -117,12 +119,18 @@ export default {
         editable: false,
         autoFocus: true,
         content: ""
+      }),
+      TOC: new Editor({
+        extensions: [new TocHeading()]
       })
     };
   },
   computed: mapState(["ServerURL"]),
   created() {
     this.getSSALOG(this.$route.params.id);
+  },
+  mounted() {
+    this.drawTOC();
   },
   methods: {
     async getSSALOG(pageId) {
@@ -142,6 +150,10 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    drawTOC() {
+      const res = this.editor.content;
+      console.log(res);
     }
   }
 };
