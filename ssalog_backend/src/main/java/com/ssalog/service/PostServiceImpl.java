@@ -7,19 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
 import com.ssalog.repository.PostRepository;
+import com.ssalog.repository.ProblemRepository;
+
 
 @Service
 public class PostServiceImpl implements PostService{
@@ -27,7 +30,9 @@ public class PostServiceImpl implements PostService{
 	PostRepository postRepository;
 //	@Autowired
 //	CommentRepository commentRepository;
-
+	@Autowired
+	ProblemRepository problemRepository;
+	
 	@Override
 	public Post write_post(Post post,String username) {
 		Date date = new Date();
@@ -182,5 +187,41 @@ public class PostServiceImpl implements PostService{
 	
 	public Page<Post> findkey(List<String> keyword, PageRequest pageable){
 		return postRepository.findAnyOfTheseValues(keyword, pageable);
+	}
+	
+	public Map<String, Object> detail_service(String problemid, String language) {
+		List<Post> pid = postRepository.findByProblemidAndLanguage(problemid, language);
+		Map<String, Object> m = new HashMap<>();
+		long t_sum = 0;long m_sum = 0;
+		for(int i=0; i<pid.size(); i++) {
+			int time = Integer.parseInt(pid.get(i).getTime());
+			int memory = Integer.parseInt(pid.get(i).getMemory());
+			t_sum += time;
+			m_sum += memory;
+		}
+		double avg_t = t_sum/pid.size();
+		double avg_m = m_sum/pid.size();
+		m.put("avg_time", avg_t);
+		m.put("avg_memory", avg_m);
+		return m;
+	}
+	public Map<String, Double> detail_py(String problemid){
+		Problem problem = problemRepository.findByProblemid(problemid);
+		
+		Map<String, Integer> m = problem.getKey();
+		Map<String, Double> result = new TreeMap<String, Double>();
+		long div = problem.getAll_cnt();
+		for (String key : m.keySet()) {
+            Integer value = m.get(key);
+            System.out.println("value = " + value + " " + div);
+            System.out.println("[key]:" + key + ", [value]:" + value);
+            double val = (value/div)*100;
+            System.out.println("val = " + val);
+            result.put(key, val);
+        }
+		return result;
+	}
+	public void input_problem(Problem problem){
+		problemRepository.save(problem);
 	}
 }

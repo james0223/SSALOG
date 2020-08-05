@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.Problem;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 
@@ -69,10 +73,25 @@ public class SearchContoller {
 	}
 	
 	@ApiOperation(value ="[test]")
-	@GetMapping("/test")
-	public Page<Post> test(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
+	@GetMapping("/test/{problemid}")
+	public Map<String,Object> test(@PathVariable("problemid") String problemid, String language){
 		//System.out.println(keyword.get(0));
-		return postService.findkey(keyword, pageable.of());
+		return postService.detail_service(problemid, language);
 	}
-
+	@ApiOperation(value ="[test]")
+	@GetMapping("/test2/{problemid}")
+	public ResponseEntity<Page<Post>> test2(@PathVariable("problemid") String problemid, PageRequest pageable){
+		//System.out.println(keyword.get(0));
+		return new ResponseEntity<Page<Post>>(postService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
+	}
+	@ApiOperation(value ="[test]")
+	@PostMapping("/test3")
+	public void test2(@RequestBody Problem problem){
+		postService.input_problem(problem);
+	}
+	@ApiOperation(value ="[test]")
+	@GetMapping("/test4")
+	public ResponseEntity<Map<String, Double>>test2(@RequestParam("problemid") String problemid){
+		return new ResponseEntity<Map<String, Double>>(postService.detail_py(problemid), HttpStatus.OK);
+	}
 }
