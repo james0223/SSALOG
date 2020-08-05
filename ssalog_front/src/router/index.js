@@ -133,6 +133,7 @@ router.beforeEach(function(to, from, next) {
       next("/Login");
     } else next();
   } else {
+    store.commit("FormerLink", to);
     next();
   }
 });
