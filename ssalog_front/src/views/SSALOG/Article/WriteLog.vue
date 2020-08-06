@@ -319,6 +319,17 @@ export default {
       this.editor.view.dispatch(transaction);
       this.editor.commands.code_block();
     },
+    addUsername() {
+      axios
+        .get(`${this.ServerURL}/user/post/get_username?Scoring=${this.$route.params.id}`)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
+    },
     write() {
       this.resData.username = this.username;
       axios
@@ -363,6 +374,7 @@ export default {
   },
   created() {
     this.getData(this);
+    this.addUsername();
   }
 };
 </script>
