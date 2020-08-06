@@ -23,6 +23,7 @@ import com.ssalog.dto.Account;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
+import com.ssalog.dto.problemlist;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 
@@ -45,11 +46,11 @@ public class SearchContoller {
 		return new ResponseEntity<Page<Account>>(accountService.find_toNickname(nickname, pageable.of()), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value ="[post problemid 조회]")
-	@GetMapping("/to_problemid")
-	public ResponseEntity<Page<Post>> findByproblemid(@RequestParam("problemid") String problemid, PageRequest pageable){
-		return new ResponseEntity<Page<Post>>(postService.select_by_problemid(problemid, pageable.of()),HttpStatus.OK);
-	}
+//	@ApiOperation(value ="[post problemid 조회]")
+//	@GetMapping("/to_problemid")
+//	public ResponseEntity<Page<Post>> findByproblemid(@RequestParam("problemid") String problemid, PageRequest pageable){
+//		return new ResponseEntity<Page<Post>>(postService.select_by_problemid(problemid, pageable.of()),HttpStatus.OK);
+//	}
 	
 	@ApiOperation(value ="[post problemname 조회]")
 	@GetMapping("/to_problemname")
@@ -83,8 +84,8 @@ public class SearchContoller {
 	}
 	@ApiOperation(value ="[detail page] 문제번호와, 페이지정보를 주면, 해당 문제를 푼사람의 정보를 보여줌")
 	@GetMapping("/detail_list")
-	public ResponseEntity<Page<Post>> detail_page(@RequestParam("problemid") String problemid, PageRequest pageable){
-		return new ResponseEntity<Page<Post>>(postService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
+	public ResponseEntity<Page<problemlist>> detail_page(@RequestParam("problemid") String problemid, PageRequest pageable){
+		return new ResponseEntity<Page<problemlist>>(postService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
 	}
 	@ApiOperation(value ="[detail page] 문제번호와, 페이지정보를 주면, 해당 문제를 푼 키워드의 종류를 줌")
 	@GetMapping("/detail_py")

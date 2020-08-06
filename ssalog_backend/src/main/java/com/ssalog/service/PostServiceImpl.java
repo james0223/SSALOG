@@ -20,6 +20,7 @@ import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
+import com.ssalog.dto.problemlist;
 import com.ssalog.dto.solvelang;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
@@ -223,7 +224,7 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public Page<Post> select_by_problemid(String problemid, PageRequest pageable) {
+	public Page<problemlist> select_by_problemid(String problemid, PageRequest pageable) {
 		return postRepository.findByProblemid(problemid, pageable);
 	}
 
