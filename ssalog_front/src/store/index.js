@@ -6,10 +6,9 @@ import jwt_decode from "jwt-decode";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
-export default new Vuex.Store({
-  state: {
-    // 라우팅용 변수
-    formerLink: null,
+
+const getDefaultState = () => {
+  return {
     // 유저 정보 관리용 변수
     accessToken: null,
     refreshToken: null,
@@ -54,8 +53,14 @@ export default new Vuex.Store({
     ],
     // snackbar 관련 옵션
     showAlert: false,
-    AlertMessage: ""
-  },
+    AlertMessage: "",
+
+    // 라우팅용 변수
+    formerLink: null
+  };
+};
+export default new Vuex.Store({
+  state: getDefaultState(),
   plugins: [createPersistedState()],
   getters: {},
   mutations: {
@@ -63,10 +68,7 @@ export default new Vuex.Store({
       state.username = payload.username;
     },
     LOGOUT(state) {
-      state.accessToken = null;
-      state.refreshToken = null;
-      state.username = null;
-      state.userThumbnail = null;
+      Object.assign(state, getDefaultState());
     },
     TOKEN(state, payload) {
       const { accessToken, refreshToken } = payload;
@@ -155,7 +157,7 @@ export default new Vuex.Store({
     },
     async LOGOUT({ commit }) {
       await Axios.post(`${this.state.ServerURL}/user/out`);
-      commit("LOGOUT");
+      commit("LOGOUT", { undefined });
     },
     async SIGNUP({ dispatch }, signupData) {
       const SingupRes = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
