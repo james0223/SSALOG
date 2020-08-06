@@ -69,8 +69,20 @@
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-title>
-            <v-btn x-large text @click="editSolution">수정</v-btn>
-            <v-btn x-large text @click="deleteSolution">삭제</v-btn>
+            <v-btn
+              x-large
+              text
+              @click="editSolution"
+              v-if="$store.state.username === this.writerName"
+              >수정</v-btn
+            >
+            <v-btn
+              x-large
+              text
+              @click="deleteSolution"
+              v-if="$store.state.username === this.writerName"
+              >삭제</v-btn
+            >
           </v-toolbar-title>
         </v-toolbar>
         <v-toolbar-items class="mb-7">
@@ -164,7 +176,7 @@ import { mapState } from "vuex";
 // component
 import Comment from "@/components/Comment.vue";
 // TOC
-import { TocHeading, tocData } from "@/plugins/tiptap/TocHeading";
+import { TocHeading, tocData, resetTocData } from "@/plugins/tiptap/TocHeading";
 
 export default {
   name: "LogDetail",
@@ -269,12 +281,12 @@ export default {
           this.$router.push({ name: "Home" });
         }, 2000);
       } catch (e) {
-        console.log(e);
         console.error(e);
       }
     },
     async getSSALOG(pageId) {
       try {
+        resetTocData();
         const res = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
           params: {
             Scoring: pageId
