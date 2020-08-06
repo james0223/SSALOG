@@ -69,10 +69,13 @@
 
           <v-card class="mx-5 mt-5">
             <v-data-table
-              :lodaing="loading"
+              :loading="SolutionLoading"
+              loading-text="풀이를 가져오는 중입니다..."
               :headers="headers"
+              :page.sync="SolutionPage"
+              hide-default-footer
+              :items-per-page="SolutionPerPage"
               :items="solvedLists"
-              :search="search"
             >
               <template v-slot:item.exectime="{ item }">
                 <v-chip :color="getColor(item.exectime)">{{ item.exectime }}</v-chip>
@@ -81,6 +84,7 @@
                 <v-chip :color="getColor(item.memory)">{{ item.memory }}</v-chip>
               </template>
             </v-data-table>
+            <v-pagination v-model="SolutionPage" :length="SolutionPageCount"></v-pagination>
           </v-card>
         </v-card>
       </v-col>
@@ -143,105 +147,46 @@ export default {
       // table 관련 data
       timeAvg: "", // 나중에 평균 시간내서 색깔입힐때
       memoryAvg: "", // 마찬가지
-      loading: true,
-      search: "",
+      SolutionLoading: true,
+      SolutionPage: 2,
+      SolutionPageCount: 1,
+      SolutionCount: null,
+      SolutionPerPage: 10,
       headers: [
         {
           text: "사용자",
           align: "start",
           sortable: false,
           filterable: false,
-          value: "name"
+          value: "username"
         },
-        { text: "추천", value: "star" },
-        { text: "시간", value: "exectime" },
+        { text: "추천", value: "like" },
+        { text: "시간", value: "time" },
         { text: "메모리", value: "memory" },
-        { text: "언어", value: "lang" }
+        { text: "언어", value: "language" }
       ],
-      solvedLists: [
-        {
-          name: "Gangbada",
-          star: 3,
-          exectime: 159,
-          memory: 6.0,
-          lang: "C++"
-        },
-        {
-          name: "Ice cream sandwich",
-          star: 2,
-          exectime: 237,
-          memory: 9.0,
-          lang: "C++"
-        },
-        {
-          name: "Eclair",
-          star: 3,
-          exectime: 262,
-          memory: 16.0,
-          lang: "C++"
-        },
-        {
-          name: "Cupcake",
-          star: 3,
-          exectime: 305,
-          memory: 3.7,
-          lang: "Java"
-        },
-        {
-          name: "Gingerbread",
-          star: 3,
-          exectime: 356,
-          memory: 16.0,
-          lang: "Java"
-        },
-        {
-          name: "Jelly bean",
-          star: 3,
-          exectime: 375,
-          memory: 0.0,
-          lang: "Java"
-        },
-        {
-          name: "Lollipop",
-          star: 3,
-          exectime: 392,
-          memory: 0.2,
-          lang: "Python"
-        },
-        {
-          name: "Honeycomb",
-          star: 3,
-          exectime: 408,
-          memory: 3.2,
-          lang: "Python"
-        },
-        {
-          name: "Donut",
-          star: 3,
-          exectime: 452,
-          memory: 25.0,
-          lang: "Python"
-        },
-        {
-          name: "KitKat",
-          star: 3,
-          exectime: 518,
-          memory: 26.0,
-          lang: "Pyhthon"
-        }
-      ]
+      solvedLists: []
     };
   },
   methods: {
-    // 데이터 import
-    async fetchProblemData() {
+    // 풀이 데이터 import
+    async fetchSolvingData() {
       try {
-        const { data } = await axios.get(`${this.$store.state.ServerURL}/none`, {
-          params: {
-            id: this.$route.params.id
+        this.SolutionLoading = true;
+        const { data } = await axios.get(
+          `${this.$store.state.ServerURL}/newuser/search/detail_list`,
+          {
+            params: {
+              direction: "ASC",
+              page: this.SolutionPage,
+              problemid: this.$route.params.id,
+              size: 10
+            }
           }
-        });
-        this.problemData = data;
+        );
+        this.solvedLists = data.content;
+        this.SolutionPageCount = Number(data.totalPages);
+        this.SolutionLoading = false;
       } catch (e) {
         console.error(e);
       }
@@ -256,11 +201,9 @@ export default {
       // eslint-disable-next-line
       for (const [key, value] of Object.entries(res.data)) {
         this.problemData.labels.push(key);
-        this.problemData.datasets.data.push(value);
-        console.log(this.problemData.labels);
-        console.log(this.problemData.datasets.data);
+        this.problemData.datasets[0].data.push(value);
       }
-      console.log(res);
+      this.doughnutLoaded = true;
     },
     getColor(exectime) {
       // 여기 avg 인자를 추가로 받아서
@@ -271,10 +214,16 @@ export default {
     }
   },
   mounted() {
-    // this.fetchProblemData();
+    this.fetchSolvingData();
     this.fetchDoughnutData();
   },
-  computed: mapState(["ServerURL"])
+  computed: mapState(["ServerURL"]),
+  watch: {
+    // eslint-disable-next-line
+    SolutionPage: function() {
+      this.fetchSolvingData();
+    }
+  }
 };
 </script>
 

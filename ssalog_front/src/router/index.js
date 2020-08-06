@@ -38,7 +38,7 @@ const routes = [
     component: ProblemList
   },
   {
-    path: "/Problem/detail/",
+    path: "/Problem/:id",
     name: "ProblemDetail",
     component: ProblemDetail
   },
@@ -124,6 +124,9 @@ const router = new VueRouter({
 
 // global guard (login required)
 router.beforeEach(function(to, from, next) {
+  if (to.name === from.name) {
+    next();
+  }
   if (
     to.matched.some(function(routeInfo) {
       return routeInfo.meta.authRequired;
