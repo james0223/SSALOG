@@ -164,7 +164,7 @@ import { mapState } from "vuex";
 // component
 import Comment from "@/components/Comment.vue";
 // TOC
-import { TocHeading, tocData } from "@/plugins/tiptap/TocHeading";
+import { TocHeading, tocData, resetTocData } from "@/plugins/tiptap/TocHeading";
 
 export default {
   name: "LogDetail",
@@ -269,12 +269,12 @@ export default {
           this.$router.push({ name: "Home" });
         }, 2000);
       } catch (e) {
-        console.log(e);
         console.error(e);
       }
     },
     async getSSALOG(pageId) {
       try {
+        resetTocData();
         const res = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
           params: {
             Scoring: pageId
@@ -307,6 +307,9 @@ export default {
       this.TOC = toc;
       this.tocLoaded = true;
     }
+  },
+  beforeUpdate() {
+    tocData = [];
   }
 };
 </script>

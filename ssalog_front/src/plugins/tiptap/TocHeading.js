@@ -41,6 +41,10 @@ export class TocHeading extends Heading {
   }
 }
 export let tocData = [];
+
+export function resetTocData() {
+  tocData = [];
+}
 function getUuid() {
   let s = [];
   let hexDigits = "0123456789abcdef";
