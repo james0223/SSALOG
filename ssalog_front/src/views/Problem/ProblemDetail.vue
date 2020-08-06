@@ -148,7 +148,7 @@ export default {
       timeAvg: "", // 나중에 평균 시간내서 색깔입힐때
       memoryAvg: "", // 마찬가지
       SolutionLoading: true,
-      SolutionPage: 2,
+      SolutionPage: 1,
       SolutionPageCount: 1,
       SolutionCount: null,
       SolutionPerPage: 10,
@@ -191,6 +191,19 @@ export default {
         console.error(e);
       }
     },
+    // 문제 이름 받아오기
+    async getProblemName() {
+      const { data } = await axios.get(
+        `${this.$store.state.ServerURL}/newuser/search/find_problemname/`,
+        {
+          params: {
+            problemid: this.$route.params.id
+          }
+        }
+      );
+      this.problemTitle = data;
+      this.problemNumber = this.$route.params.id;
+    },
     // 도넛 데이터 받아오기
     async fetchDoughnutData() {
       const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/detail_py`, {
@@ -214,6 +227,7 @@ export default {
     }
   },
   mounted() {
+    this.getProblemName();
     this.fetchSolvingData();
     this.fetchDoughnutData();
   },
