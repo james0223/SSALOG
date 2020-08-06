@@ -3,7 +3,7 @@
     <v-row justify="center" no-gutters>
       <v-col cols="2">
         <div id="relative_wrapper">
-          <v-avatar size="150" class="mt-8">
+          <v-avatar size="240" class="mt-8">
             <img :src="writerThumbnail" />
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
@@ -43,7 +43,13 @@
             </v-card>
           </v-dialog>
           <v-tabs vertical class="my-15 pa-3">
-            <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.route" exact>
+            <v-tab
+              style="justify-content:left;"
+              v-for="tab in tabs"
+              :key="tab.id"
+              :to="tab.route"
+              exact
+            >
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
             </v-tab>
@@ -63,7 +69,7 @@
           </v-toolbar-title>
 
           <v-spacer></v-spacer>
-          <v-toolbar-title>
+          <v-toolbar-title v-if="this.$store.state.username === writerName">
             <span class="mr-4">수정</span>
             <span>삭제</span>
           </v-toolbar-title>
@@ -219,6 +225,7 @@ export default {
         this.problemTitle = res.data.problemname;
         this.writerName = res.data.username;
         this.htmlData = res.data.html;
+        this.updatedDate = res.data.regdate;
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
         this.editor.setContent(this.htmlData);
         this.codeview.setContent(this.codeData);

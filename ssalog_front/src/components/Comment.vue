@@ -25,7 +25,7 @@
       <v-card flat>
         <v-list-item>
           <v-list-item-avatar color="grey">
-            <img :src="`${$store.state.ImgURL}/${comment.userid}`" />
+            <img :src="`${$store.state.ImgURL}/${comment.imgpath}`" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="headline">{{ comment.userid }}</v-list-item-title>
