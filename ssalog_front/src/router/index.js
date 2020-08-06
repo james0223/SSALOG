@@ -130,12 +130,12 @@ router.beforeEach(function(to, from, next) {
     })
   ) {
     if (store.state.accessToken == null) {
-      store.commit("FormerLink", to.name);
+      store.commit("FormerLink", to);
       next("/Login");
     } else next();
   } else {
     if (to.name !== "Login") {
-      store.commit("FormerLink", to.name);
+      store.commit("FormerLink", to);
     }
     next();
   }
