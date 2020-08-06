@@ -1,6 +1,8 @@
 package com.ssalog.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +37,10 @@ public class CommentServiceImpl implements CommentService{
 			c.setMessage(comment);
 			c.setUniqueid(uid);
 			c.setUserid(username);
+			Date date = new Date();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time1 = format1.format(date);
+			c.setTime(time1);
 			clist.add(c);
 			p1.setComment(clist);
 			postRepository.save(p1);
@@ -57,7 +63,12 @@ public class CommentServiceImpl implements CommentService{
 	public void delete_comment(String id) {
 		postRepository.delete_comment(id);
 	}
-	public void update_comment(Comment comment,String id) {
+	public void update_comment(Comment comment,String id,String username) {
+		Date date = new Date();
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time1 = format1.format(date);
+		comment.setTime(time1);
+		comment.setUserid(username);
 		postRepository.update_comment(comment,id);
 	}
 //	@Override
