@@ -12,7 +12,6 @@ import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-
 @Repository
 public class FileRepositoryImpl implements FileRepository{
 	public Map<String, String> saveFile(MultipartFile multipartFile, String rootPath, String username){

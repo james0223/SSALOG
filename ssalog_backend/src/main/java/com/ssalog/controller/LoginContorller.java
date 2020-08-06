@@ -154,15 +154,6 @@ public class LoginContorller {
     public ResponseEntity<?> logout(HttpServletResponse response) {
         String username = response.getHeader("username");
         String accessToken = response.getHeader("jwtToken");
-//        try {
-//            username = jwtTokenUtil.getUsernameFromToken(accessToken);
-//        } catch (IllegalArgumentException e) {
-//        	
-//        } catch (ExpiredJwtException e) { //access token이 expire됐을 때
-//            username = e.getClaims().getSubject();  
-//            logger.info("[access token이 만료된 사용자 이름] " + username);
-//        }
-
         try {
             if (redisTemplate.opsForValue().get(username) != null) {
                 redisTemplate.delete(username); // refresh token 삭제
