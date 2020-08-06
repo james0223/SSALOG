@@ -113,11 +113,6 @@ const routes = [
         component: SsalogSolution
       }
     ]
-  },
-  {
-    path: "/SSALOG/Solution/:id",
-    name: "LogDetail",
-    component: LogDetail
   }
 ];
 
