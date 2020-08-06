@@ -2,7 +2,7 @@
   <v-card flat height="60vh">
     <v-row justify="center" bottom>
       <div id="nothing">
-        <v-avatar size="150" class="mt-8">
+        <v-avatar size="240" class="mt-8">
           <img :src="userThumbnail" />
         </v-avatar>
 
