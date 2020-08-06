@@ -8,6 +8,9 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
+    // 라우팅용 변수
+    formerLink: null,
+    // 유저 정보 관리용 변수
     accessToken: null,
     refreshToken: null,
     ImgURL: "https://ssalog.gq/upload/",
@@ -60,7 +63,7 @@ export default new Vuex.Store({
       state.accessToken = null;
       state.refreshToken = null;
       state.username = null;
-      state.userThumbnail = `${state.ImgURL}/default.png`;
+      state.userThumbnail = null;
     },
     TOKEN(state, payload) {
       const { accessToken, refreshToken } = payload;
@@ -125,11 +128,18 @@ export default new Vuex.Store({
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
           })
-          .catch(err => console.error(err));
+          .catch(() => {
+            // 토큰 갱신 실패 (9999) 처리
+            this.state.username = null;
+            this.state.userThumbnail = null;
+            this.accessToken = null;
+            this.refreshToken = null;
+          });
       };
       setTimeout(res, timeUntilRef);
     },
     async LOGOUT({ commit }) {
+      await Axios.post(`${this.state.ServerURL}/user/out`);
       commit("LOGOUT");
     },
     async SIGNUP({ dispatch }, signupData) {

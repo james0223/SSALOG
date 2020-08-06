@@ -99,6 +99,7 @@ export default {
             },
             // 배열을 보내기 위한 방법, npm i qs 필요
             paramsSerializer: params => {
+              console.log(params);
               console.log(qs.stringify(params));
               return qs.stringify(params);
             }

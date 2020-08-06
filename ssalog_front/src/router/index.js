@@ -113,11 +113,6 @@ const routes = [
         component: SsalogSolution
       }
     ]
-  },
-  {
-    path: "/SSALOG/Solution/:id",
-    name: "LogDetail",
-    component: LogDetail
   }
 ];
 
@@ -135,12 +130,12 @@ router.beforeEach(function(to, from, next) {
     })
   ) {
     if (store.state.accessToken == null) {
-      store.commit("FormerLink", to);
+      store.commit("FormerLink", to.name);
       next("/Login");
     } else next();
   } else {
     if (to.name !== "Login") {
-      store.commit("FormerLink", to);
+      store.commit("FormerLink", to.name);
     }
     next();
   }
