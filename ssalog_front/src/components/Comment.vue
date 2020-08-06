@@ -2,7 +2,7 @@
   <v-main>
     <v-card flat>
       <v-container>
-        <v-row>0개의 댓글</v-row>
+        <v-row>{{ comments.length }}개의 댓글</v-row>
         <v-row>
           <v-textarea
             class="mt-4"
@@ -21,18 +21,20 @@
         </v-row>
       </v-container>
     </v-card>
-    <v-flex v-for="comment in comments" :key="comment">
+    <v-flex v-for="(comment, i) in comments" :key="i">
       <v-card flat>
         <v-list-item>
-          <v-list-item-avatar color="grey"></v-list-item-avatar>
+          <v-list-item-avatar color="grey">
+            <img :src="`${$store.state.ImgURL}/${comment.userid}`" />
+          </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="headline">abcde</v-list-item-title>
-            <v-list-item-subtitle>2020년 7월 6일</v-list-item-subtitle>
+            <v-list-item-title class="headline">{{ comment.userid }}</v-list-item-title>
+            <v-list-item-subtitle>{{ comment.time }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-card-text>
           <div class="text--primary">
-            dalsfdkjasldkfjlasdkjflkasjdflasdjflaskdfjlaskdfjlas;kfjdlkasjdflk'aasdfklasjdlkfjasdklfjklsdjfklsjdfaklsjdfkljasdklfjklasdfjklasdjfklsad
+            {{ comment.message }}
           </div>
         </v-card-text>
       </v-card>
@@ -49,7 +51,7 @@ export default {
   data() {
     return {
       myComment: "",
-      comments: ["1", "2"]
+      comments: []
     };
   },
   computed: mapState(["ServerURL"]),
@@ -60,12 +62,13 @@ export default {
     async getComments() {
       const { ServerURL } = this;
       try {
-        const res = await axios.get(`${ServerURL}/newuser/post/get_cooment`, {
+        const res = await axios.get(`${ServerURL}/newuser/post/get_comment`, {
           params: {
             Scoring: this.$route.params.id
           }
         });
         console.log(res);
+        this.comments = res.data;
       } catch (e) {
         console.error(e);
       }
@@ -82,11 +85,12 @@ export default {
             {
               params: {
                 Scoring: this.$route.params.id,
-                comment: this.myComment
+                Comment: this.myComment
               }
             }
           );
           this.myComment = "";
+          this.getComments();
         }
       } catch (e) {
         console.error(e);
