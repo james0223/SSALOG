@@ -72,7 +72,7 @@
             tile
             height="100px"
             style="border : 1px solid rgba(0,0,0,.12);"
-            @click="showAlert"
+            @click="goSite('https://swexpertacademy.com/')"
             >SW <br />EXPERT</v-btn
           >
           <v-btn
@@ -80,7 +80,7 @@
             tile
             height="100px"
             style="border : 1px solid rgba(0,0,0,.12);"
-            @click="showAlert"
+            @click="goSite('https://codeforces.com')"
           >
             Code
             <br />Force

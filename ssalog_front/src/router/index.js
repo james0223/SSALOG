@@ -38,7 +38,7 @@ const routes = [
     component: ProblemList
   },
   {
-    path: "/Problem/:id",
+    path: "/Problem/detail/",
     name: "ProblemDetail",
     component: ProblemDetail
   },
@@ -130,12 +130,12 @@ router.beforeEach(function(to, from, next) {
     })
   ) {
     if (store.state.accessToken == null) {
-      store.commit("FormerLink", to.path);
+      store.commit("FormerLink", to);
       next("/Login");
     } else next();
   } else {
     if (to.name !== "Login") {
-      store.commit("FormerLink", to.path);
+      store.commit("FormerLink", to);
     }
     next();
   }

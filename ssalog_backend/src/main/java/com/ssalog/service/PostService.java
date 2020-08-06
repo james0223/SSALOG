@@ -25,4 +25,5 @@ public interface PostService {
 	public void input_problem(Problem problem);
 	public Map<String, Integer> detail_py(String problemid);
 	public Page<Post> select_by_username(String username, PageRequest pageable);
+	public void get_username(String username, String scoring);
 }
