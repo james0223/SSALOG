@@ -67,14 +67,18 @@
             <span class="mr-2">{{ updatedDate }}</span>
             <v-spacer></v-spacer>
           </v-toolbar-title>
-
           <v-spacer></v-spacer>
-          <v-toolbar-title v-if="this.$store.state.username === writerName">
-            <span class="mr-4">수정</span>
-            <span>삭제</span>
+          <v-toolbar-title>
+            <v-btn x-large text @click="editSolution">수정</v-btn>
+            <v-btn x-large text @click="deleteSolution">삭제</v-btn>
           </v-toolbar-title>
         </v-toolbar>
-        <v-card flat class="main_content_wrapper">
+        <v-toolbar-items class="mb-7">
+          <v-chip class="mx-2" v-for="(key, i) in keyword" :key="i">
+            {{ key }}
+          </v-chip>
+        </v-toolbar-items>
+        <v-card min-height="70vh" flat class="main_content_wrapper">
           <editor-content class="main_content editor__content article" :editor="editor" />
         </v-card>
         <hr />
@@ -82,28 +86,59 @@
       </v-col>
       <v-col lg="2">
         <div class="ml-8 mt-5 code_button">
-          <v-btn outlined fab icon class="mt-3 mb-2" @click.stop="dialog = true"
-            ><v-icon>mdi-code-braces</v-icon></v-btn
-          >
-          <v-btn outlined fab class="mt-2 mb-3"><v-icon>mdi-star</v-icon></v-btn>
+          <v-tooltip bottom>
+            <!-- eslint-disable-next-line -->
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                outlined
+                fab
+                icon
+                class="mt-3 mb-2 mx-4"
+                @click.stop="dialog = true"
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon>mdi-code-braces</v-icon></v-btn
+              >
+            </template>
+            <span>제출 코드 보기</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn outlined fab class="mt-3 mb-2" v-bind="attrs" v-on="on"
+                ><v-icon>mdi-star</v-icon></v-btn
+              >
+            </template>
+            <span>조아연</span>
+          </v-tooltip>
+
           <!--          dialog 부분-->
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
               <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
-              <editor-content class="main_content editor__content article" :editor="codeview" />
+              <editor-content
+                class="main_content code_area editor__content article"
+                :editor="codeview"
+              />
             </v-card>
           </v-dialog>
         </div>
-        <v-card height="35vh" width="15vw" class="mx-8 table_of_contents" v-once v-if="tocLoaded">
+        <v-card
+          tile
+          flat
+          height="35vh"
+          width="15vw"
+          class="mx-8 table_of_contents"
+          v-once
+          v-if="tocLoaded"
+        >
           <v-list dense>
             <v-subheader>목 차</v-subheader>
             <v-list-item-group v-model="TOC" color="primary">
               <v-list-item v-for="(item, i) in TOC" :key="i">
-                <a @click="$vuetify.goTo(`#${item.id}`)">
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.data"> </v-list-item-title>
-                  </v-list-item-content>
-                </a>
+                <v-list-item-content>
+                  <v-list-item-title @click="$vuetify.goTo(`#${item.id}`)" v-text="item.data">
+                  </v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -167,6 +202,7 @@ export default {
       writerName: null,
       updatedDate: null,
       // code dialog
+      keyword: [],
       dialog: false,
       editor: new Editor({
         extensions: [
@@ -214,6 +250,29 @@ export default {
   },
   mounted() {},
   methods: {
+    editSolution() {
+      this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
+    },
+    async deleteSolution() {
+      try {
+        await this.$http.post(`${this.ServerURL}/user/post/delete_post`, null, {
+          params: {
+            Scoring: this.$route.params.id
+          }
+        });
+        this.$store.commit("ShowAlert", {
+          flag: true,
+          msg: "게시물을 삭제하였습니다. 메인으로 이동합니다."
+        });
+        setTimeout(() => {
+          this.$store.commit("ShowAlert", { flag: false, msg: "" });
+          this.$router.push({ name: "Home" });
+        }, 2000);
+      } catch (e) {
+        console.log(e);
+        console.error(e);
+      }
+    },
     async getSSALOG(pageId) {
       try {
         const res = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
@@ -221,6 +280,7 @@ export default {
             Scoring: pageId
           }
         });
+        this.keyword = res.data.keyword;
         this.problemNum = res.data.problemid;
         this.problemTitle = res.data.problemname;
         this.writerName = res.data.username;
@@ -241,7 +301,6 @@ export default {
           username: this.writerName
         }
       });
-      console.log(this.writerThumbnail);
       this.writerThumbnail = `${this.ImgURL}${res.data}`;
     },
     setTOC(toc) {
@@ -284,22 +343,25 @@ export default {
   margin-bottom: 30px;
 }
 .code_button {
-  top: 10vh;
-  width: 4rem;
-  display: flex;
-  flex-direction: column;
-  -webkit-box-align: center;
-  align-items: center;
-  background: rgb(248, 249, 250);
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(241, 243, 245);
-  border-image: initial;
-  border-radius: 2rem;
-  padding: 0.5rem;
+  position: fixed;
+  top: 25vh;
+  /*top: 10vh;*/
+  /*width: 4rem;*/
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*-webkit-box-align: center;*/
+  /*align-items: center;*/
+  /*background: rgb(248, 249, 250);*/
+  /*border-width: 1px;*/
+  /*border-style: solid;*/
+  /*border-color: rgb(241, 243, 245);*/
+  /*border-image: initial;*/
+  /*border-radius: 2rem;*/
+  /*padding: 0.5rem;*/
 }
-
 .table_of_contents {
-  top: 10vh;
+  position: fixed;
+  top: 35vh;
+  border-left: 2px solid rgb(233, 236, 239) !important;
 }
 </style>
