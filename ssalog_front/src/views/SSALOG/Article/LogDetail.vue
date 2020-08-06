@@ -71,6 +71,7 @@
         <v-card flat class="main_content_wrapper">
           <editor-content class="main_content editor__content article" :editor="editor" />
         </v-card>
+        <hr />
         <Comment />
       </v-col>
       <v-col lg="2">
@@ -274,7 +275,7 @@ export default {
   word-break: keep-all;
 }
 .main_content_wrapper {
-  min-height: 200vh;
+  margin-bottom: 30px;
 }
 .code_button {
   top: 10vh;
