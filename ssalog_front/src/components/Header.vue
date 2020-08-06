@@ -18,16 +18,7 @@
           >
         </v-col> -->
         <v-col cols="5" class="text-center">
-          <SearchBar v-if="showSearchBar" :SelectedCategoryIdx="0" class="mt-5" />
-          <v-btn
-            v-if="!showSearchBar"
-            :ripple="false"
-            class="pa-0 no-background-hover"
-            text
-            @click="showSearchBar = true"
-          >
-            <b>검색</b>
-          </v-btn>
+          <SearchBar :SelectedCategoryIdx="0" class="mt-5" />
         </v-col>
         <!-- <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text>Community</v-btn>
@@ -113,7 +104,6 @@ export default {
   data() {
     return {
       showMyMenu: false,
-      showSearchBar: false,
       items: [{ title: "정보수정" }, { title: "내 쌀로그" }, { title: "로그아웃" }]
     };
   },

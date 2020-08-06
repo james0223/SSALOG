@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <SearchBar :SelectedCategoryIdx="categoryIdx" />
     <div v-if="isNoResult">
       <h2 class="text-center">
         검색결과가 없습니다.
@@ -43,13 +42,11 @@
 <script>
 import axios from "axios";
 import qs from "qs";
-import SearchBar from "@/components/SearchBar.vue";
 import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "ProblemList",
   components: {
-    SearchBar,
     InfiniteLoading
   },
   data() {
