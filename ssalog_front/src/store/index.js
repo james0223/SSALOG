@@ -51,7 +51,10 @@ export default new Vuex.Store({
       { kor: "LIS", eng: "lis" },
       { kor: "순열", eng: "perm" },
       { kor: "기타", eng: "etc" }
-    ]
+    ],
+    // snackbar 관련 옵션
+    showAlert: false,
+    AlertMessage: ""
   },
   plugins: [createPersistedState()],
   getters: {},
@@ -78,6 +81,15 @@ export default new Vuex.Store({
     },
     FormerLink(state, payload) {
       state.formerLink = payload;
+    },
+    ShowAlert(state, payload) {
+      state.showAlert = true;
+      state.AlertMessage = payload.msg;
+      // 2초후에 자동으로 만료
+      setTimeout(function() {
+        state.showAlert = false;
+        state.AlertMessage = "";
+      }, 2000);
     }
   },
   actions: {
@@ -125,6 +137,11 @@ export default new Vuex.Store({
           }
         })
           .then(result => {
+            // 토큰이 만료되었을때
+            if (result.data.success === false) {
+              commit("LOGOUT");
+              commit("ShowAlert", { msg: "토큰이 만료되었습니다. 다시 로그인하세요" });
+            }
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
           })
