@@ -153,7 +153,7 @@ public class LoginContorller {
     @PostMapping(path="/user/out")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         String username = response.getHeader("username");
-        String accessToken = response.getHeader("jwtToken");
+       // String accessToken = response.getHeader("jwtToken");
         try {
             if (redisTemplate.opsForValue().get(username) != null) {
                 redisTemplate.delete(username); // refresh token 삭제
@@ -162,10 +162,10 @@ public class LoginContorller {
             logger.warn("[ERROR] 사용자가 존재하지 않습니다!");
         }
 
-        //cache logout token for 10 minutes! (캐시에 상주시켜둘 시간은` 우리가 정하기)
-        logger.info(" logout ing : " + accessToken);
-        redisTemplate.opsForValue().set(accessToken, true);
-        redisTemplate.expire(accessToken, 10*6*1000, TimeUnit.MILLISECONDS);
+//        //cache logout token for 10 minutes! (캐시에 상주시켜둘 시간은` 우리가 정하기)
+//        logger.info(" logout ing : " + accessToken);
+//        redisTemplate.opsForValue().set(accessToken, true);
+//        redisTemplate.expire(accessToken, 10*6*1000, TimeUnit.MILLISECONDS);
 
         return new ResponseEntity(HttpStatus.OK);
     }

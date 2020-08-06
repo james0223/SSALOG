@@ -181,16 +181,6 @@ public class PostServiceImpl implements PostService{
 		}
 	}
 
-	public boolean is_post(String Scoring) {
-		Optional<Post> p = postRepository.findById(Scoring);
-		if(p.isPresent()) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	
-	
 	public List<Map<String, Object>> find_jandi(String username){
 		List<jandi> list = postRepository.getJandiCount(username).getMappedResults();
 		List<Map<String,Object>> mlist = new ArrayList<>();
@@ -224,15 +214,15 @@ public class PostServiceImpl implements PostService{
 		}
 		return m;
 	}
-	public Map<String, Double> detail_py(String problemid){
+	public Map<String, Integer> detail_py(String problemid){
 		Problem problem = problemRepository.findByProblemid(problemid);
 		Map<String, Integer> m = problem.getKey();
-		Map<String, Double> result = new TreeMap<String, Double>();
-		long div = problem.getAll_cnt();
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+//		long div = problem.getAll_cnt();
 		for (String key : m.keySet()) {
             Integer value = m.get(key);
-            double val = Math.round((((double)value/div)*100)*10)/10.0;
-            result.put(key, val);
+//            double val = Math.round((((double)value/div)*100)*10)/10.0;
+            result.put(key, value);
         }
 		return result;
 	}

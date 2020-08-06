@@ -89,13 +89,6 @@ public class PostController {
 		}else {
 			return new ResponseEntity<String>("not exist!", HttpStatus.BAD_REQUEST);
 		}
-	}
-	
-	@GetMapping("newuser/post/is_scoring")
-	@ApiOperation(value = "[is_posting] 채점번호에 해당하는 게시물이 이미 존재하는지 확인한다.")
-	public ResponseEntity<Boolean> is_post(@RequestParam("Scoring") String Scoring){
-		return new ResponseEntity<Boolean>(postService.is_post(Scoring), HttpStatus.OK);
-	}
-	
+	}	
 	
 }
