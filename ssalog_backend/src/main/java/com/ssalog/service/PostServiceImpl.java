@@ -237,6 +237,7 @@ public class PostServiceImpl implements PostService{
 	public void get_username(String username,String scoring){
 		Optional<Post> p = postRepository.findById(scoring);
 		p.get().setUsername(username);
+		postRepository.save(p.get());
 	}
 
 }
