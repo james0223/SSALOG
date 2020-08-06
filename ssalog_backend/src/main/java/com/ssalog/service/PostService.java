@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
 
@@ -26,4 +25,5 @@ public interface PostService {
 	public Map<String, Integer> detail_py(String problemid);
 	public Page<Post> select_by_username(String username, PageRequest pageable);
 	public void get_username(String username, String scoring);
+	public String find_problemname(String problemid);
 }

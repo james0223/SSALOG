@@ -3,7 +3,7 @@
     <v-row justify="center" no-gutters>
       <v-col cols="2">
         <div id="relative_wrapper">
-          <v-avatar size="260" class="mt-8">
+          <v-avatar size="150" class="mt-8">
             <img :src="writerThumbnail" />
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
@@ -42,7 +42,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-tabs vertical class="my-15 pa-3" v-model="activeTab">
+          <v-tabs vertical class="my-15 pa-3">
             <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.route" exact>
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
@@ -71,6 +71,7 @@
         <v-card flat class="main_content_wrapper">
           <editor-content class="main_content editor__content article" :editor="editor" />
         </v-card>
+        <hr />
         <Comment />
       </v-col>
       <v-col lg="2">
@@ -204,7 +205,6 @@ export default {
   computed: mapState(["ServerURL", "ImgURL"]),
   created() {
     this.getSSALOG(this.$route.params.id);
-    this.getThumbnail();
   },
   mounted() {},
   methods: {
@@ -226,9 +226,9 @@ export default {
       } catch (e) {
         console.error(e);
       }
+      this.getThumbnail();
     },
     async getThumbnail() {
-      console.log("hihih");
       const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
         params: {
           username: this.writerName
@@ -274,7 +274,7 @@ export default {
   word-break: keep-all;
 }
 .main_content_wrapper {
-  min-height: 200vh;
+  margin-bottom: 30px;
 }
 .code_button {
   top: 10vh;

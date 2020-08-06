@@ -52,7 +52,7 @@
             <v-list>
               <v-list-item-group color="primary">
                 <v-list-item v-for="(item, i) in items" :key="i" @click="userMenu(i)">
-                  <v-listt-item-title v-text="item"></v-listt-item-title>
+                  <v-list-item-title v-text="item"></v-list-item-title>
                 </v-list-item>
               </v-list-item-group>
             </v-list>

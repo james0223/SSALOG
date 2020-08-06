@@ -3,7 +3,7 @@
     <v-row justify="center" no-gutters>
       <v-col lg="2" cols="12">
         <div id="relative_wrapper">
-          <v-avatar size="260" class="mt-8">
+          <v-avatar size="150" class="mt-8">
             <img :src="userThumbnail" />
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">

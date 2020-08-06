@@ -23,8 +23,10 @@ import com.ssalog.dto.Account;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
+import com.ssalog.dto.problemlist;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
+import com.ssalog.service.ProblemlistService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -39,6 +41,8 @@ public class SearchContoller {
 	@Autowired
 	private PostService postService;
 	
+	@Autowired
+	private ProblemlistService problemlistService;
 	@ApiOperation(value = "[회원 조회] (p-022_마이페이지) 기능: page(몇 페이지), size(개수), direction(ASC:오름차순) 인자를 입력해 회원을 조회한다. 회원 nickname을 입력받으면, nickname 기준으로 검색한다., nickname값이 없으면, 모든 회원을 조회한다 ")
 	@GetMapping("/to_nickname")
 	public ResponseEntity<Page<Account>> findToNickname(@RequestParam(required=false) String nickname, PageRequest pageable){
@@ -83,13 +87,18 @@ public class SearchContoller {
 	}
 	@ApiOperation(value ="[detail page] 문제번호와, 페이지정보를 주면, 해당 문제를 푼사람의 정보를 보여줌")
 	@GetMapping("/detail_list")
-	public ResponseEntity<Page<Post>> detail_page(@RequestParam("problemid") String problemid, PageRequest pageable){
-		return new ResponseEntity<Page<Post>>(postService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
+	public ResponseEntity<Page<problemlist>> detail_page(@RequestParam("problemid") String problemid, PageRequest pageable){
+		return new ResponseEntity<Page<problemlist>>(problemlistService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
 	}
 	@ApiOperation(value ="[detail page] 문제번호와, 페이지정보를 주면, 해당 문제를 푼 키워드의 종류를 줌")
 	@GetMapping("/detail_py")
 	public ResponseEntity<Map<String, Integer>> detail_py(@RequestParam("problemid") String problemid){
 		return new ResponseEntity<Map<String, Integer>>(postService.detail_py(problemid), HttpStatus.OK);
+	}
+	@ApiOperation(value ="[문제 이름 찾기] 문제 번호를 주면 문제이름을 찾아줍니다.")
+	@GetMapping("/find_problemname")
+	public ResponseEntity<String> find_problemname(@RequestParam("problemid") String problemid){
+		return new ResponseEntity<String>(postService.find_problemname(problemid), HttpStatus.OK);
 	}
 	@ApiOperation(value ="[test]")
 	@PostMapping("/test")

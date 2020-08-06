@@ -172,7 +172,7 @@
                 type="checkbox"
                 v-bind:key="item.eng"
                 v-bind:value="item.kor"
-                v-model="obj.keyword"
+                v-model="SelectedProblemCategory"
               />
               <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
             </template>
@@ -232,7 +232,6 @@ export default {
     return {
       resData: undefined,
       isUpdating: false,
-      obj: null,
       SelectedProblemCategory: [],
       editor: new Editor({
         extensions: [
@@ -332,6 +331,7 @@ export default {
     },
     write() {
       this.resData.username = this.username;
+      this.resData.keyword = this.SelectedProblemCategory;
       axios
         .put(`${this.ServerURL}/user/post/update_post`, this.resData)
         .then(response => {

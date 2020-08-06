@@ -20,6 +20,7 @@ import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
+import com.ssalog.dto.problemlist;
 import com.ssalog.dto.solvelang;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
@@ -149,7 +150,11 @@ public class PostServiceImpl implements PostService{
 		if(p1.isPresent()) { // 이전에 해당 채점번호로 작성한 글이 존재하면?
 			if(p1.get().getUsername().equals(username)) { // 똑같은 작성자인지 확인.
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
-				problem = delete_problem(problem, p);
+				if(problem == null) {
+					problem = new Problem();
+				}else {
+					problem = delete_problem(problem, p);
+				}
 				update_problem(problem, p);
 				postRepository.save(p); // 맞으면 update
 				return 1;
@@ -158,6 +163,9 @@ public class PostServiceImpl implements PostService{
 			}
 		}else { // 해당 채점번호로 작성한 글이 없으면.
 			Problem problem = problemRepository.findByProblemid(p.getProblemid());
+			if(problem == null) {
+				problem = new Problem();
+			}
 			update_problem(problem,p);
 			p.setIswrite(true);
 			p.setUsername(username);
@@ -216,7 +224,7 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public Page<Post> select_by_problemid(String problemid, PageRequest pageable) {
+	public Page<Post> select_by_problemid(String problemid, PageRequest pageable){
 		return postRepository.findByProblemid(problemid, pageable);
 	}
 
@@ -234,10 +242,18 @@ public class PostServiceImpl implements PostService{
 		return postRepository.findByUsername(username, pageable);
 	}
 	@Override
+	public String find_problemname(String problemid){
+		List<Post> l = postRepository.findByProblemid(problemid);
+		if(l == null) {
+			return "not exists";
+		}else {
+			return l.get(0).getProblemname();
+		}
+	}
+	@Override
 	public void get_username(String username,String scoring){
 		Optional<Post> p = postRepository.findById(scoring);
 		p.get().setUsername(username);
 		postRepository.save(p.get());
 	}
-
 }
