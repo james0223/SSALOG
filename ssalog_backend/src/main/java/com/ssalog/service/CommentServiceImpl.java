@@ -22,7 +22,7 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	@Transactional
-	public int write_comment(String post_pk,Comment comment,String username) {
+	public int write_comment(String post_pk,String comment,String username) {
 		Optional<Post> p = postRepository.findById(post_pk);
 		if(p.isPresent()) {
 			Post p1 = p.get();
@@ -31,9 +31,11 @@ public class CommentServiceImpl implements CommentService{
 				clist = new ArrayList<>();
 			}
 			String uid = username+UUID.randomUUID().toString();
-			comment.setUniqueid(uid);
-			comment.setUserid(username);
-			clist.add(comment);
+			Comment c = new Comment();
+			c.setMessage(comment);
+			c.setUniqueid(uid);
+			c.setUserid(username);
+			clist.add(c);
 			p1.setComment(clist);
 			postRepository.save(p1);
 			return 1;

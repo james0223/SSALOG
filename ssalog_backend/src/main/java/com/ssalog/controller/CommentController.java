@@ -40,7 +40,7 @@ public class CommentController {
 	// --------- comment ------------------------------
 	@PostMapping("user/post/write_comment")
 	@ApiOperation(value = "[댓글작성] 풀이번호에 해당하는 게시물에 댓글을 작성한다, 로그인을 해야 작성이 가능함, 만약 풀이번호에 해당하는 게시물이 존재 하지 않으면 400 error 발생시킨다.")
-	public ResponseEntity<String> write_comment(HttpServletResponse response,@RequestParam("Scoring") String Scoring,@RequestBody Comment comment) {
+	public ResponseEntity<String> write_comment(HttpServletResponse response,@RequestParam("Scoring") String Scoring,@RequestParam("Comment") String comment) {
 		String username = response.getHeader("username");
 		int flag = commentService.write_comment(Scoring, comment, username);
 		if(flag == 1) {
