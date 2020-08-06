@@ -22,7 +22,7 @@
       </v-container>
     </v-card>
     <v-flex v-for="(comment, i) in comments" :key="i">
-      <v-card flat>
+      <v-card flat class="mt-3">
         <v-list-item>
           <v-list-item-avatar color="grey">
             <img :src="`${$store.state.ImgURL}/${comment.imgpath}`" />
@@ -32,11 +32,12 @@
             <v-list-item-subtitle>{{ comment.time }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-card-text>
+        <v-card-text class="mb-5">
           <div class="text--primary">
             {{ comment.message }}
           </div>
         </v-card-text>
+        <v-divider></v-divider>
       </v-card>
     </v-flex>
   </v-main>

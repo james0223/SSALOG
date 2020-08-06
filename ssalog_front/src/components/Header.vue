@@ -17,8 +17,8 @@
             >GROUP</v-btn
           >
         </v-col>-->
-        <v-col cols="5" class="text-center">
-          <SearchBar :SelectedCategoryIdx="0" class="mt-5" />
+        <v-col cols="6" class="text-center">
+          <SearchBar :SelectedCategoryIdx="0" class="mt-7" />
         </v-col>
         <!-- <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text>Community</v-btn>
@@ -43,8 +43,8 @@
                     </v-avatar>
                   </v-col>
                   <v-col cols="8">
-                    <div class="justify-space-between subtitle">{{ username }} 님</div>
-                    <div class="justify-space-between caption">환영합니다</div>
+                    <div class="text-left subtitle">{{ username }} 님</div>
+                    <div class="text-left caption">환영합니다</div>
                   </v-col>
                 </v-row>
               </v-card>
@@ -58,11 +58,11 @@
             </v-list>
           </v-menu>
         </v-col>
-        <v-col cols="3" class="text-center py-0 d-flex justify-end">
+        <v-col cols="2" class="text-center py-0 d-flex justify-end">
           <v-btn
             text
             tile
-            height="100px"
+            height="95"
             style="border : 1px solid rgba(0,0,0,.12);"
             @click="goSite('https://www.acmicpc.net/')"
             >BOJ</v-btn
@@ -70,7 +70,7 @@
           <v-btn
             text
             tile
-            height="100px"
+            height="95"
             style="border : 1px solid rgba(0,0,0,.12);"
             @click="goSite('https://swexpertacademy.com/')"
           >
@@ -80,7 +80,7 @@
           <v-btn
             text
             tile
-            height="100px"
+            height="95"
             style="border : 1px solid rgba(0,0,0,.12);"
             @click="goSite('https://codeforces.com')"
           >
