@@ -83,13 +83,8 @@ export default new Vuex.Store({
       state.formerLink = payload;
     },
     ShowAlert(state, payload) {
-      state.showAlert = true;
+      state.showAlert = payload.flag;
       state.AlertMessage = payload.msg;
-      // 2초후에 자동으로 만료
-      setTimeout(function() {
-        state.showAlert = false;
-        state.AlertMessage = "";
-      }, 2000);
     }
   },
   actions: {
@@ -140,7 +135,10 @@ export default new Vuex.Store({
             // 토큰이 만료되었을때
             if (result.data.success === false) {
               commit("LOGOUT");
-              commit("ShowAlert", { msg: "토큰이 만료되었습니다. 다시 로그인하세요" });
+              commit("ShowAlert", { flag: true, msg: "토큰이 만료되었습니다. 다시 로그인하세요" });
+              setTimeout(() => {
+                commit("ShowAlert", { flag: false, msg: "" });
+              }, 2000);
             }
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
