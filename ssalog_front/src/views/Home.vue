@@ -150,7 +150,7 @@
             <v-carousel
               cycle
               hide-delimiters
-              height="600"
+              height="800"
               hide-delimiter-background
               show-arrows-on-hover
             >
