@@ -12,22 +12,37 @@
     <v-row>
       <v-col cols="5"> <DoughNutChart v-bind:chart-data="chartData" /> </v-col>
       <v-col cols="7">
-        <h4 class="font-weight-light mb-1">작성한 글</h4>
+        <v-row no-gutters>
+          <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
+          <v-col cols="3" class="d-flex justify-center"
+            ><h4 class="font-weight-light mb-1">추천수</h4></v-col
+          >
+          <v-col cols="3" class="d-flex justify-center"
+            ><h4 class="font-weight-light mb-1">댓글</h4></v-col
+          >
+        </v-row>
         <v-divider></v-divider>
-        댓글 추천수
         <v-list>
           <v-list-item-group>
             <v-list-item
+              class="px-1"
               v-for="(solve, i) in solvedList"
               :key="i"
               @click="$router.push({ name: 'LogDetail', params: { id: solve.scoring } })"
             >
-              <v-list-item-content>
-                <v-list-item-title>{{ solve.problemid }}-{{ solve.problemname }}</v-list-item-title>
-              </v-list-item-content>
+              <v-row no-gutters class="align-center">
+                <v-col cols="6"> {{ solve.problemid }} - {{ solve.problemname }} </v-col>
+                <v-col cols="3" class="d-flex justify-center">
+                  {{ solve.like }}
+                </v-col>
+                <v-col cols="3" class="d-flex justify-center">
+                  {{ solve.comment === null ? 0 : solve.comment.length }}
+                </v-col>
+              </v-row>
             </v-list-item>
           </v-list-item-group>
         </v-list>
+        <v-divider></v-divider>
       </v-col>
     </v-row>
   </v-card>
