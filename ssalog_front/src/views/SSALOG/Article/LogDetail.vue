@@ -307,9 +307,6 @@ export default {
       this.TOC = toc;
       this.tocLoaded = true;
     }
-  },
-  beforeUpdate() {
-    tocData = [];
   }
 };
 </script>

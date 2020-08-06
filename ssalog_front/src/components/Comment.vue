@@ -31,6 +31,10 @@
             <v-list-item-title class="headline">{{ comment.userid }}</v-list-item-title>
             <v-list-item-subtitle>{{ comment.time }}</v-list-item-subtitle>
           </v-list-item-content>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="deleteComment(i)" v-if="$store.state.username === comment.userid">
+            <v-icon>mdi-window-close</v-icon>
+          </v-btn>
         </v-list-item>
         <v-card-text class="mb-5">
           <div class="text--primary">
@@ -96,6 +100,20 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async deleteComment(index) {
+      console.log(this.comments);
+      const res = await this.$http.post(
+        `${this.ServerURL}/user/post/delete_comment`,
+        {},
+        {
+          params: {
+            id: this.$store.state.username
+          }
+        }
+      );
+      this.comments.splice(index, 1);
+      console.log(res);
     }
   }
 };
