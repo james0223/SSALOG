@@ -8,6 +8,9 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
+    // 라우팅용 변수
+    formerLink: null,
+    // 유저 정보 관리용 변수
     accessToken: null,
     refreshToken: null,
     ImgURL: "https://ssalog.gq/upload/",

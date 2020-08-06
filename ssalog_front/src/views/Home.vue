@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <v-content>
+      <v-main>
         <section id="hero">
           <v-row no-gutters>
             <v-img src="@/assets/images/banner3.jpg" height="850px">
@@ -160,7 +160,7 @@
 
           <div class="py-12"></div>
         </section>
-      </v-content>
+      </v-main>
 
       <v-footer class="justify-center" color="#292929" height="100">
         <div class="title font-weight-light grey--text text--lighten-1 text-center">

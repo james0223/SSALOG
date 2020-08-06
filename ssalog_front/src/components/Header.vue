@@ -51,7 +51,7 @@
               </v-card>
             </template>
             <v-list>
-              <v-list-item-group v-model="item" color="primary">
+              <v-list-item-group v-model="items" color="primary">
                 <v-list-item v-for="(item, index) in items" :key="index">
                   <v-list-item-title @click="doFunc(index)">{{ item.title }}</v-list-item-title>
                 </v-list-item>
