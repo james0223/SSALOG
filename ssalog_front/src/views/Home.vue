@@ -4,7 +4,7 @@
       <v-main>
         <section id="hero">
           <v-row no-gutters>
-            <v-img src="@/assets/images/banner3.jpg" height="850px">
+            <v-img src="@/assets/images/banner3.jpg" height="850px" alt="메인화면 배경이미지">
               <v-theme-provider>
                 <v-container fill-height mt-15 pl-10>
                   <v-row></v-row>

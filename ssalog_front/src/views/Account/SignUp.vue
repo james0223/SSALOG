@@ -1,10 +1,19 @@
 <template>
-  <v-card class="mx-auto" max-width="50vw">
-    <v-card-title class="title font-weight-regular justify-space-between">
-      <span>회원가입</span>
-    </v-card-title>
+  <v-container my-16>
+    <v-card flat class="mx-auto" max-width="50vw">
+      <v-card-text class="text-center">
+        <v-avatar class="elevation-12 mb-12" size="200">
+          <v-img src="@/assets/images/logo.jpg"></v-img>
+        </v-avatar>
+      </v-card-text>
+      <v-card-title class="py-0 align-baseline">
+        <h1 class="mb-0" style="font-family: 'Do Hyeon', sans-serif;">쌀로하~</h1>
+        <v-btn class="ml-auto" rounded outlined @click="$router.go(-1)">뒤로가기</v-btn>
+      </v-card-title>
+      <v-card-title class="pt-0">
+        <h5>쌀로그와 함께하기 위한 고객님의 소중한 정보를 입력해주세요 :)</h5>
+      </v-card-title>
 
-    <v-card width="50vw">
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
@@ -45,7 +54,7 @@
             label="닉네임"
             required
           ></v-text-field>
-          <v-menu
+          <!-- <v-menu
             ref="menu"
             v-model="menu"
             :close-on-content-click="false"
@@ -72,7 +81,7 @@
               @change="save"
               locale="ko-kr"
             ></v-date-picker>
-          </v-menu>
+          </v-menu>-->
           <v-select
             :items="questions"
             v-model="userData.question"
@@ -89,35 +98,34 @@
           ></v-text-field>
         </v-form>
       </v-card-text>
+      <v-card-text class="py-0">
+        <small class="deep-orange--text" v-show="errorMsg">{{ errorMsg }}</small>
+      </v-card-text>
+      <v-card-text>
+        <v-btn class="px-0" tile block color="info" @click="signUp()">회원가입</v-btn>
+      </v-card-text>
     </v-card>
-
-    <v-divider></v-divider>
-
-    <v-card-actions>
-      <v-btn color="primary" text @click="signUp()">회원가입</v-btn>
-      <small class="deep-orange--text" v-show="errorMsg">{{ errorMsg }}</small>
-    </v-card-actions>
-  </v-card>
+  </v-container>
 </template>
 
 <script>
 import axios from "axios";
-/* eslint-disable no-unused-expressions */
+
 export default {
   name: "SignUp",
   data() {
     return {
       userData: {
-        username: "",
-        password: "",
-        nickname: "",
-        email: "",
-        birthday: "",
-        question: "",
-        answer: ""
+        username: null,
+        password: null,
+        nickname: null,
+        email: null,
+        birthday: null,
+        question: null,
+        answer: null
       },
-      passwdcheck: "",
-      menu: false,
+      passwdcheck: null,
+      // menu: false, 생일 입력때문에 있던 것
       isCheckingId: false,
       isCheckedId: false,
       isCheckingEmail: false,
@@ -128,9 +136,15 @@ export default {
         v => !!v || "입력이 필요합니다.",
         v => this.userData.password === v || "비밀번호 확인이 일치하지 않습니다."
       ],
-      questions: ["나의 어렸을 적 별명은?", "내가 살았던 동네 이름은?", "졸업한 초등학교 이름은?"],
+
       textRules: [v => !!v || "입력이 필요합니다."],
-      errorMsg: null
+      errorMsg: null,
+      questions: [
+        "나의 어렸을 적 별명은?",
+        "내가 살았던 동네 이름은?",
+        "졸업한 초등학교 이름은?",
+        "나의 인생영화는?"
+      ]
     };
   },
   methods: {
@@ -225,8 +239,6 @@ export default {
         this.errorMsg = "닉네임을 입력해주세요";
       } else if (!this.isCheckedNickname) {
         this.errorMsg = "해당 닉네임은 이미 사용중입니다.";
-      } else if (!this.userData.birthday) {
-        this.errorMsg = "생일을 입력해주세요";
       } else if (!this.userData.question) {
         this.errorMsg = "비밀번호 찾기 힌트를 선택해주세요";
       } else if (!this.userData.answer) {
@@ -246,30 +258,32 @@ export default {
   computed: {
     nicknameRules() {
       const rules = [];
-      const rule2 = v => !!v || "닉네임을 입력해주세요";
-      rules.push(rule2);
-      const rule = this.isCheckedNickname || "중복된 닉네임입니다.";
+      const rule = v => !!v || "닉네임을 입력해주세요";
       rules.push(rule);
+      const rule2 = this.isCheckedNickname || "중복된 닉네임입니다.";
+      rules.push(rule2);
       return rules;
     },
     emailRules() {
       const rules = [];
-      const rule2 = v => !!v || "메일주소를 입력해주세요";
-      rules.push(rule2);
-      const rule = this.isCheckedEmail || "중복된 메일주소입니다.";
+      const rule = v => !!v || "메일주소를 입력해주세요";
       rules.push(rule);
+      const rule2 = this.isCheckedEmail || "중복된 메일주소입니다.";
+      rules.push(rule2);
       return rules;
     },
     idRules() {
       const rules = [];
-      const rule2 = v => !!v || "아이디를 입력해주세요";
-      rules.push(rule2);
-      const rule = this.isCheckedId || "중복된 아이디 입니다.";
+      const rule = v => !!v || "아이디를 입력해주세요";
       rules.push(rule);
+      const rule2 = this.isCheckedId || "중복된 아이디 입니다.";
+      rules.push(rule2);
       return rules;
     }
   }
 };
 </script>
 
-<style></style>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+</style>
