@@ -233,6 +233,10 @@ public class PostServiceImpl implements PostService{
 	public Page<Post> select_by_username(String username, PageRequest pageable){
 		return postRepository.findByUsername(username, pageable);
 	}
-	
-	
+	@Override
+	public void get_username(String username,String scoring){
+		Optional<Post> p = postRepository.findById(scoring);
+		p.get().setUsername(username);
+	}
+
 }
