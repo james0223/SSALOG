@@ -157,7 +157,7 @@
               <v-carousel-item v-for="slide in slides" :key="slide.id">
                 <v-sheet color="black" height="100%">
                   <v-row class="fill-height" align="center" justify="center">
-                    <v-img :src="slide.image" height="90%" />
+                    <v-img :src="slide.image" height="90%" width="100%" />
                     <div class="display-3">
                       <h6 black>{{ slide.desc }}</h6>
                     </div>
