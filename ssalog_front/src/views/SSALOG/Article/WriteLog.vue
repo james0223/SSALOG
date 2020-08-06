@@ -1,13 +1,20 @@
 <template>
-  <v-container>
+  <v-container mt-3>
     <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
+    <v-row>
+      <v-col cols="3" style="border-left: 1px solid red"> 언어: {{ resData.language }} </v-col>
+      <v-col cols="3" style="border-left: 1px solid red"> 메모리: {{ resData.memory }}KB </v-col>
+      <v-col cols="3" style="border-left: 1px solid red"> 시간: {{ resData.time }}MS </v-col>
+      <v-col cols="3" style="border-left: 1px solid red"> 코드길이: {{ resData.len }}B </v-col>
+    </v-row>
+    <br />
     <v-row>
       <v-col cols="12" md="6">
         <div class="editor" spellcheck="false">
           <editor-menu-bubble
             :editor="codearea"
             :keep-in-bounds="keepInBounds"
-            v-slot="{ commands, isActive, menu }"
+            v-slot="{ isActive, menu }"
           >
             <div
               class="menububble"
@@ -223,8 +230,8 @@ export default {
   },
   data() {
     return {
-      isUpdating: false,
       resData: undefined,
+      isUpdating: false,
       obj: null,
       SelectedProblemCategory: [],
       editor: new Editor({
