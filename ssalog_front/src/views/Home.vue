@@ -117,7 +117,7 @@
         <section id="stats">
           <v-parallax
             :height="$vuetify.breakpoint.smAndDown ? 700 : 500"
-            src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+            src="@/assets/images/home_middle.jpg"
           >
             <v-container fill-height>
               <v-row class="mx-auto">
@@ -147,11 +147,20 @@
               <v-divider></v-divider>
             </v-responsive>
 
-            <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
-              <v-carousel-item v-for="(slide, i) in slides" :key="i">
-                <v-sheet :color="colors[i]" height="100%">
+            <v-carousel
+              cycle
+              hide-delimiters
+              height="600"
+              hide-delimiter-background
+              show-arrows-on-hover
+            >
+              <v-carousel-item v-for="slide in slides" :key="slide.id">
+                <v-sheet color="black" height="100%">
                   <v-row class="fill-height" align="center" justify="center">
-                    <div class="display-3">{{ slide }} Slide</div>
+                    <v-img :src="slide.image" height="90%" />
+                    <div class="display-3">
+                      <h6 black>{{ slide.desc }}</h6>
+                    </div>
                   </v-row>
                 </v-sheet>
               </v-carousel-item>
@@ -172,6 +181,12 @@
 </template>
 
 <script>
+const image1 = require("@/assets/images/howto/1.png");
+const image2 = require("@/assets/images/howto/2.png");
+const image3 = require("@/assets/images/howto/3.png");
+const image4 = require("@/assets/images/howto/4.png");
+const image5 = require("@/assets/images/howto/5.png");
+
 export default {
   data() {
     return {
@@ -225,11 +240,36 @@ export default {
         }
       ],
       stats: [
-        ["24k", "풀이 수"],
-        ["330+", "사용자 수"]
+        ["1215", "풀이 수"],
+        ["330", "사용자 수"]
       ],
-      colors: ["indigo", "warning", "pink darken-2", "red lighten-1", "deep-purple accent-4"],
-      slides: ["First", "Second", "Third", "Fourth", "Fifth"]
+      slides: [
+        {
+          id: "1",
+          image: image1,
+          desc: "1.SSALOG버튼클릭"
+        },
+        {
+          id: "2",
+          image: image2,
+          desc: "2.로그인"
+        },
+        {
+          id: "3",
+          image: image3,
+          desc: "3.자동 동기화"
+        },
+        {
+          id: "4",
+          image: image4,
+          desc: "4.마크다운 문서 작성"
+        },
+        {
+          id: "5",
+          image: image5,
+          desc: "5.작성완료"
+        }
+      ]
     };
   },
   components: {}
