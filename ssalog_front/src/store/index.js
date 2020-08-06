@@ -125,7 +125,13 @@ export default new Vuex.Store({
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
           })
-          .catch(err => console.error(err));
+          .catch(err => {
+            // 토큰 갱신 실패 (9999) 처리
+            this.state.username = null;
+            this.state.userThumbnail = null;
+            this.accessToken = null;
+            this.refreshToken = null;
+          });
       };
       setTimeout(res, timeUntilRef);
     },
