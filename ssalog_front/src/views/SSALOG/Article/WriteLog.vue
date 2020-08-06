@@ -340,10 +340,15 @@ export default {
     async getData(that) {
       that.resData = await getSSALOG(that.$route.params.id);
       // 이미 작성한 것을 수정할때
-      that.isUpdating = that.resData.hasOwnProperty("html");
+      that.isUpdating = that.resData.html == null ? false : true;
+      console.log(that.isUpdating);
+      console.log("isupdating=" + that.isUpdating);
       if (!that.isUpdating) {
         // 속성이 없다면.
         // 속성 추가해주기
+        const transCode = that.codearea.state.tr.insertText(that.resData.code);
+        that.codearea.view.dispatch(transCode);
+        that.codearea.commands.code_block();
         that.resData.SelectedProblemCategory = [];
         that.resData.html = "";
       } else {
