@@ -149,6 +149,9 @@ public class PostServiceImpl implements PostService{
 		if(p1.isPresent()) { // 이전에 해당 채점번호로 작성한 글이 존재하면?
 			if(p1.get().getUsername().equals(username)) { // 똑같은 작성자인지 확인.
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
+				if(problem == null) {
+					problem = new Problem();
+				}
 				problem = delete_problem(problem, p);
 				update_problem(problem, p);
 				postRepository.save(p); // 맞으면 update
@@ -158,6 +161,9 @@ public class PostServiceImpl implements PostService{
 			}
 		}else { // 해당 채점번호로 작성한 글이 없으면.
 			Problem problem = problemRepository.findByProblemid(p.getProblemid());
+			if(problem == null) {
+				problem = new Problem();
+			}
 			update_problem(problem,p);
 			p.setIswrite(true);
 			p.setUsername(username);
