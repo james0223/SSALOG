@@ -15,8 +15,10 @@ public class Comment {
 	private String time;
 	private int like;
 	private List<Comment> subcomment;
+	private String imgpath;
 	public Comment() {}
-	public Comment(String uniqueid, String userid, String message, String time, int like, List<Comment> subcomment) {
+	public Comment(String uniqueid, String userid, String message, String time, int like, List<Comment> subcomment,
+			String imgpath) {
 		super();
 		this.uniqueid = uniqueid;
 		this.userid = userid;
@@ -24,6 +26,7 @@ public class Comment {
 		this.time = time;
 		this.like = like;
 		this.subcomment = subcomment;
+		this.imgpath = imgpath;
 	}
 	public String getUniqueid() {
 		return uniqueid;
@@ -60,6 +63,12 @@ public class Comment {
 	}
 	public void setSubcomment(List<Comment> subcomment) {
 		this.subcomment = subcomment;
+	}
+	public String getImgpath() {
+		return imgpath;
+	}
+	public void setImgpath(String imgpath) {
+		this.imgpath = imgpath;
 	}
 	
 }
