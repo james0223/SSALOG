@@ -21,11 +21,11 @@ public class Post {
 	private String username;
 	private String code;
 	private String language;
-	private String len;
-	private String memory;
+	private int len;
+	private int memory;
 	private String problemid;
 	private String problemname;
-	private String time;
+	private int time;
 	private String html;
 	private List<String> keyword;
 	private List<Comment> comment;
@@ -36,10 +36,9 @@ public class Post {
 	
 	public Post() {}
 
-
-	public Post(String scoring, String username, String code, String language, String len, String memory,
-			String problemid, String problemname, String time, String html, List<String> keyword, List<Comment> comment,
-			int like, String regdate, String regtime, Boolean iswrite) {
+	public Post(String scoring, String username, String code, String language, int len, int memory, String problemid,
+			String problemname, int time, String html, List<String> keyword, List<Comment> comment, int like,
+			String regdate, String regtime, Boolean iswrite) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -59,7 +58,6 @@ public class Post {
 		this.iswrite = iswrite;
 	}
 
-	
 	public String getScoring() {
 		return scoring;
 	}
@@ -92,19 +90,19 @@ public class Post {
 		this.language = language;
 	}
 
-	public String getLen() {
+	public int getLen() {
 		return len;
 	}
 
-	public void setLen(String len) {
+	public void setLen(int len) {
 		this.len = len;
 	}
 
-	public String getMemory() {
+	public int getMemory() {
 		return memory;
 	}
 
-	public void setMemory(String memory) {
+	public void setMemory(int memory) {
 		this.memory = memory;
 	}
 
@@ -124,11 +122,11 @@ public class Post {
 		this.problemname = problemname;
 	}
 
-	public String getTime() {
+	public int getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(int time) {
 		this.time = time;
 	}
 
@@ -187,6 +185,9 @@ public class Post {
 	public void setIswrite(Boolean iswrite) {
 		this.iswrite = iswrite;
 	}
+	
+
+	
 	
 	
 }

@@ -1,16 +1,19 @@
 <template>
-  <v-container>
+  <v-container mt-16>
     <v-row no-gutters>
       <v-col cols="5">
-        <v-card rounded="false" outlined class="pa-9" height="70vh" align="center">
+        <v-card rounded="false" outlined class="pa-9" height="500px" align="center">
           <v-card-title class="pa-0 mb-7">
-            <h1 class="ma-0">Hi, SSaLog</h1>
-            <v-img
-              :src="require('@/assets/images/header-logo.png')"
-              max-width="5vw"
+            <h1 class="ma-0" style="font-family: 'Do Hyeon', sans-serif;">
+              쌀로그인
+            </h1>
+            <!-- <v-img
+              :src="require('@/assets/images/logo.png')"
+              min-width="10vh"
+              max-width="10vh"
               max-height="10vh"
               alt="홈페이지 아이콘"
-            />
+            /> -->
           </v-card-title>
           <v-form ref="form">
             <v-text-field
@@ -33,17 +36,7 @@
             <v-card-actions class="px-0 mt-3">
               <v-btn block color="success" tile @click="onSubmit()">로그인</v-btn>
             </v-card-actions>
-            <v-card-actions class="px-0 mt-3">
-              <v-btn block color="blue-grey" class="white--text" tile @click="onSubmit()">
-                <v-icon>mdi-google</v-icon> Google 로그인</v-btn
-              >
-            </v-card-actions>
-            <v-card-actions class="px-0 mt-3">
-              <v-btn block color="info" tile @click="onSubmit()">
-                <v-icon>mdi-facebook</v-icon>
-                FaceBook 로그인</v-btn
-              >
-            </v-card-actions>
+
             <v-card-actions class="px-0 my-3">
               <v-btn block color="primary" tile @click="toRegister()">회원 가입</v-btn>
             </v-card-actions>
@@ -52,7 +45,7 @@
             <v-btn color="success" @click="toFindPw()">비밀번호 찾기</v-btn> -->
             <v-menu v-model="showMenu" absolute offset-y style="max-width: 600px">
               <template v-slot:activator="{ on, attrs }">
-                <small v-bind="attrs" v-on="on">로그인에 문제가 있나요?</small>
+                <small v-bind="attrs" v-on="on">아이디/비밀번호찾기</small>
               </template>
               <v-list>
                 <v-list-item @click="$router.push({ name: 'FindId' })">
@@ -68,7 +61,7 @@
         </v-card>
       </v-col>
       <v-col cols="7">
-        <v-img src="@/assets/images/login_main.jpg" height="70vh"></v-img>
+        <v-img src="@/assets/images/login_main.jpg" height="500px"></v-img>
       </v-col>
     </v-row>
   </v-container>
@@ -117,4 +110,9 @@ export default {
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+.p_page {
+  margin-top: "200vh";
+}
+</style>

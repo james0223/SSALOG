@@ -63,7 +63,37 @@ public class PostServiceImpl implements PostService{
 			return 3;
 		}
 	}
-
+	public Problem delete_problem(Problem pr, Post p) {
+		if(pr.getAll_cnt() == 1) {
+			problemRepository.delete(pr);
+			return null;
+		}else {
+			// 총 개수 하나빼고
+			pr.setAll_cnt(pr.getAll_cnt()-1);
+			// 이전꺼를 지우자 , keyword부터
+			List<String> key = p.getKeyword(); 
+			if(key!= null) {
+				Map<String,Integer> m1 = pr.getKey();
+				for(int i=0; i<key.size(); i++) {
+					if(m1.containsKey(key.get(i))) {
+						int key_val = m1.get(key.get(i));
+						key_val -=1;
+						m1.put(key.get(i), key_val);
+					}
+				}
+				pr.setKey(m1);
+			}
+			// solvelang에서 이거만큼 지워
+			Map<String, solvelang> m2 = pr.getLanguage();
+			solvelang l = m2.get(p.getLanguage());
+			l.setCnt(l.getCnt()-1);
+			l.setMemory_sum(l.getMemory_sum()-p.getMemory());
+			l.setTime_sum(l.getTime_sum()-p.getTime());
+			m2.put(p.getLanguage(), l);
+			pr.setLanguage(m2);
+			return pr;
+		}
+	}
 	@Override
 	public int update_post(Post p, String username) {
 		Optional<Post> p1 = postRepository.findById(p.getScoring());
@@ -75,9 +105,44 @@ public class PostServiceImpl implements PostService{
 		p.setRegdate(time1);
 		p.setRegtime(time2);
 		if(p1.isPresent()) { // 이전에 해당 채점번호로 작성한 글이 존재하면?
-			//System.out.println(username + " 사람이름? " + p.getUsername() );
 			if(p1.get().getUsername().equals(username)) { // 똑같은 작성자인지 확인.
-				postRepository.save(p); // 맞으면 update.
+				Problem problem = problemRepository.findByProblemid(p.getProblemid());
+				problem = delete_problem(problem, p1.get());
+				if(problem == null) {
+					problem = new Problem();
+				}
+				problem.setName(p.getProblemname());
+				problem.setAll_cnt(problem.getAll_cnt()+1);
+				problem.setProblemid(p.getProblemid());
+				List<String> key = p.getKeyword();
+				if(key!= null) {
+					Map<String,Integer> m1 = new HashMap<>();
+					for(int i=0; i<key.size(); i++) {
+						if(m1.containsKey(key.get(i))) {
+							int key_val = m1.get(key.get(i));
+							key_val +=1;
+							m1.put(key.get(i), key_val);
+						}else {
+							m1.put(key.get(i), 1);
+						}
+					}
+					problem.setKey(m1);
+				}
+				Map<String, solvelang> m2 = problem.getLanguage();
+				if(m2 == null) {
+					m2 = new HashMap<>();
+				}
+				solvelang l = m2.get(p.getLanguage());
+				if(l == null) {
+					l = new solvelang();
+				}
+				l.setCnt(l.getCnt()+1);
+				l.setMemory_sum(l.getMemory_sum()+p.getMemory());
+				l.setTime_sum(l.getTime_sum()+p.getTime());
+				m2.put(p.getLanguage(), l);
+				problem.setLanguage(m2);
+				input_problem(problem);
+				postRepository.save(p); // 맞으면 update
 				return 1;
 			}else { // 자기가 작성한 글이 아니면, 반려
 				return 2;
@@ -89,8 +154,8 @@ public class PostServiceImpl implements PostService{
 			problem.setProblemid(p.getProblemid());
 			List<String> key = p.getKeyword();
 			if(key!= null) {
+				Map<String,Integer> m1 = new HashMap<>();
 				for(int i=0; i<key.size(); i++) {
-					Map<String,Integer> m1 = new HashMap<>();
 					if(m1.containsKey(key.get(i))) {
 						int key_val = m1.get(key.get(i));
 						key_val +=1;
@@ -99,12 +164,13 @@ public class PostServiceImpl implements PostService{
 						m1.put(key.get(i), 1);
 					}
 				}
+				problem.setKey(m1);
 			}
 			Map<String, solvelang> m2 = new HashMap<>();
 			solvelang l = new solvelang();
 			l.setCnt(1);
-			l.setMemory_sum(Integer.parseInt(p.getMemory()));
-			l.setTime_sum(Integer.parseInt(p.getTime()));
+			l.setMemory_sum(p.getMemory());
+			l.setTime_sum(p.getTime());
 			m2.put(p.getLanguage(), l);
 			problem.setLanguage(m2);
 			input_problem(problem);
@@ -115,16 +181,6 @@ public class PostServiceImpl implements PostService{
 		}
 	}
 
-	public boolean is_post(String Scoring) {
-		Optional<Post> p = postRepository.findById(Scoring);
-		if(p.isPresent()) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	
-	
 	public List<Map<String, Object>> find_jandi(String username){
 		List<jandi> list = postRepository.getJandiCount(username).getMappedResults();
 		List<Map<String,Object>> mlist = new ArrayList<>();
@@ -158,15 +214,15 @@ public class PostServiceImpl implements PostService{
 		}
 		return m;
 	}
-	public Map<String, Double> detail_py(String problemid){
+	public Map<String, Integer> detail_py(String problemid){
 		Problem problem = problemRepository.findByProblemid(problemid);
 		Map<String, Integer> m = problem.getKey();
-		Map<String, Double> result = new TreeMap<String, Double>();
-		long div = problem.getAll_cnt();
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+//		long div = problem.getAll_cnt();
 		for (String key : m.keySet()) {
             Integer value = m.get(key);
-            double val = Math.round((((double)value/div)*100)*10)/10.0;
-            result.put(key, val);
+//            double val = Math.round((((double)value/div)*100)*10)/10.0;
+            result.put(key, value);
         }
 		return result;
 	}
@@ -192,4 +248,6 @@ public class PostServiceImpl implements PostService{
 	public Page<Post> select_by_username(String username, PageRequest pageable){
 		return postRepository.findByUsername(username, pageable);
 	}
+	
+	
 }
