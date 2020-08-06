@@ -46,8 +46,6 @@ public class PostServiceImpl implements PostService{
 			return null;
 		}
 	}
-
-	
 	@Override
 	public int delete_post(String post_pk, String username) {
 		Optional<Post> p = postRepository.findById(post_pk);
@@ -148,8 +146,11 @@ public class PostServiceImpl implements PostService{
 				return 2;
 			}
 		}else { // 해당 채점번호로 작성한 글이 없으면.
-			Problem problem = new Problem();
-			problem.setAll_cnt(1);
+			Problem problem = problemRepository.findByProblemid(p.getProblemid());
+			if(problem == null) {
+				problem = new Problem();
+			}
+			problem.setAll_cnt(problem.getAll_cnt()+1);
 			problem.setName(p.getProblemname());
 			problem.setProblemid(p.getProblemid());
 			List<String> key = p.getKeyword();
@@ -166,11 +167,17 @@ public class PostServiceImpl implements PostService{
 				}
 				problem.setKey(m1);
 			}
-			Map<String, solvelang> m2 = new HashMap<>();
-			solvelang l = new solvelang();
-			l.setCnt(1);
-			l.setMemory_sum(p.getMemory());
-			l.setTime_sum(p.getTime());
+			Map<String, solvelang> m2 = problem.getLanguage();
+			if(m2 == null) {
+				m2 = new HashMap<>();
+			}
+			solvelang l = m2.get(p.getLanguage());
+			if(l == null) {
+				l = new solvelang();
+			}
+			l.setCnt(l.getCnt()+1);
+			l.setMemory_sum(l.getMemory_sum()+p.getMemory());
+			l.setTime_sum(l.getTime_sum()+p.getTime());
 			m2.put(p.getLanguage(), l);
 			problem.setLanguage(m2);
 			input_problem(problem);
