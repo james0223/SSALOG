@@ -52,6 +52,11 @@ public class PostServiceImpl implements PostService{
 		if(p.isPresent()) { // 존재하면
 			Post p1 = p.get();
 			if(p1.getUsername().equals(username)) {
+				Problem problem = problemRepository.findByProblemid(p1.getProblemid());
+				problem = delete_problem(problem, p1);
+				if(problem != null) {
+					problemRepository.save(problem);
+				}
 				postRepository.delete(p1);
 				return 1;
 			}else {
@@ -92,6 +97,45 @@ public class PostServiceImpl implements PostService{
 			return pr;
 		}
 	}
+	public void update_problem(Problem pr, Post p) {
+		if(pr == null) {
+			pr = new Problem();
+		}
+		pr.setName(p.getProblemname());
+		pr.setAll_cnt(pr.getAll_cnt()+1);
+		pr.setProblemid(p.getProblemid());
+		List<String> key = p.getKeyword();
+		if(key!= null) {
+			Map<String,Integer> m1 = pr.getKey();
+			if(m1 == null) {
+				m1 = new HashMap<String, Integer>();
+			}
+			for(int i=0; i<key.size(); i++) {
+				if(m1.containsKey(key.get(i))) {
+					int key_val = m1.get(key.get(i));
+					key_val +=1;
+					m1.put(key.get(i), key_val);
+				}else {
+					m1.put(key.get(i), 1);
+				}
+			}
+			pr.setKey(m1);
+		}
+		Map<String, solvelang> m2 = pr.getLanguage();
+		if(m2 == null) {
+			m2 = new HashMap<>();
+		}
+		solvelang l = m2.get(p.getLanguage());
+		if(l == null) {
+			l = new solvelang();
+		}
+		l.setCnt(l.getCnt()+1);
+		l.setMemory_sum(l.getMemory_sum()+p.getMemory());
+		l.setTime_sum(l.getTime_sum()+p.getTime());
+		m2.put(p.getLanguage(), l);
+		pr.setLanguage(m2);
+		input_problem(pr);
+	}
 	@Override
 	public int update_post(Post p, String username) {
 		Optional<Post> p1 = postRepository.findById(p.getScoring());
@@ -105,41 +149,8 @@ public class PostServiceImpl implements PostService{
 		if(p1.isPresent()) { // 이전에 해당 채점번호로 작성한 글이 존재하면?
 			if(p1.get().getUsername().equals(username)) { // 똑같은 작성자인지 확인.
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
-				problem = delete_problem(problem, p1.get());
-				if(problem == null) {
-					problem = new Problem();
-				}
-				problem.setName(p.getProblemname());
-				problem.setAll_cnt(problem.getAll_cnt()+1);
-				problem.setProblemid(p.getProblemid());
-				List<String> key = p.getKeyword();
-				if(key!= null) {
-					Map<String,Integer> m1 = new HashMap<>();
-					for(int i=0; i<key.size(); i++) {
-						if(m1.containsKey(key.get(i))) {
-							int key_val = m1.get(key.get(i));
-							key_val +=1;
-							m1.put(key.get(i), key_val);
-						}else {
-							m1.put(key.get(i), 1);
-						}
-					}
-					problem.setKey(m1);
-				}
-				Map<String, solvelang> m2 = problem.getLanguage();
-				if(m2 == null) {
-					m2 = new HashMap<>();
-				}
-				solvelang l = m2.get(p.getLanguage());
-				if(l == null) {
-					l = new solvelang();
-				}
-				l.setCnt(l.getCnt()+1);
-				l.setMemory_sum(l.getMemory_sum()+p.getMemory());
-				l.setTime_sum(l.getTime_sum()+p.getTime());
-				m2.put(p.getLanguage(), l);
-				problem.setLanguage(m2);
-				input_problem(problem);
+				problem = delete_problem(problem, p);
+				update_problem(problem, p);
 				postRepository.save(p); // 맞으면 update
 				return 1;
 			}else { // 자기가 작성한 글이 아니면, 반려
@@ -147,40 +158,7 @@ public class PostServiceImpl implements PostService{
 			}
 		}else { // 해당 채점번호로 작성한 글이 없으면.
 			Problem problem = problemRepository.findByProblemid(p.getProblemid());
-			if(problem == null) {
-				problem = new Problem();
-			}
-			problem.setAll_cnt(problem.getAll_cnt()+1);
-			problem.setName(p.getProblemname());
-			problem.setProblemid(p.getProblemid());
-			List<String> key = p.getKeyword();
-			if(key!= null) {
-				Map<String,Integer> m1 = new HashMap<>();
-				for(int i=0; i<key.size(); i++) {
-					if(m1.containsKey(key.get(i))) {
-						int key_val = m1.get(key.get(i));
-						key_val +=1;
-						m1.put(key.get(i), key_val);
-					}else {
-						m1.put(key.get(i), 1);
-					}
-				}
-				problem.setKey(m1);
-			}
-			Map<String, solvelang> m2 = problem.getLanguage();
-			if(m2 == null) {
-				m2 = new HashMap<>();
-			}
-			solvelang l = m2.get(p.getLanguage());
-			if(l == null) {
-				l = new solvelang();
-			}
-			l.setCnt(l.getCnt()+1);
-			l.setMemory_sum(l.getMemory_sum()+p.getMemory());
-			l.setTime_sum(l.getTime_sum()+p.getTime());
-			m2.put(p.getLanguage(), l);
-			problem.setLanguage(m2);
-			input_problem(problem);
+			update_problem(problem,p);
 			p.setIswrite(true);
 			p.setUsername(username);
 			postRepository.save(p);
