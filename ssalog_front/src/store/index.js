@@ -63,7 +63,7 @@ export default new Vuex.Store({
       state.accessToken = null;
       state.refreshToken = null;
       state.username = null;
-      state.userThumbnail = `${state.ImgURL}/default.png`;
+      state.userThumbnail = null;
     },
     TOKEN(state, payload) {
       const { accessToken, refreshToken } = payload;
@@ -139,6 +139,7 @@ export default new Vuex.Store({
       setTimeout(res, timeUntilRef);
     },
     async LOGOUT({ commit }) {
+      await Axios.post(`${this.state.ServerURL}/user/out`);
       commit("LOGOUT");
     },
     async SIGNUP({ dispatch }, signupData) {

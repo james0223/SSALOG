@@ -53,7 +53,7 @@
             <v-list>
               <v-list-item-group v-model="items" color="primary">
                 <v-list-item v-for="(item, index) in items" :key="index">
-                  <v-list-item-title @click="doFunc(index)">{{ item.title }}</v-list-item-title>
+                  <v-list-item-title @click="userMenu(index)">{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list-item-group>
             </v-list>
@@ -93,7 +93,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
@@ -104,19 +103,13 @@ export default {
   }),
   computed: mapState(["userThumbnail", "username"]),
   methods: {
-    doFunc(i) {
-      if (i === 0) {
+    userMenu(menu) {
+      if (menu === 0) {
         this.$router.push({ name: "Account" });
-      } else if (i === 1) {
-        this.$router.push({ name: "SSALOG" });
+      } else if (menu === 1) {
+        this.$router.push({ name: "SSALOG/Main" });
       } else {
-        axios
-          .post(`${this.$store.state.serverURL}/user/out`)
-          .then(() => {
-            alert("로그아웃 되었다.");
-          })
-          .catch(err => console.error(err));
-        this.$store.commit("LOGOUT");
+        this.$store.dispatch("LOGOUT");
       }
     },
     changeRoute(i) {

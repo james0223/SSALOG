@@ -117,8 +117,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-.p_page {
-  margin-top: "200vh";
-}
-</style>
+<style scoped></style>
