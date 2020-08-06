@@ -97,7 +97,7 @@ const routes = [
     component: LogDetail
   },
   {
-    path: "/SSALOG",
+    path: "/SSALOG/:username",
     name: "SSALOG",
     component: SSALOG,
     meta: { authRequired: true },
