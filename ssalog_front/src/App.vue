@@ -6,13 +6,8 @@
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
     <!-- </v-container> -->
-    <v-snackbar color="error" top v-model="showAlert">
+    <v-snackbar color="error" top v-if="showAlert">
       {{ AlertMessage }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="showAlert = false">
-          Close
-        </v-btn>
-      </template>
     </v-snackbar>
   </v-app>
 </template>
