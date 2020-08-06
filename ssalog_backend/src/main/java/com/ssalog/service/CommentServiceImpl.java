@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssalog.dto.Account;
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
+import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.PostRepository;
 
 
@@ -21,7 +23,8 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Autowired
 	PostRepository postRepository;
-	
+	@Autowired
+	AccountRepository accountRepository;
 	@Override
 	@Transactional
 	public int write_comment(String post_pk,String comment,String username) {
@@ -57,6 +60,10 @@ public class CommentServiceImpl implements CommentService{
 		if(list == null) {
 			return new ArrayList<Comment>();
 		}else {
+			for(int i=0; i<list.size(); i++) {
+				Account ac =accountRepository.findByUsername(list.get(i).getUserid());
+				list.get(i).setImgpath(ac.getImgpath());
+			}
 			return list;
 		}
 	}
