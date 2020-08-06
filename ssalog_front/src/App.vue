@@ -35,7 +35,6 @@ export default {
         // 갱신 후에도 토큰이 유효하다면
         Axios.defaults.headers.common.Authorization = `Bearer ${this.$store.state.accessToken}`;
       }
-      console.log({});
     }
   },
   computed: mapState(["showAlert", "AlertMessage"])
