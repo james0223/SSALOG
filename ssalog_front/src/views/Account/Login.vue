@@ -2,7 +2,7 @@
   <v-container mt-16>
     <v-row no-gutters>
       <v-col cols="5">
-        <v-card rounded="false" outlined class="pa-9" height="500px" align="center">
+        <v-card rounded="false" outlined class="pa-9" height="600px" align="center">
           <v-card-title class="pa-0 mb-7">
             <h1 class="ma-0" style="font-family: 'Do Hyeon', sans-serif;">
               쌀로그인
@@ -61,7 +61,7 @@
         </v-card>
       </v-col>
       <v-col cols="7">
-        <v-img src="@/assets/images/login_main.jpg" height="500px"></v-img>
+        <v-img src="@/assets/images/login_main.jpg" height="600px"></v-img>
       </v-col>
     </v-row>
   </v-container>
