@@ -16,13 +16,13 @@
           <v-btn :ripple="false" class="pa-0 no-background-hover" text @click="changeRoute(2)"
             >GROUP</v-btn
           >
-        </v-col> -->
+        </v-col>-->
         <v-col cols="5" class="text-center">
           <SearchBar :SelectedCategoryIdx="0" class="mt-5" />
         </v-col>
         <!-- <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text>Community</v-btn>
-        </v-col> -->
+        </v-col>-->
         <v-col cols="2" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
             <v-col cols="5" @click="changeRoute('Login')">
@@ -33,7 +33,7 @@
               <small class="pointButton">회원가입</small>
             </v-col>
           </v-row>
-          <v-menu v-model="showMyMenu" offset-y v-if="$store.state.accessToken" no-gutters>
+          <v-menu offset-y v-if="$store.state.accessToken" no-gutters>
             <template v-slot:activator="{ on, attrs }">
               <v-card v-bind="attrs" v-on="on" flat>
                 <v-row no-gutters>
@@ -50,9 +50,9 @@
               </v-card>
             </template>
             <v-list>
-              <v-list-item-group v-model="items" color="primary">
-                <v-list-item v-for="(item, index) in items" :key="index">
-                  <v-list-item-title @click="userMenu(index)">{{ item.title }}</v-list-item-title>
+              <v-list-item-group color="primary">
+                <v-list-item v-for="(item, i) in items" :key="i" @click="userMenu(i)">
+                  <v-listt-item-title v-text="item"></v-listt-item-title>
                 </v-list-item>
               </v-list-item-group>
             </v-list>
@@ -73,8 +73,10 @@
             height="100px"
             style="border : 1px solid rgba(0,0,0,.12);"
             @click="goSite('https://swexpertacademy.com/')"
-            >SW <br />EXPERT</v-btn
           >
+            SW
+            <br />EXPERT
+          </v-btn>
           <v-btn
             text
             tile
@@ -102,17 +104,16 @@ export default {
   },
   data() {
     return {
-      showMyMenu: false,
-      items: [{ title: "정보수정" }, { title: "내 쌀로그" }, { title: "로그아웃" }]
+      items: ["정보수정", "내 쌀로그", "로그아웃"]
     };
   },
   computed: mapState(["userThumbnail", "username"]),
   methods: {
-    userMenu(menu) {
-      if (menu === 0) {
-        this.$router.push({ name: "Account" });
-      } else if (menu === 1) {
-        this.$router.push({ name: "SSALOG/Main" });
+    userMenu(idx) {
+      if (idx === 0) {
+        this.changeRoute("Account");
+      } else if (idx === 1) {
+        this.changeRoute("SSALOG/Main");
       } else {
         this.$store.dispatch("LOGOUT");
       }
