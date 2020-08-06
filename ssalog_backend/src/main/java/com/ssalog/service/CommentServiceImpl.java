@@ -62,7 +62,7 @@ public class CommentServiceImpl implements CommentService{
 		}else {
 			for(int i=0; i<list.size(); i++) {
 				Account ac =accountRepository.findByUsername(list.get(i).getUserid());
-				list.get(i).setImgpath(ac.getImgpath());
+				list.get(i).setImgpath(ac.getImgpath()==null?"default.png":ac.getImgpath());
 			}
 			return list;
 		}
