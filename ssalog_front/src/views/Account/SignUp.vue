@@ -120,7 +120,6 @@ export default {
         password: null,
         nickname: null,
         email: null,
-        birthday: null,
         question: null,
         answer: null
       },

@@ -1,18 +1,16 @@
 <template>
   <v-container>
     <div v-if="isNoResult">
-      <h2 class="text-center">
-        검색결과가 없습니다.
-      </h2>
+      <h2 class="text-center">검색결과가 없습니다.</h2>
       <h3 class="text-center">쌀로그의 문제는 여러분의 쌀로그가 모여 생성됩니다.</h3>
       <h4 class="text-center">그러니까 문제를 풀러 가지 않으실래요?!</h4>
       <a class="text-center" href="https://www.acmicpc.net/">문제풀러가기</a>
     </div>
     <h2 v-if="!isNoResult">{{ resultMsg }}에 대한 검색결과입니다.</h2>
     <v-row>
-      <v-col v-for="(problem, i) in problems" :key="i" cols="12">
-        문제가 들어올 자리, 아래에는 샘플
-      </v-col>
+      <v-col v-for="(problem, i) in problems" :key="i" cols="12"
+        >문제가 들어올 자리, 아래에는 샘플</v-col
+      >
       <v-col cols="12">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card @click="visitProblemDeatil(problem.id)" :elevation="hover ? 12 : 2">
@@ -21,9 +19,7 @@
             <v-divider></v-divider>
             <v-card-text>
               <v-chip-group disabled>
-                <v-chip v-for="tag in tags" :key="tag">
-                  {{ tag }}
-                </v-chip>
+                <v-chip v-for="tag in tags" :key="tag">{{ tag }}</v-chip>
               </v-chip-group>
             </v-card-text>
           </v-card>
@@ -99,8 +95,6 @@ export default {
             },
             // 배열을 보내기 위한 방법, npm i qs 필요
             paramsSerializer: params => {
-              console.log(params);
-              console.log(qs.stringify(params));
               return qs.stringify(params);
             }
           }
@@ -112,8 +106,10 @@ export default {
         this.problems = [...this.problems, ...data.content];
         this.limit = Number(data.totalPages);
         // 임시로 처리
-        this.problem.id = data.content[0].problemid;
-        this.problem.name = data.content[0].problemname;
+        if (data.content.length !== 0) {
+          this.problem.name = data.content[0].problemname;
+          this.problem.id = data.content[0].prosblemid;
+        }
       } catch (e) {
         this.isError = true;
         console.error(e);

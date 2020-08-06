@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 class="text-center" v-if="isNoResult">검색결과가 없습니다 :P</h2>
+    <h2 class="text-center mt-16" v-if="isNoResult">검색결과가 없습니다 :P</h2>
     <h2 v-if="!isNoResult">
       {{ searchData.nickname ? `${searchData.nickname}님에 대한 검색결과입니다.` : "전체 사용자" }}
     </h2>
