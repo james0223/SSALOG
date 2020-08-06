@@ -26,11 +26,5 @@
       "run_at": "document_idle",
       "js": ["ssafy.js"]
     }
-  ],
-  "permissions": [
-    "webNavigation",
-    "activeTab",
-    "storage",
-    "alarms"
   ]
 }
