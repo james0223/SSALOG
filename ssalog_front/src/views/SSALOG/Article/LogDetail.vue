@@ -69,8 +69,20 @@
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-title>
-            <v-btn x-large text @click="editSolution">수정</v-btn>
-            <v-btn x-large text @click="deleteSolution">삭제</v-btn>
+            <v-btn
+              x-large
+              text
+              @click="editSolution"
+              v-if="$store.state.username === this.writerName"
+              >수정</v-btn
+            >
+            <v-btn
+              x-large
+              text
+              @click="deleteSolution"
+              v-if="$store.state.username === this.writerName"
+              >삭제</v-btn
+            >
           </v-toolbar-title>
         </v-toolbar>
         <v-toolbar-items class="mb-7">
