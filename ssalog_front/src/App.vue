@@ -6,13 +6,8 @@
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
     <!-- </v-container> -->
-    <v-snackbar color="error" top v-model="showAlert">
+    <v-snackbar color="error" top v-if="showAlert">
       {{ AlertMessage }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="showAlert = false">
-          Close
-        </v-btn>
-      </template>
     </v-snackbar>
   </v-app>
 </template>
@@ -40,6 +35,7 @@ export default {
         // 갱신 후에도 토큰이 유효하다면
         Axios.defaults.headers.common.Authorization = `Bearer ${this.$store.state.accessToken}`;
       }
+      console.log({});
     }
   },
   computed: mapState(["showAlert", "AlertMessage"])
