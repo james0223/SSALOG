@@ -224,7 +224,7 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public Page<problemlist> select_by_problemid(String problemid, PageRequest pageable) {
+	public Page<Post> select_by_problemid(String problemid, PageRequest pageable){
 		return postRepository.findByProblemid(problemid, pageable);
 	}
 
@@ -242,10 +242,18 @@ public class PostServiceImpl implements PostService{
 		return postRepository.findByUsername(username, pageable);
 	}
 	@Override
+	public String find_problemname(String problemid){
+		List<Post> l = postRepository.findByProblemid(problemid);
+		if(l == null) {
+			return "not exists";
+		}else {
+			return l.get(0).getProblemname();
+		}
+	}
+	@Override
 	public void get_username(String username,String scoring){
 		Optional<Post> p = postRepository.findById(scoring);
 		p.get().setUsername(username);
 		postRepository.save(p.get());
 	}
-
 }
