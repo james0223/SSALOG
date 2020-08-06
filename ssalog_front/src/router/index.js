@@ -124,7 +124,10 @@ const router = new VueRouter({
 
 // global guard (login required)
 router.beforeEach(function(to, from, next) {
-  if (
+  // 같은 이름으로 라우팅이 안되는 문제 해결
+  if (from.name === to.name) {
+    next();
+  } else if (
     to.matched.some(function(routeInfo) {
       return routeInfo.meta.authRequired;
     })
