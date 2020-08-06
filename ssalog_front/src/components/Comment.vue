@@ -15,7 +15,7 @@
           ></v-textarea>
         </v-row>
         <v-row justify="end">
-          <v-btn class="white--text mb-8" color="rgb(32, 201, 151)" @click="createComment(this)"
+          <v-btn class="white--text mb-8" color="rgb(32, 201, 151)" @click="createComment()"
             >댓글 작성</v-btn
           >
         </v-row>
@@ -72,17 +72,17 @@ export default {
     },
     async createComment() {
       // eslint-disable-next-line
-      const {ServerURL} = this;
+      const { ServerURL } = this;
+      console.log(this.myComment);
       try {
         if (this.myComment !== "") {
           await axios.post(
             `${ServerURL}/user/post/write_comment`,
-            {
-              comment: this.myComment
-            },
+            {},
             {
               params: {
-                Scoring: this.$route.params.id
+                Scoring: this.$route.params.id,
+                comment: this.myComment
               }
             }
           );

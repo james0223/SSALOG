@@ -42,7 +42,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-tabs vertical class="my-15 pa-3" v-model="activeTab">
+          <v-tabs vertical class="my-15 pa-3">
             <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.route" exact>
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
@@ -205,7 +205,6 @@ export default {
   computed: mapState(["ServerURL", "ImgURL"]),
   created() {
     this.getSSALOG(this.$route.params.id);
-    this.getThumbnail();
   },
   mounted() {},
   methods: {
@@ -227,9 +226,9 @@ export default {
       } catch (e) {
         console.error(e);
       }
+      this.getThumbnail();
     },
     async getThumbnail() {
-      console.log("hihih");
       const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
         params: {
           username: this.writerName
