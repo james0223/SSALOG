@@ -2,15 +2,18 @@
   <v-container mt-16>
     <v-row no-gutters>
       <v-col cols="5">
-        <v-card rounded="false" outlined class="pa-9" height="70vh" align="center">
+        <v-card rounded="false" outlined class="pa-9" height="500px" align="center">
           <v-card-title class="pa-0 mb-7">
-            <h1 class="ma-0">Welcome!</h1>
-            <v-img
+            <h1 class="ma-0" style="font-family: 'Do Hyeon', sans-serif;">
+              쌀로그인
+            </h1>
+            <!-- <v-img
               :src="require('@/assets/images/logo.png')"
-              max-width="6vw"
+              min-width="10vh"
+              max-width="10vh"
               max-height="10vh"
               alt="홈페이지 아이콘"
-            />
+            /> -->
           </v-card-title>
           <v-form ref="form">
             <v-text-field
@@ -58,7 +61,7 @@
         </v-card>
       </v-col>
       <v-col cols="7">
-        <v-img src="@/assets/images/login_main.jpg" height="70vh"></v-img>
+        <v-img src="@/assets/images/login_main.jpg" height="500px"></v-img>
       </v-col>
     </v-row>
   </v-container>
@@ -108,6 +111,7 @@ export default {
 };
 </script>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
 .p_page {
   margin-top: "200vh";
 }
