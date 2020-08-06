@@ -57,6 +57,9 @@ public class FileRepositoryImpl implements FileRepository{
 	}
 	public void delete_file(String username, String rootPath, String filename) {
 		//String saveFolder = "resources/upload";
+		if(filename == null) {
+			return;
+		}
 		String totalSaveFolder = rootPath;//+ File.separator+ saveFolder;
 		File file = new File(totalSaveFolder, filename);
 		if(file.exists()) {

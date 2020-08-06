@@ -72,7 +72,7 @@
             tile
             height="100px"
             style="border : 1px solid rgba(0,0,0,.12);"
-            @click="showAlert"
+            @click="goSite('https://swexpertacademy.com/')"
             >SW <br />EXPERT</v-btn
           >
           <v-btn
@@ -80,7 +80,7 @@
             tile
             height="100px"
             style="border : 1px solid rgba(0,0,0,.12);"
-            @click="showAlert"
+            @click="goSite('https://codeforces.com')"
           >
             Code
             <br />Force
@@ -106,7 +106,7 @@ export default {
       items: [{ title: "정보수정" }, { title: "내 쌀로그" }, { title: "로그아웃" }]
     };
   },
-  computed: mapState(["userThumbnail", "username"]),
+  computed: mapState(["userThumbnail", "username", "accessToken"]),
   methods: {
     userMenu(menu) {
       if (menu === 0) {

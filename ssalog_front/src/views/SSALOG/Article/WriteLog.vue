@@ -319,6 +319,17 @@ export default {
       this.editor.view.dispatch(transaction);
       this.editor.commands.code_block();
     },
+    addUsername() {
+      axios
+        .get(`${this.ServerURL}/user/post/get_username?Scoring=${this.$route.params.id}`)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
+    },
     write() {
       this.resData.username = this.username;
       axios
@@ -340,10 +351,15 @@ export default {
     async getData(that) {
       that.resData = await getSSALOG(that.$route.params.id);
       // 이미 작성한 것을 수정할때
-      that.isUpdating = that.resData.hasOwnProperty("html");
+      that.isUpdating = that.resData.html == null ? false : true;
+      console.log(that.isUpdating);
+      console.log("isupdating=" + that.isUpdating);
       if (!that.isUpdating) {
         // 속성이 없다면.
         // 속성 추가해주기
+        const transCode = that.codearea.state.tr.insertText(that.resData.code);
+        that.codearea.view.dispatch(transCode);
+        that.codearea.commands.code_block();
         that.resData.SelectedProblemCategory = [];
         that.resData.html = "";
       } else {
@@ -358,6 +374,7 @@ export default {
   },
   created() {
     this.getData(this);
+    this.addUsername();
   }
 };
 </script>

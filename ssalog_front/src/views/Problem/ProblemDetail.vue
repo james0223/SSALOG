@@ -29,6 +29,7 @@
             <v-card flat width="20vw" height="40vh">
               <v-container class="chart-container">
                 <DoughNutChart
+                  v-if="doughnutLoaded"
                   v-bind:chart-data="problemData"
                   v-bind:chart-options="chartOptions"
                 />
@@ -89,6 +90,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 import DoughNutChart from "../../components/DoughnutChart.vue";
 
 export default {
@@ -112,15 +114,16 @@ export default {
         { time: "20", memory: 2014 } // 특정 유저의 값
       ],
       // doughnutchart 관련 옵션
+      doughnutLoaded: false,
       problemData: {
         // 해당 내용은 보기용
         // https://vue-chartjs.org/guide/#chart-with-api-data 나중에 이런 식으로 변경해야 함.
-        labels: ["element1", "ele2", "ele3"],
+        labels: [],
         datasets: [
           {
-            label: "Data one",
+            label: "문제 키워드",
             backgroundColor: "#f87979",
-            data: [1, 2, 3]
+            data: []
           }
         ]
       },
@@ -230,17 +233,34 @@ export default {
     };
   },
   methods: {
+    // 데이터 import
     async fetchProblemData() {
       try {
         const { data } = await axios.get(`${this.$store.state.ServerURL}/none`, {
           params: {
-            id: this.$route.query.id
+            id: this.$route.params.id
           }
         });
         this.problemData = data;
       } catch (e) {
         console.error(e);
       }
+    },
+    // 도넛 데이터 받아오기
+    async fetchDoughnutData() {
+      const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/detail_py`, {
+        params: {
+          problemid: this.$route.params.id
+        }
+      });
+      // eslint-disable-next-line
+      for (const [key, value] of Object.entries(res.data)) {
+        this.problemData.labels.push(key);
+        this.problemData.datasets.data.push(value);
+        console.log(this.problemData.labels);
+        console.log(this.problemData.datasets.data);
+      }
+      console.log(res);
     },
     getColor(exectime) {
       // 여기 avg 인자를 추가로 받아서
@@ -252,7 +272,9 @@ export default {
   },
   mounted() {
     // this.fetchProblemData();
-  }
+    this.fetchDoughnutData();
+  },
+  computed: mapState(["ServerURL"])
 };
 </script>
 

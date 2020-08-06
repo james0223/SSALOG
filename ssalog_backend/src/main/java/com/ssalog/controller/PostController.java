@@ -91,4 +91,13 @@ public class PostController {
 		}
 	}	
 	
+	@GetMapping("user/post/get_username")
+	@ApiOperation(value = "[username을 가져온다.]")
+	public ResponseEntity<Void> get_username(HttpServletResponse response, @RequestParam("Scoring") String scoring){
+		String username = response.getHeader("username");
+		postService.get_username(username, scoring);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+		
+	}	
+	
 }
