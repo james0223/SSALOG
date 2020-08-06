@@ -151,8 +151,9 @@ public class PostServiceImpl implements PostService{
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
 				if(problem == null) {
 					problem = new Problem();
+				}else {
+					problem = delete_problem(problem, p);
 				}
-				problem = delete_problem(problem, p);
 				update_problem(problem, p);
 				postRepository.save(p); // 맞으면 update
 				return 1;
