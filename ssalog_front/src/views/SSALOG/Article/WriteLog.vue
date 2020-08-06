@@ -172,7 +172,7 @@
                 type="checkbox"
                 v-bind:key="item.eng"
                 v-bind:value="item.kor"
-                v-model="obj.keyword"
+                v-model="resData.keyword"
               />
               <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
             </template>
@@ -232,7 +232,6 @@ export default {
     return {
       resData: undefined,
       isUpdating: false,
-      obj: null,
       SelectedProblemCategory: [],
       editor: new Editor({
         extensions: [
