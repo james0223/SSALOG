@@ -147,10 +147,15 @@ export default new Vuex.Store({
           })
           .catch(() => {
             // 토큰 갱신 실패 (9999) 처리
-            this.state.username = null;
-            this.state.userThumbnail = null;
-            this.accessToken = null;
-            this.refreshToken = null;
+            commit("LOGOUT");
+            commit("ShowAlert", {
+              flag: true,
+              msg: "엑세스 토큰이 만료되었습니다. 다시 로그인하세요"
+            });
+            setTimeout(() => {
+              commit("ShowAlert", { flag: false, msg: "" });
+            }, 2000);
+            this.$router.push({ name: "Login" });
           });
       };
       setTimeout(res, timeUntilRef);
