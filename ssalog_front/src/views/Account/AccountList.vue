@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <SearchBar :SelectedCategoryIdx="3" />
     <h2 class="text-center" v-if="isNoResult">검색결과가 없습니다 :P</h2>
     <h2 v-if="!isNoResult">
       {{ searchData.nickname ? `${searchData.nickname}님에 대한 검색결과입니다.` : "전체 사용자" }}
@@ -37,13 +36,11 @@
 
 <script>
 import axios from "axios";
-import SearchBar from "@/components/SearchBar.vue";
 import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "AccountList",
   components: {
-    SearchBar,
     InfiniteLoading
   },
   data() {
