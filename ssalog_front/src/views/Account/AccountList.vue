@@ -7,7 +7,11 @@
     <v-row>
       <v-col v-for="(user, i) in users" :key="i" cols="3">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
-          <v-card @click="visitSolutionDetail(user.id)" align="center" :elevation="hover ? 12 : 2">
+          <v-card
+            @click="visitUserDetail(user.username)"
+            align="center"
+            :elevation="hover ? 12 : 2"
+          >
             <v-card-text>
               <v-avatar size="62">
                 <img
@@ -63,8 +67,8 @@ export default {
         $state.loaded();
       }, 2000);
     },
-    visitSolutionDetail(id) {
-      this.$router.push({ name: "SSALOG", query: { id } });
+    visitUserDetail(username) {
+      this.$router.push({ name: "SSalogMain", params: { username } });
     },
     async fetchUserData() {
       try {
