@@ -100,7 +100,7 @@ export default {
         if (data.totalElements === 0) {
           this.isNoSolve = true;
         } else {
-          this.solvedList = data.content;
+          this.solvedList = data.content.reverse();
         }
       } catch (e) {
         console.error(e);
