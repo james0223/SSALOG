@@ -60,6 +60,20 @@
         <v-toolbar flat class="mx-auto mt-5 mb-3">
           <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1>
         </v-toolbar>
+        <v-row>
+          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
+            언어: {{ language }}
+          </v-col>
+          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
+            메모리: {{ memory }}KB
+          </v-col>
+          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
+            시간: {{ time }}MS
+          </v-col>
+          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
+            코드길이: {{ len }}B
+          </v-col>
+        </v-row>
         <v-toolbar flat class="mb-5">
           <v-toolbar-title>
             <span class="mr-2">{{ writerName }}</span>
@@ -213,6 +227,10 @@ export default {
       contentTitle: null,
       writerName: null,
       updatedDate: null,
+      language: null,
+      memory: null,
+      time: null,
+      len: null,
       // code dialog
       keyword: [],
       dialog: false,
@@ -298,6 +316,10 @@ export default {
         this.writerName = res.data.username;
         this.htmlData = res.data.html;
         this.updatedDate = res.data.regdate;
+        this.language = res.data.language;
+        this.memory = res.data.memory;
+        this.time = res.data.time;
+        this.len = res.data.len;
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
         this.editor.setContent(this.htmlData);
         this.codeview.setContent(this.codeData);
