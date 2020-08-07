@@ -26,4 +26,5 @@ public interface PostService {
 	public Page<Post> select_by_username(String username, PageRequest pageable);
 	public void get_username(String username, String scoring);
 	public String find_problemname(String problemid);
+	public long get_allpost();
 }

@@ -20,7 +20,7 @@ import com.ssalog.repository.PostRepository;
 
 @Service
 public class CommentServiceImpl implements CommentService{
-	
+
 	@Autowired
 	PostRepository postRepository;
 	@Autowired
@@ -53,10 +53,17 @@ public class CommentServiceImpl implements CommentService{
 			return 2;
 		}
 	}
-	
+
 	@Override
 	public List<Comment> read_comment(String Scoring){
-		List<Comment> list = postRepository.findByScoring(Scoring).getComment();
+		Post p = postRepository.findByScoring(Scoring);
+		List<Comment> list = null;
+		if(p == null) {
+			return null;
+		}else {
+			list = p.getComment();
+		}
+		
 		if(list == null) {
 			return new ArrayList<Comment>();
 		}else {
@@ -78,27 +85,27 @@ public class CommentServiceImpl implements CommentService{
 		comment.setUserid(username);
 		postRepository.update_comment(comment,id);
 	}
-//	@Override
-//	@Transactional
-//	public int write_subcomment(String uniqueid,Comment comment,String username) {
-//		Comment com= commentRepository.findByUniqueid(uniqueid);
-//		if(com != null) {
-//			List<Comment> clist = com.getSubcomment();
-//			if(clist == null) {
-//				clist = new ArrayList<>();
-//			}
-//			String uid = username+UUID.randomUUID().toString();
-//			comment.setUniqueid(uid);
-//			comment.setUserid(username);
-//			clist.add(comment);
-//			com.setSubcomment(clist);
-//			commentRepository.save(com);
-//			return 1;
-//		}
-//		else {
-//			return 2;
-//		}
-//	}
+	//	@Override
+	//	@Transactional
+	//	public int write_subcomment(String uniqueid,Comment comment,String username) {
+	//		Comment com= commentRepository.findByUniqueid(uniqueid);
+	//		if(com != null) {
+	//			List<Comment> clist = com.getSubcomment();
+	//			if(clist == null) {
+	//				clist = new ArrayList<>();
+	//			}
+	//			String uid = username+UUID.randomUUID().toString();
+	//			comment.setUniqueid(uid);
+	//			comment.setUserid(username);
+	//			clist.add(comment);
+	//			com.setSubcomment(clist);
+	//			commentRepository.save(com);
+	//			return 1;
+	//		}
+	//		else {
+	//			return 2;
+	//		}
+	//	}
 	public void write_subcomment(String id, Comment comment) {
 		postRepository.write_subcomment(id, comment);
 	}

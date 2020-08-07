@@ -7,4 +7,5 @@ import com.ssalog.dto.Account;
 
 public interface AccountService {
 	public Page<Account> find_toNickname(String nickname, PageRequest pageable);
+	public long find_alluser();
 }

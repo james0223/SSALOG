@@ -6,7 +6,7 @@
       class="mt-3"
       v-bind:values="heatmapData.dates"
       v-bind:range-color="heatmapData.rangeColor"
-      v-bind:tooltip="false"
+      v-bind:tooltip="true"
       v-bind:end-date="heatmapData.endDate"
     ></calendar-heatmap>
     <v-row>
