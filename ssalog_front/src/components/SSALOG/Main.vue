@@ -91,7 +91,7 @@ export default {
       try {
         const { data } = await this.$http.get(`${this.ServerURL}/newuser/search/to_username`, {
           params: {
-            direction: "ASC",
+            direction: "DESC",
             page: 1,
             size: 5,
             username: this.ownerName
