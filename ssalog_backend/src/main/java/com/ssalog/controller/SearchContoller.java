@@ -105,5 +105,15 @@ public class SearchContoller {
 	public void test2(@RequestBody Problem problem){
 		postService.input_problem(problem);
 	}
-	
+	@ApiOperation(value ="[사용자 수 찾기] 쌀로그를 이용하는 모든 사용자들을 검색합니다.")
+	@GetMapping("/find_alluser")
+	public ResponseEntity<Long> all_user(){
+		return new ResponseEntity<Long>(accountService.find_alluser(), HttpStatus.OK);
+	}
+	@ApiOperation(value ="[모든 문제 수 찾기] 쌀로그에 존재하는 모든 문제 수를 찾아줍니다.")
+	@GetMapping("/find_allproblem")
+	public ResponseEntity<Long> all_problem(){
+		return new ResponseEntity<Long>(postService.get_allpost(), HttpStatus.OK);
+	}
+
 }

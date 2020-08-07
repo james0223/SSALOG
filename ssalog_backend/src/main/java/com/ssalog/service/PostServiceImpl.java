@@ -256,4 +256,8 @@ public class PostServiceImpl implements PostService{
 		p.get().setUsername(username);
 		postRepository.save(p.get());
 	}
+	
+	public long get_allpost() {
+		return postRepository.count();
+	}
 }

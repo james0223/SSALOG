@@ -21,4 +21,8 @@ public class AccountServiceImpl implements AccountService{
 			return accountRepository.findByNicknameLike("%"+nickname+"%", pageable);
 		}
 	}
+	
+	public long find_alluser() {
+		return accountRepository.count();
+	}
 }
