@@ -113,7 +113,7 @@ export default {
       if (idx === 0) {
         this.changeRoute("Account");
       } else if (idx === 1) {
-        this.changeRoute("SSALOG/Main");
+        this.$router.push({ name: "SSalogMain", params: { username: this.username } });
       } else {
         this.$store.dispatch("LOGOUT");
       }
