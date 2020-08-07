@@ -11,6 +11,7 @@
               <v-btn
                 v-bind="attrs"
                 v-on="on"
+                v-if="$store.state.username === this.writerName"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -93,7 +94,7 @@
             <v-btn
               x-large
               text
-              @click="deleteSolution"
+              @click="deleteSolution()"
               v-if="$store.state.username === this.writerName"
               >삭제</v-btn
             >
@@ -151,7 +152,7 @@
         <v-card
           tile
           flat
-          height="35vh"
+          min-height="15vh"
           width="15vw"
           class="mx-8 table_of_contents"
           v-once
@@ -284,23 +285,14 @@ export default {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
     },
     async deleteSolution() {
-      try {
-        await this.$http.post(`${this.ServerURL}/user/post/delete_post`, null, {
-          params: {
-            Scoring: this.$route.params.id
-          }
-        });
-        this.$store.commit("ShowAlert", {
-          flag: true,
-          msg: "게시물을 삭제하였습니다. 메인으로 이동합니다."
-        });
-        setTimeout(() => {
-          this.$store.commit("ShowAlert", { flag: false, msg: "" });
-          this.$router.push({ name: "Home" });
-        }, 2000);
-      } catch (e) {
-        console.error(e);
-      }
+      this.$store.commit("ShowAlert", {
+        flag: true,
+        msg: "게시물을 삭제하였습니다. 메인으로 이동합니다."
+      });
+      setTimeout(() => {
+        this.$store.commit("ShowAlert", { flag: false, msg: "" });
+        this.$router.push({ name: "Home" });
+      }, 2000);
     },
     async getSSALOG(pageId) {
       try {

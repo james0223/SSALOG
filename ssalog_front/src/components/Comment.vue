@@ -21,7 +21,7 @@
         </v-row>
       </v-container>
     </v-card>
-    <v-flex v-for="(comment, i) in comments" :key="i">
+    <v-flex v-for="(comment, idx) in comments" :key="idx">
       <v-card flat class="mt-3">
         <v-list-item>
           <v-list-item-avatar color="grey">
@@ -32,14 +32,12 @@
             <v-list-item-subtitle>{{ comment.time }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-spacer></v-spacer>
-          <v-btn icon @click="deleteComment(i)" v-if="$store.state.username === comment.userid">
+          <v-btn icon @click="deleteComment(idx)" v-if="$store.state.username === comment.userid">
             <v-icon>mdi-window-close</v-icon>
           </v-btn>
         </v-list-item>
         <v-card-text class="mb-5">
-          <div class="text--primary">
-            {{ comment.message }}
-          </div>
+          <div class="text--primary">{{ comment.message }}</div>
         </v-card-text>
         <v-divider></v-divider>
       </v-card>
@@ -72,7 +70,6 @@ export default {
             Scoring: this.$route.params.id
           }
         });
-        console.log(res);
         this.comments = res.data;
       } catch (e) {
         console.error(e);
@@ -102,18 +99,12 @@ export default {
       }
     },
     async deleteComment(index) {
-      console.log(this.comments);
-      const res = await this.$http.post(
-        `${this.ServerURL}/user/post/delete_comment`,
-        {},
-        {
-          params: {
-            id: this.$store.state.username
-          }
+      await this.$http.delete(`${this.ServerURL}/user/post/delete_comment`, {
+        params: {
+          id: this.comments[index].uniqueid
         }
-      );
+      });
       this.comments.splice(index, 1);
-      console.log(res);
     }
   }
 };

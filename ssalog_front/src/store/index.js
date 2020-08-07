@@ -165,10 +165,11 @@ export default new Vuex.Store({
       commit("LOGOUT", { undefined });
     },
     async SIGNUP({ dispatch }, signupData) {
-      const SingupRes = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
-      if (SingupRes.status === 200) {
+      const SignupRes = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
+      if (SignupRes.status === 200) {
         const loginData = { username: signupData.username, password: signupData.password };
-        await dispatch("LOGIN", loginData);
+        console.log(loginData);
+        dispatch("LOGIN", loginData);
       }
     },
     async Thumbnail({ commit }, payload) {
