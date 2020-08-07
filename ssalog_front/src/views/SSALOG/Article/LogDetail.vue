@@ -7,7 +7,10 @@
             <img :src="writerThumbnail" />
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
-            <template v-slot:activator="{ on, attrs }">
+            <template
+              v-slot:activator="{ on, attrs }"
+              v-if="$store.state.username === this.writerName"
+            >
               <v-btn
                 v-bind="attrs"
                 v-on="on"
@@ -42,6 +45,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-row justify="center">
+            <div class="ma-2" text>{{ writerName }}님</div>
+          </v-row>
           <v-tabs vertical class="my-15 pa-3">
             <v-tab
               style="justify-content:left;"
@@ -57,10 +63,10 @@
         </div>
       </v-col>
       <v-col lg="6" cols="12">
-        <v-toolbar flat class="mx-auto mt-5 mb-3">
+        <v-toolbar flat class="mx-auto ml-0 mr-3 mt-5 mb-3">
           <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1>
         </v-toolbar>
-        <v-row>
+        <v-row class="mx-auto mt-5 mb-3">
           <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
             언어: {{ language }}
           </v-col>
@@ -74,28 +80,22 @@
             코드길이: {{ len }}B
           </v-col>
         </v-row>
-        <v-toolbar flat class="mb-5">
-          <v-toolbar-title>
-            <span class="mr-2">{{ writerName }}</span>
-            <span class="mr-2">·</span>
-            <span class="mr-2">{{ updatedDate }}</span>
-            <v-spacer></v-spacer>
-          </v-toolbar-title>
+        <v-toolbar flat class="mb-1">
+          <v-spacer></v-spacer>
+          <v-toolbar-title class="ml-15"> </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-title>
-            <v-btn
-              x-large
-              text
-              @click="editSolution"
-              v-if="$store.state.username === this.writerName"
-              >수정</v-btn
-            >
-            <v-btn
-              x-large
-              text
-              @click="deleteSolution"
-              v-if="$store.state.username === this.writerName"
-              >삭제</v-btn
+            <span class="ml-10 caption">{{ updatedDate }}</span>
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-toolbar flat v-if="$store.state.username === this.writerName">
+          <v-spacer></v-spacer>
+          <v-toolbar-title class="ml-15"> </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-title>
+            <span class="ml-10 caption">
+              <v-btn text @click="editSolution">수정</v-btn>
+              <v-btn text @click="deleteSolution">삭제</v-btn></span
             >
           </v-toolbar-title>
         </v-toolbar>
