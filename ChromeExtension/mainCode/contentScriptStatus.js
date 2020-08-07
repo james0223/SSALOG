@@ -86,7 +86,28 @@ if (userNode) {
     var observer = new MutationObserver(function (mutations) {
       if (target.firstChild.innerText === "맞았습니다!!") {
         var portal = document.createElement("button");
-        portal.innerText = "Go to SSaLog";
+        portal.innerText = "SSALOG";
+        portal.setAttribute(
+          "style",
+          "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;"
+        );
+
+        portal.addEventListener("mouseover", (event) => {
+          // console.dir(event.target)
+          event.target.setAttribute(
+            "style",
+            "background-color: green; margin-left : 10px; border: 1px solid green; color : white;  "
+          );
+          event.target.innerText = "Write>>";
+        });
+        portal.addEventListener("mouseout", (event) => {
+          // console.dir(event.target)
+          event.target.setAttribute(
+            "style",
+            "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;  "
+          );
+          event.target.innerText = "SSALOG";
+        });
         target.firstChild.innerText = "맞았습니다!!  ";
         target.firstChild.append(portal);
         // target.firstChild.innerHTML = '<button id="ssalogTrigger">SSALOG</button>'
