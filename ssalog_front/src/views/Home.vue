@@ -181,6 +181,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 const image1 = require("@/assets/images/howto/1.png");
 const image2 = require("@/assets/images/howto/2.png");
 const image3 = require("@/assets/images/howto/3.png");
@@ -272,6 +274,21 @@ export default {
       ]
     };
   },
-  components: {}
+  methods: {
+    async fetchStatDatas() {
+      try {
+        let res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/find_allproblem`);
+        this.stats[0][0] = String(res.data);
+        res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/find_alluser`);
+        this.stats[1][0] = String(res.data);
+        console.log(this.stats);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  },
+  created() {
+    this.fetchStatDatas();
+  }
 };
 </script>
