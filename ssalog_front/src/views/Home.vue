@@ -241,10 +241,7 @@ export default {
           title: "시각화"
         }
       ],
-      stats: [
-        ["1215", "풀이 수"],
-        ["330", "사용자 수"]
-      ],
+      stats: [],
       slides: [
         {
           id: "1",
@@ -277,10 +274,16 @@ export default {
   methods: {
     async fetchStatDatas() {
       try {
-        let res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/find_allproblem`);
-        this.stats[0][0] = String(res.data);
-        res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/find_alluser`);
-        this.stats[1][0] = String(res.data);
+        const problemNum = await axios.get(
+          `${this.$store.state.ServerURL}/newuser/search/find_allproblem`
+        );
+        const problem = [String(problemNum.data), "풀이 수"];
+        const userNum = await axios.get(
+          `${this.$store.state.ServerURL}/newuser/search/find_alluser`
+        );
+        const user = [String(userNum.data), "사용자 수"];
+        this.stats.push(problem);
+        this.stats.push(user);
         console.log(this.stats);
       } catch (e) {
         console.error(e);
