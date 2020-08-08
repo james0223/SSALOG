@@ -125,7 +125,12 @@
 			<artifactId>mattermost4j-core</artifactId>
 			<version>0.22.1</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -33,6 +33,7 @@ import com.ssalog.dto.Token;
 import com.ssalog.jwt.JwtTokenUtil;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.service.JwtUserDetailsService;
+import com.ssalog.util.Mail;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.ApiOperation;
@@ -282,5 +283,12 @@ public class LoginContorller {
         }
         return new ResponseEntity<Map<String, Object>>(map,HttpStatus.OK);
     }
-    
+    @ApiOperation(value = "[메일보내기] 이메일 인증을 만들어서,해당 이메일에 random값으로 메일을 보내고 그 random값을 return한다. 클라이언트단에서 비교해서 같으면 true, 틀리면 false 처리해주면 될듯.")
+    @GetMapping(path="/newuser/check_email")
+    public ResponseEntity<String> sendmail(@RequestParam("reciver") String email) {
+    	Mail m = new Mail();
+    	String ran = m.sendMail(email);
+    	//System.out.println("호출완료!");
+    	return new ResponseEntity<String>(ran,HttpStatus.OK);
+    } 
 }
