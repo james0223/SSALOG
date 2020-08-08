@@ -96,7 +96,7 @@ export default {
         {
           id: 1,
           name: "Solution",
-          route: `/SSALOG/${this.$route.params.username}/Solution`,
+          route: `/SSALOG/${this.$route.params.username}/SolutionList`,
           icon: "mdi-ballot"
         },
         {

@@ -18,6 +18,7 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
+import SolutionList from "@/components/SSALOG/SolutionList.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -105,6 +106,11 @@ const routes = [
         path: "Main",
         name: "SSalogMain",
         component: SsalogMain
+      },
+      {
+        path: "SolutionList",
+        name: "SolutionList",
+        component: SolutionList
       }
     ]
   }
