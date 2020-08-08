@@ -9,12 +9,12 @@
           <v-dialog v-model="thumbnailDialog" max-width="600px">
             <template
               v-slot:activator="{ on, attrs }"
-              v-if="$store.state.username === this.writerName"
+              v-if="$store.state.username === $route.params.username"
             >
               <v-btn
                 v-bind="attrs"
                 v-on="on"
-                v-if="$store.state.username === this.writerName"
+                v-if="$store.state.username === $route.params.username"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -211,12 +211,42 @@ export default {
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
       ],
       tabs: [
-        { id: 0, name: "Main", route: `/SSALOG/Main`, icon: "mdi-clipboard-text-play-outline" },
-        { id: 1, name: "Solution", route: `/SSALOG/Solution`, icon: "mdi-heart" },
-        { id: 2, name: "Profile", route: `/SSALOG/Profile`, icon: "mdi-heart" },
-        { id: 3, name: "Following", route: `/SSALOG/Following`, icon: "mdi-heart" },
-        { id: 4, name: "Follower", route: `/SSALOG/Follower`, icon: "mdi-heart" },
-        { id: 5, name: "Star", route: `/SSALOG/Star`, icon: "mdi-heart" }
+        {
+          id: 0,
+          name: "Main",
+          route: `/SSALOG/${this.$route.params.username}/Main`,
+          icon: "mdi-clipboard-text-play-outline"
+        },
+        {
+          id: 1,
+          name: "Solution",
+          route: `/SSALOG/${this.$route.params.username}/Solution`,
+          icon: "mdi-ballot"
+        },
+        {
+          id: 2,
+          name: "Profile",
+          route: `/SSALOG/${this.$route.params.username}/Profile`,
+          icon: "mdi-account"
+        },
+        {
+          id: 3,
+          name: "Following",
+          route: `/SSALOG/${this.$route.params.username}/Following`,
+          icon: "mdi-account-arrow-right"
+        },
+        {
+          id: 4,
+          name: "Follower",
+          route: `/SSALOG/${this.$route.params.username}/Follower`,
+          icon: "mdi-account-arrow-left"
+        },
+        {
+          id: 5,
+          name: "Star",
+          route: `/SSALOG/${this.$route.params.username}/Star`,
+          icon: "mdi-star"
+        }
       ],
       // tocData
       tocLoaded: false,

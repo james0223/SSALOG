@@ -1,16 +1,18 @@
 <template>
   <v-container>
     <v-row justify="center" no-gutters>
-      <v-col lg="2" cols="12">
+      <v-col lg="2">
         <div id="relative_wrapper">
           <v-avatar size="240" class="mt-8">
             <img :src="userThumbnail" />
+            <!--변경해줘야할듯-->
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-bind="attrs"
                 v-on="on"
+                v-if="$store.state.username === $route.params.username"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -42,8 +44,17 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-tabs vertical class="my-15 pa-3" v-model="activeTab">
-            <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.route" exact>
+          <v-row justify="center" style="width:240px">
+            <div class="ma-2 font-weight-bold"><v-icon>mdi-account</v-icon> {{ ownerName }}님</div>
+          </v-row>
+          <v-tabs vertical class="my-15 pa-3">
+            <v-tab
+              style="justify-content:left;"
+              v-for="tab in tabs"
+              :key="tab.id"
+              :to="tab.route"
+              exact
+            >
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
             </v-tab>
@@ -51,7 +62,7 @@
         </div>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col lg="7" cols="12"><router-view></router-view> </v-col>
+      <v-col lg="8" cols="12"><router-view></router-view> </v-col>
     </v-row>
   </v-container>
 </template>
@@ -63,6 +74,7 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      ownerName: this.$route.params.username,
       thumbnailDialog: false,
       ThumbnailSelect: 0,
       items: [
@@ -75,12 +87,42 @@ export default {
       },
       activeTab: `/SSALOG/main`,
       tabs: [
-        { id: 0, name: "Main", route: `/SSALOG/Main`, icon: "mdi-clipboard-text-play-outline" },
-        { id: 1, name: "Solution", route: `/SSALOG/Solution`, icon: "mdi-ballot" },
-        { id: 2, name: "Profile", route: `/SSALOG/Profile`, icon: "mdi-account" },
-        { id: 3, name: "Following", route: `/SSALOG/Following`, icon: "mdi-account-arrow-right" },
-        { id: 4, name: "Follower", route: `/SSALOG/Follower`, icon: "mdi-account-arrow-left" },
-        { id: 5, name: "Star", route: `/SSALOG/Star`, icon: "mdi-star" }
+        {
+          id: 0,
+          name: "Main",
+          route: `/SSALOG/${this.$route.params.username}/Main`,
+          icon: "mdi-clipboard-text-play-outline"
+        },
+        {
+          id: 1,
+          name: "Solution",
+          route: `/SSALOG/${this.$route.params.username}/Solution`,
+          icon: "mdi-ballot"
+        },
+        {
+          id: 2,
+          name: "Profile",
+          route: `/SSALOG/${this.$route.params.username}/Profile`,
+          icon: "mdi-account"
+        },
+        {
+          id: 3,
+          name: "Following",
+          route: `/SSALOG/${this.$route.params.username}/Following`,
+          icon: "mdi-account-arrow-right"
+        },
+        {
+          id: 4,
+          name: "Follower",
+          route: `/SSALOG/${this.$route.params.username}/Follower`,
+          icon: "mdi-account-arrow-left"
+        },
+        {
+          id: 5,
+          name: "Star",
+          route: `/SSALOG/${this.$route.params.username}/Star`,
+          icon: "mdi-star"
+        }
       ]
     };
   },
