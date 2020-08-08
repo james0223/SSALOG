@@ -63,7 +63,8 @@
           </v-tabs>
         </div>
       </v-col>
-      <v-col lg="6" cols="12">
+      <v-divider vertical></v-divider>
+      <v-col lg="6" cols="12" class="pl-3">
         <v-toolbar flat class="ml-0 mr-3 mt-4">
           <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1>
         </v-toolbar>
@@ -226,7 +227,7 @@ export default {
         {
           id: 1,
           name: "Solution",
-          route: `/SSALOG/${this.$route.params.username}/Solution`,
+          route: `/SSALOG/${this.$route.params.username}/SolutionList`,
           icon: "mdi-ballot"
         },
         {
