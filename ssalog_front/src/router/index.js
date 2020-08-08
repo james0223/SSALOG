@@ -18,7 +18,6 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
-import SsalogSolution from "@/components/SSALOG/Solution.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -92,7 +91,7 @@ const routes = [
   // 아래 Soultion 보다 위에 놓여야 해당 링크로 라우터가 접근 가능
   // children component 형식으로 동작하는 것이 아니기에, 이렇게 분리해주어야 함.
   {
-    path: "/SSALOG/Solution/:id",
+    path: "/SSALOG/:username/Solution/:id",
     name: "LogDetail",
     component: LogDetail
   },
@@ -106,11 +105,6 @@ const routes = [
         path: "Main",
         name: "SSalogMain",
         component: SsalogMain
-      },
-      {
-        path: "Solution",
-        name: "SolutionList",
-        component: SsalogSolution
       }
     ]
   }
