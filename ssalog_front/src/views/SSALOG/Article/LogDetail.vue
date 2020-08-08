@@ -69,8 +69,14 @@
         </v-toolbar>
 
         <v-toolbar flat>
-          <v-spacer></v-spacer>
-          <v-toolbar-title class="ml-15"> </v-toolbar-title>
+          <v-toolbar-title class="ml-1">
+            <a
+              target="_blank"
+              v-bind:href="this.getlink()"
+              style="color: #000;text-decoration: none; "
+              >문제보기</a
+            >
+          </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-title>
             <span class="ml-10 font-weight-light">{{ updatedDate }}</span>
@@ -312,6 +318,9 @@ export default {
   },
   mounted() {},
   methods: {
+    getlink() {
+      return "https://www.acmicpc.net/problem/".concat(this.problemNum);
+    },
     editSolution() {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
     },
