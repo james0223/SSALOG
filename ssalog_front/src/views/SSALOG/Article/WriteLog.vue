@@ -339,7 +339,7 @@ export default {
           this.$router.push({
             name: "LogDetail",
             // eslint-disable-next-line
-            params: { Scoring: this.resData._id }
+            params: { username: this.username, Scoring: this.resData._id }
           });
         })
         .catch(function(error) {

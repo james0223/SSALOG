@@ -28,7 +28,12 @@
             <img :src="`${$store.state.ImgURL}/${comment.imgpath}`" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="headline">{{ comment.userid }}</v-list-item-title>
+            <v-list-item-title
+              style="cursor: pointer;"
+              class="headline"
+              @click="$router.push({ name: 'SSalogMain', params: { username: comment.userid } })"
+              >{{ comment.userid }}</v-list-item-title
+            >
             <v-list-item-subtitle>{{ comment.time }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-spacer></v-spacer>

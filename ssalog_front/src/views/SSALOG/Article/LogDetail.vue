@@ -7,11 +7,14 @@
             <img :src="writerThumbnail" />
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
-            <template v-slot:activator="{ on, attrs }">
+            <template
+              v-slot:activator="{ on, attrs }"
+              v-if="$store.state.username === $route.params.username"
+            >
               <v-btn
                 v-bind="attrs"
                 v-on="on"
-                v-if="$store.state.username === this.writerName"
+                v-if="$store.state.username === $route.params.username"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -43,6 +46,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-row justify="center" style="width:240px">
+            <div class="ma-2 font-weight-bold"><v-icon>mdi-account</v-icon> {{ writerName }}님</div>
+          </v-row>
           <v-tabs vertical class="my-15 pa-3">
             <v-tab
               style="justify-content:left;"
@@ -58,10 +64,25 @@
         </div>
       </v-col>
       <v-col lg="6" cols="12">
-        <v-toolbar flat class="mx-auto mt-5 mb-3">
+        <v-toolbar flat class="ml-0 mr-3 mt-4">
           <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1>
         </v-toolbar>
-        <v-row>
+
+        <v-toolbar flat>
+          <v-toolbar-title class="ml-1">
+            <a
+              target="_blank"
+              v-bind:href="this.getlink()"
+              style="color: #000;text-decoration: none; "
+              >문제보기</a
+            >
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-title>
+            <span class="ml-10 font-weight-light">{{ updatedDate }}</span>
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-row class="mx-auto mb-3">
           <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
             언어: {{ language }}
           </v-col>
@@ -75,28 +96,14 @@
             코드길이: {{ len }}B
           </v-col>
         </v-row>
-        <v-toolbar flat class="mb-5">
-          <v-toolbar-title>
-            <span class="mr-2">{{ writerName }}</span>
-            <span class="mr-2">·</span>
-            <span class="mr-2">{{ updatedDate }}</span>
-            <v-spacer></v-spacer>
-          </v-toolbar-title>
+        <v-toolbar flat v-if="$store.state.username === this.writerName">
+          <v-spacer></v-spacer>
+          <v-toolbar-title class="ml-15"> </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-title>
-            <v-btn
-              x-large
-              text
-              @click="editSolution"
-              v-if="$store.state.username === this.writerName"
-              >수정</v-btn
-            >
-            <v-btn
-              x-large
-              text
-              @click="deleteSolution()"
-              v-if="$store.state.username === this.writerName"
-              >삭제</v-btn
+            <span class="ml-10 caption">
+              <v-btn text @click="editSolution">수정</v-btn>
+              <v-btn text @click="deleteSolution">삭제</v-btn></span
             >
           </v-toolbar-title>
         </v-toolbar>
@@ -210,12 +217,42 @@ export default {
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
       ],
       tabs: [
-        { id: 0, name: "Main", route: `/SSALOG/Main`, icon: "mdi-clipboard-text-play-outline" },
-        { id: 1, name: "Solution", route: `/SSALOG/Solution`, icon: "mdi-heart" },
-        { id: 2, name: "Profile", route: `/SSALOG/Profile`, icon: "mdi-heart" },
-        { id: 3, name: "Following", route: `/SSALOG/Following`, icon: "mdi-heart" },
-        { id: 4, name: "Follower", route: `/SSALOG/Follower`, icon: "mdi-heart" },
-        { id: 5, name: "Star", route: `/SSALOG/Star`, icon: "mdi-heart" }
+        {
+          id: 0,
+          name: "Main",
+          route: `/SSALOG/${this.$route.params.username}/Main`,
+          icon: "mdi-clipboard-text-play-outline"
+        },
+        {
+          id: 1,
+          name: "Solution",
+          route: `/SSALOG/${this.$route.params.username}/Solution`,
+          icon: "mdi-ballot"
+        },
+        {
+          id: 2,
+          name: "Profile",
+          route: `/SSALOG/${this.$route.params.username}/Profile`,
+          icon: "mdi-account"
+        },
+        {
+          id: 3,
+          name: "Following",
+          route: `/SSALOG/${this.$route.params.username}/Following`,
+          icon: "mdi-account-arrow-right"
+        },
+        {
+          id: 4,
+          name: "Follower",
+          route: `/SSALOG/${this.$route.params.username}/Follower`,
+          icon: "mdi-account-arrow-left"
+        },
+        {
+          id: 5,
+          name: "Star",
+          route: `/SSALOG/${this.$route.params.username}/Star`,
+          icon: "mdi-star"
+        }
       ],
       // tocData
       tocLoaded: false,
@@ -281,6 +318,9 @@ export default {
   },
   mounted() {},
   methods: {
+    getlink() {
+      return "https://www.acmicpc.net/problem/".concat(this.problemNum);
+    },
     editSolution() {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
     },

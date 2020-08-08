@@ -5,7 +5,6 @@
     </v-col>
     <v-col cols="7">
       <v-text-field
-        autofocus
         v-if="SelectedCategory !== '문제유형'"
         v-model="q"
         label="검색어를 입력해주세요"

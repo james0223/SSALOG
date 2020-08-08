@@ -181,6 +181,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 const image1 = require("@/assets/images/howto/1.png");
 const image2 = require("@/assets/images/howto/2.png");
 const image3 = require("@/assets/images/howto/3.png");
@@ -239,10 +241,7 @@ export default {
           title: "시각화"
         }
       ],
-      stats: [
-        ["1215", "풀이 수"],
-        ["330", "사용자 수"]
-      ],
+      stats: [],
       slides: [
         {
           id: "1",
@@ -272,6 +271,27 @@ export default {
       ]
     };
   },
-  components: {}
+  methods: {
+    async fetchStatDatas() {
+      try {
+        const problemNum = await axios.get(
+          `${this.$store.state.ServerURL}/newuser/search/find_allproblem`
+        );
+        const problem = [String(problemNum.data), "풀이 수"];
+        const userNum = await axios.get(
+          `${this.$store.state.ServerURL}/newuser/search/find_alluser`
+        );
+        const user = [String(userNum.data), "사용자 수"];
+        this.stats.push(problem);
+        this.stats.push(user);
+        console.log(this.stats);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  },
+  created() {
+    this.fetchStatDatas();
+  }
 };
 </script>

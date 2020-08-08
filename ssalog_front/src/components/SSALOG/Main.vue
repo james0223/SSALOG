@@ -1,12 +1,13 @@
 <template>
   <v-card flat height="60vh" class="pa-6 mt-8">
-    <h2 class="font-weight-light mb-1">{{ ownerName }}의 쌀밭</h2>
+    <h3 class="font-weight-light mb-1">쌀밭</h3>
     <v-divider></v-divider>
     <calendar-heatmap
+      tooltip-unit="개 풀었습니다"
       class="mt-3"
       v-bind:values="heatmapData.dates"
       v-bind:range-color="heatmapData.rangeColor"
-      v-bind:tooltip="false"
+      v-bind:tooltip="true"
       v-bind:end-date="heatmapData.endDate"
     ></calendar-heatmap>
     <v-row>
@@ -28,7 +29,12 @@
               class="px-1"
               v-for="(solve, i) in solvedList"
               :key="i"
-              @click="$router.push({ name: 'LogDetail', params: { id: solve.scoring } })"
+              @click="
+                $router.push({
+                  name: 'LogDetail',
+                  params: { username: ownerName, id: solve.scoring }
+                })
+              "
             >
               <v-row no-gutters class="align-center">
                 <v-col cols="6"> {{ solve.problemid }} - {{ solve.problemname }} </v-col>
@@ -100,7 +106,7 @@ export default {
         if (data.totalElements === 0) {
           this.isNoSolve = true;
         } else {
-          this.solvedList = data.content;
+          this.solvedList = data.content.reverse();
         }
       } catch (e) {
         console.error(e);
