@@ -65,19 +65,19 @@
       </v-col>
       <v-divider vertical></v-divider>
       <v-col lg="6" cols="12" class="pl-3">
-        <v-toolbar flat class="ml-0 mr-3 mt-4">
-          <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1>
+        <v-toolbar flat class="ml-0 mr-3 mt-4"
+          ><a
+            target="_blank"
+            v-bind:href="this.getlink()"
+            style="text-decoration: none; "
+            title="클릭시 문제로 이동합니다."
+          >
+            <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1></a
+          >
         </v-toolbar>
 
         <v-toolbar flat>
-          <v-toolbar-title class="ml-1">
-            <a
-              target="_blank"
-              v-bind:href="this.getlink()"
-              style="color: #000;text-decoration: none; "
-              >문제보기</a
-            >
-          </v-toolbar-title>
+          <v-toolbar-title class="ml-1"> </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-title>
             <span class="ml-10 font-weight-light">{{ updatedDate }}</span>
