@@ -22,7 +22,7 @@ import com.ssalog.dto.Post;
 import com.ssalog.dto.jandi;
 
 @Repository
-public class jandiRepositoryImpl implements jandiRepository{
+public class additionalRepositoryImpl implements additionalRepository{
 	
 	@Autowired
 	MongoTemplate mongoTemplate;

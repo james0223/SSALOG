@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,8 +25,10 @@ import com.ssalog.config.webhook;
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.PostSub;
 import com.ssalog.service.CommentService;
 import com.ssalog.service.PostService;
+import com.ssalog.service.PostSubService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -36,6 +39,10 @@ public class PostController {
 
 	@Autowired
 	PostService postService;
+	
+	@Autowired
+	PostSubService postSubService;
+	
 	@Autowired
 	CommentService commentService;
 	
@@ -44,12 +51,14 @@ public class PostController {
 	public Post write(@RequestBody Post post) {
 		return postService.write_post(post);
 	}
+	
 	@GetMapping("user/post/my_write_list")
 	@ApiOperation(value = "[post list] 내가 작성한 post의 목록을 가져온다.")
-	public Page<Post> findmypost(HttpServletResponse response, PageRequest pageable) {
+	public Page<PostSub> findmypost(HttpServletResponse response, PageRequest pageable) {
 		String username = response.getHeader("username"); 
-		return postService.findMyPost(username,pageable.of());
+		return postSubService.findMyPost(username,pageable.of());
 	}
+	
 	@GetMapping("newuser/post/get_detail")
 	@ApiOperation(value = "[posting detail] 풀이번호에 해당하는 게시물의 dto를 얻어올 수 있다. 만약 풀이번호에 해당하는 게시물이 존재 하지 않으면 400 error를 발생시킨다. ")
 	public ResponseEntity<?> get_post(@RequestParam("Scoring") String Scoring){
@@ -91,13 +100,8 @@ public class PostController {
 		}
 	}	
 	
-	@GetMapping("user/post/get_username")
-	@ApiOperation(value = "[username을 가져온다.]")
-	public ResponseEntity<Void> get_username(HttpServletResponse response, @RequestParam("Scoring") String scoring){
-		String username = response.getHeader("username");
-		postService.get_username(username, scoring);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-		
-	}	
-	
+	@ExceptionHandler(NullPointerException.class)
+	public void nullex(Exception e) {
+		System.err.println("포스트 부분에서 " + e.getClass());
+	}
 }

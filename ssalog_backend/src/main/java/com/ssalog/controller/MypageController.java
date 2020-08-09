@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,6 @@ public class MypageController {
 
 	@Autowired
 	private FileService fileService;
-
 
 
 	@ApiOperation(value = "[이미지 업로드] (p-014_마이페이지)프로필 사진을 변경 요청 하여 파일을 업로드, 기능 : 서버 영역에 이미지 파일이 저장된다. (파일 확장자 제한: jpg, png, jpeg) ")
@@ -72,5 +72,9 @@ public class MypageController {
 		String username =  response.getHeader("username");
 		return new ResponseEntity<String>(fileService.delete_file(username),HttpStatus.OK);
 	}
-
+	
+	@ExceptionHandler(NullPointerException.class)
+	public void nullex(Exception e) {
+		System.err.println("img 처리 부분에서 " + e.getClass());
+	}
 }
