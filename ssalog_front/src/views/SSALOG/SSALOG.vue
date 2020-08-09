@@ -4,7 +4,7 @@
       <v-col lg="2">
         <div id="relative_wrapper">
           <v-avatar size="240" class="mt-8">
-            <img :src="userThumbnail" />
+            <img :src="writerThumbnail" />
             <!--변경해줘야할듯-->
           </v-avatar>
           <v-dialog v-model="thumbnailDialog" max-width="600px">
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
@@ -77,6 +78,7 @@ export default {
       ownerName: this.$route.params.username,
       thumbnailDialog: false,
       ThumbnailSelect: 0,
+      writerThumbnail: null,
       items: [
         { text: "사진 업로드", icon: "mdi-camera-enhance" },
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
@@ -126,7 +128,19 @@ export default {
       ]
     };
   },
+  computed: mapState(["ServerURL", "ImgURL"]),
+  methods: {
+    async getThumbnail() {
+      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
+        params: {
+          username: this.$route.params.username
+        }
+      });
+      this.writerThumbnail = `${this.ImgURL}${res.data}`;
+    }
+  },
   created() {
+    this.getThumbnail();
     if (!this.userData.id) {
       if (!this.$store.state.accessToken) {
         // 로그인 안했는데 내 살로그 가기 누른 경우
@@ -135,8 +149,7 @@ export default {
         // 자기 계정 로딩
       }
     }
-  },
-  computed: mapState(["userThumbnail"])
+  }
 };
 </script>
 <style>
