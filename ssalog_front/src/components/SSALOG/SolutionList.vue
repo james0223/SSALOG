@@ -19,7 +19,7 @@
       :items="solutions"
       :search="search"
       item-key="scoring"
-      :items-per-page="100"
+      :items-per-page="10"
       class="elevation-1"
       :footer-props="{
         itemsPerPageOptions: [10],
@@ -78,11 +78,10 @@ export default {
       try {
         const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/to_username`, {
           params: {
-            to_username: this.$route.params.id,
             direction: "ASC",
             page: 1,
             size: 1000000,
-            username: "jso"
+            username: this.$route.params.username
           }
         });
         this.solutions = res.data.content;
