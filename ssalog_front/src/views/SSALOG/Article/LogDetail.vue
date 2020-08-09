@@ -171,7 +171,7 @@
             <v-list-item-group v-model="TOC" color="primary">
               <v-list-item v-for="(item, i) in TOC" :key="i">
                 <v-list-item-content>
-                  <v-list-item-title @click="$vuetify.goTo(`#${item.id}`)" v-text="item.data">
+                  <v-list-item-title @click="$vuetify.goTo(`[id='${item.id}']`)" v-text="item.data">
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
