@@ -60,7 +60,7 @@ public class LoginContorller {
     private PasswordEncoder bcryptEncoder;
     
     // 1-1. 회원가입 form [중복체크] 버튼 클릭 -> 이메일 중복체크 (DB에 이메일 존재하는지 체킹) //ok
-    @ApiOperation(value = "[회원가입 기능](p-011_회원가입)중복되는 이메일이 DB에 없는지 확인(check)한다.")
+    @ApiOperation(value = "[회원가입 기능](p-011_회원가입)중복되는 이메일이 DB에 없는지 확인(check)한다. 없으면 true, 있으면 false를 return")
     @GetMapping(path="/newuser/checkemail")
     public ResponseEntity<Boolean> checkEmail (@RequestParam("email") String email) {
         if (accountRepository.findByEmail(email) == null) return new ResponseEntity<Boolean>(true,HttpStatus.OK);

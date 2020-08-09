@@ -1,5 +1,6 @@
 package com.ssalog.dto;
 
+// 잔디용 맵퍼
 public class jandi {
 	private String _id;
 	private long count;

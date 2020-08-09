@@ -8,19 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
-import com.ssalog.dto.problemlist;
 import com.ssalog.dto.solvelang;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
@@ -186,14 +180,6 @@ public class PostServiceImpl implements PostService{
 		return mlist;
 	}
 	
-	public Page<Post> findMyPost(String username, PageRequest pageable){
-		return postRepository.findByUsername(username, pageable);
-	}
-	
-	public Page<Post> findkey(List<String> keyword, PageRequest pageable){
-		return postRepository.findAnyOfTheseValues(keyword, pageable);
-	}
-	
 	public Map<String, Object> detail_service(String problemid, String language) {
 		Map<String, Object> m = new HashMap<>();
 		Problem problem = problemRepository.findByProblemid(problemid);
@@ -224,24 +210,6 @@ public class PostServiceImpl implements PostService{
 	}
 	
 	@Override
-	public Page<Post> select_by_problemid(String problemid, PageRequest pageable){
-		return postRepository.findByProblemid(problemid, pageable);
-	}
-
-	@Override
-	public Page<Post> select_by_problemname(String problemname, PageRequest pageable){
-		return postRepository.findByProblemnameLike(problemname, pageable);
-	}
-
-	@Override
-	public Page<Post> select_by_keyword(List<String> keyword, PageRequest pageable){
-		return postRepository.findByKeyword(keyword, pageable);
-	}
-	@Override
-	public Page<Post> select_by_username(String username, PageRequest pageable){
-		return postRepository.findByUsername(username, pageable);
-	}
-	@Override
 	public String find_problemname(String problemid){
 		List<Post> l = postRepository.findByProblemid(problemid);
 		if(l == null) {
@@ -249,12 +217,6 @@ public class PostServiceImpl implements PostService{
 		}else {
 			return l.get(0).getProblemname();
 		}
-	}
-	@Override
-	public void get_username(String username,String scoring){
-		Optional<Post> p = postRepository.findById(scoring);
-		p.get().setUsername(username);
-		postRepository.save(p.get());
 	}
 	
 	public long get_allpost() {
