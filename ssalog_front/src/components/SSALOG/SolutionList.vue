@@ -1,16 +1,26 @@
 <template>
   <v-card flat height="60vh" class="pa-6 mt-8">
-    <h3 class="font-weight-light mb-6">풀이목록</h3>
+    <v-card-title>
+      풀이목록
+      <v-spacer></v-spacer>
+      <v-text-field
+        append-icon="mdi-magnify"
+        label="검색"
+        single-line
+        hide-details
+        v-model="search"
+      ></v-text-field>
+    </v-card-title>
     <v-divider></v-divider>
     <hr />
     <v-data-table
+      v-model="selected"
       :headers="headers"
       :items="solutions"
-      :single-expand="singleExpand"
+      :search="search"
       item-key="scoring"
       :items-per-page="100"
       class="elevation-1"
-      show-expand
       :footer-props="{
         itemsPerPageOptions: [10],
         showFirstLastPage: true,
@@ -20,13 +30,18 @@
         nextIcon: 'mdi-plus'
       }"
     >
-      <template v-slot:expanded-item="{ item }">
-        <td colspan="2"></td>
-        <td colspan="6" style="text-align: center;">
-          {{ item.keyword }}
-        </td>
-      </template></v-data-table
-    >
+      <template v-slot:[`item.problemname`]="{ item }">
+        <a style=" color: black; " :href="`Solution/${item.scoring}`">
+          {{ item.problemname }}
+        </a>
+      </template>
+      <template v-slot:[`item.keyword`]="{ item }">
+        <span :title="item.keyword">{{ item.keyword2 }}</span>
+      </template>
+      <v-alert slot="no-results" :value="true">
+        검색어 : "{{ search }}" 에 관한 글이 없습니다.
+      </v-alert>
+    </v-data-table>
   </v-card>
 </template>
 
@@ -36,6 +51,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      selected: [],
+      search: "",
       singleExpand: true,
       headers: [
         {
@@ -44,10 +61,10 @@ export default {
           sortable: false,
           value: "problemname"
         },
-        { text: "작성날짜", align: "end", width: 200, value: "regdate" },
-        { text: "문제번호", align: "end", sortable: false, width: 100, value: "problemid" },
-        { text: "키워드", align: "end", sortable: false, width: 100, value: "data-table-expand" },
-        { text: "좋아요", align: "end", width: 100, value: "like" }
+        { text: "문제번호", sortable: false, width: 100, value: "problemid" },
+        { text: "좋아요", align: "center", width: 100, value: "like" },
+        { text: "키워드", sortable: false, width: 160, value: "keyword" },
+        { text: "작성날짜", width: 120, value: "regdate" }
       ],
       solutions: []
     };
@@ -73,7 +90,14 @@ export default {
         iterable.forEach(element => {
           const temp = element;
           if (temp.keyword != null) {
-            temp.keyword = temp.keyword.join(" / ");
+            // temp.keyword2 = temp.keyword.join(" / ");
+            const [foo] = temp.keyword;
+            const size = temp.keyword.length - 1;
+            if (size !== 0) {
+              temp.keyword2 = foo.concat(" 외 ", size, "개");
+            } else {
+              temp.keyword2 = foo;
+            }
           }
         });
 
@@ -81,9 +105,6 @@ export default {
       } catch (e) {
         console.error(e);
       }
-    },
-    clicked(arg) {
-      alert(arg);
     }
   }
 };
