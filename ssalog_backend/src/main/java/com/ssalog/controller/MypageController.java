@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssalog.config.webhook;
 import com.ssalog.dto.Account;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.service.FileService;
@@ -76,5 +77,7 @@ public class MypageController {
 	@ExceptionHandler(NullPointerException.class)
 	public void nullex(Exception e) {
 		System.err.println("img 처리 부분에서 " + e.getClass());
+		webhook w = new webhook();
+		w.send("img 처리 부분에서 " + e.getClass());
 	}
 }

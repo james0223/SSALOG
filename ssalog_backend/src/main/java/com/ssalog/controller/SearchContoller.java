@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssalog.config.webhook;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.AccountSub;
 import com.ssalog.dto.PageRequest;
@@ -123,5 +124,7 @@ public class SearchContoller {
 	@ExceptionHandler(NullPointerException.class)
 	public void nullex(Exception e) {
 		System.err.println("search 부분에서 " + e.getClass());
+		webhook w = new webhook();
+		w.send("search 부분에서 " + e.getClass());
 	}
 }
