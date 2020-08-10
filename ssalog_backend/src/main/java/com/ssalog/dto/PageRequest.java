@@ -26,7 +26,8 @@ public class PageRequest {
 	public void setSize(int size) {
 		int DEFAULT_SIZE = 10;
 		int MAX_SIZE = 50;
-		this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
+		//this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
+		this.size = size;
 	}
 	public Sort.Direction getDirection() {
 		return direction;

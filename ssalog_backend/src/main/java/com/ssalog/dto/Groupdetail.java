@@ -19,7 +19,7 @@ public class Groupdetail {
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; 
 	
-	@ManyToOne(targetEntity=Group.class, fetch=FetchType.LAZY)
+	@ManyToOne(targetEntity=GroupDTO.class, fetch=FetchType.LAZY)
 	@JoinColumn(name="groupname")
 	private String groupname;
 	

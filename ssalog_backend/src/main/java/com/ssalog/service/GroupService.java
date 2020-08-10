@@ -1,9 +1,9 @@
 package com.ssalog.service;
 
-import com.ssalog.dto.Group;
+import com.ssalog.dto.GroupDTO;
 
 public interface GroupService {
 
-	public void makeGroup(Group g,String username);
+	public void makeGroup(GroupDTO g,String username);
 	
 }

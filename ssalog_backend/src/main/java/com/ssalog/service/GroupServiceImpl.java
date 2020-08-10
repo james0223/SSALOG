@@ -3,7 +3,7 @@ package com.ssalog.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssalog.dto.Group;
+import com.ssalog.dto.GroupDTO;
 import com.ssalog.repository.GroupRepository;
 
 @Service
@@ -13,7 +13,7 @@ public class GroupServiceImpl implements GroupService{
 	GroupRepository groupRepository;
 	
 	
-	public void makeGroup(Group g,String username) {
+	public void makeGroup(GroupDTO g,String username) {
 		System.out.println(g.getGroupname());
 		groupRepository.save(g);
 	}
