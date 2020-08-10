@@ -9,7 +9,11 @@ import "./assets/tiptap/sass/main.scss";
 // eslint-disable-next-line
 import Highlight from "vue-markdown-highlight";
 import "highlight.js/styles/github.css";
+// countdown;
+// eslint-disable-next-line
+import VueCountdown from "@chenfengyuan/vue-countdown";
 
+Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(Highlight);
 
 Vue.config.productionTip = false;
