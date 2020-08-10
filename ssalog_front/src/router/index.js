@@ -19,6 +19,11 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
 import SolutionList from "@/components/SSALOG/SolutionList.vue";
+// group
+import Group from "@/views/Group/Group.vue";
+import GroupMain from "@/components/Group/GroupMain.vue";
+import GroupList from "@/components/Group/GroupList.vue";
+import GroupHW from "@/components/Group/Homework.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -84,6 +89,32 @@ const routes = [
     component: FindPass
   },
   {
+    path: "/Group/:nickname/",
+    name: "Group",
+    component: Group,
+    // meta: { authRequired: true },
+    children: [
+      {
+        path: "",
+        name: "Main",
+        component: GroupMain
+      },
+      {
+        path: "GroupList",
+        name: "GroupList",
+        component: GroupList
+      },
+      {
+        path: "Homework",
+        name: "GroupHW",
+        component: GroupHW
+      },
+      {
+        path: "GroupManage"
+      }
+    ]
+  },
+  {
     path: "/WriteLog/:id",
     name: "WriteLog",
     component: WriteLog,
@@ -100,7 +131,7 @@ const routes = [
     path: "/SSALOG/:username",
     name: "SSALOG",
     component: SSALOG,
-    meta: { authRequired: true },
+    // meta: { authRequired: true },
     children: [
       {
         path: "Main",
@@ -125,20 +156,23 @@ const router = new VueRouter({
 // global guard (login required)
 router.beforeEach(function(to, from, next) {
   // 같은 이름으로 라우팅이 안되는 문제 해결
+  console.log(to, "to");
+  console.log(from, "from");
   if (from.name === to.name) {
     next();
-  } else if (
+  }
+  if (
     to.matched.some(function(routeInfo) {
       return routeInfo.meta.authRequired;
     })
   ) {
     if (store.state.accessToken == null) {
-      store.commit("FormerLink", to);
+      store.commit("FormerLink", to.path);
       next("/Login");
     } else next();
   } else {
     if (to.name !== "Login") {
-      store.commit("FormerLink", to);
+      store.commit("FormerLink", to.path);
     }
     next();
   }
