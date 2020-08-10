@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    hihihihih
+    <v-toolbar-title>그룹 관리자</v-toolbar-title>
   </v-container>
 </template>
 
