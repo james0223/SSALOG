@@ -1,60 +1,106 @@
 <template>
-  <v-container my-16>
-    <v-card flat class="mx-auto" max-width="50vw">
-      <v-card-text class="text-center">
-        <v-avatar class="elevation-12 mb-12" size="200">
-          <v-img src="@/assets/images/logo.jpg"></v-img>
-        </v-avatar>
-      </v-card-text>
-      <v-card-title class="py-0 align-baseline">
-        <h1 class="mb-0" style="font-family: 'Do Hyeon', sans-serif;">쌀로하~</h1>
-        <v-btn class="ml-auto" rounded outlined @click="goBack()">뒤로가기</v-btn>
-      </v-card-title>
-      <div v-if="step === 'main'">
-        <v-card-text>
-          <v-btn tile block color="info" @click="step = 'e'">이메일로 회원가입</v-btn>
+  <div>
+    <v-card-title class="pt-0">
+      <h5>쌀로그와 함께하기 위한 고객님의 소중한 정보를 입력해주세요 :)</h5>
+    </v-card-title>
+    <v-card-text>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-card-actions class="px-0">
+          <v-text-field
+            @keyup="checkEmail"
+            type="email"
+            :rules="emailRules"
+            v-model="userData.username"
+            label="이메일"
+            required
+          ></v-text-field>
+          <v-btn class="ml-auto" rounded outlined @click="getCode()">{{ codeCheck.button }}</v-btn>
+        </v-card-actions>
+        <v-card-actions class="px-0" v-if="codeCheck.step === 1 || true">
+          <v-text-field
+            @keyup="checkEmail"
+            type="text"
+            v-model="codeCheck.code"
+            label="인증코드"
+            required
+          ></v-text-field>
+          <v-btn class="ml-auto" rounded outlined @click="checkCode()">
+            확인
+          </v-btn>
+        </v-card-actions>
+        <v-card-text class="text-right pa-0">
+          <small class="deep-orange--text">{{ codeCheck.error }}</small>
+          <small class="info--text" v-if="checkedFlags.code">인증완료</small>
         </v-card-text>
-      </div>
-      <ByEmail v-if="step === 'e'" />
-    </v-card>
-  </v-container>
+        <v-text-field
+          v-model="userData.password"
+          label="비밀번호"
+          :rules="textRules"
+          type="password"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="passwdcheck"
+          :rules="pwRules"
+          label="비밀번호(확인)"
+          type="password"
+          required
+        ></v-text-field>
+        <v-text-field
+          type="text"
+          @keyup="checkNickname"
+          :rules="nicknameRules"
+          v-model="userData.nickname"
+          label="닉네임"
+          required
+        ></v-text-field>
+      </v-form>
+    </v-card-text>
+    <v-card-text class="py-0">
+      <small class="deep-orange--text" v-show="errorMsg">{{ errorMsg }}</small>
+    </v-card-text>
+    <v-card-text>
+      <v-btn class="px-0" tile block color="info" @click="signUp()">회원가입</v-btn>
+    </v-card-text>
+  </div>
 </template>
 
 <script>
-import axios from "axios";
-import ByEmail from "@/components/SignUp/ByEmail.vue";
-
 export default {
-  name: "SignUp",
-  components: {
-    ByEmail
-  },
+  name: "ByEmail",
   data() {
     return {
       step: "main",
       userData: {
-        username: null,
         password: null,
         nickname: null,
-        email: null,
-        question: null,
-        answer: null
+        username: null
       },
       passwdcheck: null,
-      // menu: false, 생일 입력때문에 있던 것
-      isCheckingId: false,
-      isCheckedId: false,
-      isCheckingEmail: false,
-      isCheckedEmail: false,
-      isCheckingNickname: false,
-      isCheckedNickname: false,
+      // 검사하고있는지를 판단
+      chekcingFlags: {
+        email: false,
+        nickname: false
+      },
+      // 검사완료가 되었는지를 판단
+      checkedFlags: {
+        email: false,
+        nickname: false,
+        code: false
+      },
       pwRules: [
         v => !!v || "입력이 필요합니다.",
         v => this.userData.password === v || "비밀번호 확인이 일치하지 않습니다."
       ],
 
       textRules: [v => !!v || "입력이 필요합니다."],
-      errorMsg: null
+      errorMsg: null,
+      codeCheck: {
+        code: null,
+        originCode: null,
+        error: null,
+        button: "인증번호 발송"
+      }
     };
   },
   methods: {
@@ -65,14 +111,42 @@ export default {
         this.step = "main";
       }
     },
+    checkCode() {
+      const { code, originCode } = this.codeCheck;
+      if (code !== originCode || !originCode || !code) {
+        this.codeCheck.error = "인증코드가 일치하지 않습니다.";
+      } else {
+        this.checkedFlags.code = true;
+        this.codeCheck.error = null;
+      }
+    },
+    async getCode() {
+      if (!this.checkedFlags.email || !this.userData.username) {
+        this.codeCheck.error = "이메일을 확인해주세요";
+      } else {
+        this.codeCheck.error = null;
+        this.codeCheck.button = "인증번호 재발송";
+        try {
+          const { data } = this.$http.get(`${this.$store.state.ServerURL}/서버야돌아와`, {
+            params: {
+              username: this.userData.username
+            }
+          });
+          this.codeCheck.originCode = data;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    },
     checkEmail() {
       if (!this.isCheckingEmail) {
         this.isCheckingEmail = true;
         setTimeout(() => {
-          axios
+          this.$http
+            // 되나 확인해야함
             .get(`${this.$store.state.ServerURL}/newuser/checkemail`, {
               params: {
-                email: this.userData.email
+                username: this.userData.username
               }
             })
             .then(({ data }) => {
@@ -93,7 +167,7 @@ export default {
       if (!this.isCheckingId) {
         this.isCheckingId = true;
         setTimeout(() => {
-          axios
+          this.$http
             .get(`${this.$store.state.ServerURL}/newuser/checkid`, {
               params: {
                 username: this.userData.username
@@ -117,7 +191,7 @@ export default {
       if (!this.isCheckingNickname) {
         this.isCheckingNickname = true;
         setTimeout(() => {
-          axios
+          this.$http
             .get(`${this.$store.state.ServerURL}/newuser/checkNickname`, {
               params: {
                 nickname: this.userData.nickname
@@ -141,17 +215,13 @@ export default {
     async signUp() {
       this.$refs.form.validate();
       if (!this.userData.username) {
-        this.errorMsg = "아이디를 입력해주세요";
+        this.errorMsg = "이메일을 입력해주세요";
       } else if (!this.isCheckedId) {
-        this.errorMsg = "해당 아이디는 이미 사용중입니다.";
+        this.errorMsg = "해당 이메일은 이미 사용중입니다.";
       } else if (!this.userData.password || !this.passwdcheck) {
         this.errorMsg = "비밀번호와 확인문자를 입력해주세요";
       } else if (this.userData.password !== this.passwdcheck) {
         this.errorMsg = "비밀번호와 확인문자가 일치하지 않습니다.";
-      } else if (!this.userData.email) {
-        this.errorMsg = "이메일을 입력해주세요";
-      } else if (!this.isCheckedEmail) {
-        this.errorMsg = "해당 이메일은 이미 사용중입니다.";
       } else if (!this.userData.nickname) {
         this.errorMsg = "닉네임을 입력해주세요";
       } else if (!this.isCheckedNickname) {
@@ -201,6 +271,4 @@ export default {
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
-</style>
+<style></style>
