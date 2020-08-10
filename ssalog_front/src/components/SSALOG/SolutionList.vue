@@ -80,11 +80,11 @@ export default {
           params: {
             direction: "ASC",
             page: 1,
-            size: 1000000,
+            size: 5000,
             username: this.$route.params.username
           }
         });
-        this.solutions = res.data.content;
+        this.solutions = res.data.content.reverse();
         const iterable = this.solutions;
         iterable.forEach(element => {
           const temp = element;
