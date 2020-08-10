@@ -7,7 +7,7 @@ import com.ssalog.dto.Group;
 import com.ssalog.repository.GroupRepository;
 
 @Service
-public class GroupServiceImpl {
+public class GroupServiceImpl implements GroupService{
 
 	@Autowired
 	GroupRepository groupRepository;
