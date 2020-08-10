@@ -38,7 +38,7 @@ export default {
         },
         {
           name: "그룹원",
-          route: `/Group/${this.$route.params.nickname}/GroupList`
+          route: `/Group/${this.$route.params.nickname}/Member`
         },
         {
           name: "과제",

@@ -22,7 +22,7 @@ import SolutionList from "@/components/SSALOG/SolutionList.vue";
 // group
 import Group from "@/views/Group/Group.vue";
 import GroupMain from "@/components/Group/GroupMain.vue";
-import GroupList from "@/components/Group/GroupList.vue";
+import Member from "@/components/Group/Member.vue";
 import GroupHW from "@/components/Group/Homework.vue";
 // search
 import Search from "@/views/Search/Search.vue";
@@ -100,9 +100,9 @@ const routes = [
         component: GroupMain
       },
       {
-        path: "GroupList",
-        name: "GroupList",
-        component: GroupList
+        path: "Member",
+        name: "Member",
+        component: Member
       },
       {
         path: "Homework",
