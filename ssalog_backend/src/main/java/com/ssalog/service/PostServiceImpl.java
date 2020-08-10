@@ -218,7 +218,12 @@ public class PostServiceImpl implements PostService{
 			return l.get(0).getProblemname();
 		}
 	}
-	
+	@Override
+	public void set_username(String username,String scoring){
+		Optional<Post> p = postRepository.findById(scoring);
+		p.get().setUsername(username);
+		postRepository.save(p.get());
+	}
 	public long get_allpost() {
 		return postRepository.count();
 	}
