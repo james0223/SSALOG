@@ -45,7 +45,8 @@ export default {
           route: `/Group/${this.$route.params.nickname}/Homework`
         },
         {
-          name: "그룹관리"
+          name: "그룹관리",
+          route: `/Group/${this.$route.params.nickname}/Manage`
         }
       ]
     };

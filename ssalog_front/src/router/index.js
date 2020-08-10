@@ -24,6 +24,7 @@ import Group from "@/views/Group/Group.vue";
 import GroupMain from "@/components/Group/GroupMain.vue";
 import Member from "@/components/Group/Member.vue";
 import GroupHW from "@/components/Group/Homework.vue";
+import GroupManage from "@/components/Group/Manage.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -110,7 +111,9 @@ const routes = [
         component: GroupHW
       },
       {
-        path: "GroupManage"
+        path: "Manage",
+        name: "Manage",
+        component: GroupManage
       }
     ]
   },
