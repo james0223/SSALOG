@@ -16,17 +16,14 @@
           ></v-text-field>
           <v-btn class="ml-auto" rounded outlined @click="getCode()">{{ codeCheck.button }}</v-btn>
         </v-card-actions>
-        <v-card-actions class="px-0" v-if="codeCheck.step === 1 || true">
+        <v-card-actions class="px-0" v-if="codeCheck.show">
           <v-text-field
-            @keyup="checkEmail"
             type="text"
             v-model="codeCheck.code"
             label="인증코드"
             required
           ></v-text-field>
-          <v-btn class="ml-auto" rounded outlined @click="checkCode()">
-            확인
-          </v-btn>
+          <v-btn class="ml-auto" rounded outlined @click="checkCode()">확인</v-btn>
         </v-card-actions>
         <v-card-text class="text-right pa-0">
           <small class="deep-orange--text">{{ codeCheck.error }}</small>
@@ -92,10 +89,10 @@ export default {
         v => !!v || "입력이 필요합니다.",
         v => this.userData.password === v || "비밀번호 확인이 일치하지 않습니다."
       ],
-
       textRules: [v => !!v || "입력이 필요합니다."],
       errorMsg: null,
       codeCheck: {
+        show: false,
         code: null,
         originCode: null,
         error: null,
@@ -104,13 +101,6 @@ export default {
     };
   },
   methods: {
-    goBack() {
-      if (this.step === "main") {
-        this.$router.go(-1);
-      } else {
-        this.step = "main";
-      }
-    },
     checkCode() {
       const { code, originCode } = this.codeCheck;
       if (code !== originCode || !originCode || !code) {
@@ -124,6 +114,7 @@ export default {
       if (!this.checkedFlags.email || !this.userData.username) {
         this.codeCheck.error = "이메일을 확인해주세요";
       } else {
+        this.codeCheck.show = true;
         this.codeCheck.error = null;
         this.codeCheck.button = "인증번호 재발송";
         try {
@@ -139,8 +130,8 @@ export default {
       }
     },
     checkEmail() {
-      if (!this.isCheckingEmail) {
-        this.isCheckingEmail = true;
+      if (!this.chekcingFlags.email) {
+        this.chekcingFlags.email = true;
         setTimeout(() => {
           this.$http
             // 되나 확인해야함
@@ -151,45 +142,21 @@ export default {
             })
             .then(({ data }) => {
               if (data) {
-                this.isCheckedEmail = true;
+                this.checkedFlags.email = true;
               } else {
-                this.isCheckedEmail = false;
+                this.checkedFlags.email = false;
               }
             })
             .catch(err => {
               console.error(err);
             });
-          this.isCheckingEmail = false;
-        }, 500);
-      }
-    },
-    checkId() {
-      if (!this.isCheckingId) {
-        this.isCheckingId = true;
-        setTimeout(() => {
-          this.$http
-            .get(`${this.$store.state.ServerURL}/newuser/checkid`, {
-              params: {
-                username: this.userData.username
-              }
-            })
-            .then(({ data }) => {
-              if (data) {
-                this.isCheckedId = true;
-              } else {
-                this.isCheckedId = false;
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            });
-          this.isCheckingId = false;
+          this.chekcingFlags.email = false;
         }, 500);
       }
     },
     checkNickname() {
-      if (!this.isCheckingNickname) {
-        this.isCheckingNickname = true;
+      if (!this.chekcingFlags.nickname) {
+        this.chekcingFlags.nickname = true;
         setTimeout(() => {
           this.$http
             .get(`${this.$store.state.ServerURL}/newuser/checkNickname`, {
@@ -200,15 +167,15 @@ export default {
             .then(({ data }) => {
               console.log(data);
               if (data) {
-                this.isCheckedNickname = true;
+                this.checkedFlags.nickname = true;
               } else {
-                this.isCheckedNickname = false;
+                this.checkedFlags.nickname = false;
               }
             })
             .catch(err => {
               console.error(err);
             });
-          this.isCheckingNickname = false;
+          this.chekcingFlags.nickname = false;
         }, 500);
       }
     },
@@ -216,8 +183,10 @@ export default {
       this.$refs.form.validate();
       if (!this.userData.username) {
         this.errorMsg = "이메일을 입력해주세요";
-      } else if (!this.isCheckedId) {
+      } else if (!this.checkedFlags.email) {
         this.errorMsg = "해당 이메일은 이미 사용중입니다.";
+      } else if (!this.checkedFlags.code) {
+        this.errorMsg = "이메일 인증을 완료해주세요";
       } else if (!this.userData.password || !this.passwdcheck) {
         this.errorMsg = "비밀번호와 확인문자를 입력해주세요";
       } else if (this.userData.password !== this.passwdcheck) {
@@ -226,14 +195,10 @@ export default {
         this.errorMsg = "닉네임을 입력해주세요";
       } else if (!this.isCheckedNickname) {
         this.errorMsg = "해당 닉네임은 이미 사용중입니다.";
-      } else if (!this.userData.question) {
-        this.errorMsg = "비밀번호 찾기 힌트를 선택해주세요";
-      } else if (!this.userData.answer) {
-        this.errorMsg = "비밀번호 찾기 힌트의 답을 입력해주세요";
       } else {
         try {
-          console.log(this.userData);
           await this.$store.dispatch("SIGNUP", this.userData);
+          alert("회원가입이 완료되었습니다 :)");
           this.$router.push({ name: "Home" });
         } catch (e) {
           alert("오류가 발생했습니다. 다시 접근해주세요 :(");
@@ -256,14 +221,6 @@ export default {
       const rule = v => !!v || "메일주소를 입력해주세요";
       rules.push(rule);
       const rule2 = this.isCheckedEmail || "중복된 메일주소입니다.";
-      rules.push(rule2);
-      return rules;
-    },
-    idRules() {
-      const rules = [];
-      const rule = v => !!v || "아이디를 입력해주세요";
-      rules.push(rule);
-      const rule2 = this.isCheckedId || "중복된 아이디 입니다.";
       rules.push(rule2);
       return rules;
     }

@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import ByEmail from "@/components/SignUp/ByEmail.vue";
 
 export default {
@@ -31,30 +30,7 @@ export default {
   },
   data() {
     return {
-      step: "main",
-      userData: {
-        username: null,
-        password: null,
-        nickname: null,
-        email: null,
-        question: null,
-        answer: null
-      },
-      passwdcheck: null,
-      // menu: false, 생일 입력때문에 있던 것
-      isCheckingId: false,
-      isCheckedId: false,
-      isCheckingEmail: false,
-      isCheckedEmail: false,
-      isCheckingNickname: false,
-      isCheckedNickname: false,
-      pwRules: [
-        v => !!v || "입력이 필요합니다.",
-        v => this.userData.password === v || "비밀번호 확인이 일치하지 않습니다."
-      ],
-
-      textRules: [v => !!v || "입력이 필요합니다."],
-      errorMsg: null
+      step: "main"
     };
   },
   methods: {
@@ -64,138 +40,6 @@ export default {
       } else {
         this.step = "main";
       }
-    },
-    checkEmail() {
-      if (!this.isCheckingEmail) {
-        this.isCheckingEmail = true;
-        setTimeout(() => {
-          axios
-            .get(`${this.$store.state.ServerURL}/newuser/checkemail`, {
-              params: {
-                email: this.userData.email
-              }
-            })
-            .then(({ data }) => {
-              if (data) {
-                this.isCheckedEmail = true;
-              } else {
-                this.isCheckedEmail = false;
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            });
-          this.isCheckingEmail = false;
-        }, 500);
-      }
-    },
-    checkId() {
-      if (!this.isCheckingId) {
-        this.isCheckingId = true;
-        setTimeout(() => {
-          axios
-            .get(`${this.$store.state.ServerURL}/newuser/checkid`, {
-              params: {
-                username: this.userData.username
-              }
-            })
-            .then(({ data }) => {
-              if (data) {
-                this.isCheckedId = true;
-              } else {
-                this.isCheckedId = false;
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            });
-          this.isCheckingId = false;
-        }, 500);
-      }
-    },
-    checkNickname() {
-      if (!this.isCheckingNickname) {
-        this.isCheckingNickname = true;
-        setTimeout(() => {
-          axios
-            .get(`${this.$store.state.ServerURL}/newuser/checkNickname`, {
-              params: {
-                nickname: this.userData.nickname
-              }
-            })
-            .then(({ data }) => {
-              console.log(data);
-              if (data) {
-                this.isCheckedNickname = true;
-              } else {
-                this.isCheckedNickname = false;
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            });
-          this.isCheckingNickname = false;
-        }, 500);
-      }
-    },
-    async signUp() {
-      this.$refs.form.validate();
-      if (!this.userData.username) {
-        this.errorMsg = "아이디를 입력해주세요";
-      } else if (!this.isCheckedId) {
-        this.errorMsg = "해당 아이디는 이미 사용중입니다.";
-      } else if (!this.userData.password || !this.passwdcheck) {
-        this.errorMsg = "비밀번호와 확인문자를 입력해주세요";
-      } else if (this.userData.password !== this.passwdcheck) {
-        this.errorMsg = "비밀번호와 확인문자가 일치하지 않습니다.";
-      } else if (!this.userData.email) {
-        this.errorMsg = "이메일을 입력해주세요";
-      } else if (!this.isCheckedEmail) {
-        this.errorMsg = "해당 이메일은 이미 사용중입니다.";
-      } else if (!this.userData.nickname) {
-        this.errorMsg = "닉네임을 입력해주세요";
-      } else if (!this.isCheckedNickname) {
-        this.errorMsg = "해당 닉네임은 이미 사용중입니다.";
-      } else if (!this.userData.question) {
-        this.errorMsg = "비밀번호 찾기 힌트를 선택해주세요";
-      } else if (!this.userData.answer) {
-        this.errorMsg = "비밀번호 찾기 힌트의 답을 입력해주세요";
-      } else {
-        try {
-          console.log(this.userData);
-          await this.$store.dispatch("SIGNUP", this.userData);
-          this.$router.push({ name: "Home" });
-        } catch (e) {
-          alert("오류가 발생했습니다. 다시 접근해주세요 :(");
-          console.error(e);
-        }
-      }
-    }
-  },
-  computed: {
-    nicknameRules() {
-      const rules = [];
-      const rule = v => !!v || "닉네임을 입력해주세요";
-      rules.push(rule);
-      const rule2 = this.isCheckedNickname || "중복된 닉네임입니다.";
-      rules.push(rule2);
-      return rules;
-    },
-    emailRules() {
-      const rules = [];
-      const rule = v => !!v || "메일주소를 입력해주세요";
-      rules.push(rule);
-      const rule2 = this.isCheckedEmail || "중복된 메일주소입니다.";
-      rules.push(rule2);
-      return rules;
-    },
-    idRules() {
-      const rules = [];
-      const rule = v => !!v || "아이디를 입력해주세요";
-      rules.push(rule);
-      const rule2 = this.isCheckedId || "중복된 아이디 입니다.";
-      rules.push(rule2);
-      return rules;
     }
   }
 };
