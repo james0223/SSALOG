@@ -1,62 +1,66 @@
 <template>
-  <v-card class="mx-auto" max-width="500">
-    <v-card-title class="title font-weight-regular justify-space-between">
-      <span>{{ currentTitle }}</span>
-      <v-avatar
-        color="primary lighten-2"
-        class="subheading white--text"
-        size="24"
-        v-text="step"
-      ></v-avatar>
-    </v-card-title>
+  <v-container my-16>
+    <v-card flat class="mx-auto" max-width="50vw">
+      <v-card-title class="title font-weight-regular justify-space-between">
+        <h1>비밀번호 찾기</h1>
+      </v-card-title>
 
-    <v-window v-model="step">
-      <v-window-item :value="1">
-        <v-card-text>
-          <v-text-field label="아이디" v-model="account.username"></v-text-field>
-          <v-text-field label="이메일" v-model="account.email"></v-text-field>
-          <span class="caption grey--text text--darken-1">이메일과 ID를 입력해주세요</span>
-        </v-card-text>
-      </v-window-item>
+      <v-window v-model="step">
+        <v-window-item :value="1">
+          <v-card-text class="pb-0">
+            <span class="caption grey--text text--darken-1"
+              >가입시 등록한 이메일을 입력해주세요</span
+            >
+            <v-text-field label="이메일" v-model="account.username"></v-text-field>
+          </v-card-text>
+        </v-window-item>
+        <v-window-item :value="2">
+          <v-card-text class="pb-0">
+            {{ account.username }} 으로 임시 비밀번호가 전송되었습니다. 다시 로그인해주세요
+          </v-card-text>
+        </v-window-item>
+        <!-- <v-window-item :value="2">
+          <v-card-text class="pb-0">
+            <span class="caption grey--text text--darken-1"
+              >{{ account.username }} 으로 발송된 인증코드를 입력해주세요</span
+            >
+            <v-text-field label="인증코드" v-model="account.code"></v-text-field>
+          </v-card-text>
+        </v-window-item>
 
-      <v-window-item :value="2">
-        <v-card-text>
-          질문 : {{ question }}
-          <v-text-field label="답변" v-model="account.answer"></v-text-field>
-          <span class="caption grey--text text--darken-1"
-            >비밀번호 질문에 대한 답을 작성해주세요</span
-          >
-        </v-card-text>
-      </v-window-item>
-
-      <v-window-item :value="3">
-        <v-card-text>
-          <v-text-field
-            type="password"
-            label="새 비밀번호"
-            v-model="account.password"
-          ></v-text-field>
-          <v-text-field
-            type="password"
-            label="비밀번호 확인"
-            v-model="account.passwordCheck"
-          ></v-text-field>
-          <span class="caption grey--text text--darken-1">새로운 비밀번호를 입력해주세요</span>
-        </v-card-text>
-      </v-window-item>
-    </v-window>
-
-    <v-divider></v-divider>
-
-    <v-card-actions>
-      <!-- <v-btn :disabled="step === 1" text @click="step--">
-        뒤로가기
-      </v-btn>-->
-      <v-spacer></v-spacer>
-      <v-btn v-if="step <= 2" color="primary" depressed @click="findPassReq()">다음</v-btn>
-      <v-btn v-if="step === 3" color="primary" depressed @click="updatePasswordReq()">완료</v-btn>
-    </v-card-actions>
-  </v-card>
+        <v-window-item :value="3">
+          <v-card-text class="pb-0">
+            <span class="caption grey--text text--darken-1">새로운 비밀번호를 입력해주세요</span>
+            <v-text-field
+              type="password"
+              label="새 비밀번호"
+              v-model="account.password"
+            ></v-text-field>
+            <v-text-field
+              type="password"
+              label="비밀번호 확인"
+              v-model="account.passwordCheck"
+            ></v-text-field>
+          </v-card-text>
+        </v-window-item> -->
+      </v-window>
+      <v-card-text class="py-0">
+        <small class="red--text">{{ errorMsg }}</small>
+      </v-card-text>
+      <v-card-actions class="px-4">
+        <v-spacer></v-spacer>
+        <v-btn tile v-if="step === 1" color="info" depressed @click="findPassReq()">다음</v-btn>
+        <v-btn
+          tile
+          v-if="step === 2"
+          color="primary"
+          depressed
+          @click="$router.push({ name: 'Home' })"
+          >완료</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -69,20 +73,21 @@ export default {
       step: 1,
       account: {
         username: this.$route.query.username,
-        email: this.$route.query.email,
         passwordCheck: null,
         password: null,
-        answer: null
+        code: null
       },
-      question: null
+      answer: null,
+      errorMsg: null
     };
   },
   methods: {
     updatePasswordReq() {
+      this.errorMsg = null;
       if (!this.account.password || !this.account.passwordCheck) {
-        alert("비밀번호와 확인문자를 입력해주세요");
+        this.errorMsg = "비밀번호와 확인문자를 입력해주세요";
       } else if (this.account.password !== this.account.passwordCheck) {
-        alert("비밀번호 확인문자가 일치하지 않습니다.");
+        this.errorMsg = "비밀번호 확인문자가 일치하지 않습니다.";
       } else {
         axios
           .put(`${this.$store.state.ServerURL}/user/change_pw`, null, {
@@ -91,74 +96,48 @@ export default {
             }
           })
           .then(({ data }) => {
-            console.log(data);
             if (data) {
-              alert("변경성공! 홈페이지로 이동합니다.");
+              alert("비밀번호 변경성공! 다시 로그인해주세요");
               this.$router.push({ name: "Home" });
-              // 메인페이지로 리다이렉트
             } else {
-              alert("뭔가 잘못됬습니다...");
+              this.errorMsg = "서버에러";
             }
           })
           .catch(err => {
             console.error(err);
-            alert("뭔가 잘못됬습니다...");
+            this.errorMsg = "서버에러";
           });
       }
     },
     findPassReq() {
+      this.errorMsg = null;
       if (this.step === 1) {
-        if (!this.account.username || !this.account.email) {
-          alert("아이디와 이메일을 입력해주세요");
+        if (!this.account.username) {
+          this.errorMsg = "이메일을 입력해주세요";
         } else {
+          // 수정필요
           axios
-            .get(`${this.$store.state.ServerURL}/newuser/findpw`, {
+            .get(`${this.$store.state.ServerURL}/newuser/수정필요`, {
               params: {
-                email: this.account.email,
                 username: this.account.username
               }
             })
             .then(({ data }) => {
               if (data.result) {
                 this.step = 2;
-                this.question = data.question;
+                this.answer = data.정답;
               } else {
-                alert("아이디와 이메일을 확인해주세요");
+                this.errorMsg = "유효하지 않은 이메일입니다.";
               }
             })
             .catch(err => console.error(err));
         }
       } else if (this.step === 2) {
-        if (!this.account.answer) {
-          alert("답변을 입력해주세요");
+        if (this.account.code !== this.answer) {
+          this.errorMsg = "인증코드가 일치하지 않습니다.";
         } else {
-          axios
-            .post(`${this.$store.state.ServerURL}/newuser/quiz`, null, {
-              params: {
-                answer: this.account.answer,
-                username: this.account.username
-              }
-            })
-            .then(({ data }) => {
-              if (data.result === true) {
-                this.$store.commit("LOGIN", data);
-                this.step = 3;
-                // 토큰 받아서 로그인처리해야함
-              } else {
-                alert("질문에 대한 답이 일치하지 않습니다.");
-              }
-            })
-            .catch(err => console.log(err));
+          this.step = 3;
         }
-      }
-    }
-  },
-
-  computed: {
-    currentTitle() {
-      switch (this.step) {
-        default:
-          return "비밀번호 찾기";
       }
     }
   }
