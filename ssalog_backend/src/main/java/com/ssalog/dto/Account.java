@@ -10,10 +10,11 @@ import java.util.Date;
 @Data
 @Entity
 public class Account {
+
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id; 			// PK, 사용자 ID
+//
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; 			// PK, 사용자 ID
-    
     @Column(nullable=false, unique=true, length=30)
     private String username; 	// 아이디
 	
@@ -40,10 +41,9 @@ public class Account {
 	public Account() {
 		super();
 	}
-	public Account(Long id, String username, String nickname, String email, String birthday, String password,
+	public Account(String username, String nickname, String email, String birthday, String password,
 			Date regdate, Date updatedate, String role, String question, String answer, String imgpath) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.nickname = nickname;
 		this.email = email;
@@ -55,12 +55,6 @@ public class Account {
 		this.question = question;
 		this.answer = answer;
 		this.imgpath = imgpath;
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 	public String getUsername() {
 		return username;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class GroupController {
 	@GetMapping("newuser/group/make")
 	@ApiOperation(value = "[그룹 만들기] 새로운 그룹을 만든다.")
 	public ResponseEntity<Void> make_group() {
+		//groupService.makeGroup(g, username);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
