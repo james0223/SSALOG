@@ -121,6 +121,11 @@ public class SearchContoller {
 		return new ResponseEntity<Long>(postService.get_allpost(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value ="[쌀로그 페이지] 파이그래프 만들기용,username을 입력하면 해당 user가 푼문제에서 어떤 keyword들을 사용했는지 전부  가져온다.")
+	@GetMapping("/find_pyto")
+	public ResponseEntity<Map<String, Integer>> find_py(@RequestParam("username") String username){
+		return new ResponseEntity<Map<String, Integer>>(postSubService.find_py_graph(username), HttpStatus.OK);
+	}
 	@ExceptionHandler(NullPointerException.class)
 	public void nullex(Exception e) {
 		System.err.println("search 부분에서 " + e.getClass());

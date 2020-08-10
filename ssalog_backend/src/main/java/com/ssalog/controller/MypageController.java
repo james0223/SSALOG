@@ -80,4 +80,6 @@ public class MypageController {
 		webhook w = new webhook();
 		w.send("img 처리 부분에서 " + e.getClass());
 	}
+	
+	
 }
