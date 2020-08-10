@@ -16,10 +16,10 @@
         <v-row no-gutters>
           <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
           <v-col cols="3" class="d-flex justify-center"
-            ><h4 class="font-weight-light mb-1">추천수</h4></v-col
+            ><h4 class="font-weight-light mb-1">키워드</h4></v-col
           >
           <v-col cols="3" class="d-flex justify-center"
-            ><h4 class="font-weight-light mb-1">댓글</h4></v-col
+            ><h4 class="font-weight-light mb-1">작성날짜</h4></v-col
           >
         </v-row>
         <v-divider></v-divider>
@@ -39,10 +39,10 @@
               <v-row no-gutters class="align-center">
                 <v-col cols="6"> {{ solve.problemid }} - {{ solve.problemname }} </v-col>
                 <v-col cols="3" class="d-flex justify-center">
-                  {{ solve.like }}
+                  {{ solve.keyword2 }}
                 </v-col>
                 <v-col cols="3" class="d-flex justify-center">
-                  {{ solve.comment === null ? 0 : solve.comment.length }}
+                  {{ solve.regdate }}
                 </v-col>
               </v-row>
             </v-list-item>
@@ -106,7 +106,21 @@ export default {
         if (data.totalElements === 0) {
           this.isNoSolve = true;
         } else {
-          this.solvedList = data.content.reverse();
+          this.solvedList = data.content;
+          const iterable = this.solvedList;
+          iterable.forEach(element => {
+            const temp = element;
+            if (temp.keyword != null) {
+              // temp.keyword2 = temp.keyword.join(" / ");
+              const [foo] = temp.keyword;
+              const size = temp.keyword.length - 1;
+              if (size !== 0) {
+                temp.keyword2 = foo.concat(" 외 ", size, "개");
+              } else {
+                temp.keyword2 = foo;
+              }
+            }
+          });
         }
       } catch (e) {
         console.error(e);
