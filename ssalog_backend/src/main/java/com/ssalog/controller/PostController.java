@@ -99,7 +99,15 @@ public class PostController {
 			return new ResponseEntity<String>("not exist!", HttpStatus.BAD_REQUEST);
 		}
 	}	
-	
+	@GetMapping("user/post/get_username")
+	@ApiOperation(value = "[username을 가져온다.] 백준에서 문제들고올때 username 삽입용입니다!, 따로 쓸 필요 없을걸요?")
+	public ResponseEntity<Void> set_username(HttpServletResponse response, @RequestParam("Scoring") String scoring){
+		String username = response.getHeader("username");
+		postService.set_username(username, scoring);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+		
+	}	
+
 	@ExceptionHandler(NullPointerException.class)
 	public void nullex(Exception e) {
 		System.err.println("포스트 부분에서 " + e.getClass());

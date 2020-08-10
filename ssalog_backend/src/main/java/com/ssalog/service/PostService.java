@@ -16,5 +16,6 @@ public interface PostService {
 	public Map<String, Object> detail_service(String problemid, String language);
 	public Map<String, Integer> detail_py(String problemid);
 	public String find_problemname(String problemid);
+	public void set_username(String username, String scoring);
 	public long get_allpost();
 }
