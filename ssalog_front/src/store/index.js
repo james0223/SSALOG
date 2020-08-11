@@ -179,6 +179,7 @@ export default new Vuex.Store({
         }
       });
       commit("Thumbnail", res.data);
+      window.location.reload();
     }
   },
   modules: {}

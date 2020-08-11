@@ -10,7 +10,9 @@
           <h2 class="font-weight-light mb-3">비밀번호 변경</h2>
           <v-divider></v-divider>
           <v-row>
-            <body-1 class="mt-3 ml-3">비밀번호를 변경하기 전에 다시 한번 확인합니다.</body-1>
+            <body class="mt-3 ml-3">
+              비밀번호를 변경하기 전에 다시 한번 확인합니다.
+            </body>
           </v-row>
           <v-row>
             <v-dialog v-model="dialog" max-width="600px">
@@ -57,14 +59,16 @@
           <h2 class="font-weight-light mb-3 warn">계정 삭제</h2>
           <v-divider></v-divider>
           <v-row>
-            <body-1 class="mt-3 ml-3">
+            <body class="mt-3 ml-3">
               계정을 삭제하시면
               <b>복구하실 수 없습니다</b>. 신중하게 결정해 주세요
-            </body-1>
+            </body>
           </v-row>
           <v-row>
             <v-btn class="mt-5 ml-3">
-              <body-1 class="warn">계정 삭제</body-1>
+              <body class="warn">
+                계정 삭제
+              </body>
             </v-btn>
           </v-row>
         </v-card>
