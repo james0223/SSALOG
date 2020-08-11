@@ -1,9 +1,9 @@
 <template>
   <v-container class="px-7">
     <v-row>
-      <v-col cols="7">
+      <v-col cols="8">
         <v-row>
-          <v-col cols="7">
+          <v-col cols="6">
             <v-card height="25vh"
               >과제 제출현황
               <PieChart
@@ -15,7 +15,7 @@
               />
             </v-card>
           </v-col>
-          <v-col cols="5">
+          <v-col cols="6">
             <v-card height="25vh"
               >과제 제출현황
               <br />
@@ -28,11 +28,29 @@
             <v-card height="52.5vh">
               <v-toolbar-title>과제 출제</v-toolbar-title>
               <v-divider></v-divider>
+              <ValidationObserver ref="hw">
+                <v-card class="mx-3" width="19vw" height="46vh">
+                  <form>
+                    <ValidationProvider name="Name" rules="required|max:20">
+                      <v-text-field
+                        slot-scope="{ errors, valid }"
+                        v-model="HW.name"
+                        :error-messages="errors"
+                        :success="valid"
+                        :counter="20"
+                        label="문제 제목"
+                        required
+                      ></v-text-field>
+                    </ValidationProvider>
+                    <v-text-field v-model="HW.number" label="문제 번호" required></v-text-field>
+                  </form>
+                </v-card>
+              </ValidationObserver>
             </v-card>
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="5">
+      <v-col cols="4">
         <v-card class="mt-3" height="80vh">
           <v-toolbar-title>회원 관리</v-toolbar-title>
           <v-divider></v-divider>
@@ -65,6 +83,11 @@ export default {
   },
   data() {
     return {
+      // 문제 제출
+      HW: {
+        name: "",
+        number: ""
+      },
       // 회원 관리
       groupMember: [
         {
