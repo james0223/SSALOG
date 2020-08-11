@@ -1,6 +1,7 @@
 package com.ssalog.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssalog.config.webhook;
 import com.ssalog.dto.GroupDTO;
 import com.ssalog.dto.GroupRegist;
+import com.ssalog.dto.Groupdetail;
 import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.service.GroupService;
 
@@ -63,5 +68,23 @@ public class GroupController {
 	public ResponseEntity<String> make_goal(HttpServletResponse response,@RequestParam("groupname") String groupname,@RequestParam("problemid") String problemid,@RequestParam("problemname") String problemname,@RequestParam("limitday") String limit) {
 		String username = response.getHeader("username"); 
 		return new ResponseEntity<String>(groupService.makeGoal(username, groupname, problemid, problemname, limit),HttpStatus.OK);
+	}
+	@GetMapping("newuser/grouping/check_goal")
+	@ApiOperation(value = "[그룹원들이 얼마나 풀었는지 확인합니다.] 내 그룹에 가입신청한 목록을 봅니다.")
+	public ResponseEntity<Map<String, Boolean>> check_goal(@RequestParam("groupname") String groupname, @RequestParam("problemid") String problemid) {
+		return new ResponseEntity<Map<String, Boolean>>(groupService.checkGoal(groupname, problemid),HttpStatus.OK);
+	}
+	
+	@DeleteMapping("user/grouping/apply_reject")
+	@ApiOperation(value = "[그룹 가입신청 거절] 내 그룹에 신청한 가입을 거절합니다.")
+	public ResponseEntity<String> apply_accept(HttpServletResponse response, @RequestParam("regid") Long regid) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<String>(groupService.applyreject(username, regid),HttpStatus.OK);
+	}
+	@ExceptionHandler(Exception.class)
+	public void nullex(Exception e) {
+		System.err.println("그룹 부분에서 " + e.getClass());
+		webhook w = new webhook();
+		w.send("그룹 부분에서 " + e.getClass());
 	}
 }

@@ -14,6 +14,7 @@ public interface PostSubRepository extends MongoRepository<Post,String>{
 	public Page<PostSub> findByProblemid(String problemid, Pageable pageable);
 	public Page<PostSub> findByUsername(String username, Pageable pageable);
 	public Page<PostSub> findByProblemnameLike(String problemname, Pageable pageable);
+	public List<PostSub> findByUsernameAndProblemid(String username, String problemid);
 	@Query(value = "{ 'keyword' : {$all : [?0] }}")
 	public Page<PostSub> findAnyOfTheseValues(List<String> keyword,Pageable pageable);
 	
