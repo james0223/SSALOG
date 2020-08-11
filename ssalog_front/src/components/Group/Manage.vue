@@ -29,9 +29,9 @@
               <v-toolbar-title>과제 출제</v-toolbar-title>
               <v-divider></v-divider>
               <ValidationObserver ref="hw">
-                <v-card class="mx-3" width="19vw" height="46vh">
+                <v-card flat class="mx-3" width="19vw" height="46vh">
                   <form>
-                    <ValidationProvider name="Name" rules="required|max:20">
+                    <ValidationProvider name="문제 제목" rules="required|max:20">
                       <v-text-field
                         slot-scope="{ errors, valid }"
                         v-model="HW.name"
@@ -42,7 +42,19 @@
                         required
                       ></v-text-field>
                     </ValidationProvider>
-                    <v-text-field v-model="HW.number" label="문제 번호" required></v-text-field>
+                    <ValidationProvider name="문제 번호" rules="required|between:1,50000">
+                      <v-text-field
+                        slot-scope="{ errors, valid }"
+                        v-model="HW.number"
+                        :error-messages="errors"
+                        :success="valid"
+                        :counter="20"
+                        label="문제 번호"
+                        required
+                      ></v-text-field>
+                    </ValidationProvider>
+                    <v-datetime-picker required label="Select Datetime" v-model="deadline">
+                    </v-datetime-picker>
                   </form>
                 </v-card>
               </ValidationObserver>
@@ -88,6 +100,7 @@ export default {
         name: "",
         number: ""
       },
+      deadline: "",
       // 회원 관리
       groupMember: [
         {
