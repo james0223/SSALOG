@@ -25,4 +25,13 @@ public class AccountServiceImpl implements AccountService{
 	public long find_alluser() {
 		return accountRepository.count();
 	}
+	
+	@Override
+	public String find_username(String nickname) {
+		Account ac = accountRepository.findByNickname(nickname);
+		if(ac != null) {
+			return ac.getNickname();
+		}
+		return "fail";
+	}
 }
