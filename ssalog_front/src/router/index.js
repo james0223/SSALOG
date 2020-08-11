@@ -18,16 +18,13 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
 import SolutionList from "@/components/SSALOG/SolutionList.vue";
-<<<<<<< HEAD
 import UserSetting from "@/components/SSALOG/Setting.vue";
-=======
 // group
 import Group from "@/views/Group/Group.vue";
 import GroupMain from "@/components/Group/GroupMain.vue";
 import Member from "@/components/Group/Member.vue";
 import GroupHW from "@/components/Group/Homework.vue";
 import GroupManage from "@/components/Group/Manage.vue";
->>>>>>> cfd64db4f90514d953e012cf09646c6e541642eb
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
