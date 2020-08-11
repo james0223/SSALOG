@@ -4,11 +4,15 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Account {
 
 //	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +15,11 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+
 @Entity
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Groupdetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,28 +27,30 @@ public class Groupdetail {
 	
 	@ManyToOne(targetEntity=GroupDTO.class, fetch=FetchType.LAZY)
 	@JoinColumn(name="groupname")
-	private String groupname;
+	private GroupDTO groupdto;
 	
 	@ManyToOne(targetEntity=Account.class, fetch=FetchType.LAZY)
 	@JoinColumn(name="username")
-	private String username;
+	private Account account;
 	
-	@Column(nullable=false, unique=true, length=30)
-	private String role;
+	@Column(nullable=false,length=30)
+	@Enumerated(EnumType.STRING)
+	private GroupRole role;
 	
+	
+	public Groupdetail(Long id, GroupDTO groupdto, Account account, GroupRole role, Date regdate) {
+		super();
+		this.id = id;
+		this.groupdto = groupdto;
+		this.account = account;
+		this.role = role;
+		this.regdate = regdate;
+	}
+
 	@CreationTimestamp
     private Date regdate;	// 그룹가입일
 
 	public Groupdetail() {}
-
-	public Groupdetail(Long id, String groupname, String username, String role, Date regdate) {
-		super();
-		this.id = id;
-		this.groupname = groupname;
-		this.username = username;
-		this.role = role;
-		this.regdate = regdate;
-	}
 
 	public Long getId() {
 		return id;
@@ -52,27 +60,27 @@ public class Groupdetail {
 		this.id = id;
 	}
 
-	public String getGroupname() {
-		return groupname;
+	public GroupDTO getGroupdto() {
+		return groupdto;
 	}
 
-	public void setGroupname(String groupname) {
-		this.groupname = groupname;
+	public void setGroupdto(GroupDTO groupdto) {
+		this.groupdto = groupdto;
 	}
 
-	public String getUsername() {
-		return username;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
-	public String getRole() {
+	public GroupRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(GroupRole role) {
 		this.role = role;
 	}
 
@@ -83,6 +91,8 @@ public class Groupdetail {
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
+
+	
 	
 	
 }
