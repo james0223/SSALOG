@@ -160,21 +160,23 @@ router.beforeEach(function(to, from, next) {
   // 같은 이름으로 라우팅이 안되는 문제 해결
   console.log(to, "to");
   console.log(from, "from");
+  console.log(next, "next");
   if (from.name === to.name) {
     next();
-  }
-  if (
+  } else if (
     to.matched.some(function(routeInfo) {
       return routeInfo.meta.authRequired;
     })
   ) {
     if (store.state.accessToken == null) {
-      store.commit("FormerLink", to.path);
+      // eslint-disable-next-line
+      !to.name === "/Login" && store.commit("FormerLink", to.path);
       next("/Login");
     } else next();
   } else {
     if (to.name !== "Login") {
-      store.commit("FormerLink", to.path);
+      // eslint-disable-next-line
+      !to.name === "/Login" && store.commit("FormerLink", to.path);
     }
     next();
   }

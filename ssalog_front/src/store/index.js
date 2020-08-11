@@ -113,7 +113,7 @@ export default new Vuex.Store({
         accessToken: res.data.accessToken,
         refreshToken: res.data.refreshToken
       });
-      await dispatch("Thumbnail", loginData.username);
+      dispatch("Thumbnail", loginData.username);
       dispatch("autoRefresh");
     },
     // eslint-disable-next-line
