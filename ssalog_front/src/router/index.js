@@ -120,11 +120,6 @@ const routes = [
   // 아래 Soultion 보다 위에 놓여야 해당 링크로 라우터가 접근 가능
   // children component 형식으로 동작하는 것이 아니기에, 이렇게 분리해주어야 함.
   {
-    path: "/SSALOG/:nickname/Solution/:id",
-    name: "LogDetail",
-    component: LogDetail
-  },
-  {
     path: "/SSALOG/:nickname",
     name: "SSALOG",
     component: SSALOG,
@@ -144,6 +139,11 @@ const routes = [
         path: "UserSetting",
         name: "UserSetting",
         component: UserSetting
+      },
+      {
+        path: "Solution/:id",
+        name: "LogDetail",
+        component: LogDetail
       }
     ]
   }
