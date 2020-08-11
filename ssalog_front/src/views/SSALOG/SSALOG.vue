@@ -7,12 +7,13 @@
             <img :src="writerThumbnail" />
             <!--변경해줘야할듯-->
           </v-avatar>
-          <v-dialog v-model="thumbnailDialog" max-width="600px">
+          <v-dialog v-model="thumbnailDialog" max-width="400px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-bind="attrs"
                 v-on="on"
                 v-if="$store.state.username === $route.params.username"
+                @click="imageUrl = writerThumbnail"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -22,26 +23,68 @@
                 <v-icon dark>mdi-camera</v-icon>
               </v-btn>
             </template>
-            <v-card>
+            <v-card style="padding:16px;">
               <v-card-title>
                 <span class="headline">프로필사진 관리</span>
               </v-card-title>
-              <v-list rounded>
-                <v-list-item-group v-model="ThumbnailSelect" color="primary">
-                  <v-list-item v-for="(item, i) in items" :key="i" @click="changeThumbnail(i)">
-                    <v-list-item-icon>
-                      <v-icon v-text="item.icon"></v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.text"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="thumbnailDialog = false">닫기</v-btn>
-              </v-card-actions>
+              <v-row>
+                <v-col cols="12" sm="12" md="12">
+                  <v-file-input
+                    prepend-icon="mdi-camera"
+                    style="display: inline"
+                    placeholder="사진선택"
+                    accept="image/png, image/jpeg, image/jpg"
+                    @change="onChangeImages"
+                    outlined
+                    clear-icon
+                  ></v-file-input>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="2"></v-col>
+                <v-avatar size="240">
+                  <v-img :src="imageUrl" />
+                </v-avatar>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-list rounded>
+                    <v-list-item-group v-model="ThumbnailSelect" color="blue">
+                      <v-list-item @click="uploadImage()">
+                        <v-list-item-content>
+                          <v-list-item-title class="d-flex justify-center">저장</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-col>
+                <v-col cols="6">
+                  <v-list rounded>
+                    <v-list-item-group v-model="ThumbnailSelect" color="red">
+                      <v-list-item @click="thumbnailDialog = false">
+                        <v-list-item-content>
+                          <v-list-item-title class="d-flex justify-center">취소</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-col>
+
+                <v-col cols="3"> </v-col>
+                <v-col cols="6">
+                  <v-list rounded>
+                    <v-list-item-group v-model="ThumbnailSelect" color="green">
+                      <v-list-item @click="deleteImage()">
+                        <v-list-item-content>
+                          <v-list-item-title class="d-flex justify-center"
+                            >기본이미지</v-list-item-title
+                          >
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-col>
+              </v-row>
             </v-card>
           </v-dialog>
           <v-row justify="center" style="width:240px">
@@ -79,6 +122,8 @@ export default {
       thumbnailDialog: false,
       ThumbnailSelect: 0,
       writerThumbnail: null,
+      imageUrl: null,
+      imageFile: null,
       items: [
         { text: "사진 업로드", icon: "mdi-camera-enhance" },
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
@@ -130,6 +175,11 @@ export default {
   },
   computed: mapState(["ServerURL", "ImgURL"]),
   methods: {
+    onChangeImages(e) {
+      const file = e;
+      this.imageUrl = URL.createObjectURL(file);
+      this.imageFile = file;
+    },
     async getThumbnail() {
       const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
         params: {
@@ -137,6 +187,37 @@ export default {
         }
       });
       this.writerThumbnail = `${this.ImgURL}${res.data}`;
+      this.imageUrl = this.writerThumbnail;
+    },
+    deleteImage() {
+      try {
+        axios.delete(`${this.$store.state.ServerURL}/user/delete_profile_img`);
+        this.$store.dispatch("Thumbnail", this.$store.state.username);
+        // window.location.reload();
+
+        this.thumbnailDialog = false;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    uploadImage() {
+      const formData = new FormData();
+      formData.append("filename", this.imageFile);
+      axios
+        .post(`${this.ServerURL}/user/upload_profile_img`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${this.$store.state.accessToken}`
+          }
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        })
+        .then(() => {
+          this.$store.dispatch("Thumbnail", this.$store.state.username);
+          // window.location.reload();
+        });
     }
   },
   created() {
