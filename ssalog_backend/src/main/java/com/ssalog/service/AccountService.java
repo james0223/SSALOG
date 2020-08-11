@@ -10,4 +10,5 @@ public interface AccountService {
 	public long find_alluser();
 	public String find_username(String nickname);
 	public String change_nickname(String nickname, String username);
+	public Boolean change_pw(String username);
 }

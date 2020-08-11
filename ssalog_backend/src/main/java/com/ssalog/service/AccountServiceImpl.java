@@ -4,14 +4,18 @@ package com.ssalog.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssalog.dto.Account;
 import com.ssalog.dto.AccountSub;
 import com.ssalog.repository.AccountRepository;
+import com.ssalog.util.Mail;
 
 @Service
 public class AccountServiceImpl implements AccountService{
+	@Autowired
+    private PasswordEncoder bcryptEncoder;
 	@Autowired
 	AccountRepository accountRepository;
 	public Page<AccountSub> find_toNickname(String nickname, PageRequest pageable){
@@ -45,5 +49,18 @@ public class AccountServiceImpl implements AccountService{
 		}else {
 			return "fail";
 		}
+	}
+	
+	@Override
+	public Boolean change_pw(String username) {
+		Account ac = accountRepository.findByUsername(username);
+		if(ac != null) {
+			Mail m = new Mail();
+	    	String ran = m.sendMail(username,2);
+	    	ac.setPassword(bcryptEncoder.encode(ran));
+	    	accountRepository.save(ac);
+			return true;
+		}
+		return false;
 	}
 }
