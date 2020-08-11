@@ -181,9 +181,9 @@ export default {
       this.imageFile = file;
     },
     async getThumbnail() {
-      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
+      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img_nick`, {
         params: {
-          username: this.$route.params.username
+          nickname: this.$route.params.nickname
         }
       });
       this.writerThumbnail = `${this.ImgURL}${res.data}`;
