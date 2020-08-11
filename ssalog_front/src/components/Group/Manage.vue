@@ -28,36 +28,64 @@
             <v-card height="52.5vh">
               <v-toolbar-title>과제 출제</v-toolbar-title>
               <v-divider></v-divider>
-              <ValidationObserver ref="hw">
-                <v-card flat class="mx-3" width="19vw" height="46vh">
-                  <form>
-                    <ValidationProvider name="문제 제목" rules="required|max:20">
-                      <v-text-field
-                        slot-scope="{ errors, valid }"
-                        v-model="HW.name"
-                        :error-messages="errors"
-                        :success="valid"
-                        :counter="20"
-                        label="문제 제목"
-                        required
-                      ></v-text-field>
-                    </ValidationProvider>
-                    <ValidationProvider name="문제 번호" rules="required|between:1,50000">
-                      <v-text-field
-                        slot-scope="{ errors, valid }"
-                        v-model="HW.number"
-                        :error-messages="errors"
-                        :success="valid"
-                        :counter="20"
-                        label="문제 번호"
-                        required
-                      ></v-text-field>
-                    </ValidationProvider>
-                    <v-datetime-picker required label="Select Datetime" v-model="deadline">
-                    </v-datetime-picker>
-                  </form>
-                </v-card>
-              </ValidationObserver>
+              <v-row>
+                <v-col cols="6">
+                  <ValidationObserver ref="hw">
+                    <v-card flat class="mx-3" width="19vw" height="46vh">
+                      <form>
+                        <ValidationProvider name="문제 제목" rules="required|max:20">
+                          <v-text-field
+                            slot-scope="{ errors, valid }"
+                            v-model="HW.name"
+                            :error-messages="errors"
+                            :success="valid"
+                            :counter="20"
+                            label="문제 제목"
+                            required
+                          ></v-text-field>
+                        </ValidationProvider>
+                        <ValidationProvider name="문제 번호" rules="required|between:1,50000">
+                          <v-text-field
+                            slot-scope="{ errors, valid }"
+                            v-model="HW.number"
+                            :error-messages="errors"
+                            :success="valid"
+                            :counter="20"
+                            label="문제 번호"
+                            required
+                          ></v-text-field>
+                        </ValidationProvider>
+                        <ValidationProvider name="문제 번호" rules="required">
+                          <v-datetime-picker
+                            required
+                            ok-text="시간선택"
+                            clear-text="초기화"
+                            label="마감 시간"
+                            v-model="HW.deadline"
+                          >
+                          </v-datetime-picker>
+                        </ValidationProvider>
+                        <v-btn type="reset">초기화</v-btn>
+                        <v-btn type="submit">과제 출제</v-btn>
+                      </form>
+                    </v-card>
+                  </ValidationObserver>
+                </v-col>
+                <v-col cols="6">
+                  <v-card flat height="44vh" class="px-3" width="18vw" style="overflow-y: scroll;">
+                    <v-timeline dense>
+                      <v-timeline-item v-for="n in 5" :key="n" small>
+                        <v-card class="elevation-2">
+                          <v-card-title class="headline">Lorem ipsum</v-card-title>
+                          <v-card-text>
+                            Lorem ipsum
+                          </v-card-text>
+                        </v-card>
+                      </v-timeline-item>
+                    </v-timeline>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
         </v-row>
@@ -98,9 +126,10 @@ export default {
       // 문제 제출
       HW: {
         name: "",
-        number: ""
+        number: "",
+        deadline: new Date()
       },
-      deadline: "",
+      HWList: [],
       // 회원 관리
       groupMember: [
         {
