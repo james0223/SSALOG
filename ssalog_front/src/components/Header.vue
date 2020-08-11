@@ -42,9 +42,12 @@
                       <img :src="userThumbnail" alt="유저썸네일" />
                     </v-avatar>
                   </v-col>
-                  <v-col cols="8">
+                  <v-col cols="4">
                     <div class="text-left subtitle">{{ username }} 님</div>
                     <div class="text-left caption">환영합니다</div>
+                  </v-col>
+                  <v-col cols="4" class="d-flex align-center">
+                    <v-icon>mdi-chevron-down</v-icon>
                   </v-col>
                 </v-row>
               </v-card>
@@ -104,14 +107,14 @@ export default {
   },
   data() {
     return {
-      items: ["정보수정", "내 쌀로그", "로그아웃"]
+      items: ["계정설정", "내 쌀로그", "로그아웃"]
     };
   },
   computed: mapState(["userThumbnail", "username", "accessToken"]),
   methods: {
     userMenu(idx) {
       if (idx === 0) {
-        this.changeRoute("Account");
+        this.$router.push({ name: "UserSetting", params: { username: this.username } });
       } else if (idx === 1) {
         this.$router.push({ name: "SSalogMain", params: { username: this.username } });
       } else {

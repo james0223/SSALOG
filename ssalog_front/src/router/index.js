@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 // account
 import SignUp from "@/views/Account/SignUp.vue";
 import Login from "@/views/Account/Login.vue";
-import Account from "@/views/Account/Account.vue";
 import FindId from "@/views/Account/FindId.vue";
 import FindPass from "@/views/Account/FindPass.vue";
 import AccountList from "@/views/Account/AccountList.vue";
@@ -19,6 +18,7 @@ import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
 import SolutionList from "@/components/SSALOG/SolutionList.vue";
+import UserSetting from "@/components/SSALOG/Setting.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -68,12 +68,6 @@ const routes = [
     component: Login
   },
   {
-    path: "/Account",
-    name: "Account",
-    component: Account,
-    meta: { authRequired: true }
-  },
-  {
     path: "/FindId",
     name: "FindId",
     component: FindId
@@ -111,6 +105,11 @@ const routes = [
         path: "SolutionList",
         name: "SolutionList",
         component: SolutionList
+      },
+      {
+        path: "UserSetting",
+        name: "UserSetting",
+        component: UserSetting
       }
     ]
   }
