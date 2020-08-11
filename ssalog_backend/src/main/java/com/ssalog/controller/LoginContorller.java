@@ -78,7 +78,6 @@ public class LoginContorller {
         // 아이디 중복체크 진행
         if (accountRepository.findByUsername(un) == null) {
             account.setUsername(un);
-            account.setEmail(account.getEmail());
             
             // username이 admin 이라면 admin role 주기 (우리가 바꿔도 될듯) 쌀로그로 할까?
             if (un.equals("admin")) {
@@ -88,8 +87,6 @@ public class LoginContorller {
             }
             account.setNickname(account.getNickname());
             account.setPassword(bcryptEncoder.encode(account.getPassword()));
-            account.setQuestion(account.getQuestion());
-            account.setAnswer(account.getAnswer());
             
             map.put("success", true); // 등록성공
             accountRepository.save(account); // db에 저장
@@ -101,7 +98,7 @@ public class LoginContorller {
     }
     
     // 1-4. 회원가입 form [중복체크] 버튼 클릭 -> 아이디 중복체크 (DB에 아이디 존재하는지 체킹)
-    @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 중복되는 아이디가 DB에 없는지 확인(check)한다.")
+    @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 중복체크 이걸로 하면 될듯? 중복되는 아이디가 DB에 없는지 확인(check)한다.")
     @GetMapping(path="/newuser/checkid")
     public ResponseEntity<Boolean> checkId (@RequestParam("username") String username) {
         if (accountRepository.findByUsername(username) == null) return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -181,7 +178,6 @@ public class LoginContorller {
        }else {
     	   map.put("result", true);
     	   map.put("username",target.getUsername());
-    	   map.put("question",target.getQuestion());
        }
        return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
     }

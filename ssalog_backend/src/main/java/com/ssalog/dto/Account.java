@@ -1,6 +1,5 @@
 package com.ssalog.dto;
 
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,26 +9,17 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import javax.persistence.*;
 import java.util.Date;
 
-@Data
 @Entity
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Account {
 
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id; 			// PK, 사용자 ID
-//
 	@Id
     @Column(nullable=false, unique=true, length=30)
-    private String username; 	// 아이디
+    private String username; 	// 아이디 (이메일)
 	
 	@Column(nullable=false, unique=true, length=30)
 	private String nickname; 	// 닉네임
-	 
-    @Column(nullable=false, unique=true, length=50)
-    private String email;		// 메일주소
     
-    @Column(length = 15)
-	private String birthday;	// 생일
     private String password;	// 비밀번호
 
     @CreationTimestamp
@@ -39,25 +29,19 @@ public class Account {
     private Date updatedate;	// 수정일
 
     private String role;		// 권한관리
-    private String question;	// 질문
-    private String answer;	// 답변
     private String imgpath; 
 	public Account() {
 		super();
 	}
-	public Account(String username, String nickname, String email, String birthday, String password,
-			Date regdate, Date updatedate, String role, String question, String answer, String imgpath) {
+	public Account(String username, String nickname, String password, Date regdate, Date updatedate, String role,
+			String imgpath) {
 		super();
 		this.username = username;
 		this.nickname = nickname;
-		this.email = email;
-		this.birthday = birthday;
 		this.password = password;
 		this.regdate = regdate;
 		this.updatedate = updatedate;
 		this.role = role;
-		this.question = question;
-		this.answer = answer;
 		this.imgpath = imgpath;
 	}
 	public String getUsername() {
@@ -71,18 +55,6 @@ public class Account {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getBirthday() {
-		return birthday;
-	}
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
 	}
 	public String getPassword() {
 		return password;
@@ -108,24 +80,13 @@ public class Account {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public String getQuestion() {
-		return question;
-	}
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-	public String getAnswer() {
-		return answer;
-	}
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
 	public String getImgpath() {
 		return imgpath;
 	}
 	public void setImgpath(String imgpath) {
 		this.imgpath = imgpath;
 	}
+	
 
 	
 
