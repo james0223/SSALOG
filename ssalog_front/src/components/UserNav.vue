@@ -37,7 +37,7 @@
       </div>
     </v-row>
     <v-row justify="center">
-      <h3>{{ this.$store.state.username }}</h3>
+      <h3>{{ this.$store.state.nickname }}</h3>
     </v-row>
     <v-row justify="center">
       <v-btn outlined large class="mt-6 mb-5" @click="dialog = true">Edit Profile</v-btn>

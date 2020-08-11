@@ -302,7 +302,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL", "username"]),
+  computed: mapState(["ServerURL", "nickname", "username"]),
   beforeDestroy() {
     this.editor.destroy();
   },
@@ -339,7 +339,7 @@ export default {
           this.$router.push({
             name: "LogDetail",
             // eslint-disable-next-line
-            params: { username: this.username, Scoring: this.resData._id }
+            params: { nickname: this.nickname, id: this.resData._id }
           });
         })
         .catch(function(error) {

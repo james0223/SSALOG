@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      ownerName: this.$route.params.username,
+      ownerName: this.$route.params.nickname,
       solvedList: [],
       isNoSolve: false,
       heatmapData: {
@@ -100,7 +100,7 @@ export default {
             direction: "DESC",
             page: 1,
             size: 5,
-            username: this.ownerName
+            username: this.ownerName // 바꿔야함
           }
         });
         if (data.totalElements === 0) {

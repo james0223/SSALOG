@@ -158,6 +158,7 @@ export default {
           align: "start",
           sortable: false,
           filterable: false,
+          // 아마 이메일 튀어나올듯
           value: "username"
         },
         { text: "추천", value: "like" },

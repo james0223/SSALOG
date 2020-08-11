@@ -8,7 +8,7 @@
       <v-col v-for="(user, i) in users" :key="i" cols="3">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card
-            @click="visitUserDetail(user.username)"
+            @click="visitUserDetail(user.nickname)"
             align="center"
             :elevation="hover ? 12 : 2"
           >
@@ -67,8 +67,8 @@ export default {
         $state.loaded();
       }, 2000);
     },
-    visitUserDetail(username) {
-      this.$router.push({ name: "SSalogMain", params: { username } });
+    visitUserDetail(nickname) {
+      this.$router.push({ name: "SSalogMain", params: { nickname } });
     },
     async fetchUserData() {
       try {

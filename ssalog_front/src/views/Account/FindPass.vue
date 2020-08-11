@@ -72,7 +72,7 @@ export default {
     return {
       step: 1,
       account: {
-        username: this.$route.query.username,
+        username: null,
         passwordCheck: null,
         password: null,
         code: null
