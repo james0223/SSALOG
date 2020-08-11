@@ -67,6 +67,18 @@ public class MypageController {
 			return new ResponseEntity<String>(acc.getImgpath(), HttpStatus.OK);
 		}
 	}
+	@ApiOperation(value = "[이미지 경로 얻기] (p-014_마이페이지) 기능 :닉네임을 통한 프로필 사진을 얻을 수 있는 url을 준다.}")
+	@GetMapping(path="/newuser/get_profile_img_nick")
+	public ResponseEntity<String> get_profile_img_nick(@RequestParam("nickname") String nickname){
+		Account acc = accountRepository.findByNickname(nickname);
+		if(acc == null) {
+			return new ResponseEntity<String>("존재하지 않는 사용자 입니다.", HttpStatus.OK);
+		}else if(acc.getImgpath() == null || !fileService.is_exist(acc.getUsername())){
+			return new ResponseEntity<String>("default.png",HttpStatus.OK);
+		}else {
+			return new ResponseEntity<String>(acc.getImgpath(), HttpStatus.OK);
+		}
+	}
 	@ApiOperation(value = "[프로필 삭제] (p-014_마이페이지) 기능: 현재적용된 프로필 사진을 db와 서버에서 제거하고, default 사진으로 변경한다.")
 	@DeleteMapping(path="/user/delete_profile_img")
 	public ResponseEntity<String> delete_profile_img(HttpServletResponse response){

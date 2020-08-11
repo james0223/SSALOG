@@ -32,6 +32,7 @@ import com.ssalog.dto.Account;
 import com.ssalog.dto.Token;
 import com.ssalog.jwt.JwtTokenUtil;
 import com.ssalog.repository.AccountRepository;
+import com.ssalog.service.AccountService;
 import com.ssalog.service.JwtUserDetailsService;
 import com.ssalog.util.Mail;
 
@@ -58,7 +59,8 @@ public class LoginContorller {
     private AuthenticationManager am;
     @Autowired
     private PasswordEncoder bcryptEncoder;
-    
+    @Autowired
+    private AccountService accountService;
     
     // 1-3. 회원가입 진행
     @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 신규회원을 등록한다. [require] username, password, email, nickname, question,answer")
@@ -160,19 +162,24 @@ public class LoginContorller {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-    
-    
-    
-    
-    @ApiOperation(value = "[비밀번호 찾기 - 변경](p-013_비밀번호찾기) 비밀번호 찾기기능을 이용해 토큰을 전달해, 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
+    @ApiOperation(value = "[비밀번호 찾기](p-013_비밀번호찾기) 비밀번호 찾기를 통한 비밀번호 변경 api")
     @PutMapping(path="/user/change_pw")
-    public ResponseEntity<Boolean> find_changepw(HttpServletResponse response, @RequestParam("password") String password) {
+    public ResponseEntity<Boolean> change_pw(HttpServletResponse response) {
     	String username = response.getHeader("username");
-       Account ac = accountRepository.findByUsername(username);
-       ac.setPassword(bcryptEncoder.encode(password));
-       accountRepository.save(ac);
-       return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+       return new ResponseEntity<Boolean>(accountService.change_pw(username), HttpStatus.OK);
     }
+    
+    
+    
+//    @ApiOperation(value = "[비밀번호 찾기 - 변경](p-013_비밀번호찾기) 비밀번호 찾기기능을 이용해 토큰을 전달해, 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
+//    @PutMapping(path="/user/change_pw")
+//    public ResponseEntity<Boolean> find_changepw(HttpServletResponse response, @RequestParam("password") String password) {
+//    	String username = response.getHeader("username");
+//       Account ac = accountRepository.findByUsername(username);
+//       ac.setPassword(bcryptEncoder.encode(password));
+//       accountRepository.save(ac);
+//       return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+//    }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
     @PostMapping(path="/user/refresh")
@@ -213,11 +220,18 @@ public class LoginContorller {
         }
         return new ResponseEntity<Map<String, Object>>(map,HttpStatus.OK);
     }
+    @ApiOperation(value = "[닉네임변경] Accesstoken으로 바꿀 유저를 조회하고 해당유저의 닉네임을 받은 닉네임으로 변경한다.")
+    @PutMapping(path="/user/change_nickname")
+    public ResponseEntity<String> change_nickname(HttpServletResponse response,@RequestParam("nickname") String nickname) {
+    	String username = response.getHeader("username");
+    	return new ResponseEntity<String>(accountService.change_nickname(nickname, username),HttpStatus.OK);
+    } 
+    
     @ApiOperation(value = "[메일보내기] 이메일 인증을 만들어서,해당 이메일에 random값으로 메일을 보내고 그 random값을 return한다. 클라이언트단에서 비교해서 같으면 true, 틀리면 false 처리해주면 될듯.")
     @GetMapping(path="/newuser/check_email")
     public ResponseEntity<String> sendmail(@RequestParam("reciver") String email) {
     	Mail m = new Mail();
-    	String ran = m.sendMail(email);
+    	String ran = m.sendMail(email,1);
     	//System.out.println("호출완료!");
     	return new ResponseEntity<String>(ran,HttpStatus.OK);
     } 

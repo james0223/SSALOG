@@ -12,8 +12,8 @@
               <v-btn
                 v-bind="attrs"
                 v-on="on"
-                v-if="$store.state.username === $route.params.username"
                 @click="imageUrl = writerThumbnail"
+                v-if="$store.state.nickname === $route.params.nickname"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -88,7 +88,7 @@
             </v-card>
           </v-dialog>
           <v-row justify="center" style="width:240px">
-            <div class="ma-2 font-weight-bold"><v-icon>mdi-account</v-icon> {{ ownerName }}님</div>
+            <div class="ma-2 font-weight-bold"><v-icon>mdi-account</v-icon> {{ ownerName }}</div>
           </v-row>
           <v-tabs vertical class="my-15 pa-3">
             <v-tab
@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
-      ownerName: this.$route.params.username,
+      ownerName: this.$route.params.nickname,
       thumbnailDialog: false,
       ThumbnailSelect: 0,
       writerThumbnail: null,
@@ -137,43 +137,43 @@ export default {
         {
           id: 0,
           name: "Main",
-          route: `/SSALOG/${this.$route.params.username}/Main`,
+          route: `/SSALOG/${this.$route.params.nickname}/Main`,
           icon: "mdi-clipboard-text-play-outline"
         },
         {
           id: 1,
           name: "Solution",
-          route: `/SSALOG/${this.$route.params.username}/SolutionList`,
+          route: `/SSALOG/${this.$route.params.nickname}/SolutionList`,
           icon: "mdi-ballot"
         },
         {
           id: 2,
           name: "Profile",
-          route: `/SSALOG/${this.$route.params.username}/Profile`,
+          route: `/SSALOG/${this.$route.params.nickname}/Profile`,
           icon: "mdi-account"
         },
         {
           id: 3,
           name: "Following",
-          route: `/SSALOG/${this.$route.params.username}/Following`,
+          route: `/SSALOG/${this.$route.params.nickname}/Following`,
           icon: "mdi-account-arrow-right"
         },
         {
           id: 4,
           name: "Follower",
-          route: `/SSALOG/${this.$route.params.username}/Follower`,
+          route: `/SSALOG/${this.$route.params.nickname}/Follower`,
           icon: "mdi-account-arrow-left"
         },
         {
           id: 5,
           name: "Star",
-          route: `/SSALOG/${this.$route.params.username}/Star`,
+          route: `/SSALOG/${this.$route.params.nickname}/Star`,
           icon: "mdi-star"
         }
       ]
     };
   },
-  computed: mapState(["ServerURL", "ImgURL"]),
+  computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
   methods: {
     onChangeImages(e) {
       const file = e;
@@ -222,14 +222,6 @@ export default {
   },
   created() {
     this.getThumbnail();
-    if (!this.userData.id) {
-      if (!this.$store.state.accessToken) {
-        // 로그인 안했는데 내 살로그 가기 누른 경우
-        this.$router.push({ name: "Login" });
-      } else {
-        // 자기 계정 로딩
-      }
-    }
   }
 };
 </script>

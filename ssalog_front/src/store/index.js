@@ -16,7 +16,8 @@ const getDefaultState = () => {
     // ServerURL: "http://127.0.0.1:8080",
     ServerURL: "https://ssalog.gq/api",
     // user data
-    username: null,
+    nickname: null,
+    username: null, // 이메일
     userThumbnail: null,
     ProblemCategory: [
       { kor: "수학", eng: "math" },
@@ -65,6 +66,7 @@ export default new Vuex.Store({
   getters: {},
   mutations: {
     LOGIN(state, payload) {
+      state.nickname = payload.nickname;
       state.username = payload.username;
     },
     LOGOUT(state) {
@@ -78,7 +80,6 @@ export default new Vuex.Store({
       Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
     Thumbnail(state, payload) {
-      // jso 하드타이핑 나중에 수정 필요.
       state.userThumbnail = `${state.ImgURL}${payload}`;
     },
     FormerLink(state, payload) {
@@ -91,27 +92,18 @@ export default new Vuex.Store({
   },
   actions: {
     async LOGIN({ commit, dispatch }, loginData) {
-      // 이해안될까봐 남겨놓는다.
-      // const options = {
-      //   params: {
-      //     이게 아래 선언한거랑 같은 기능을 한다.
-      //     ...loginData
-
-      //     // username: loginData.username,
-      //     // password: loginData.password
-      //   }
-      // };
-      const res = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
+      const { data } = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
         }
       });
       commit("LOGIN", {
+        nickname: data.nickname,
         username: loginData.username
       });
       commit("TOKEN", {
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken
       });
       dispatch("Thumbnail", loginData.username);
       dispatch("autoRefresh");
@@ -165,11 +157,12 @@ export default new Vuex.Store({
       commit("LOGOUT", { undefined });
     },
     async SIGNUP({ dispatch }, signupData) {
-      const SignupRes = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
-      if (SignupRes.status === 200) {
+      const { data } = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
+      if (data.success === true) {
         const loginData = { username: signupData.username, password: signupData.password };
-        console.log(loginData);
         dispatch("LOGIN", loginData);
+      } else {
+        console.log("자동로그인중 오류 발생");
       }
     },
     async Thumbnail({ commit }, payload) {

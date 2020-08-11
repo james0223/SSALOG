@@ -1,5 +1,6 @@
 package com.ssalog.dto;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ public class GroupGoal {
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; 			// PK
 	
-	@ManyToOne(targetEntity=GroupDTO.class, fetch=FetchType.LAZY)
+	@ManyToOne(targetEntity=GroupDTO.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="groupname")
 	private GroupDTO groupdto;
 	private String problemid;

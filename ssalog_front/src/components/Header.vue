@@ -43,7 +43,7 @@
                     </v-avatar>
                   </v-col>
                   <v-col cols="4">
-                    <div class="text-left subtitle">{{ username }} 님</div>
+                    <div class="text-left subtitle">{{ nickname }} 님</div>
                     <div class="text-left caption">환영합니다</div>
                   </v-col>
                   <v-col cols="4" class="d-flex align-center">
@@ -110,13 +110,13 @@ export default {
       items: ["계정설정", "내 쌀로그", "로그아웃"]
     };
   },
-  computed: mapState(["userThumbnail", "username", "accessToken"]),
+  computed: mapState(["userThumbnail", "nickname", "accessToken"]),
   methods: {
     userMenu(idx) {
       if (idx === 0) {
-        this.$router.push({ name: "UserSetting", params: { username: this.username } });
+        this.$router.push({ name: "UserSetting", params: { nickname: this.nickname } });
       } else if (idx === 1) {
-        this.$router.push({ name: "SSalogMain", params: { username: this.username } });
+        this.$router.push({ name: "SSalogMain", params: { nickname: this.nickname } });
       } else {
         this.$store.dispatch("LOGOUT");
       }

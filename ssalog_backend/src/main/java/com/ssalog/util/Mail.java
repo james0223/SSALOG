@@ -14,18 +14,24 @@ import javax.mail.internet.MimeMessage;
 
 public class Mail {
 
-	public String sendMail(String reciver) {
+	public String sendMail(String reciver, int flag) {
 		String host = "smtp.gmail.com";
 		final String username = "ssalogofficial@gmail.com";
 		final String password = "gps@none.vat";
 		int port = 465;
 
 		String recipient = reciver;
-		String subject = "SSalog 이메일 인증 메일입니다.";
+		String subject = "";
+		String body = "";
 		String ran = make_randome();
-		String body = "<table align=\"center\" cellspacing=\"0\" cellpadding=\"0\" width=\"748\" border\"0\"><tbody><tr><td style=\"BORDER-BOTTOM: #b5b5b5 2px solid\"><img style=\"OVERFLOW: visible; WIDTH: 120px; MARGIN-BOTTOM: -50px\" border=\"0\" src=\"https://ssalog.gq/upload/bmb321tthanmaum.jpg\" loading=\"lazy\"></td></tr><tr><td align=\"center\" style=\"FONT-SIZE: 29px; FONT-FAMILY: 돋움, dotum, sans-serif; BORDER-BOTTOM: #ccc 1px solid; FONT-WEIGHT: bold; COLOR: #333; PADDING-BOTTOM: 17px; PADDING-TOP: 40px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px\" width=\"748\" cellspacing=\"0\" cellpadding=\"0\">이메일 인증</td></tr><tr><td style=\"FONT-SIZE: 12px; FONT-FAMILY: 돋움, dotum, sans-serif; BORDER-BOTTOM: #ccc 1px solid; COLOR: #555; PADDING-BOTTOM: 13px; PADDING-TOP: 13px; PADDING-LEFT: 0px; LINE-HEIGHT: 1; PADDING-RIGHT: 0px\" width=\"748\" cellspacing=\"0\" cellpadding=\"0\"><br><p><br><h2>인증번호는 : [" +ran+ "] 입니다.</h2><br> <h2>해당 값을 Ssalog에 입력해주세요!</h2></p><br></td></tr><tr><td height=\"37\" cellspacing=\"0\" cellpadding=\"0\"></td></tr><tr><td style=\"LINE-HEIGHT: 0\" height=\"107\" cellspacing=\"0\" cellpadding=\"0\"><div style=\"BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; BACKGROUND: #fafafa; BORDER-BOTTOM: #ddd 1px solid; PADDING-BOTTOM: 7px; PADDING-TOP: 8px; PADDING-LEFT: 0px; BORDER-LEFT: #ddd 1px solid; MARGIN: 0px 0px 5px; PADDING-RIGHT: 0px\"><p style=\"FONT-SIZE: 13px; FONT-FAMILY: 돋움, dotum, sans-serif; COLOR: #666; TEXT-ALIGN: center; LINE-HEIGHT: 1\">본 메일은 발신 전용이므로 회신 되지 않습니다. </p></td></tr></tbody></table>";//"";
+		if(flag == 1) {
+			subject = "SSalog 이메일 인증 메일입니다.";
+			body = "<table align=\"center\" cellspacing=\"0\" cellpadding=\"0\" width=\"748\" border\"0\"><tbody><tr><td style=\"BORDER-BOTTOM: #b5b5b5 2px solid\"><img style=\"OVERFLOW: visible; WIDTH: 120px; MARGIN-BOTTOM: -50px\" border=\"0\" src=\"https://ssalog.gq/upload/bmb321tthanmaum.jpg\" loading=\"lazy\"></td></tr><tr><td align=\"center\" style=\"FONT-SIZE: 29px; FONT-FAMILY: 돋움, dotum, sans-serif; BORDER-BOTTOM: #ccc 1px solid; FONT-WEIGHT: bold; COLOR: #333; PADDING-BOTTOM: 17px; PADDING-TOP: 40px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px\" width=\"748\" cellspacing=\"0\" cellpadding=\"0\">이메일 인증</td></tr><tr><td style=\"FONT-SIZE: 12px; FONT-FAMILY: 돋움, dotum, sans-serif; BORDER-BOTTOM: #ccc 1px solid; COLOR: #555; PADDING-BOTTOM: 13px; PADDING-TOP: 13px; PADDING-LEFT: 0px; LINE-HEIGHT: 1; PADDING-RIGHT: 0px\" width=\"748\" cellspacing=\"0\" cellpadding=\"0\"><br><p><br><h2>인증번호는 : [" +ran+ "] 입니다.</h2><br> <h2>해당 값을 Ssalog에 입력해주세요!</h2></p><br></td></tr><tr><td height=\"37\" cellspacing=\"0\" cellpadding=\"0\"></td></tr><tr><td style=\"LINE-HEIGHT: 0\" height=\"107\" cellspacing=\"0\" cellpadding=\"0\"><div style=\"BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; BACKGROUND: #fafafa; BORDER-BOTTOM: #ddd 1px solid; PADDING-BOTTOM: 7px; PADDING-TOP: 8px; PADDING-LEFT: 0px; BORDER-LEFT: #ddd 1px solid; MARGIN: 0px 0px 5px; PADDING-RIGHT: 0px\"><p style=\"FONT-SIZE: 13px; FONT-FAMILY: 돋움, dotum, sans-serif; COLOR: #666; TEXT-ALIGN: center; LINE-HEIGHT: 1\">본 메일은 발신 전용이므로 회신 되지 않습니다. </p></td></tr></tbody></table>";//"";
+		}else {
+			subject = "SSalog 비밀번호 변경 메일입니다";
+			body = "<table align=\"center\" cellspacing=\"0\" cellpadding=\"0\" width=\"748\" border\"0\"><tbody><tr><td style=\"BORDER-BOTTOM: #b5b5b5 2px solid\"><img style=\"OVERFLOW: visible; WIDTH: 120px; MARGIN-BOTTOM: -50px\" border=\"0\" src=\"https://ssalog.gq/upload/bmb321tthanmaum.jpg\" loading=\"lazy\"></td></tr><tr><td align=\"center\" style=\"FONT-SIZE: 29px; FONT-FAMILY: 돋움, dotum, sans-serif; BORDER-BOTTOM: #ccc 1px solid; FONT-WEIGHT: bold; COLOR: #333; PADDING-BOTTOM: 17px; PADDING-TOP: 40px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px\" width=\"748\" cellspacing=\"0\" cellpadding=\"0\">비밀번호찾기</td></tr><tr><td style=\"FONT-SIZE: 12px; FONT-FAMILY: 돋움, dotum, sans-serif; BORDER-BOTTOM: #ccc 1px solid; COLOR: #555; PADDING-BOTTOM: 13px; PADDING-TOP: 13px; PADDING-LEFT: 0px; LINE-HEIGHT: 1; PADDING-RIGHT: 0px\" width=\"748\" cellspacing=\"0\" cellpadding=\"0\"><br><p><br><h2>사용자의 비밀번호가  [" +ran+ "]로 바뀌었습니다.</h2><br> <h2>해당 값을 Ssalog에 입력해주세요!</h2></p><br></td></tr><tr><td height=\"37\" cellspacing=\"0\" cellpadding=\"0\"></td></tr><tr><td style=\"LINE-HEIGHT: 0\" height=\"107\" cellspacing=\"0\" cellpadding=\"0\"><div style=\"BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; BACKGROUND: #fafafa; BORDER-BOTTOM: #ddd 1px solid; PADDING-BOTTOM: 7px; PADDING-TOP: 8px; PADDING-LEFT: 0px; BORDER-LEFT: #ddd 1px solid; MARGIN: 0px 0px 5px; PADDING-RIGHT: 0px\"><p style=\"FONT-SIZE: 13px; FONT-FAMILY: 돋움, dotum, sans-serif; COLOR: #666; TEXT-ALIGN: center; LINE-HEIGHT: 1\">본 메일은 발신 전용이므로 회신 되지 않습니다. </p></td></tr></tbody></table>";//"";
+		}
 		
-
 		Properties props = System.getProperties();
 
 		props.put("mail.smtp.host", host);

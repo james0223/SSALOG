@@ -34,7 +34,7 @@
             코드길이: {{ len }}B
           </v-col>
         </v-row>
-        <v-toolbar flat v-if="$store.state.username === this.writerName">
+        <v-toolbar flat v-if="nickname === writerNickname">
           <v-spacer></v-spacer>
           <v-toolbar-title class="ml-15"> </v-toolbar-title>
           <v-spacer></v-spacer>
@@ -86,7 +86,7 @@
           <!--          dialog 부분-->
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
-              <v-card-title class="headline"> {{ writerName }}님의 코드</v-card-title>
+              <v-card-title class="headline"> {{ writerNickname }}님의 코드</v-card-title>
               <editor-content
                 class="main_content code_area editor__content article"
                 :editor="codeview"
@@ -150,6 +150,7 @@ export default {
       thumbnailDialog: false,
       ThumbnailSelect: 0,
       writerThumbnail: null,
+      writerNickname: this.$route.params.nickname,
       items: [
         { text: "사진 업로드", icon: "mdi-camera-enhance" },
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
@@ -158,37 +159,37 @@ export default {
         {
           id: 0,
           name: "Main",
-          route: `/SSALOG/${this.$route.params.username}/Main`,
+          route: `/SSALOG/${this.writerNickname}/Main`,
           icon: "mdi-clipboard-text-play-outline"
         },
         {
           id: 1,
           name: "Solution",
-          route: `/SSALOG/${this.$route.params.username}/SolutionList`,
+          route: `/SSALOG/${this.writerNickname}/SolutionList`,
           icon: "mdi-ballot"
         },
         {
           id: 2,
           name: "Profile",
-          route: `/SSALOG/${this.$route.params.username}/Profile`,
+          route: `/SSALOG/${this.writerNickname}/Profile`,
           icon: "mdi-account"
         },
         {
           id: 3,
           name: "Following",
-          route: `/SSALOG/${this.$route.params.username}/Following`,
+          route: `/SSALOG/${this.writerNickname}/Following`,
           icon: "mdi-account-arrow-right"
         },
         {
           id: 4,
           name: "Follower",
-          route: `/SSALOG/${this.$route.params.username}/Follower`,
+          route: `/SSALOG/${this.writerNickname}/Follower`,
           icon: "mdi-account-arrow-left"
         },
         {
           id: 5,
           name: "Star",
-          route: `/SSALOG/${this.$route.params.username}/Star`,
+          route: `/SSALOG/${this.writerNickname}/Star`,
           icon: "mdi-star"
         }
       ],
@@ -201,7 +202,7 @@ export default {
       problemNum: null,
       problemTitle: null,
       contentTitle: null,
-      writerName: null,
+      writerUsername: null,
       updatedDate: null,
       language: null,
       memory: null,
@@ -250,7 +251,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL", "ImgURL"]),
+  computed: mapState(["ServerURL", "ImgURL", "nickname", "username"]),
   created() {
     this.getSSALOG(this.$route.params.id);
   },
@@ -283,7 +284,7 @@ export default {
         this.keyword = res.data.keyword;
         this.problemNum = res.data.problemid;
         this.problemTitle = res.data.problemname;
-        this.writerName = res.data.username;
+        this.writerUsername = res.data.username;
         this.htmlData = res.data.html;
         this.updatedDate = res.data.regdate;
         this.language = res.data.language;
@@ -302,7 +303,7 @@ export default {
     async getThumbnail() {
       const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
         params: {
-          username: this.writerName
+          username: this.writerUsername
         }
       });
       this.writerThumbnail = `${this.ImgURL}${res.data}`;

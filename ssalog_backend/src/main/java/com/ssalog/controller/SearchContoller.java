@@ -126,6 +126,12 @@ public class SearchContoller {
 	public ResponseEntity<Map<String, Integer>> find_py(@RequestParam("username") String username){
 		return new ResponseEntity<Map<String, Integer>>(postSubService.find_py_graph(username), HttpStatus.OK);
 	}
+	
+	@ApiOperation(value ="[유저네임 찾기] 해당 닉네임을 가진 user의 username(string)을 리턴. 없으면  fail리턴")
+	@GetMapping("/find_username")
+	public ResponseEntity<String> find_username(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<String>(accountService.find_username(nickname), HttpStatus.OK);
+	}
 	@ExceptionHandler(NullPointerException.class)
 	public void nullex(Exception e) {
 		System.err.println("search 부분에서 " + e.getClass());

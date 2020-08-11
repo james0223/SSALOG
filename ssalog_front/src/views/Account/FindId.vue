@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// 안쓰여서 리펙토링 안한지 한참됨
 import axios from "axios";
 
 export default {
