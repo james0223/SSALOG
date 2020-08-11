@@ -33,11 +33,11 @@ public class FileServiceImpl implements FileService{
 			String type = FilenameUtils.getExtension(originFileName);
 			if(type.equals("jpg") || type.equals("png") || type.equals("jpeg")) {
 				String rootPath = "/home/ubuntu/apps/upload"; //servletContext.getRealPath("/upload");
+				Account ac = accountRepository.findByUsername(username);
 				System.out.println("rootpath = " + rootPath);
+				fileRepository.delete_file(username, rootPath, ac.getImgpath());
 				Map<String, String> m = fileRepository.saveFile(multipartFile, rootPath, username);
 				String imgPath = m.get("saveFileName");
-				Account ac = accountRepository.findByUsername(username);
-				fileRepository.delete_file(username, rootPath, ac.getImgpath());
 				ac.setImgpath(imgPath);
 				accountRepository.save(ac);
 				return 1;
