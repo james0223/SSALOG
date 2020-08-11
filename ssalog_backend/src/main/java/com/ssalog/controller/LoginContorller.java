@@ -59,13 +59,6 @@ public class LoginContorller {
     @Autowired
     private PasswordEncoder bcryptEncoder;
     
-    // 1-1. 회원가입 form [중복체크] 버튼 클릭 -> 이메일 중복체크 (DB에 이메일 존재하는지 체킹) //ok
-    @ApiOperation(value = "[회원가입 기능](p-011_회원가입)중복되는 이메일이 DB에 없는지 확인(check)한다. 없으면 true, 있으면 false를 return")
-    @GetMapping(path="/newuser/checkemail")
-    public ResponseEntity<Boolean> checkEmail (@RequestParam("email") String email) {
-        if (accountRepository.findByEmail(email) == null) return new ResponseEntity<Boolean>(true,HttpStatus.OK);
-        else return new ResponseEntity<Boolean>(false,HttpStatus.OK);
-    }
     
     // 1-3. 회원가입 진행
     @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 신규회원을 등록한다. [require] username, password, email, nickname, question,answer")
@@ -168,49 +161,6 @@ public class LoginContorller {
         return new ResponseEntity(HttpStatus.OK);
     }
     
-    @ApiOperation(value = "[비밀번호 찾기기능](p-013_비밀번호찾기) 사용자 id와 email을 이용하여 결과와 질문을 retrun한다.")
-    @GetMapping(path="/newuser/findpw")
-    public ResponseEntity<Map<String, Object>> findpw(@RequestParam("username") String username, @RequestParam("email") String email) {
-       Map<String, Object> map = new HashMap<>();
-       Account target = accountRepository.findByUsernameAndEmail(username, email);
-       if(target == null) {
-    	   map.put("result", false);
-       }else {
-    	   map.put("result", true);
-    	   map.put("username",target.getUsername());
-       }
-       return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
-    }
-    
-    @ApiOperation(value = "[비밀번호 퀴즈풀이](p-013_비밀번호찾기) 사용자 id와 answer을 받아내서 인증을 하고 실 사용자라면, 로그인 처리를 해준다.")
-    @PostMapping(path="/newuser/quiz")
-    public ResponseEntity<Map<String, Object>> quiz(@RequestParam("username") String username, @RequestParam("answer") String answer) {
-       Map<String, Object> map = new HashMap<>();
-       Account target = accountRepository.findByUsernameAndAnswer(username, answer);
-       if(target == null) {
-    	   map.put("result", false);
-       }else {
-    	   map.put("result", true);
-           final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-           final String accessToken = jwtTokenUtil.generateAccessToken(userDetails);
-           final String refreshToken = jwtTokenUtil.generateRefreshToken(username);
-
-           Token retok = new Token();
-           retok.setUsername(username);
-           retok.setRefreshToken(refreshToken);
-
-           //발행한 redis에 저장하는 로직으로, hashmap과 같은 key,value 구조임
-           ValueOperations<String, Object> vop = redisTemplate.opsForValue();
-           vop.set(username, retok); // key, value 값으로 redis에 저장
-
-           logger.info("generated access token: " + accessToken);
-           logger.info("generated refresh token: " + refreshToken);
-          
-           map.put("accessToken", accessToken);
-   
-       }
-       return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
-    }
     
     
     
@@ -222,22 +172,6 @@ public class LoginContorller {
        ac.setPassword(bcryptEncoder.encode(password));
        accountRepository.save(ac);
        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-    }
-    
-    
-    @ApiOperation(value = "[아이디 찾기기능](p-013_비밀번호찾기) 사용자 email을 이용하여 결과와 username(=id)를 리턴한다")
-    @GetMapping(path="/newuser/findid")
-    public ResponseEntity<Map<String, Object>> findpw(@RequestParam("email") String email) {
-    	System.out.println("ds");
-       Map<String, Object> map = new HashMap<>();
-       Account target = accountRepository.findByEmail(email);
-       if(target == null) {
-    	   map.put("result", false);
-       }else {
-    	   map.put("result", true);
-    	   map.put("username",target.getUsername());
-       }
-       return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
     }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
