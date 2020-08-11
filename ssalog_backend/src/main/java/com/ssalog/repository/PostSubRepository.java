@@ -16,4 +16,7 @@ public interface PostSubRepository extends MongoRepository<Post,String>{
 	public Page<PostSub> findByProblemnameLike(String problemname, Pageable pageable);
 	@Query(value = "{ 'keyword' : {$all : [?0] }}")
 	public Page<PostSub> findAnyOfTheseValues(List<String> keyword,Pageable pageable);
+	
+	@Query(value= "{'username' : ?0, 'keyword': {$ne:null}}", fields="{ '_id': false, 'keyword': 1}" )
+	public List<PostSub> findPyGraphTouser(String username);
 }
