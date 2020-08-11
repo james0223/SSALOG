@@ -57,4 +57,11 @@ public class GroupController {
 		String username = response.getHeader("username"); 
 		return new ResponseEntity<String>(groupService.applyaccept(username, groupname, regid),HttpStatus.OK);
 	}
+	
+	@PostMapping("user/grouping/make_goal")
+	@ApiOperation(value = "[그룹목표 설정] 그룹장이 목표에 해당하는 문제를 설정한다.")
+	public ResponseEntity<String> make_goal(HttpServletResponse response,@RequestParam("groupname") String groupname,@RequestParam("problemid") String problemid,@RequestParam("problemname") String problemname,@RequestParam("limitday") String limit) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<String>(groupService.makeGoal(username, groupname, problemid, problemname, limit),HttpStatus.OK);
+	}
 }

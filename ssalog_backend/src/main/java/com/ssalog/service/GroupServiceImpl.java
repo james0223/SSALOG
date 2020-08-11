@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssalog.dto.Account;
 import com.ssalog.dto.GroupDTO;
+import com.ssalog.dto.GroupGoal;
 import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
 import com.ssalog.dto.Groupdetail;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.GroupDetailRepository;
+import com.ssalog.repository.GroupGoalRepository;
 import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.repository.GroupRepository;
 
@@ -32,6 +34,9 @@ public class GroupServiceImpl implements GroupService{
 	
 	@Autowired
 	GroupDetailRepository GroupDetailRepository;
+	
+	@Autowired
+	GroupGoalRepository groupGoalRepository;
 	// 그룹 만들기
 	@Override
 	public String makeGroup(GroupDTO g,String username) {
@@ -94,6 +99,23 @@ public class GroupServiceImpl implements GroupService{
 				GroupDetailRepository.save(gd);
 				return "success";
 			}
+		}
+		return "fail";
+	}
+	
+	// 문제 제출하기
+	public String makeGoal(String username, String groupname, String problemid, String problemname, String limit) {
+		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
+		if(g!=null) {
+			GroupGoal gg = new GroupGoal();
+			GroupDTO gd = new GroupDTO();
+			gg.setCnt(0L);
+			gg.setDate(limit);
+			gg.setProblemid(problemid);
+			gg.setProblemname(problemname);
+			gg.setGroupdto(gd);
+			groupGoalRepository.save(gg);
+			return "success";
 		}
 		return "fail";
 	}
