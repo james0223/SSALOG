@@ -4,7 +4,7 @@
       <h5>쌀로그와 함께하기 위한 고객님의 소중한 정보를 입력해주세요 :)</h5>
     </v-card-title>
     <v-card-text>
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form ref="form" lazy-validation>
         <v-card-actions class="px-0">
           <v-text-field
             @keyup="checkEmail"
@@ -118,11 +118,14 @@ export default {
         this.codeCheck.error = null;
         this.codeCheck.button = "인증번호 재발송";
         try {
-          const { data } = this.$http.get(`${this.$store.state.ServerURL}/서버야돌아와`, {
-            params: {
-              username: this.userData.username
+          const { data } = await this.$http.get(
+            `${this.$store.state.ServerURL}/newuser/check_email`,
+            {
+              params: {
+                reciver: this.userData.username
+              }
             }
-          });
+          );
           this.codeCheck.originCode = data;
         } catch (e) {
           console.error(e);
@@ -135,7 +138,7 @@ export default {
         setTimeout(() => {
           this.$http
             // 되나 확인해야함
-            .get(`${this.$store.state.ServerURL}/newuser/checkemail`, {
+            .get(`${this.$store.state.ServerURL}/newuser/checkid`, {
               params: {
                 username: this.userData.username
               }
@@ -165,7 +168,6 @@ export default {
               }
             })
             .then(({ data }) => {
-              console.log(data);
               if (data) {
                 this.checkedFlags.nickname = true;
               } else {
@@ -193,7 +195,7 @@ export default {
         this.errorMsg = "비밀번호와 확인문자가 일치하지 않습니다.";
       } else if (!this.userData.nickname) {
         this.errorMsg = "닉네임을 입력해주세요";
-      } else if (!this.isCheckedNickname) {
+      } else if (!this.checkedFlags.nickname) {
         this.errorMsg = "해당 닉네임은 이미 사용중입니다.";
       } else {
         try {
@@ -212,7 +214,7 @@ export default {
       const rules = [];
       const rule = v => !!v || "닉네임을 입력해주세요";
       rules.push(rule);
-      const rule2 = this.isCheckedNickname || "중복된 닉네임입니다.";
+      const rule2 = this.checkedFlags.nickname || "중복된 닉네임입니다.";
       rules.push(rule2);
       return rules;
     },
@@ -220,7 +222,7 @@ export default {
       const rules = [];
       const rule = v => !!v || "메일주소를 입력해주세요";
       rules.push(rule);
-      const rule2 = this.isCheckedEmail || "중복된 메일주소입니다.";
+      const rule2 = this.checkedFlags.email || "중복된 메일주소입니다.";
       rules.push(rule2);
       return rules;
     }

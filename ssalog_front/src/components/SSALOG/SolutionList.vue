@@ -81,7 +81,7 @@ export default {
             direction: "ASC",
             page: 1,
             size: 5000,
-            username: this.$route.params.username
+            username: this.$route.params.username // 수정필요
           }
         });
         this.solutions = res.data.content.reverse();
