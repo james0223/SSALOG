@@ -32,6 +32,7 @@ import com.ssalog.dto.Account;
 import com.ssalog.dto.Token;
 import com.ssalog.jwt.JwtTokenUtil;
 import com.ssalog.repository.AccountRepository;
+import com.ssalog.service.AccountService;
 import com.ssalog.service.JwtUserDetailsService;
 import com.ssalog.util.Mail;
 
@@ -58,7 +59,8 @@ public class LoginContorller {
     private AuthenticationManager am;
     @Autowired
     private PasswordEncoder bcryptEncoder;
-    
+    @Autowired
+    private AccountService accountService;
     
     // 1-3. 회원가입 진행
     @ApiOperation(value = "[회원가입 기능](p-011_회원가입) 신규회원을 등록한다. [require] username, password, email, nickname, question,answer")
@@ -213,6 +215,13 @@ public class LoginContorller {
         }
         return new ResponseEntity<Map<String, Object>>(map,HttpStatus.OK);
     }
+    @ApiOperation(value = "[닉네임변경] Accesstoken으로 바꿀 유저를 조회하고 해당유저의 닉네임을 받은 닉네임으로 변경한다.")
+    @PutMapping(path="/user/change_nickname")
+    public ResponseEntity<String> change_nickname(HttpServletResponse response,@RequestParam("nickname") String nickname) {
+    	String username = response.getHeader("username");
+    	return new ResponseEntity<String>(accountService.change_nickname(nickname, username),HttpStatus.OK);
+    } 
+    
     @ApiOperation(value = "[메일보내기] 이메일 인증을 만들어서,해당 이메일에 random값으로 메일을 보내고 그 random값을 return한다. 클라이언트단에서 비교해서 같으면 true, 틀리면 false 처리해주면 될듯.")
     @GetMapping(path="/newuser/check_email")
     public ResponseEntity<String> sendmail(@RequestParam("reciver") String email) {

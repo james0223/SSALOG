@@ -9,4 +9,5 @@ public interface AccountService {
 	public Page<AccountSub> find_toNickname(String nickname, PageRequest pageable);
 	public long find_alluser();
 	public String find_username(String nickname);
+	public String change_nickname(String nickname, String username);
 }
