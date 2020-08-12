@@ -110,8 +110,7 @@ export default {
           const iterable = this.solvedList;
           iterable.forEach(element => {
             const temp = element;
-            if (temp.keyword != null) {
-              // temp.keyword2 = temp.keyword.join(" / ");
+            if (temp.keyword.length !== 0) {
               const [foo] = temp.keyword;
               const size = temp.keyword.length - 1;
               if (size !== 0) {
