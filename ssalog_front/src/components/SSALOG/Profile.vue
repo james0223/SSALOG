@@ -1,10 +1,14 @@
 <template>
   <v-container>
+    <div class="checkbox">
+      <input type="checkbox" id="editable" v-model="editable" />
+      <label for="editable">editable</label>
+    </div>
     <v-row>
       <v-col cols="12">
         <div class="editor" spellcheck="false">
           <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-            <div class="menubar">
+            <div class="menubar is-hidden" :class="{ 'is-focused': editable }">
               <button
                 class="menubar__button"
                 :class="{ 'is-active': isActive.bold() }"
@@ -122,7 +126,7 @@
               </button>
             </div>
           </editor-menu-bar>
-          <editor-content class="editor__content article" :editor="editor" />
+          <editor-content class="editor__content article" :editor="editor" style="border :none" />
           <div id="example-3">
             <br />
           </div>
@@ -165,6 +169,7 @@ export default {
   },
   data() {
     return {
+      editable: false,
       title: null,
       resData: undefined,
       isUpdating: false,
@@ -195,15 +200,33 @@ export default {
             nested: true
           })
         ],
+        content: `
+          <h2>
+            Read-Only
+          </h2>
+          <p>
+            This text is <strong>read-only</strong>. You are not able to edit something. <a href="https://ueber.io/">Links to fancy websites</a> are still working.
+          </p>
+        `,
         autoFocus: true,
-        content: "",
         onUpdate: ({ getHTML }) => {
           this.resData.html = getHTML();
-        }
+        },
+        editable: false
       })
     };
   },
-  computed: mapState(["ServerURL", "nickname", "username"])
+  computed: mapState(["ServerURL", "nickname", "username"]),
+  watch: {
+    editable() {
+      this.editor.setOptions({
+        editable: this.editable
+      });
+    }
+  },
+  beforeDestroy() {
+    this.editor.destroy();
+  }
 };
 </script>
 
@@ -257,17 +280,10 @@ symbol {
   }
 }
 
-//code 부분 style
-.usercode {
-  text-align: left;
-  overflow-y: scroll;
-  height: 80vh;
-}
 // article 부분 style
 .article {
   padding: 15px 10px;
   border: 3px solid;
-  overflow-y: scroll;
   height: 60vh;
 }
 .editor *.is-empty:nth-child(1)::before {

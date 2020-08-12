@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="pa-0">
-    <v-app-bar flat color="white" height="95">
+  <v-app-bar color="white" max-height="65">
+    <v-container fluid>
       <v-row class="align-center">
-        <v-col cols="2">
-          <v-avatar class="pointButton" color="lighten-5" size="70">
+        <v-col cols="1" md="2">
+          <v-avatar class="pointButton" color="lighten-5" size="65">
             <v-img
               contain
               max-height="100%"
@@ -17,13 +17,13 @@
             >GROUP</v-btn
           >
         </v-col>-->
-        <v-col cols="6" class="text-center">
+        <v-col cols="8" md="6" class="text-center">
           <SearchBar :SelectedCategoryIdx="0" class="mt-7" />
         </v-col>
         <!-- <v-col cols="1.5" class="text-center">
           <v-btn :ripple="false" class="pa-0 no-background-hover" text>Community</v-btn>
         </v-col>-->
-        <v-col cols="2" class="text-center py-0">
+        <v-col cols="3" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
             <v-col cols="5" @click="changeRoute('Login')">
               <small class="pointButton">로그인</small>
@@ -39,14 +39,14 @@
                 <v-row no-gutters>
                   <v-col cols="4">
                     <v-avatar>
-                      <img :src="userThumbnail" alt="유저썸네일" />
+                      <v-img contain max-height="80%" :src="userThumbnail" alt="유저썸네일"></v-img>
                     </v-avatar>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="6">
                     <div class="text-left subtitle">{{ nickname }} 님</div>
                     <div class="text-left caption">환영합니다</div>
                   </v-col>
-                  <v-col cols="4" class="d-flex align-center">
+                  <v-col cols="2" class="d-flex align-center">
                     <v-icon>mdi-chevron-down</v-icon>
                   </v-col>
                 </v-row>
@@ -61,39 +61,12 @@
             </v-list>
           </v-menu>
         </v-col>
-        <v-col cols="2" class="text-center py-0 d-flex justify-end">
-          <v-btn
-            text
-            tile
-            height="95"
-            style="border : 1px solid rgba(0,0,0,.12);"
-            @click="goSite('https://www.acmicpc.net/')"
-            >BOJ</v-btn
-          >
-          <v-btn
-            text
-            tile
-            height="95"
-            style="border : 1px solid rgba(0,0,0,.12);"
-            @click="goSite('https://swexpertacademy.com/')"
-          >
-            SW
-            <br />EXPERT
-          </v-btn>
-          <v-btn
-            text
-            tile
-            height="95"
-            style="border : 1px solid rgba(0,0,0,.12);"
-            @click="goSite('https://codeforces.com')"
-          >
-            Code
-            <br />Force
-          </v-btn>
+        <v-col cols="1" class="d-none d-md-flex">
+          <v-btn text block @click="goSite('https://www.acmicpc.net/')">백준</v-btn>
         </v-col>
       </v-row>
-    </v-app-bar>
-  </v-container>
+    </v-container>
+  </v-app-bar>
 </template>
 
 <script>

@@ -55,18 +55,16 @@
                             required
                           ></v-text-field>
                         </ValidationProvider>
-                        <ValidationProvider name="문제 번호" rules="required">
-                          <v-datetime-picker
-                            required
-                            ok-text="시간선택"
-                            clear-text="초기화"
-                            label="마감 시간"
-                            v-model="HW.deadline"
-                          >
-                          </v-datetime-picker>
-                        </ValidationProvider>
+                        <v-datetime-picker
+                          required
+                          ok-text="시간선택"
+                          clear-text="초기화"
+                          label="마감 시간"
+                          v-model="HW.deadline"
+                        >
+                        </v-datetime-picker>
                         <v-btn type="reset">초기화</v-btn>
-                        <v-btn type="submit">과제 출제</v-btn>
+                        <v-btn type="submit" @click.prevent="makeHW">과제 출제</v-btn>
                       </form>
                     </v-card>
                   </ValidationObserver>
@@ -92,21 +90,58 @@
       </v-col>
       <v-col cols="4">
         <v-card class="mt-3" height="80vh">
-          <v-toolbar-title>회원 관리</v-toolbar-title>
-          <v-divider></v-divider>
-          <v-list class="mb-5">
-            <v-list-item v-for="manager in groupMember" :key="manager.nickname">
-              <v-list-item-avatar>
-                <v-img :src="manager.avatar"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="manager.nickname"></v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-icon>
-                <v-icon v-if="manager">mdi-trash</v-icon>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-list>
+          <v-card class="mb-3">
+            <v-toolbar-title>회원 관리</v-toolbar-title>
+            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="20" height="300">
+              <template v-slot="{ item }">
+                <v-list-item>
+                  <v-list-item-avatar size="56">
+                    <v-img :src="item.avatar"> </v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  </v-list-item-content>
+                  <v-spacer></v-spacer>
+                  <v-list-item-action>
+                    <v-btn color="amber lighten-2" tile large icon>
+                      <v-icon>mdi-trophy-award</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                  <v-list-item-action>
+                    <v-btn color="error" tile large icon>
+                      <v-icon>mdi-close-circle</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </template>
+            </v-virtual-scroll>
+          </v-card>
+          <v-card>
+            <v-toolbar-title>가입 신청 현황</v-toolbar-title>
+            <v-virtual-scroll class="mt-5" :items="applicants" :item-height="20" height="300">
+              <template v-slot="{ item }">
+                <v-list-item>
+                  <v-list-item-avatar size="56">
+                    <v-img :src="item.avatar"> </v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  </v-list-item-content>
+                  <v-spacer></v-spacer>
+                  <v-list-item-action>
+                    <v-btn color="success" tile large icon>
+                      <v-icon>mdi-check-bold</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                  <v-list-item-action>
+                    <v-btn color="error" tile large icon>
+                      <v-icon>mdi-close-circle</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </template>
+            </v-virtual-scroll>
+          </v-card>
         </v-card>
       </v-col>
     </v-row>
@@ -115,6 +150,7 @@
 
 <script>
 import PieChart from "@/components/PieChart.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "Manage",
@@ -133,8 +169,15 @@ export default {
       // 회원 관리
       groupMember: [
         {
-          nickname: "바스티온",
+          name: "바스티온",
           avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+        }
+      ],
+      // 회원가입 관리
+      applicants: [
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+          name: "오지네"
         }
       ],
       // pie chart data
@@ -163,7 +206,29 @@ export default {
         maintainAspectRatio: false
       }
     };
-  }
+  },
+  methods: {
+    async makeHW() {
+      try {
+        const res = await this.$http.post(`${this.ServerURL}/user/grouping/make_goal`, null, {
+          params: {
+            groupname: this.$route.params.groupname,
+            limitday: this.HW.deadline,
+            problemid: this.HW.number,
+            problemname: this.HW.name
+          }
+        });
+        console.log(res);
+      } catch (err) {
+        console.dir(err);
+        // 문제 발생시 초기화
+        this.HW.name = "";
+        this.HW.deadline = new Date();
+        this.HW.number = "";
+      }
+    }
+  },
+  computed: mapState(["ServerURL"])
 };
 </script>
 

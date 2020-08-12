@@ -88,14 +88,14 @@ const routes = [
     component: FindPass
   },
   {
-    path: "/Group/:nickname/",
+    path: "/Group/:groupname/",
     name: "Group",
     component: Group,
     // meta: { authRequired: true },
     children: [
       {
-        path: "",
-        name: "Main",
+        path: "Main",
+        name: "GroupMain",
         component: GroupMain
       },
       {

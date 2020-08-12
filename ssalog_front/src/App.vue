@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <Header v-if="$route.name !== 'Login' && $route.name !== 'SignUp'"></Header>
-
-    <v-divider></v-divider>
+    <Header></Header>
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
     <!-- </v-container> -->
