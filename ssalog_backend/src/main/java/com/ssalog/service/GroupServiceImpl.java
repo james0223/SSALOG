@@ -1,5 +1,6 @@
 package com.ssalog.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +136,7 @@ public class GroupServiceImpl implements GroupService{
 	}
 	// 문제 제출하기
 	@Override
-	public String makeGoal(String username, String groupname, String problemid, String problemname, String limit) {
+	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit) {
 		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
 		if(g!=null) {
 			GroupGoal gg = new GroupGoal();

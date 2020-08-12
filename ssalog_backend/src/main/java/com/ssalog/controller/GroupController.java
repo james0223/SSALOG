@@ -1,11 +1,13 @@
 package com.ssalog.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -65,8 +67,9 @@ public class GroupController {
 	
 	@PostMapping("user/grouping/make_goal")
 	@ApiOperation(value = "[그룹목표 설정] 그룹장이 목표에 해당하는 문제를 설정한다.")
-	public ResponseEntity<String> make_goal(HttpServletResponse response,@RequestParam("groupname") String groupname,@RequestParam("problemid") String problemid,@RequestParam("problemname") String problemname,@RequestParam("limitday") String limit) {
+	public ResponseEntity<String> make_goal(HttpServletResponse response,@RequestParam("groupname") String groupname,@RequestParam("problemid") String problemid,@RequestParam("problemname") String problemname,@RequestParam("limitday") @DateTimeFormat(pattern = "yyyyMMdd") Date limit) {
 		String username = response.getHeader("username"); 
+		System.out.println("limit = " + limit);
 		return new ResponseEntity<String>(groupService.makeGoal(username, groupname, problemid, problemname, limit),HttpStatus.OK);
 	}
 	@GetMapping("newuser/grouping/check_goal")

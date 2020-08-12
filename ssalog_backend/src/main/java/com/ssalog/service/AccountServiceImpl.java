@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService{
 	}
 	@Override
 	public String get_intro(String username) {
-		Account ac = accountRepository.findByUsername(username);
+		Account ac = accountRepository.findByNickname(username);
 		if(ac != null) {
 			return ac.getIntroduce();
 		}

@@ -96,8 +96,8 @@ public class MypageController {
 	}
 	@ApiOperation(value = "[프로필 소개글 가져오기] 기능: 프로필 소개글을 가져옵니다.성공시 success, 실패(해당 유저가 존재하지 않다면) 시 fail")
 	@GetMapping(path="/newuser/get_introduce")
-	public ResponseEntity<String> get_introduce(@RequestParam("username") String username){
-		return new ResponseEntity<String>(accountService.get_intro(username),HttpStatus.OK);
+	public ResponseEntity<String> get_introduce(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<String>(accountService.get_intro(nickname),HttpStatus.OK);
 	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {

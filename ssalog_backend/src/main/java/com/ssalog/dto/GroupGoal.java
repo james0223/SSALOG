@@ -1,5 +1,7 @@
 package com.ssalog.dto;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,11 +22,12 @@ public class GroupGoal {
 	private GroupDTO groupdto;
 	private String problemid;
 	private String problemname;
-	private String date;
+	private Date date;
 	private Long cnt;
 	
 	public GroupGoal() {}
-	public GroupGoal(Long id, GroupDTO groupdto, String problemid, String problemname, String date, Long cnt) {
+
+	public GroupGoal(Long id, GroupDTO groupdto, String problemid, String problemname, Date date, Long cnt) {
 		super();
 		this.id = id;
 		this.groupdto = groupdto;
@@ -33,39 +36,51 @@ public class GroupGoal {
 		this.date = date;
 		this.cnt = cnt;
 	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public GroupDTO getGroupdto() {
 		return groupdto;
 	}
+
 	public void setGroupdto(GroupDTO groupdto) {
 		this.groupdto = groupdto;
 	}
+
 	public String getProblemid() {
 		return problemid;
 	}
+
 	public void setProblemid(String problemid) {
 		this.problemid = problemid;
 	}
+
 	public String getProblemname() {
 		return problemname;
 	}
+
 	public void setProblemname(String problemname) {
 		this.problemname = problemname;
 	}
-	public String getDate() {
+
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+
+	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	public Long getCnt() {
 		return cnt;
 	}
+
 	public void setCnt(Long cnt) {
 		this.cnt = cnt;
 	}
