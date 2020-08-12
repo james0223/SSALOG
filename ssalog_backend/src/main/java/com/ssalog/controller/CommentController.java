@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssalog.config.webhook;
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
@@ -92,4 +94,10 @@ public class CommentController {
 //			return new ResponseEntity<String>("not exist!",HttpStatus.BAD_REQUEST);
 //		}
 //	}
+	@ExceptionHandler(Exception.class)
+	public void nullex(Exception e) {
+		System.err.println("comment 부분에서 " + e.getClass());
+		webhook w = new webhook();
+		w.send("comment 부분에서 " + e.getClass());
+	}
 }

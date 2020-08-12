@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssalog.config.webhook;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.Token;
 import com.ssalog.jwt.JwtTokenUtil;
@@ -235,4 +237,10 @@ public class LoginContorller {
     	//System.out.println("호출완료!");
     	return new ResponseEntity<String>(ran,HttpStatus.OK);
     } 
+    @ExceptionHandler(Exception.class)
+	public void nullex(Exception e) {
+		System.err.println("login 부분에서 " + e.getClass());
+		webhook w = new webhook();
+		w.send("login 부분에서 " + e.getClass());
+	}
 }

@@ -86,7 +86,7 @@ public class MypageController {
 		return new ResponseEntity<String>(fileService.delete_file(username),HttpStatus.OK);
 	}
 	
-	@ExceptionHandler(NullPointerException.class)
+	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("img 처리 부분에서 " + e.getClass());
 		webhook w = new webhook();

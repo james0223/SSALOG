@@ -97,8 +97,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         			username = e.getClaims().getSubject();  
         			logger.info("[access token이 만료된 사용자 이름] " + username);
         			response.setHeader("error", "expired");
-        			webhook w = new webhook();
-        			w.send(e.toString() + "\n토큰 만료 error");
+//        			webhook w = new webhook();
+//        			w.send(e.toString() + "\n토큰 만료 error");
         		}
         	}
         } else {

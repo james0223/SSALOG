@@ -132,7 +132,7 @@ public class SearchContoller {
 	public ResponseEntity<String> find_username(@RequestParam("nickname") String nickname){
 		return new ResponseEntity<String>(accountService.find_username(nickname), HttpStatus.OK);
 	}
-	@ExceptionHandler(NullPointerException.class)
+	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("search 부분에서 " + e.getClass());
 		webhook w = new webhook();

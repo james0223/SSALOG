@@ -108,7 +108,7 @@ public class PostController {
 		
 	}	
 
-	@ExceptionHandler(NullPointerException.class)
+	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("포스트 부분에서 " + e.getClass());
 		webhook w = new webhook();
