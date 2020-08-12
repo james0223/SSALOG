@@ -348,7 +348,7 @@ export default {
           this.$router.push({
             name: "LogDetail",
             // eslint-disable-next-line
-            params: { nickname: this.nickname, id: this.resData._id }
+            params: { nickname: this.nickname} // id 안넣어도 지금 url 에서 자동으로 담아서 날려준다..
           });
         })
         .catch(function(error) {
