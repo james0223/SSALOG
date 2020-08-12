@@ -1,7 +1,7 @@
 <template>
   <v-container mt-3>
     <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
-    <v-row>
+    <v-row class="px-3">
       <v-col cols="3" style="border-left: 1px solid red"> 언어: {{ resData.language }} </v-col>
       <v-col cols="3" style="border-left: 1px solid red"> 메모리: {{ resData.memory }}KB </v-col>
       <v-col cols="3" style="border-left: 1px solid red"> 시간: {{ resData.time }}MS </v-col>
@@ -36,6 +36,17 @@
       </v-col>
       <v-col cols="12" md="6">
         <div class="editor" spellcheck="false">
+          <v-text-field label="제목" v-model="title"></v-text-field>
+          <v-select
+            v-model="SelectedProblemCategory"
+            :items="$store.state.ProblemCategory"
+            :item-text="'kor'"
+            :item-value="'kor'"
+            attach
+            chips
+            label="알고리즘 분류"
+            multiple
+          ></v-select>
           <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
             <div class="menubar">
               <button
@@ -155,16 +166,6 @@
               </button>
             </div>
           </editor-menu-bar>
-          <v-select
-            v-model="SelectedProblemCategory"
-            :items="$store.state.ProblemCategory"
-            :item-text="'kor'"
-            :item-value="'kor'"
-            attach
-            chips
-            label="알고리즘 분류"
-            multiple
-          ></v-select>
           <editor-content class="editor__content article" :editor="editor" />
           <div id="example-3">
             <template v-for="(item, i) in items">
@@ -178,8 +179,9 @@
             </template>
             <br />
           </div>
-          <button v-if="isUpdating" class="button" @click="write">수정하기</button>
-          <button v-else class="button" @click="write">작성하기</button>
+          <v-btn color="info" tile block @click="write">
+            {{ isUpdating ? "수정하기" : "작성하기 " }}</v-btn
+          >
         </div>
       </v-col>
     </v-row>
@@ -230,6 +232,7 @@ export default {
   },
   data() {
     return {
+      title: null,
       resData: undefined,
       isUpdating: false,
       SelectedProblemCategory: [],
@@ -330,8 +333,14 @@ export default {
         });
     },
     write() {
+      if (!this.title) {
+        alert("제목을 입력해주세요");
+        return;
+      }
       this.resData.username = this.username;
       this.resData.keyword = this.SelectedProblemCategory;
+      this.resData.nickname = this.nickname; // 작성자 닉
+      this.resData.title = this.title; // 글 제목
       axios
         .put(`${this.ServerURL}/user/post/update_post`, this.resData)
         .then(response => {
