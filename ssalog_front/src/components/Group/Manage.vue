@@ -55,18 +55,16 @@
                             required
                           ></v-text-field>
                         </ValidationProvider>
-                        <ValidationProvider name="문제 번호" rules="required">
-                          <v-datetime-picker
-                            required
-                            ok-text="시간선택"
-                            clear-text="초기화"
-                            label="마감 시간"
-                            v-model="HW.deadline"
-                          >
-                          </v-datetime-picker>
-                        </ValidationProvider>
+                        <v-datetime-picker
+                          required
+                          ok-text="시간선택"
+                          clear-text="초기화"
+                          label="마감 시간"
+                          v-model="HW.deadline"
+                        >
+                        </v-datetime-picker>
                         <v-btn type="reset">초기화</v-btn>
-                        <v-btn type="submit">과제 출제</v-btn>
+                        <v-btn type="submit" @click.prevent="makeHW">과제 출제</v-btn>
                       </form>
                     </v-card>
                   </ValidationObserver>
@@ -115,6 +113,7 @@
 
 <script>
 import PieChart from "@/components/PieChart.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "Manage",
@@ -163,7 +162,29 @@ export default {
         maintainAspectRatio: false
       }
     };
-  }
+  },
+  methods: {
+    async makeHW() {
+      try {
+        const res = await this.$http.post(`${this.ServerURL}/user/grouping/make_goal`, null, {
+          params: {
+            groupname: this.$route.params.groupname,
+            limitday: this.HW.deadline,
+            problemid: this.HW.number,
+            problemname: this.HW.name
+          }
+        });
+        console.log(res);
+      } catch (err) {
+        console.dir(err);
+        // 문제 발생시 초기화
+        this.HW.name = "";
+        this.HW.deadline = new Date();
+        this.HW.number = "";
+      }
+    }
+  },
+  computed: mapState(["ServerURL"])
 };
 </script>
 
