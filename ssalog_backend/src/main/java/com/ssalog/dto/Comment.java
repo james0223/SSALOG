@@ -9,36 +9,39 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class Comment {
 	@MongoId
 	private String uniqueid;
-	private String userid;
+	private String username;
 	private String message;
 	@CreationTimestamp
 	private String time;
 	private int like;
 	private List<Comment> subcomment;
 	private String imgpath;
+	private String nickname;
 	public Comment() {}
-	public Comment(String uniqueid, String userid, String message, String time, int like, List<Comment> subcomment,
-			String imgpath) {
+	public Comment(String uniqueid, String username, String message, String time, int like, List<Comment> subcomment,
+			String imgpath, String nickname) {
 		super();
 		this.uniqueid = uniqueid;
-		this.userid = userid;
+		this.username = username;
 		this.message = message;
 		this.time = time;
 		this.like = like;
 		this.subcomment = subcomment;
 		this.imgpath = imgpath;
+		this.nickname = nickname;
 	}
+
 	public String getUniqueid() {
 		return uniqueid;
 	}
 	public void setUniqueid(String uniqueid) {
 		this.uniqueid = uniqueid;
 	}
-	public String getUserid() {
-		return userid;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getMessage() {
 		return message;
@@ -70,5 +73,13 @@ public class Comment {
 	public void setImgpath(String imgpath) {
 		this.imgpath = imgpath;
 	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
+	
 	
 }
