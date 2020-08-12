@@ -76,12 +76,20 @@ export default {
   methods: {
     async getSolutions() {
       try {
+        const owneremail = await this.$http.get(
+          `${this.$store.state.ServerURL}/newuser/search/find_username`,
+          {
+            params: {
+              nickname: this.$route.params.nickname // 바꿔야함
+            }
+          }
+        );
         const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/to_username`, {
           params: {
             direction: "ASC",
             page: 1,
             size: 5000,
-            username: this.$route.params.username // 수정필요
+            username: owneremail.data // 수정필요
           }
         });
         this.solutions = res.data.content.reverse();
@@ -99,8 +107,6 @@ export default {
             }
           }
         });
-
-        console.dir(this.solutions);
       } catch (e) {
         console.error(e);
       }
