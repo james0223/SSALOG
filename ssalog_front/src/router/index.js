@@ -164,9 +164,6 @@ const router = new VueRouter({
 // global guard (login required)
 router.beforeEach(function(to, from, next) {
   // 같은 이름으로 라우팅이 안되는 문제 해결
-  console.log(to, "to");
-  console.log(from, "from");
-  console.log(next, "next");
   if (from.name === to.name) {
     next();
   } else if (
