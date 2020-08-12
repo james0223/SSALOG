@@ -2,58 +2,56 @@
   <v-container>
     <v-row no-gutters>
       <v-col lg="10" cols="12" class="pl-3">
-        <v-toolbar flat class="ml-0 mr-3 mt-4"
-          ><a
-            target="_blank"
-            v-bind:href="this.getlink()"
-            style="text-decoration: none; "
-            title="클릭시 문제로 이동합니다."
-          >
-            <h1 class="content-title">{{ problemNum }} {{ problemTitle }}</h1></a
-          >
-        </v-toolbar>
-
-        <v-toolbar flat>
-          <v-toolbar-title class="ml-1"> </v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-title>
-            <span class="ml-10 font-weight-light">{{ updatedDate }}</span>
-          </v-toolbar-title>
-        </v-toolbar>
-        <v-row class="mx-auto mb-3">
-          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
-            언어: {{ language }}
-          </v-col>
-          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
-            메모리: {{ memory }}KB
-          </v-col>
-          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
-            시간: {{ time }}MS
-          </v-col>
-          <v-col cols="3" style="border-left: 1px solid red; font-size: small ;">
-            코드길이: {{ len }}B
-          </v-col>
-        </v-row>
-        <v-toolbar flat v-if="nickname === writerNickname">
-          <v-spacer></v-spacer>
-          <v-toolbar-title class="ml-15"> </v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-title>
-            <span class="ml-10 caption">
+        <v-card class="pa-3 mb-10" outlined>
+          <v-card-title
+            ><h2>{{ title }}</h2>
+            <v-spacer></v-spacer>
+            <div v-if="nickname === writerNickname">
               <v-btn text @click="editSolution">수정</v-btn>
-              <v-btn text @click="deleteSolution">삭제</v-btn></span
+              <v-btn text @click="deleteSolution">삭제</v-btn>
+            </div>
+          </v-card-title>
+          <v-card-text
+            ><v-row>
+              <v-col
+                ><h3>
+                  문제 :<a
+                    target="_blank"
+                    v-bind:href="this.getlink()"
+                    style="text-decoration: none; "
+                    title="클릭시 문제로 이동합니다."
+                  >
+                    {{ problemNum }} {{ problemTitle }}</a
+                  >
+                </h3></v-col
+              >
+              <v-col
+                ><h3>작성일 : {{ updatedDate }}</h3></v-col
+              ></v-row
             >
-          </v-toolbar-title>
-        </v-toolbar>
-        <v-toolbar-items class="mb-7">
-          <v-chip class="mx-2" v-for="(key, i) in keyword" :key="i">
-            {{ key }}
-          </v-chip>
-        </v-toolbar-items>
-        <v-card min-height="70vh" flat class="main_content_wrapper">
-          <editor-content class="main_content editor__content article" :editor="editor" />
+          </v-card-text>
+          <v-card-text>
+            <v-row>
+              <v-col cols="3"> <v-icon>mdi-lead-pencil</v-icon> 언어: {{ language }} </v-col>
+              <v-col cols="3"> <v-icon>mdi-memory</v-icon> 메모리: {{ memory }}KB </v-col>
+              <v-col cols="3"> <v-icon>mdi-timer</v-icon> 시간: {{ time }}MS </v-col>
+              <v-col cols="3"><v-icon>mdi-sort-variant</v-icon> 코드길이: {{ len }}B </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-text v-if="!!keyword">
+            사용한 알고리즘
+            <v-chip-group>
+              <v-chip outlined v-for="(key, i) in keyword" :key="i">
+                {{ key }}
+              </v-chip>
+            </v-chip-group>
+          </v-card-text>
         </v-card>
-        <hr />
+        <v-card flat min-height="40vh" class="pa-3 mb-10">
+          <v-card-text>
+            <editor-content class="main_content editor__content article" :editor="editor" />
+          </v-card-text>
+        </v-card>
         <Comment />
       </v-col>
       <v-col lg="2">
@@ -86,7 +84,13 @@
           <!--          dialog 부분-->
           <v-dialog v-model="dialog" width="50vw" height="50vh">
             <v-card>
-              <v-card-title class="headline"> {{ writerNickname }}님의 코드</v-card-title>
+              <v-card-title class="headline">
+                {{ writerNickname }}님의 코드
+                <v-spacer></v-spacer>
+                <v-btn color="info" small text v-clipboard:copy="codeData" @click="showCopyMsg">
+                  복사하기
+                </v-btn></v-card-title
+              >
               <editor-content
                 class="main_content code_area editor__content article"
                 :editor="codeview"
@@ -132,7 +136,7 @@ import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 // component
 import Comment from "@/components/Comment.vue";
 // TOC
@@ -201,7 +205,7 @@ export default {
       htmlData: null,
       problemNum: null,
       problemTitle: null,
-      contentTitle: null,
+      title: null,
       writerUsername: null,
       updatedDate: null,
       language: null,
@@ -255,8 +259,14 @@ export default {
   created() {
     this.getSSALOG(this.$route.params.id);
   },
-  mounted() {},
   methods: {
+    ...mapMutations(["ShowAlert"]),
+    showCopyMsg() {
+      this.ShowAlert({ flag: true, msg: "클립보드에 복사되었습니다." });
+      setTimeout(() => {
+        this.ShowAlert({ flag: false, msg: "" });
+      }, 2000);
+    },
     getlink() {
       return "https://www.acmicpc.net/problem/".concat(this.problemNum);
     },
@@ -264,12 +274,12 @@ export default {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
     },
     async deleteSolution() {
-      this.$store.commit("ShowAlert", {
+      this.ShowAlert({
         flag: true,
         msg: "게시물을 삭제하였습니다. 메인으로 이동합니다."
       });
       setTimeout(() => {
-        this.$store.commit("ShowAlert", { flag: false, msg: "" });
+        this.ShowAlert({ flag: false, msg: "" });
         this.$router.push({ name: "Home" });
       }, 2000);
     },
@@ -281,6 +291,7 @@ export default {
             Scoring: pageId
           }
         });
+        this.title = res.data.title;
         this.keyword = res.data.keyword;
         this.problemNum = res.data.problemid;
         this.problemTitle = res.data.problemname;

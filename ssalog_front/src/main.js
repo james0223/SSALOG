@@ -2,6 +2,9 @@ import Vue from "vue";
 import axios from "axios";
 // eslint-disable-next-line
 import App from "./App.vue";
+
+import VueClipboard from "vue-clipboard2";
+
 // import tiptap-style
 import "./assets/tiptap/sass/main.scss";
 // eslint-disable-next-line
@@ -31,6 +34,8 @@ Vue.component("ValidationProvider", ValidationProvider);
 // Register it globally
 Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(Highlight);
+Vue.use(VueClipboard);
+VueClipboard.config.autoSetContainer = true;
 Vue.use(DatetimePicker);
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
