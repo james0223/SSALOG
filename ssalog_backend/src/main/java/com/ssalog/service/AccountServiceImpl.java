@@ -52,7 +52,18 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	@Override
-	public Boolean change_pw(String username) {
+	public Boolean change_pw(String username,String password) {
+		Account ac = accountRepository.findByUsername(username);
+		if(ac != null) {
+	    	ac.setPassword(bcryptEncoder.encode(password));
+	    	System.out.println(ac.getPassword());
+	    	accountRepository.save(ac);
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public Boolean find_pw(String username) {
 		Account ac = accountRepository.findByUsername(username);
 		if(ac != null) {
 			Mail m = new Mail();
@@ -62,5 +73,23 @@ public class AccountServiceImpl implements AccountService{
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public String set_intro(String username, String intro) {
+		Account ac = accountRepository.findByUsername(username);
+		if(ac != null) {
+			ac.setIntroduce(intro);
+			accountRepository.save(ac);
+			return "success";
+		}
+		return "fail";
+	}
+	@Override
+	public String get_intro(String username) {
+		Account ac = accountRepository.findByUsername(username);
+		if(ac != null) {
+			return ac.getIntroduce();
+		}
+		return "fail";
 	}
 }

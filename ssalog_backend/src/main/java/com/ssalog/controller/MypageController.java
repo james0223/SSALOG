@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssalog.config.webhook;
 import com.ssalog.dto.Account;
 import com.ssalog.repository.AccountRepository;
+import com.ssalog.service.AccountService;
 import com.ssalog.service.FileService;
 
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,8 @@ public class MypageController {
 
 	@Autowired
 	private AccountRepository accountRepository;
-
+	@Autowired
+	private AccountService accountService;
 	@Autowired
 	private FileService fileService;
 
@@ -86,6 +88,17 @@ public class MypageController {
 		return new ResponseEntity<String>(fileService.delete_file(username),HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "[프로필 소개글 작성] 기능: 프로필 소개글을 작성합니다.성공시 success, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@PostMapping(path="/user/write_introduce")
+	public ResponseEntity<String> write_introduce(HttpServletResponse response, @RequestParam("introduce") String introduce){
+		String username =  response.getHeader("username");
+		return new ResponseEntity<String>(accountService.set_intro(username, introduce),HttpStatus.OK);
+	}
+	@ApiOperation(value = "[프로필 소개글 가져오기] 기능: 프로필 소개글을 가져옵니다.성공시 success, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@GetMapping(path="/newuser/get_introduce")
+	public ResponseEntity<String> get_introduce(@RequestParam("username") String username){
+		return new ResponseEntity<String>(accountService.get_intro(username),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("img 처리 부분에서 " + e.getClass());
