@@ -7,13 +7,16 @@
             <img :src="writerThumbnail" />
             <!--변경해줘야할듯-->
           </v-avatar>
-          <v-dialog v-model="thumbnailDialog" max-width="400px">
+          <v-dialog
+            v-if="$store.state.nickname === $route.params.nickname"
+            v-model="thumbnailDialog"
+            max-width="400px"
+          >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-bind="attrs"
                 v-on="on"
                 @click="imageUrl = writerThumbnail"
-                v-if="$store.state.nickname === $route.params.nickname"
                 class="mx-2"
                 id="thumbnailplus"
                 fab
@@ -87,9 +90,19 @@
               </v-row>
             </v-card>
           </v-dialog>
-          <v-row justify="center" style="width:240px">
+          <v-row justify="center" class="mt-2" style="width:240px; border-bottom : 1px dashed grey">
             <div class="ma-2 font-weight-bold"><v-icon>mdi-account</v-icon> {{ ownerName }}</div>
+            <template v-if="$store.state.nickname !== $route.params.nickname">
+              <v-btn class="ml-3" large icon @click="followclick">
+                <v-icon :disabled="!isfollow" color="red">mdi-heart</v-icon>
+              </v-btn>
+            </template>
           </v-row>
+          <v-row>
+            <v-col cols="5"><v-icon class="mr-3">mdi-account-multiple</v-icon>123/123</v-col>
+            <v-col><v-icon class="mr-3">mdi-star</v-icon>232</v-col>
+          </v-row>
+
           <v-tabs vertical class="my-15 pa-3">
             <v-tab
               style="justify-content:left;"
@@ -118,6 +131,7 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      isfollow: false,
       ownerName: this.$route.params.nickname,
       thumbnailDialog: false,
       ThumbnailSelect: 0,
@@ -175,6 +189,36 @@ export default {
   },
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
   methods: {
+    followclick() {
+      this.isfollow = !this.isfollow;
+      if (this.isfollow) {
+        // console.log("팔로우걸기");
+        axios
+          .post(
+            `${this.ServerURL}/user/follow/do_follow`,
+            {},
+            { params: { following: this.ownerName } }
+          )
+          .then(() => {
+            console.log("성공");
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        // console.log("팔로우취소");
+        axios
+          .delete(`${this.ServerURL}/user/follow/cancel_follow`, {
+            params: { following: this.ownerName }
+          })
+          .then(() => {
+            console.log("취소성공");
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
     onChangeImages(e) {
       const file = e;
       this.imageUrl = URL.createObjectURL(file);
