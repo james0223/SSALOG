@@ -10,9 +10,6 @@
         <v-list-item-content>
           <v-list-item-title v-text="manager.nickname"></v-list-item-title>
         </v-list-item-content>
-        <v-list-item-icon>
-          <v-icon v-if="manager">mdi-trash</v-icon>
-        </v-list-item-icon>
       </v-list-item>
     </v-list>
     <v-toolbar-title>그룹 멤버</v-toolbar-title>

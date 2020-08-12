@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-toolbar-title>그룹 관리자</v-toolbar-title>
+    <v-toolbar-title>앙 기모띠</v-toolbar-title>
   </v-container>
 </template>
 
