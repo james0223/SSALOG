@@ -169,6 +169,12 @@ export default {
           name: "Star",
           route: `/SSALOG/${this.$route.params.nickname}/Star`,
           icon: "mdi-star"
+        },
+        {
+          id: 6,
+          name: "Group",
+          route: `/SSALOG/${this.$route.params.nickname}/GroupList`,
+          icon: "mdi-account-group"
         }
       ]
     };

@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-row justify="center" no-gutters>
-      <v-col cols="10">
-        <v-card class="mx-auto mt-15 mp-2" height="75vh">
+      <v-col cols="12">
+        <v-card class="mx-5 mt-15 mp-2" height="75vh">
           <v-row>
             <v-col cols="8">
               <v-card class="mt-5 mx-2" flat height="70vh">

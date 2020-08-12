@@ -25,7 +25,7 @@ import GroupMain from "@/components/Group/GroupMain.vue";
 import Member from "@/components/Group/Member.vue";
 import GroupHW from "@/components/Group/Homework.vue";
 import GroupManage from "@/components/Group/Manage.vue";
-import GroupList from "@/views/Group/GroupList.vue";
+import GroupList from "@/components/SSALOG/GroupList.vue";
 // search
 import Search from "@/views/Search/Search.vue";
 import store from "@/store";
@@ -83,11 +83,6 @@ const routes = [
     path: "/FindPass",
     name: "FindPass",
     component: FindPass
-  },
-  {
-    path: "/GroupList",
-    name: "GroupList",
-    component: GroupList
   },
   {
     path: "/Group/:nickname/",
@@ -150,6 +145,11 @@ const routes = [
         path: "Solution/:id",
         name: "LogDetail",
         component: LogDetail
+      },
+      {
+        path: "GroupList",
+        name: "GroupList",
+        component: GroupList
       }
     ]
   }
