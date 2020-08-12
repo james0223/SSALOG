@@ -11,12 +11,12 @@
             <span class="caption grey--text text--darken-1"
               >가입시 등록한 이메일을 입력해주세요</span
             >
-            <v-text-field label="이메일" v-model="account.username"></v-text-field>
+            <v-text-field placeholder="example@ssalog.gq" v-model="username"></v-text-field>
           </v-card-text>
         </v-window-item>
         <v-window-item :value="2">
           <v-card-text class="pb-0">
-            {{ account.username }} 으로 임시 비밀번호가 전송되었습니다. 다시 로그인해주세요
+            {{ username }} 으로 임시 비밀번호가 전송되었습니다!
           </v-card-text>
         </v-window-item>
         <!-- <v-window-item :value="2">
@@ -46,6 +46,7 @@
       </v-window>
       <v-card-text class="py-0">
         <small class="red--text">{{ errorMsg }}</small>
+        <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
       </v-card-text>
       <v-card-actions class="px-4">
         <v-spacer></v-spacer>
@@ -55,8 +56,8 @@
           v-if="step === 2"
           color="primary"
           depressed
-          @click="$router.push({ name: 'Home' })"
-          >완료</v-btn
+          @click="$router.push({ name: 'Login' })"
+          >로그인하러가기</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -64,88 +65,73 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapMutations } from "vuex";
-
 export default {
   name: "FindPass",
   data() {
     return {
       step: 1,
-      account: {
-        username: null,
-        passwordCheck: null,
-        password: null,
-        code: null
-      },
-      answer: null,
-      errorMsg: null
+      username: null,
+      errorMsg: null,
+      loading: false
     };
   },
   methods: {
-    ...mapMutations(["ShowAlert"]),
-    updatePasswordReq() {
+    // ...mapMutations(["ShowAlert"]),
+    // updatePasswordReq() {
+    //   this.errorMsg = null;
+    //   if (!this.account.password || !this.account.passwordCheck) {
+    //     this.errorMsg = "비밀번호와 확인문자를 입력해주세요";
+    //   } else if (this.account.password !== this.account.passwordCheck) {
+    //     this.errorMsg = "비밀번호 확인문자가 일치하지 않습니다.";
+    //   } else {
+    //     axios
+    //       .put(`${this.$store.state.ServerURL}/user/change_pw`, null, {
+    //         params: {
+    //           password: this.account.password
+    //         }
+    //       })
+    //       .then(({ data }) => {
+    //         if (data) {
+    //           this.ShowAlert({
+    //             flag: true,
+    //             msg: "비밀번호 변경 성공! 다시 로그인해주세요",
+    //             color: "info"
+    //           });
+    //           setTimeout(() => {
+    //             this.ShowAlert({ flag: false, msg: "" });
+    //           }, 2000);
+    //           this.$router.push({ name: "Home" });
+    //         } else {
+    //           this.errorMsg = "서버에러";
+    //         }
+    //       })
+    //       .catch(err => {
+    //         console.error(err);
+    //         this.errorMsg = "서버에러";
+    //       });
+    //   }
+    // },
+    async findPassReq() {
       this.errorMsg = null;
-      if (!this.account.password || !this.account.passwordCheck) {
-        this.errorMsg = "비밀번호와 확인문자를 입력해주세요";
-      } else if (this.account.password !== this.account.passwordCheck) {
-        this.errorMsg = "비밀번호 확인문자가 일치하지 않습니다.";
+      if (!this.username) {
+        this.errorMsg = "이메일을 입력해주세요";
       } else {
-        axios
-          .put(`${this.$store.state.ServerURL}/user/change_pw`, null, {
+        try {
+          this.loading = true;
+          const { data } = await this.$http.get(`${this.$store.state.ServerURL}/newuser/find_pw`, {
             params: {
-              password: this.account.password
+              username: this.username
             }
-          })
-          .then(({ data }) => {
-            if (data) {
-              this.ShowAlert({
-                flag: true,
-                msg: "비밀번호 변경 성공! 다시 로그인해주세요",
-                color: "info"
-              });
-              setTimeout(() => {
-                this.ShowAlert({ flag: false, msg: "" });
-              }, 2000);
-              this.$router.push({ name: "Home" });
-            } else {
-              this.errorMsg = "서버에러";
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            this.errorMsg = "서버에러";
           });
-      }
-    },
-    findPassReq() {
-      this.errorMsg = null;
-      if (this.step === 1) {
-        if (!this.account.username) {
-          this.errorMsg = "이메일을 입력해주세요";
-        } else {
-          // 수정필요
-          axios
-            .get(`${this.$store.state.ServerURL}/newuser/수정필요`, {
-              params: {
-                username: this.account.username
-              }
-            })
-            .then(({ data }) => {
-              if (data.result) {
-                this.step = 2;
-                this.answer = data.정답;
-              } else {
-                this.errorMsg = "유효하지 않은 이메일입니다.";
-              }
-            })
-            .catch(err => console.error(err));
-        }
-      } else if (this.step === 2) {
-        if (this.account.code !== this.answer) {
-          this.errorMsg = "인증코드가 일치하지 않습니다.";
-        } else {
-          this.step = 3;
+          this.loading = false;
+          if (data) {
+            this.step = 2;
+          } else {
+            this.errorMsg = "유효하지 않은 이메일입니다.";
+          }
+        } catch (e) {
+          console.error(e);
+          this.errorMsg = "server Error";
         }
       }
     }
