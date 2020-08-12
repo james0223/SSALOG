@@ -1,12 +1,16 @@
 <template>
   <v-container>
-    <div class="checkbox">
-      <input type="checkbox" id="editable" v-model="editable" />
-      <label for="editable">editable</label>
-    </div>
     <v-row>
       <v-col cols="12">
         <div class="editor" spellcheck="false">
+          <div
+            class="checkbox"
+            style="float:right"
+            v-if="$store.state.nickname === $route.params.nickname"
+          >
+            <input type="checkbox" id="editable" v-model="editable" />
+            <label for="editable">수정하기</label>
+          </div>
           <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
             <div class="menubar is-hidden" :class="{ 'is-focused': editable }">
               <button
@@ -126,11 +130,12 @@
               </button>
             </div>
           </editor-menu-bar>
+
           <editor-content class="editor__content article" :editor="editor" style="border :none" />
           <div id="example-3">
             <br />
           </div>
-          <v-btn color="info" tile block @click="write"> 작성하기</v-btn>
+          <v-btn color="info" tile block @click="write" v-if="editable"> 작성하기</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -159,7 +164,7 @@ import {
   History,
   Focus
 } from "tiptap-extensions";
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "Profile",
@@ -171,7 +176,7 @@ export default {
     return {
       editable: false,
       title: null,
-      resData: undefined,
+      html: "",
       isUpdating: false,
       SelectedProblemCategory: [],
       editor: new Editor({
@@ -200,18 +205,8 @@ export default {
             nested: true
           })
         ],
-        content: `
-          <h2>
-            Read-Only
-          </h2>
-          <p>
-            This text is <strong>read-only</strong>. You are not able to edit something. <a href="https://ueber.io/">Links to fancy websites</a> are still working.
-          </p>
-        `,
+        content: `<h1>안녕하세요 ${this.$route.params.nickname}입니다 😁<br></h1><h3>자기소개</h3><hr><p></p><h3>기술스택</h3><hr><p></p><h3>수상경력</h3><hr><p></p><h3>SNS</h3><hr>`,
         autoFocus: true,
-        onUpdate: ({ getHTML }) => {
-          this.resData.html = getHTML();
-        },
         editable: false
       })
     };
@@ -224,8 +219,41 @@ export default {
       });
     }
   },
+  methods: {
+    write() {
+      this.html = this.editor.getHTML();
+      console.log(this.html);
+      axios
+        .post(`${this.ServerURL}/user/write_introduce`, {}, { params: { introduce: this.html } })
+        .then(response => {
+          console.log(response);
+          this.editable = false;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    async get() {
+      try {
+        const res = await axios.get(`${this.ServerURL}/newuser/get_introduce`, {
+          params: {
+            nickname: this.$route.params.nickname
+          }
+        });
+        console.log(res);
+        if (res.data !== "" && res.data !== "fail") {
+          this.editor.setContent(res.data);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  },
   beforeDestroy() {
-    this.editor.destroy();
+    this.html();
+  },
+  created() {
+    this.get();
   }
 };
 </script>
