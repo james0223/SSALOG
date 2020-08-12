@@ -67,7 +67,12 @@
               <v-card class="mt-5 mx-2" height="70vh">
                 <v-card-title>그룹 가입하기</v-card-title>
                 <v-card-text>
-                  <v-text-field label="그룹 검색하기" append-icon="mdi-magnify"></v-text-field>
+                  <v-text-field
+                    label="그룹 검색하기"
+                    append-icon="mdi-magnify"
+                    v-model="searchedGroup"
+                  ></v-text-field>
+                  <v-btn text>지원하기</v-btn>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -97,7 +102,9 @@ export default {
       // 그룹 생성 관련 data
       createGroupDialog: false,
       createGroupName: "",
-      createGroupIntro: ""
+      createGroupIntro: "",
+      // 그룹 신청 관련 data
+      searchedGroup: ""
     };
   },
   methods: {
@@ -117,6 +124,13 @@ export default {
         this.createGroupDialog = false;
       } catch (err) {
         // 이미 그룹이 존재함으로써 받는 에러코드
+        console.error(err);
+      }
+    },
+    async applyGroup() {
+      try {
+        await this.$http.post(`${this.ServerURL}/user/grouping/apply_group`, null, {});
+      } catch (err) {
         console.error(err);
       }
     }

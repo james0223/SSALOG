@@ -91,8 +91,8 @@ const routes = [
     // meta: { authRequired: true },
     children: [
       {
-        path: "",
-        name: "Main",
+        path: "Main",
+        name: "GroupMain",
         component: GroupMain
       },
       {
