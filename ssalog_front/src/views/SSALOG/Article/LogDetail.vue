@@ -87,7 +87,7 @@
               <v-card-title class="headline">
                 {{ writerNickname }}님의 코드
                 <v-spacer></v-spacer>
-                <v-btn color="info" small text v-clipboard:copy="codeData" @click="showCopyMsg">
+                <v-btn color="info" small text v-clipboard:copy="code" @click="showCopyMsg">
                   복사하기
                 </v-btn></v-card-title
               >
@@ -202,6 +202,7 @@ export default {
       TOC: null,
       routeId: null,
       codeData: null,
+      code: null,
       htmlData: null,
       problemNum: null,
       problemTitle: null,
@@ -303,6 +304,7 @@ export default {
         this.memory = res.data.memory;
         this.time = res.data.time;
         this.len = res.data.len;
+        this.code = res.data.code;
         this.codeData = `<pre><code>${res.data.code}</code></pre>`;
         this.editor.setContent(this.htmlData);
         this.codeview.setContent(this.codeData);
