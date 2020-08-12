@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService{
 			Comment c = new Comment();
 			c.setMessage(comment);
 			c.setUniqueid(uid);
-			c.setUserid(username);
+			c.setUsername(username);
 			Date date = new Date();
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String time1 = format1.format(date);
@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService{
 			return new ArrayList<Comment>();
 		}else {
 			for(int i=0; i<list.size(); i++) {
-				Account ac =accountRepository.findByUsername(list.get(i).getUserid());
+				Account ac =accountRepository.findByUsername(list.get(i).getUsername());
 				list.get(i).setImgpath(ac.getImgpath()==null?"default.png":ac.getImgpath());
 			}
 			return list;
@@ -82,7 +82,7 @@ public class CommentServiceImpl implements CommentService{
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time1 = format1.format(date);
 		comment.setTime(time1);
-		comment.setUserid(username);
+		comment.setUsername(id);;
 		postRepository.update_comment(comment,id);
 	}
 	//	@Override
