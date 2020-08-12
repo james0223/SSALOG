@@ -8,7 +8,7 @@
       v-bind:values="heatmapData.dates"
       v-bind:range-color="heatmapData.rangeColor"
       v-bind:tooltip="true"
-      v-bind:end-date="heatmapData.endDate"
+      v-bind:end-date="new Date()"
     ></calendar-heatmap>
     <v-row>
       <v-col cols="5"> <DoughNutChart v-bind:chart-data="chartData" /> </v-col>
@@ -67,6 +67,7 @@ export default {
   data() {
     return {
       ownerName: this.$route.params.nickname,
+      ownerEmail: "",
       solvedList: [],
       isNoSolve: false,
       heatmapData: {
@@ -74,40 +75,54 @@ export default {
           { date: "2020-3-6", count: 6 },
           { date: "2020-3-4", count: 6 }
         ],
-        rangeColor: ["#FFFDE7", "#FFF9C4", "#FFF59D", "#FFF176", "#FFEE58"],
-        endDate: "2020-08-04"
+        rangeColor: ["#FFFDE7", "#FFF9C4", "#FFF59D", "#FFF176", "#FFEE58"]
       },
-      chartData: {
-        // 해당 내용은 보기용
-        // https://vue-chartjs.org/guide/#chart-with-api-data 나중에 이런 식으로 변경해야 함.
-        labels: ["element1", "ele2", "ele3"],
-        datasets: [
-          {
-            label: "Data one",
-            backgroundColor: "#f87979",
-            data: [1, 2, 3]
-          }
-        ]
-      }
+      chartData: {}
     };
   },
   computed: mapState(["ServerURL"]),
   methods: {
-    async getSolvedList() {
-      console.dir(this);
+    async drawDoughnut() {
+      try {
+        const res = await this.$http.get(`${this.ServerURL}/newuser/search/find_pyto`, {
+          params: {
+            username: this.ownerEmail
+          }
+        });
+
+        this.chartData = {
+          labels: Object.keys(res.data),
+          datasets: [
+            {
+              backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+              data: Object.values(res.data)
+            }
+          ]
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getownerEmail() {
       try {
         const res = await this.$http.get(`${this.ServerURL}/newuser/search/find_username`, {
           params: {
-            nickname: this.ownerName // 바꿔야함
+            nickname: this.ownerName
           }
         });
-        console.dir(res);
+        this.ownerEmail = res.data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async getSolvedList() {
+      try {
         const { data } = await this.$http.get(`${this.ServerURL}/newuser/search/to_username`, {
           params: {
             direction: "DESC",
             page: 1,
             size: 5,
-            username: res.data // 바꿔야함
+            username: this.ownerEmail
           }
         });
         if (data.totalElements === 0) {
@@ -136,12 +151,9 @@ export default {
     async getGrassData() {
       const res = await this.$http.get(`${this.ServerURL}/newuser/search/get_jandi`, {
         params: {
-          username: this.$store.state.username
+          username: this.ownerEmail
         }
       });
-      let date = new Date();
-      date = this.getFormatDate(date);
-      this.endDate = date;
       this.heatmapData.dates = res.data;
     },
     getFormatDate(date) {
@@ -153,9 +165,14 @@ export default {
       return `${year}-${month}-${day}`;
     }
   },
-  mounted() {
-    this.getGrassData();
+  async Create() {
+    await this.getownerEmail();
+  },
+  async mounted() {
+    await this.getownerEmail();
     this.getSolvedList();
+    this.getGrassData();
+    this.drawDoughnut();
   }
 };
 </script>
