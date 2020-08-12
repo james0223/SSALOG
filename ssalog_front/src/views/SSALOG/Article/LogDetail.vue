@@ -127,7 +127,26 @@
 <script>
 import axios from "axios";
 import { Editor, EditorContent } from "tiptap";
-import { CodeBlockHighlight, Heading } from "tiptap-extensions";
+import {
+  CodeBlockHighlight,
+  Placeholder,
+  Blockquote,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  HorizontalRule,
+  OrderedList,
+  BulletList,
+  ListItem,
+  Image,
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+  History
+} from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
 import c from "highlight.js/lib/languages/c";
@@ -218,6 +237,25 @@ export default {
       dialog: false,
       editor: new Editor({
         extensions: [
+          new Blockquote(),
+          new BulletList(),
+          new CodeBlock(),
+          new HardBreak(),
+          new Heading({ levels: [1, 2, 3] }),
+          new HorizontalRule(),
+          new ListItem(),
+          new OrderedList(),
+          new Image(),
+          new Link(),
+          new Bold(),
+          new Code(),
+          new Italic(),
+          new Strike(),
+          new Underline(),
+          new History(),
+          new Placeholder({
+            showOnlyCurrent: false
+          }),
           new CodeBlockHighlight({
             languages: {
               cpp,
