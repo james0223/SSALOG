@@ -1,5 +1,10 @@
 package com.ssalog.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +12,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.config.webhook;
+import com.ssalog.dto.Follow;
 import com.ssalog.service.FollowService;
 
 import io.swagger.annotations.ApiOperation;
@@ -29,15 +36,32 @@ public class FollowController {
 	 
 	 @ApiOperation(value = "[follow하기] a가 b를 팔로우를 하는 기능입니다. 성공하면 success, 실패(이미 팔로우하는 대상)하면 fail을 return합니다.")
 	 @PostMapping("user/follow/do_follow")
-	 public ResponseEntity<String> do_follow(@RequestParam("follower") String follower, @RequestParam("following") String following){
-	 	return new ResponseEntity<String>(followService.do_follow(follower, following), HttpStatus.OK);
+	 public ResponseEntity<String> do_follow(HttpServletResponse response, @RequestParam("following") String following){
+		String username = response.getHeader("username");
+	 	return new ResponseEntity<String>(followService.do_follow(username, following), HttpStatus.OK);
 	 }
 	 @ApiOperation(value = "[follow check] a가 b를 팔로우를 하는지 확인하는입니다. 성공하면 true, 실패(이미 팔로우하는 대상)하면 false를 return합니다.")
 	 @GetMapping("user/follow/is_follow")
-	 public ResponseEntity<Boolean> is_follow(@RequestParam("follower") String follower, @RequestParam("following") String following){
-	 	return new ResponseEntity<Boolean>(followService.is_follow(follower, following), HttpStatus.OK);
+	 public ResponseEntity<Boolean> is_follow(HttpServletResponse response, @RequestParam("following") String following){
+		String username = response.getHeader("username");
+	 	return new ResponseEntity<Boolean>(followService.is_follow(username, following), HttpStatus.OK);
 	 }
-	 
+	 @ApiOperation(value = "[follow list] 닉네임을 주면 해당사람이  팔로우하는 사람들의 닉네임을 보여줍니다.")
+	 @GetMapping("newuser/follow/myfollow")
+	 public ResponseEntity<Map<String,String>> myfollow(@RequestParam("nickname") String nickname){
+	 	return new ResponseEntity<Map<String,String>>(followService.myfollow(nickname), HttpStatus.OK);
+	 }
+	 @ApiOperation(value = "[following list] 닉네임을 주면 해당 사람을  팔로우한 사람들의 닉네임을 보여줍니다.")
+	 @GetMapping("newuser/follow/myfollowing")
+	 public ResponseEntity<Map<String,String>> myfollowing(@RequestParam("nickname") String nickname){
+	 	return new ResponseEntity<Map<String,String>>(followService.myfollowing(nickname), HttpStatus.OK);
+	 }
+	 @ApiOperation(value = "[following 그만하기] 팔로우를 취소합니다.")
+	 @DeleteMapping("user/follow/cancel_follow")
+	 public ResponseEntity<String> canclefollowing(HttpServletResponse response, @RequestParam("following") String following){
+		String username = response.getHeader("username");
+	 	return new ResponseEntity<String>(followService.canclefollow(username, following), HttpStatus.OK);
+	 }
 	 @ExceptionHandler(Exception.class)
 		public void nullex(Exception e) {
 			System.err.println("follow 부분에서 " + e.getClass());
