@@ -1,9 +1,9 @@
 <template>
   <v-row align="center" class="align-baseline">
-    <v-col class="d-flex" cols="3">
+    <v-col class="d-flex" cols="4">
       <v-select v-model="SelectedCategory" :items="category" label="검색유형"></v-select>
     </v-col>
-    <v-col cols="7">
+    <v-col cols="6">
       <v-text-field
         v-if="SelectedCategory !== '문제유형'"
         v-model="q"

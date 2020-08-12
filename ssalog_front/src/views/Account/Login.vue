@@ -1,6 +1,6 @@
 <template>
-  <v-container mt-16>
-    <v-row no-gutters>
+  <v-container>
+    <v-row no-gutters class="mt-16">
       <v-col cols="5">
         <v-card rounded="false" outlined class="pa-9" height="600px" align="center">
           <v-card-title class="pa-0 mb-7 justify-space-between">
