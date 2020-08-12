@@ -16,6 +16,9 @@ import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
 // ssalog
 import SSALOG from "@/views/SSALOG/SSALOG.vue";
+import Profile from "@/components/SSALOG/Profile.vue";
+import Scrap from "@/components/SSALOG/Scrap.vue";
+import Follow from "@/components/SSALOG/Follow.vue";
 import SsalogMain from "@/components/SSALOG/Main.vue";
 import SolutionList from "@/components/SSALOG/SolutionList.vue";
 import UserSetting from "@/components/SSALOG/Setting.vue";
@@ -150,6 +153,21 @@ const routes = [
         path: "GroupList",
         name: "GroupList",
         component: GroupList
+      },
+      {
+        path: "Profile",
+        name: "Profile",
+        component: Profile
+      },
+      {
+        path: "Scrap",
+        name: "Scrap",
+        component: Scrap
+      },
+      {
+        path: "Follow",
+        name: "Follow",
+        component: Follow
       }
     ]
   }
