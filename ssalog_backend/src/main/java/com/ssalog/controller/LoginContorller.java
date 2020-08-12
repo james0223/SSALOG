@@ -84,7 +84,6 @@ public class LoginContorller {
             }
             account.setNickname(account.getNickname());
             account.setPassword(bcryptEncoder.encode(account.getPassword()));
-            
             map.put("success", true); // 등록성공
             accountRepository.save(account); // db에 저장
         } else {
@@ -164,13 +163,17 @@ public class LoginContorller {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-    @ApiOperation(value = "[비밀번호 찾기](p-013_비밀번호찾기) 비밀번호 찾기를 통한 비밀번호 변경 api")
+    @ApiOperation(value = "[비밀번호 변경] 비밀번호 변경하는 api")
     @PutMapping(path="/user/change_pw")
-    public ResponseEntity<Boolean> change_pw(HttpServletResponse response) {
+    public ResponseEntity<Boolean> change_pw(HttpServletResponse response, @RequestParam("password") String password) {
     	String username = response.getHeader("username");
-       return new ResponseEntity<Boolean>(accountService.change_pw(username), HttpStatus.OK);
+       return new ResponseEntity<Boolean>(accountService.change_pw(username, password), HttpStatus.OK);
     }
-    
+    @ApiOperation(value = "[비밀번호 찾기] 아이디를 입력해서 해당 이메일로 변경된 비밀번호를  전송하는 api")
+    @GetMapping(path="/newuser/find_pw")
+    public ResponseEntity<Boolean> find_pw(@RequestParam("username") String username) {
+       return new ResponseEntity<Boolean>(accountService.find_pw(username), HttpStatus.OK);
+    }
     
     
 //    @ApiOperation(value = "[비밀번호 찾기 - 변경](p-013_비밀번호찾기) 비밀번호 찾기기능을 이용해 토큰을 전달해, 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")

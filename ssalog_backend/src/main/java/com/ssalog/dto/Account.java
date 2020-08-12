@@ -30,11 +30,14 @@ public class Account {
 
     private String role;		// 권한관리
     private String imgpath; 
+    
+    @Column(columnDefinition = "TEXT")
+    private String introduce;
 	public Account() {
 		super();
 	}
 	public Account(String username, String nickname, String password, Date regdate, Date updatedate, String role,
-			String imgpath) {
+			String imgpath, String introduce) {
 		super();
 		this.username = username;
 		this.nickname = nickname;
@@ -43,6 +46,7 @@ public class Account {
 		this.updatedate = updatedate;
 		this.role = role;
 		this.imgpath = imgpath;
+		this.introduce = introduce;
 	}
 	public String getUsername() {
 		return username;
@@ -85,6 +89,12 @@ public class Account {
 	}
 	public void setImgpath(String imgpath) {
 		this.imgpath = imgpath;
+	}
+	public String getIntroduce() {
+		return introduce;
+	}
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
 	}
 	
 
