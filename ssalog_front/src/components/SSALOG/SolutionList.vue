@@ -96,7 +96,7 @@ export default {
         const iterable = this.solutions;
         iterable.forEach(element => {
           const temp = element;
-          if (temp.keyword != null) {
+          if (temp.keyword.length !== 0) {
             // temp.keyword2 = temp.keyword.join(" / ");
             const [foo] = temp.keyword;
             const size = temp.keyword.length - 1;
