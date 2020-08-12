@@ -136,42 +136,36 @@ export default {
       tabs: [
         {
           id: 0,
-          name: "Main",
+          name: "Home",
           route: `/SSALOG/${this.$route.params.nickname}/Main`,
-          icon: "mdi-clipboard-text-play-outline"
+          icon: "mdi-home"
         },
         {
           id: 1,
+          name: "Profile",
+          route: `/SSALOG/${this.$route.params.nickname}/Profile`,
+          icon: "mdi-clipboard-account-outline"
+        },
+        {
+          id: 2,
           name: "Solution",
           route: `/SSALOG/${this.$route.params.nickname}/SolutionList`,
           icon: "mdi-ballot"
         },
         {
-          id: 2,
-          name: "Profile",
-          route: `/SSALOG/${this.$route.params.nickname}/Profile`,
-          icon: "mdi-account"
-        },
-        {
           id: 3,
-          name: "Following",
-          route: `/SSALOG/${this.$route.params.nickname}/Following`,
-          icon: "mdi-account-arrow-right"
-        },
-        {
-          id: 4,
-          name: "Follower",
-          route: `/SSALOG/${this.$route.params.nickname}/Follower`,
-          icon: "mdi-account-arrow-left"
-        },
-        {
-          id: 5,
-          name: "Star",
-          route: `/SSALOG/${this.$route.params.nickname}/Star`,
+          name: "Scrap",
+          route: `/SSALOG/${this.$route.params.nickname}/Scrap`,
           icon: "mdi-star"
         },
         {
-          id: 6,
+          id: 4,
+          name: "Follow",
+          route: `/SSALOG/${this.$route.params.nickname}/Follow`,
+          icon: "mdi-account-heart"
+        },
+        {
+          id: 5,
           name: "Group",
           route: `/SSALOG/${this.$route.params.nickname}/GroupList`,
           icon: "mdi-account-group"
