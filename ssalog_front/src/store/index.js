@@ -53,8 +53,9 @@ const getDefaultState = () => {
       { kor: "기타", eng: "etc" }
     ],
     // snackbar 관련 옵션
-    showAlert: false,
+    alertColor: null,
     AlertMessage: "",
+    showAlert: false,
 
     // 라우팅용 변수
     formerLink: null
@@ -86,8 +87,9 @@ export default new Vuex.Store({
       state.formerLink = payload;
     },
     ShowAlert(state, payload) {
-      state.showAlert = payload.flag;
       state.AlertMessage = payload.msg;
+      state.alertColor = payload.color;
+      state.showAlert = payload.flag;
     }
   },
   actions: {
@@ -130,7 +132,11 @@ export default new Vuex.Store({
             // 토큰이 만료되었을때
             if (result.data.success === false) {
               commit("LOGOUT");
-              commit("ShowAlert", { flag: true, msg: "토큰이 만료되었습니다. 다시 로그인하세요" });
+              commit("ShowAlert", {
+                flag: true,
+                msg: "토큰이 만료되었습니다. 다시 로그인하세요",
+                color: "error"
+              });
               setTimeout(() => {
                 commit("ShowAlert", { flag: false, msg: "" });
               }, 2000);
@@ -145,7 +151,8 @@ export default new Vuex.Store({
               commit("LOGOUT");
               commit("ShowAlert", {
                 flag: true,
-                msg: "엑세스 토큰이 만료되었습니다. 다시 로그인하세요"
+                msg: "엑세스 토큰이 만료되었습니다. 다시 로그인하세요",
+                color: "error"
               });
               setTimeout(() => {
                 commit("ShowAlert", { flag: false, msg: "" });
@@ -155,7 +162,8 @@ export default new Vuex.Store({
               // logout 한 경우
               commit("ShowAlert", {
                 flag: true,
-                msg: "로그아웃 되었습니다."
+                msg: "로그아웃 되었습니다.",
+                color: "info"
               });
               setTimeout(() => {
                 commit("ShowAlert", { flag: false, msg: "" });

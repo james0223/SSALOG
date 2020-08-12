@@ -262,7 +262,7 @@ export default {
   methods: {
     ...mapMutations(["ShowAlert"]),
     showCopyMsg() {
-      this.ShowAlert({ flag: true, msg: "클립보드에 복사되었습니다." });
+      this.ShowAlert({ flag: true, msg: "클립보드에 복사되었습니다.", color: "info" });
       setTimeout(() => {
         this.ShowAlert({ flag: false, msg: "" });
       }, 2000);
@@ -276,7 +276,8 @@ export default {
     async deleteSolution() {
       this.ShowAlert({
         flag: true,
-        msg: "게시물을 삭제하였습니다. 메인으로 이동합니다."
+        msg: "게시물을 삭제하였습니다. 메인으로 이동합니다.",
+        color: "info"
       });
       setTimeout(() => {
         this.ShowAlert({ flag: false, msg: "" });
