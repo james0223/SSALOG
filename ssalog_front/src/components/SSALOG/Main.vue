@@ -94,13 +94,20 @@ export default {
   computed: mapState(["ServerURL"]),
   methods: {
     async getSolvedList() {
+      console.dir(this);
       try {
+        const res = await this.$http.get(`${this.ServerURL}/newuser/search/find_username`, {
+          params: {
+            nickname: this.ownerName // 바꿔야함
+          }
+        });
+        console.dir(res);
         const { data } = await this.$http.get(`${this.ServerURL}/newuser/search/to_username`, {
           params: {
             direction: "DESC",
             page: 1,
             size: 5,
-            username: this.ownerName // 바꿔야함
+            username: res.data // 바꿔야함
           }
         });
         if (data.totalElements === 0) {
