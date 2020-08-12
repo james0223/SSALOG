@@ -33,12 +33,14 @@ public class Post {
 	private String regdate;
 	private String regtime;
 	private Boolean iswrite;
+	private String nickname;
+	private String title;
 	
 	public Post() {}
 
 	public Post(String scoring, String username, String code, String language, int len, int memory, String problemid,
 			String problemname, int time, String html, List<String> keyword, List<Comment> comment, int like,
-			String regdate, String regtime, Boolean iswrite) {
+			String regdate, String regtime, Boolean iswrite, String nickname, String title) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -56,6 +58,8 @@ public class Post {
 		this.regdate = regdate;
 		this.regtime = regtime;
 		this.iswrite = iswrite;
+		this.nickname = nickname;
+		this.title = title;
 	}
 
 	public String getScoring() {
@@ -185,6 +189,23 @@ public class Post {
 	public void setIswrite(Boolean iswrite) {
 		this.iswrite = iswrite;
 	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	
 
 	
