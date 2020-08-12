@@ -92,6 +92,7 @@ export default new Vuex.Store({
   },
   actions: {
     async LOGIN({ commit, dispatch }, loginData) {
+      Axios.defaults.headers.common.Authorization = ``;
       const { data } = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
@@ -137,17 +138,29 @@ export default new Vuex.Store({
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
             dispatch("autoRefresh");
           })
-          .catch(() => {
-            // 토큰 갱신 실패 (9999) 처리
-            commit("LOGOUT");
-            commit("ShowAlert", {
-              flag: true,
-              msg: "엑세스 토큰이 만료되었습니다. 다시 로그인하세요"
-            });
-            setTimeout(() => {
-              commit("ShowAlert", { flag: false, msg: "" });
-            }, 2000);
-            this.$router.push({ name: "Login" });
+          .catch(err => {
+            if (err.response.status === 401 || err.response.status === 9999) {
+              // 토큰 갱신 실패 (9999) 처리
+              console.log("너는 은하철도");
+              commit("LOGOUT");
+              commit("ShowAlert", {
+                flag: true,
+                msg: "엑세스 토큰이 만료되었습니다. 다시 로그인하세요"
+              });
+              setTimeout(() => {
+                commit("ShowAlert", { flag: false, msg: "" });
+              }, 2000);
+            }
+            if (err.response.status === 500) {
+              // logout 한 경우
+              commit("ShowAlert", {
+                flag: true,
+                msg: "로그아웃 되었습니다."
+              });
+              setTimeout(() => {
+                commit("ShowAlert", { flag: false, msg: "" });
+              }, 2000);
+            }
           });
       };
       setTimeout(res, timeUntilRef);
