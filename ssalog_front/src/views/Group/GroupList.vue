@@ -91,37 +91,10 @@ export default {
         },
         {
           GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
-        },
-        {
-          GroupName: "호다닥"
         }
       ],
       searchGroup: [],
-      // 그룹 가입 관련 data
+      // 그룹 생성 관련 data
       createGroupDialog: false,
       createGroupName: "",
       createGroupIntro: ""
@@ -130,10 +103,18 @@ export default {
   methods: {
     async makeGroup() {
       try {
-        const res = await this.$http.post(`${this.ServerURL}/user/grouping/make_group`, {
+        await this.$http.post(`${this.ServerURL}/user/grouping/make_group`, {
           groupname: this.createGroupName,
           groupdesc: this.createGroupIntro
         });
+        this.$store.commit("ShowAlert", { flag: true, msg: "그룹 생성이 완료 되었습니다" });
+        setTimeout(() => {
+          this.$store.commit("ShowAlert", { flag: false, msg: "" });
+        }, 2000);
+        this.myGroup.push({ GroupName: this.createGroupName });
+        this.createGroupName = "";
+        this.createGroupIntro = "";
+        this.createGroupDialog = false;
       } catch (err) {
         // 이미 그룹이 존재함으로써 받는 에러코드
         console.error(err);
