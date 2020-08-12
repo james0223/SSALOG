@@ -334,7 +334,14 @@ export default {
     },
     write() {
       if (!this.title) {
-        alert("제목을 입력해주세요");
+        this.$store.commit("ShowAlert", {
+          flag: true,
+          msg: "제목을 입력해주세요",
+          color: "error"
+        });
+        setTimeout(() => {
+          this.$store.commit("ShowAlert", { flag: false, msg: "" });
+        }, 2000);
         return;
       }
       this.resData.username = this.username;

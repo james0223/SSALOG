@@ -6,7 +6,7 @@
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
     <!-- </v-container> -->
-    <v-snackbar color="error" top v-model="showAlert">
+    <v-snackbar :color="alertColor" top v-model="showAlert">
       {{ AlertMessage }}
     </v-snackbar>
   </v-app>
@@ -37,7 +37,7 @@ export default {
       }
     }
   },
-  computed: mapState(["showAlert", "AlertMessage"]),
+  computed: mapState(["showAlert", "AlertMessage", "alertColor"]),
   watch: {
     // eslint-disable-next-line
     AlertMessage: function(newVal) {

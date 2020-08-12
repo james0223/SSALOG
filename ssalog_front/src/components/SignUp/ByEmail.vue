@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "ByEmail",
   data() {
@@ -101,6 +103,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["ShowAlert"]),
     checkCode() {
       const { code, originCode } = this.codeCheck;
       if (code !== originCode || !originCode || !code) {
@@ -200,10 +203,20 @@ export default {
       } else {
         try {
           await this.$store.dispatch("SIGNUP", this.userData);
-          alert("회원가입이 완료되었습니다 :)");
+          this.ShowAlert({ flag: true, msg: "회원가입이 완료되었습니다 :)", color: "info" });
+          setTimeout(() => {
+            this.ShowAlert({ flag: false, msg: "" });
+          }, 2000);
           this.$router.push({ name: "Home" });
         } catch (e) {
-          alert("오류가 발생했습니다. 다시 접근해주세요 :(");
+          this.ShowAlert({
+            flag: true,
+            msg: "오류가 발생했습니다. 다시 접근해주세요",
+            color: "error"
+          });
+          setTimeout(() => {
+            this.ShowAlert({ flag: false, msg: "" });
+          }, 2000);
           console.error(e);
         }
       }

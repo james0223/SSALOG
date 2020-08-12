@@ -65,6 +65,7 @@
 
 <script>
 import axios from "axios";
+import { mapMutations } from "vuex";
 
 export default {
   name: "FindPass",
@@ -82,6 +83,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["ShowAlert"]),
     updatePasswordReq() {
       this.errorMsg = null;
       if (!this.account.password || !this.account.passwordCheck) {
@@ -97,7 +99,14 @@ export default {
           })
           .then(({ data }) => {
             if (data) {
-              alert("비밀번호 변경성공! 다시 로그인해주세요");
+              this.ShowAlert({
+                flag: true,
+                msg: "비밀번호 변경 성공! 다시 로그인해주세요",
+                color: "info"
+              });
+              setTimeout(() => {
+                this.ShowAlert({ flag: false, msg: "" });
+              }, 2000);
               this.$router.push({ name: "Home" });
             } else {
               this.errorMsg = "서버에러";

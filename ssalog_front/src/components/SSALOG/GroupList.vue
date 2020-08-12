@@ -107,7 +107,11 @@ export default {
           groupname: this.createGroupName,
           groupdesc: this.createGroupIntro
         });
-        this.$store.commit("ShowAlert", { flag: true, msg: "그룹 생성이 완료 되었습니다" });
+        this.$store.commit("ShowAlert", {
+          flag: true,
+          msg: "그룹 생성이 완료 되었습니다",
+          color: "info"
+        });
         setTimeout(() => {
           this.$store.commit("ShowAlert", { flag: false, msg: "" });
         }, 2000);

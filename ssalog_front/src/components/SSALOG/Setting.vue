@@ -132,7 +132,14 @@ export default {
             }
           });
           if (data) {
-            alert("비밀번호가 성공적으로 변경되었습니다!");
+            this.$store.commit("ShowAlert", {
+              flag: true,
+              msg: "비밀번호가 성공적으로 변경되었습니다!",
+              color: "info"
+            });
+            setTimeout(() => {
+              this.$store.commit("ShowAlert", { flag: false, msg: "" });
+            }, 2000);
             this.dialog = false;
           }
         } catch (e) {
