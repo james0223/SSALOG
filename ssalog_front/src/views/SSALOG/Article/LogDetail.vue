@@ -6,7 +6,7 @@
           <v-card-title
             ><h2>{{ title }}</h2>
             <v-spacer></v-spacer>
-            <div v-if="nickname === writerNickname">
+            <div v-if="username === writerUsername">
               <v-btn text @click="editSolution">수정</v-btn>
               <v-btn text @click="deleteSolution">삭제</v-btn>
             </div>
@@ -154,7 +154,7 @@ export default {
       thumbnailDialog: false,
       ThumbnailSelect: 0,
       writerThumbnail: null,
-      writerNickname: this.$route.params.nickname,
+      writerNickname: null,
       items: [
         { text: "사진 업로드", icon: "mdi-camera-enhance" },
         { text: "기본이미지로 변경", icon: "mdi-camera-off" }
@@ -298,6 +298,7 @@ export default {
         this.problemNum = res.data.problemid;
         this.problemTitle = res.data.problemname;
         this.writerUsername = res.data.username;
+        this.writerNickname = res.data.nickname;
         this.htmlData = res.data.html;
         this.updatedDate = res.data.regdate;
         this.language = res.data.language;

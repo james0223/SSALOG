@@ -221,6 +221,7 @@ import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
 import "highlight.js/styles/github.css";
 
+import lodash from "lodash";
 import axios from "axios";
 import getSSALOG from "../../../utils/SSALOG";
 
@@ -355,7 +356,7 @@ export default {
           this.$router.push({
             name: "LogDetail",
             // eslint-disable-next-line
-            params: { nickname: this.nickname} // id 안넣어도 지금 url 에서 자동으로 담아서 날려준다..
+            params: { nickname: this.nickname } // id 안넣어도 지금 url 에서 자동으로 담아서 날려준다..
           });
         })
         .catch(function(error) {
@@ -368,20 +369,27 @@ export default {
       that.resData = await getSSALOG(that.$route.params.id);
       // 이미 작성한 것을 수정할때
       that.isUpdating = that.resData.html == null ? false : true;
-      console.log(that.isUpdating);
-      console.log("isupdating=" + that.isUpdating);
       if (!that.isUpdating) {
         // 속성이 없다면.
         // 속성 추가해주기
         const transCode = that.codearea.state.tr.insertText(that.resData.code);
         that.codearea.view.dispatch(transCode);
         that.codearea.commands.code_block();
+        that.title = lodash.sample([
+          `${this.nickname}님의 친절한 ${that.resData.problemname} 풀이`,
+          `${that.resData.problemname} 3초컷`,
+          `${that.resData.problemname} 은(는) 진짜 전설이다...`,
+          `가슴이 웅장해지는 ${that.resData.problemname} 풀이`,
+          `${that.resData.problemname} 왜이렇게 어렵냐...`,
+          `${that.resData.problemname} 빛의 속도로 풀었음`,
+        ]);
         that.resData.SelectedProblemCategory = [];
         that.resData.html = "";
       } else {
         const transCode = that.codearea.state.tr.insertText(that.resData.code);
         that.codearea.view.dispatch(transCode);
         that.codearea.commands.code_block();
+        that.title = that.resData.title;
         that.SelectedProblemCategory = that.resData.keyword;
         that.editor.setContent(that.resData.html);
       }
