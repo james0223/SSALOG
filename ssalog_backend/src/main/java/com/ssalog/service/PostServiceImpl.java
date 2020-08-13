@@ -12,10 +12,12 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssalog.dto.Account;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
 import com.ssalog.dto.solvelang;
+import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
 
@@ -26,7 +28,8 @@ public class PostServiceImpl implements PostService{
 	PostRepository postRepository;
 	@Autowired
 	ProblemRepository problemRepository;
-	
+	@Autowired
+	AccountRepository accountRepository;
 	@Override
 	public Post write_post(Post post) {
 		return postRepository.save(post);
@@ -146,6 +149,9 @@ public class PostServiceImpl implements PostService{
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
 				if(problem == null) {
 					problem = new Problem();
+//					Account ac = accountRepository.findByUsername(username);
+//					problem.setStarter(username);
+//					problem.setStarter_img(ac.getImgpath()==null?"default.png");
 				}else {
 					problem = delete_problem(problem, p);
 				}
