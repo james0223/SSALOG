@@ -19,8 +19,8 @@ public class PostSubServiceImpl implements PostSubService{
 	
 
 	@Override
-	public Page<PostSub> select_by_problemid(String problemid, PageRequest pageable) {
-		return postSubRepository.findByProblemid(problemid, pageable);
+	public Page<PostSub> select_by_problemid(String problemid,String language, PageRequest pageable) {
+		return postSubRepository.findByProblemidAndLanguage(problemid, language, pageable);
 	}
 
 	@Override
@@ -59,5 +59,10 @@ public class PostSubServiceImpl implements PostSubService{
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public long problem_cnt(String problemid) {
+		return postSubRepository.findByProblemid(problemid).size();
 	}
 }

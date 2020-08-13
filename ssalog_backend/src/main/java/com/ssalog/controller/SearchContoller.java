@@ -104,10 +104,14 @@ public class SearchContoller {
 	
 	@ApiOperation(value ="[detail page] 문제번호와, 페이지정보를 주면, 해당 문제를 푼사람의 정보를 보여줌")
 	@GetMapping("/detail_list")
-	public ResponseEntity<Page<PostSub>> detail_page(@RequestParam("problemid") String problemid, PageRequest pageable){
-		return new ResponseEntity<Page<PostSub>>(postSubService.select_by_problemid(problemid, pageable.ofs()), HttpStatus.OK);
+	public ResponseEntity<Page<PostSub>> detail_page(@RequestParam("problemid") String problemid, @RequestParam("language") String language,PageRequest pageable){
+		return new ResponseEntity<Page<PostSub>>(postSubService.select_by_problemid(problemid, language, pageable.ofs()), HttpStatus.OK);
 	}
-	
+	@ApiOperation(value ="[detail page] 해당 문제번호에 해당 하는 포스팅이 몇개나 존재하는지 개수를 세줍니다.")
+	@GetMapping("/detail_page_cnt")
+	public ResponseEntity<Long> detail_page_cnt(@RequestParam("problemid") String problemid){
+		return new ResponseEntity<Long>(postSubService.problem_cnt(problemid), HttpStatus.OK);
+	}
 	@ApiOperation(value ="[detail page] 문제번호를 주면, 해당 문제를 푼 키워드의 종류와 각각 키워드 사용횟수를 줌")
 	@GetMapping("/detail_py")
 	public ResponseEntity<Map<String, Integer>> detail_py(@RequestParam("problemid") String problemid){

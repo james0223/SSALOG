@@ -10,6 +10,7 @@ public class PostSub {
 	@MongoId
 	private String scoring;
 	private String username;
+	private String nickname;
 	private String language;
 	private int len;
 	private int memory;
@@ -23,11 +24,13 @@ public class PostSub {
 	
 	public PostSub() {}
 
-	public PostSub(String scoring, String username, String language, int len, int memory, String problemid,
-			String problemname, int time, int like, List<String> keyword, String regdate, String regtime) {
+	public PostSub(String scoring, String username, String nickname, String language, int len, int memory,
+			String problemid, String problemname, int time, int like, List<String> keyword, String regdate,
+			String regtime) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
+		this.nickname = nickname;
 		this.language = language;
 		this.len = len;
 		this.memory = memory;
@@ -38,6 +41,15 @@ public class PostSub {
 		this.keyword = keyword;
 		this.regdate = regdate;
 		this.regtime = regtime;
+	}
+
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getScoring() {
