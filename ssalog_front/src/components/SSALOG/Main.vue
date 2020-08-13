@@ -11,7 +11,12 @@
       v-bind:end-date="new Date()"
     ></calendar-heatmap>
     <v-row>
-      <v-col cols="5"> <DoughNutChart v-bind:chart-data="chartData" /> </v-col>
+      <v-col cols="5">
+        <v-row justify="center">
+          <h3>키워드 빈도 그래프</h3>
+        </v-row>
+        <DoughNutChart v-bind:chart-data="chartData" />
+      </v-col>
       <v-col cols="7">
         <v-row no-gutters>
           <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
@@ -23,6 +28,12 @@
           >
         </v-row>
         <v-divider></v-divider>
+        <v-row>
+          <v-col>
+            <p class="p-2 text-center text--secondary  ">👨🏻‍🎓알고리즘 박사가 되는 그날까지👨‍🎓</p>
+            <p class="p-3 text-center text--secondary">📙쌀로그에서 알고리즘을 정리하기🧾</p>
+          </v-col>
+        </v-row>
         <v-list>
           <v-list-item-group>
             <v-list-item
@@ -77,7 +88,15 @@ export default {
         ],
         rangeColor: ["#FFFDE7", "#FFF9C4", "#FFF59D", "#FFF176", "#FFEE58"]
       },
-      chartData: {}
+      chartData: {
+        labels: ["자신있는", "알고리즘", "유형파악"],
+        datasets: [
+          {
+            backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+            data: [4, 2, 1]
+          }
+        ]
+      }
     };
   },
   computed: mapState(["ServerURL"]),
@@ -90,15 +109,17 @@ export default {
           }
         });
 
-        this.chartData = {
-          labels: Object.keys(res.data),
-          datasets: [
-            {
-              backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
-              data: Object.values(res.data)
-            }
-          ]
-        };
+        if (Object.keys(res.data).length !== 0) {
+          this.chartData = {
+            labels: Object.keys(res.data),
+            datasets: [
+              {
+                backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+                data: Object.values(res.data)
+              }
+            ]
+          };
+        }
       } catch (e) {
         console.error(e);
       }

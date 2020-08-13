@@ -247,9 +247,6 @@ export default {
       }
     }
   },
-  beforeDestroy() {
-    this.html();
-  },
   created() {
     this.get();
   }

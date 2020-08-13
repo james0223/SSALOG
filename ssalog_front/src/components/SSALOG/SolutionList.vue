@@ -18,6 +18,7 @@
       :headers="headers"
       :items="solutions"
       :search="search"
+      no-data-text="😢 데이터가 없습니다 😢"
       item-key="scoring"
       :items-per-page="10"
       class="elevation-1"
