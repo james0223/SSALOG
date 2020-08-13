@@ -8,4 +8,5 @@ public interface GroupRepository extends JpaRepository<GroupDTO, Long>{
 	public GroupDTO findByGroupname(String groupname);
 	public GroupDTO findByAccount_usernameAndGroupname(String username, String groupname);
 	public GroupDTO findByAccount_username(String username);
+	public GroupDTO findByAccount_nicknameAndGroupname(String nickname, String groupname);
 }

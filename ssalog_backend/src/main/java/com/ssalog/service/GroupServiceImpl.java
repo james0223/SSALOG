@@ -94,6 +94,7 @@ public class GroupServiceImpl implements GroupService{
 			List<GroupRegist> list = groupRegistRepository.findByGroupdto_groupname(groupname);
 			for(int i=0; i<list.size(); i++) {
 				Map<String,String> m = new HashMap<>();
+				m.put("regid", String.valueOf(list.get(i).getId()));
 				m.put("nickname",list.get(i).getAccount().getNickname());
 				m.put("introduce", list.get(i).getIntroduce());
 				m.put("img",list.get(i).getAccount().getImgpath());

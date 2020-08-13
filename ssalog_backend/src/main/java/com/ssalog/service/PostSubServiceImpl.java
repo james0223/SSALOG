@@ -16,6 +16,7 @@ import com.ssalog.repository.PostSubRepository;
 public class PostSubServiceImpl implements PostSubService{
 	@Autowired
 	PostSubRepository postSubRepository;
+	
 
 	@Override
 	public Page<PostSub> select_by_problemid(String problemid, PageRequest pageable) {

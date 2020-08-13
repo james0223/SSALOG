@@ -26,9 +26,11 @@ import com.ssalog.dto.AccountSub;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.Problem;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 import com.ssalog.service.PostSubService;
+import com.ssalog.service.ProblemService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -47,6 +49,8 @@ public class SearchContoller {
 	@Autowired
 	private PostSubService postSubService;
 	
+	@Autowired
+	private ProblemService problemService;
 	@ApiOperation(value = "[회원 조회] (p-022_마이페이지) 기능: page(몇 페이지), size(개수), direction(ASC:오름차순) 인자를 입력해 회원을 조회한다. 회원 nickname을 입력받으면, nickname 기준으로 검색한다., nickname값이 없으면, 모든 회원을 조회한다 ")
 	@GetMapping("/to_nickname")
 	public ResponseEntity<Page<AccountSub>> findToNickname(@RequestParam(required=false) String nickname, PageRequest pageable){
@@ -55,24 +59,24 @@ public class SearchContoller {
 	
 	@ApiOperation(value ="[post problemid 조회] 문제번호로 검색해서, 해당 문제를 포스팅한을 모두 가져온다.")
 	@GetMapping("/to_problemid")
-	public ResponseEntity<Page<PostSub>> findByproblemid(@RequestParam("problemid") String problemid, PageRequest pageable){
-		return new ResponseEntity<Page<PostSub>>(postSubService.select_by_problemid(problemid, pageable.of()),HttpStatus.OK);
+	public ResponseEntity<Page<Problem>> findByproblemid(@RequestParam("problemid") String problemid, PageRequest pageable){
+		return new ResponseEntity<Page<Problem>>(problemService.select_by_problemid(problemid, pageable.of()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[post problemname 조회] 문제이름으로 검색해서, 그 문제를 포스팅한 글들을 모두 찾아온다.")
 	@GetMapping("/to_problemname")
-	public ResponseEntity<Page<PostSub>> findByproblemname(@RequestParam("problemname") String problemname, PageRequest pageable){
-		return new ResponseEntity<Page<PostSub>>(postSubService.select_by_problemname(problemname, pageable.of()),HttpStatus.OK);
+	public ResponseEntity<Page<Problem>> findByproblemname(@RequestParam("problemname") String problemname, PageRequest pageable){
+		return new ResponseEntity<Page<Problem>>(problemService.select_by_problemname(problemname, pageable.of()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[post keyword 조회] list로 전달한 keyword를 모두 사용하여 해결한 포스팅한 글들을 찾아온다.")
 	@GetMapping("/to_keyword")
-	public ResponseEntity<Page<PostSub>> findBykeyword(@RequestParam(value ="param[]") String[] keyword, PageRequest pageable){
+	public ResponseEntity<Page<Problem>> findBykeyword(@RequestParam(value ="param[]") String[] keyword, PageRequest pageable){
 		List<String> s = new ArrayList<>();
 		for(int i=0; i<keyword.length; i++) {
 			s.add(keyword[i]);
 		}
-		return new ResponseEntity<Page<PostSub>>(postSubService.findkey(s, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<Page<Problem>>(problemService.findkey(s, pageable.of()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[post username 조회] 해당 username을 가진 사용자가 포스팅한 글들을 모두 찾아온다.")

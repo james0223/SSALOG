@@ -9,4 +9,5 @@ import com.ssalog.dto.GroupRegist;
 public interface GroupRegistRepository extends JpaRepository<GroupRegist, Long>{
 	public GroupRegist findByGroupdto_groupnameAndAccount_username(String groupname, String username);
 	public List<GroupRegist> findByGroupdto_groupname(String groupname);
+	public GroupRegist findByGroupdto_groupnameAndAccount_nickname(String groupname, String nickname);
 }
