@@ -189,18 +189,18 @@ export default {
   },
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
   methods: {
-    followclick() {
-      // this.isfollow = !this.isfollow;
-      if (this.isfollow) {
+    async followclick() {
+      console.log("flag=".concat(this.isfollow));
+      if (!this.isfollow) {
         // console.log("팔로우걸기");
-        axios
+        await axios
           .post(
             `${this.$store.state.ServerURL}/user/follow/do_follow`,
             {},
             { params: { following: this.ownerName } }
           )
           .then(() => {
-            // console.log("성공");
+            console.log("추가성공");
             this.isfollow = !this.isfollow;
           })
           .catch(function(error) {
@@ -209,7 +209,7 @@ export default {
           });
       } else {
         // console.log("팔로우취소");
-        axios
+        await axios
           .delete(`${this.ServerURL}/user/follow/cancel_follow`, {
             params: { following: this.ownerName }
           })
@@ -281,6 +281,7 @@ export default {
         .then(res => {
           // console.log(res.data);
           this.isfollow = res.data;
+          console.log("flag=".concat(this.isfollow));
         });
     }
   },

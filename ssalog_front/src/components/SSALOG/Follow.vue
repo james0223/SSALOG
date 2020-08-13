@@ -116,7 +116,6 @@ export default {
       }
     },
     async deleteFollow(target) {
-      alert(target);
       try {
         const res = await axios.delete(
           `${this.$store.state.ServerURL}
