@@ -159,15 +159,20 @@ public class GroupServiceImpl implements GroupService{
 	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit,String mention) {
 		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
 		if(g!=null) {
-			GroupGoal gg = new GroupGoal();
-			gg.setCnt(0L);
-			gg.setDate(limit);
-			gg.setProblemid(problemid);
-			gg.setProblemname(problemname);
-			gg.setGroupdto(g);
-			gg.setMention(mention);
-			groupGoalRepository.save(gg);
-			return "success";
+			GroupGoal is_gg= groupGoalRepository.findByProblemidAndGroupdto_groupname(problemid, groupname);
+			if(is_gg != null) {
+				return "fail";
+			}else {
+				GroupGoal gg = new GroupGoal();
+				gg.setCnt(0L);
+				gg.setDate(limit);
+				gg.setProblemid(problemid);
+				gg.setProblemname(problemname);
+				gg.setGroupdto(g);
+				gg.setMention(mention);
+				groupGoalRepository.save(gg);
+				return "success";
+			}
 		}
 		return "fail";
 	}
@@ -222,14 +227,14 @@ public class GroupServiceImpl implements GroupService{
 				m.put("id",list.get(i).getId());
 				lm.add(m);
 			}
-//			String[] slist = new String[list.size()];
-//			Map<String, String> m = new HashMap<>();
+			//			String[] slist = new String[list.size()];
+			//			Map<String, String> m = new HashMap<>();
 			return lm;
-//			for(int i=0; i<list.size(); i++) {
-//				GroupGoal gg = list.get(i);
-//				slist[i] = gg.getProblemid();
-//			}
-//			return postRepository.solved_list(slist, pageable);
+			//			for(int i=0; i<list.size(); i++) {
+			//				GroupGoal gg = list.get(i);
+			//				slist[i] = gg.getProblemid();
+			//			}
+			//			return postRepository.solved_list(slist, pageable);
 		}
 		return null;
 	}
@@ -249,13 +254,13 @@ public class GroupServiceImpl implements GroupService{
 				lm.add(m);
 			}
 			return lm;
-//			String[] slist = new String[list.size()];
-//			Map<String, String> m = new HashMap<>();
-//			for(int i=0; i<list.size(); i++) {
-//				GroupGoal gg = list.get(i);
-//				slist[i] = gg.getProblemid();
-//			}
-//			return postRepository.solved_list(slist, pageable);
+			//			String[] slist = new String[list.size()];
+			//			Map<String, String> m = new HashMap<>();
+			//			for(int i=0; i<list.size(); i++) {
+			//				GroupGoal gg = list.get(i);
+			//				slist[i] = gg.getProblemid();
+			//			}
+			//			return postRepository.solved_list(slist, pageable);
 		}
 		return null;
 	}
