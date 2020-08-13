@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssalog.config.webhook;
 import com.ssalog.dto.GroupDTO;
 import com.ssalog.dto.GroupRegist;
+import com.ssalog.dto.GroupRole;
 import com.ssalog.dto.Groupdetail;
 import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.service.GroupService;
@@ -63,6 +64,7 @@ public class GroupController {
 		return new ResponseEntity<List<GroupRegist>>(groupService.appliylist(username, groupname),HttpStatus.OK);
 	}
 	
+
 	@PostMapping("user/grouping/apply_accept")
 	@ApiOperation(value = "[그룹 가입신청 수락] 내 그룹에 신청한 가입을 수락합니다.")
 	public ResponseEntity<String> apply_accept(HttpServletResponse response,@RequestParam("groupname") String groupname, @RequestParam("regid") Long regid) {
@@ -88,6 +90,14 @@ public class GroupController {
 	public ResponseEntity<String> apply_accept(HttpServletResponse response, @RequestParam("regid") Long regid) {
 		String username = response.getHeader("username"); 
 		return new ResponseEntity<String>(groupService.applyreject(username, regid),HttpStatus.OK);
+	}
+	
+	@GetMapping("user/grouping/myGrouplist")
+	@ApiOperation(value = "[그룹 보기] 내가 가입한 그룹목록을 보여줍니다. 사용자 입장")
+	public ResponseEntity<?> myGroup(HttpServletResponse response) {
+		String username = response.getHeader("username"); 
+		Map<String, GroupRole> m = groupService.myGroup(username);
+		return new ResponseEntity<Map<String, GroupRole>>(m,HttpStatus.OK);
 	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {

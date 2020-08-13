@@ -167,4 +167,27 @@ public class GroupServiceImpl implements GroupService{
 		}
 		return m;
 	}
+
+	@Override
+	public Map<String, GroupRole> myGroup(String username){
+		List<Groupdetail> gd = groupDetailRepository.findByAccount_username(username);
+		if(gd != null) {
+			Map<String, GroupRole> m = new HashMap<>();
+			for(int i=0; i<gd.size(); i++) {
+				m.put(gd.get(i).getGroupdto().getGroupname(), gd.get(i).getRole());
+			}
+			return m;
+		}
+		return null;
+	}
+
+	public List<GroupRegist> appliylist_forowner(String username,String groupname) {
+		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
+		if(g != null) {
+			List<GroupRegist> list = groupRegistRepository.findByGroupdto_groupname(groupname);
+			return list;
+		}else {
+			return null;
+		}
+	}
 }

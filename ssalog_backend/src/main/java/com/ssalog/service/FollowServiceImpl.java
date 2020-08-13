@@ -47,9 +47,9 @@ public class FollowServiceImpl implements FollowService{
 	public Boolean is_follow(String follower, String following) {
 		Follow is_f = followRepository.findByFollower_usernameAndFollowing_nickname(follower, following);
 		if(is_f == null) {
-			return true;
-		}else {
 			return false;
+		}else {
+			return true;
 		}
 	}
 

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.ssalog.dto.GroupDTO;
 import com.ssalog.dto.GroupRegist;
+import com.ssalog.dto.GroupRole;
 
 public interface GroupService {
 
@@ -16,5 +17,6 @@ public interface GroupService {
 	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit);
 	public Map<String, Boolean> checkGoal(String groupname,String problemid);
 	public String applyreject(String username,Long regid);
+	public Map<String, GroupRole> myGroup(String username);
 	
 }

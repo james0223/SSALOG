@@ -1,5 +1,6 @@
 package com.ssalog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +26,7 @@ import com.ssalog.dto.AccountSub;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.findKeyword;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 import com.ssalog.service.PostSubService;
@@ -64,8 +68,12 @@ public class SearchContoller {
 	
 	@ApiOperation(value ="[post keyword 조회] list로 전달한 keyword를 모두 사용하여 해결한 포스팅한 글들을 찾아온다.")
 	@GetMapping("/to_keyword")
-	public ResponseEntity<Page<PostSub>> findBykeyword(@RequestParam("keyword") List<String> keyword, PageRequest pageable){
-		return new ResponseEntity<Page<PostSub>>(postSubService.findkey(keyword, pageable.of()),HttpStatus.OK);
+	public ResponseEntity<Page<PostSub>> findBykeyword(@RequestParam(value ="param[]") String[] keyword, PageRequest pageable){
+		List<String> s = new ArrayList<>();
+		for(int i=0; i<keyword.length; i++) {
+			s.add(keyword[i]);
+		}
+		return new ResponseEntity<Page<PostSub>>(postSubService.findkey(s, pageable.of()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[post username 조회] 해당 username을 가진 사용자가 포스팅한 글들을 모두 찾아온다.")
