@@ -190,20 +190,22 @@ export default {
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
   methods: {
     followclick() {
-      this.isfollow = !this.isfollow;
+      // this.isfollow = !this.isfollow;
       if (this.isfollow) {
         // console.log("팔로우걸기");
         axios
           .post(
-            `${this.ServerURL}/user/follow/do_follow`,
+            `${this.$store.state.ServerURL}/user/follow/do_follow`,
             {},
             { params: { following: this.ownerName } }
           )
           .then(() => {
-            console.log("성공");
+            // console.log("성공");
+            this.isfollow = !this.isfollow;
           })
           .catch(function(error) {
             console.log(error);
+            alert("로그인이 필요합니다.");
           });
       } else {
         // console.log("팔로우취소");
@@ -213,9 +215,11 @@ export default {
           })
           .then(() => {
             console.log("취소성공");
+            this.isfollow = !this.isfollow;
           })
           .catch(function(error) {
             console.log(error);
+            alert("로그인이 필요합니다.");
           });
       }
     },
@@ -262,10 +266,27 @@ export default {
           this.$store.dispatch("Thumbnail", this.$store.state.username);
           // window.location.reload();
         });
+    },
+    getFollowFlag() {
+      axios
+        .get(`${this.$store.state.ServerURL}/user/follow/is_follow`, {
+          params: {
+            following: this.$route.params.nickname
+          }
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        })
+        .then(res => {
+          // console.log(res.data);
+          this.isfollow = res.data;
+        });
     }
   },
   created() {
     this.getThumbnail();
+    this.getFollowFlag();
   }
 };
 </script>
