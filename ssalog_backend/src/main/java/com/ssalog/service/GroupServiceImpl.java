@@ -206,34 +206,54 @@ public class GroupServiceImpl implements GroupService{
 	}
 
 	@Override
-	public Page<Problem> preGoal(String username, String groupname, PageRequest pageable) {
+	public List<Map<String,Object>> preGoal(String username, String groupname, PageRequest pageable) {
 		Groupdetail gd = groupDetailRepository.findByAccount_usernameAndGroupdto_groupname(username,groupname);
 		if(gd != null) {
 			Date time = new Date();
 			List<GroupGoal> list = groupGoalRepository.findByDateGreaterThanAndGroupdto_groupname(time,groupname);
-			String[] slist = new String[list.size()];
-			Map<String, String> m = new HashMap<>();
+			List<Map<String,Object>> lm = new ArrayList<>();
 			for(int i=0; i<list.size(); i++) {
-				GroupGoal gg = list.get(i);
-				slist[i] = gg.getProblemid();
+				Map<String,Object> m = new HashMap<>();
+				m.put("problemid",list.get(i).getProblemid());
+				m.put("problemname", list.get(i).getProblemname());
+				m.put("limit", list.get(i).getDate());
+				m.put("id",list.get(i).getId());
+				lm.add(m);
 			}
-			return postRepository.solved_list(slist, pageable);
+//			String[] slist = new String[list.size()];
+//			Map<String, String> m = new HashMap<>();
+			return lm;
+//			for(int i=0; i<list.size(); i++) {
+//				GroupGoal gg = list.get(i);
+//				slist[i] = gg.getProblemid();
+//			}
+//			return postRepository.solved_list(slist, pageable);
 		}
 		return null;
 	}
 	@Override
-	public Page<Problem> postGoal(String username, String groupname, PageRequest pageable) {
+	public List<Map<String,Object>> postGoal(String username, String groupname, PageRequest pageable) {
 		Groupdetail gd = groupDetailRepository.findByAccount_usernameAndGroupdto_groupname(username,groupname);
 		if(gd != null) {
 			Date time = new Date();
 			List<GroupGoal> list = groupGoalRepository.findByDateLessThanAndGroupdto_groupname(time,groupname);
-			String[] slist = new String[list.size()];
-			Map<String, String> m = new HashMap<>();
+			List<Map<String,Object>> lm = new ArrayList<>();
 			for(int i=0; i<list.size(); i++) {
-				GroupGoal gg = list.get(i);
-				slist[i] = gg.getProblemid();
+				Map<String,Object> m = new HashMap<>();
+				m.put("problemid",list.get(i).getProblemid());
+				m.put("problemname", list.get(i).getProblemname());
+				m.put("limit", list.get(i).getDate());
+				m.put("id",list.get(i).getId());
+				lm.add(m);
 			}
-			return postRepository.solved_list(slist, pageable);
+			return lm;
+//			String[] slist = new String[list.size()];
+//			Map<String, String> m = new HashMap<>();
+//			for(int i=0; i<list.size(); i++) {
+//				GroupGoal gg = list.get(i);
+//				slist[i] = gg.getProblemid();
+//			}
+//			return postRepository.solved_list(slist, pageable);
 		}
 		return null;
 	}
