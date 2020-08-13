@@ -156,7 +156,7 @@ public class GroupServiceImpl implements GroupService{
 	}
 	// 문제 제출하기
 	@Override
-	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit) {
+	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit,String mention) {
 		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
 		if(g!=null) {
 			GroupGoal gg = new GroupGoal();
@@ -165,6 +165,7 @@ public class GroupServiceImpl implements GroupService{
 			gg.setProblemid(problemid);
 			gg.setProblemname(problemname);
 			gg.setGroupdto(g);
+			gg.setMention(mention);
 			groupGoalRepository.save(gg);
 			return "success";
 		}

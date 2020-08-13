@@ -79,10 +79,10 @@ public class GroupController {
 	
 	@PostMapping("user/grouping/make_goal")
 	@ApiOperation(value = "[그룹목표 설정] 그룹장이 목표에 해당하는 문제를 설정한다.")
-	public ResponseEntity<String> make_goal(HttpServletResponse response,@RequestParam("groupname") String groupname,@RequestParam("problemid") String problemid,@RequestParam("problemname") String problemname,@RequestParam("limitday") @DateTimeFormat(iso = ISO.DATE_TIME) Date limit) {
+	public ResponseEntity<String> make_goal(HttpServletResponse response,@RequestParam("groupname") String groupname,@RequestParam("problemid") String problemid,@RequestParam("problemname") String problemname,@RequestParam("limitday") @DateTimeFormat(iso = ISO.DATE_TIME) Date limit, @RequestParam(required = false) String mention) {
 		String username = response.getHeader("username"); 
 		System.out.println("limit = " + limit);
-		return new ResponseEntity<String>(groupService.makeGoal(username, groupname, problemid, problemname, limit),HttpStatus.OK);
+		return new ResponseEntity<String>(groupService.makeGoal(username, groupname, problemid, problemname, limit, mention),HttpStatus.OK);
 	}
 	@GetMapping("newuser/grouping/check_goal")
 	@ApiOperation(value = "[그룹원들이 얼마나 풀었는지 확인합니다.] 내 그룹에 가입신청한 목록을 봅니다.")
