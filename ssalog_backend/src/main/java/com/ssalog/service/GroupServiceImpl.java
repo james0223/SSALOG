@@ -188,6 +188,7 @@ public class GroupServiceImpl implements GroupService{
 					m.put(gd2.getAccount().getNickname(), "false");
 				}
 			}
+			m.put("problemid",problemid);
 			return m;
 		}
 		return null;
