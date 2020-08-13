@@ -96,4 +96,18 @@ public class additionalRepositoryImpl implements additionalRepository{
 		//plist.forEach(System.out::println);
 		return PageableExecutionUtils.getPage(plist, pageable, () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Problem.class));
 	}
+	
+	public Page<Problem> solved_list(String[] list, Pageable pageable) {
+		Query query = new Query().with(pageable);
+		Criteria criteria = new Criteria();
+		Criteria[] criteria_arr = new Criteria[list.length];
+		
+		for(int i=0; i<list.length; i++) {
+			criteria_arr[i] = Criteria.where("_id").is(list[i]);
+		}
+		query.addCriteria(criteria.orOperator(criteria_arr));
+		List<Problem> plist = mongoTemplate.find(query, Problem.class);
+		plist.forEach(System.out::println);
+		return PageableExecutionUtils.getPage(plist, pageable, () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Problem.class));
+	}
 }

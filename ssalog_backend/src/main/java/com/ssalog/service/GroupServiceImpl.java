@@ -11,6 +11,8 @@ import java.util.Optional;
 import javax.swing.text.DateFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
 import com.ssalog.dto.Groupdetail;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.Problem;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.GroupDetailRepository;
 import com.ssalog.repository.GroupGoalRepository;
@@ -28,6 +31,7 @@ import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.repository.GroupRepository;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.PostSubRepository;
+import com.ssalog.repository.ProblemRepository;
 
 @Transactional
 @Service
@@ -50,6 +54,8 @@ public class GroupServiceImpl implements GroupService{
 
 	@Autowired
 	PostSubRepository postSubRepository;
+	@Autowired
+	PostRepository postRepository;
 	// 그룹 만들기
 	@Override
 	public String makeGroup(GroupDTO g,String username) {
@@ -194,35 +200,83 @@ public class GroupServiceImpl implements GroupService{
 		}
 		return null;
 	}
-	
-	public void preGoal() {
-		
+
+	@Override
+	public Page<Problem> preGoal(String username, String groupname, PageRequest pageable) {
+		Groupdetail gd = groupDetailRepository.findByAccount_usernameAndGroupdto_groupname(username,groupname);
+		if(gd != null) {
+			Date time = new Date();
+			List<GroupGoal> list = groupGoalRepository.findByDateGreaterThanAndGroupdto_groupname(time,groupname);
+			String[] slist = new String[list.size()];
+			Map<String, String> m = new HashMap<>();
+			for(int i=0; i<list.size(); i++) {
+				GroupGoal gg = list.get(i);
+				slist[i] = gg.getProblemid();
+			}
+			return postRepository.solved_list(slist, pageable);
+		}
+		return null;
 	}
-//	// 문제이름, 푼사람, 안푼사람
-//	public void teamstatus(String nickname, String groupname) {
-//		Groupdetail gd = groupDetailRepository.findByAccount_nicknameAndGroupdto_groupname(nickname,groupname);
-//		if(gd != null) {
-//			List<Map<String,String>> result = new ArrayList<>();
-//			Date time = new Date();
-//			List<Groupdetail> glist = groupDetailRepository.findByGroupdto_groupname(groupname);
-//			List<GroupGoal> list = groupGoalRepository.findByDateGreaterThanAndGroupdto_groupname(time,groupname);
-//			for(int i=0; i<list.size() ;i++) {
-//				GroupGoal gg = list.get(i);
-//				Map<String, String> m = new HashMap<>();
-//				gg.getProblemid();
-//				for(int j=0; j<glist.size(); j++) {
-//					List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(glist.get(j).getAccount().getUsername(), gg.getProblemid());
-//					if(ps!=null) {
-//						m.put("problemname", gg.getProblemname());
-//						m.put("problemid", gg.getProblemid());
-//					}
-//				}
-//				System.out.println(list.get(i).getDate());
-//				System.out.println("=====================");
-//			}
-//		}else {
-//			//return "그룹원이  아닙니다";
-//		}
-//
-//	}
+	@Override
+	public Page<Problem> postGoal(String username, String groupname, PageRequest pageable) {
+		Groupdetail gd = groupDetailRepository.findByAccount_usernameAndGroupdto_groupname(username,groupname);
+		if(gd != null) {
+			Date time = new Date();
+			List<GroupGoal> list = groupGoalRepository.findByDateLessThanAndGroupdto_groupname(time,groupname);
+			String[] slist = new String[list.size()];
+			Map<String, String> m = new HashMap<>();
+			for(int i=0; i<list.size(); i++) {
+				GroupGoal gg = list.get(i);
+				slist[i] = gg.getProblemid();
+			}
+			return postRepository.solved_list(slist, pageable);
+		}
+		return null;
+	}
+
+	@Override
+	public List<Map<String,Object>> Mymember(String username, String groupname) {
+		Groupdetail gd = groupDetailRepository.findByAccount_usernameAndGroupdto_groupname(username,groupname);
+		if(gd != null) {
+			List<Groupdetail> glist = groupDetailRepository.findByGroupdto_groupname(groupname);
+			List<Map<String,Object>> lm = new ArrayList<>();
+			for(int i=0; i<glist.size(); i++) {
+				Map<String, Object> m = new HashMap<>();
+				Account ac = glist.get(i).getAccount();
+				m.put("nickname", ac.getNickname());
+				m.put("role", glist.get(i).getRole());
+				m.put("img", ac.getImgpath()==null?"default.png":ac.getImgpath());
+				lm.add(m);
+			}
+			return lm;
+		}
+		return null;
+	}
+	//	// 문제이름, 푼사람, 안푼사람
+	//	public void teamstatus(String nickname, String groupname) {
+	//		Groupdetail gd = groupDetailRepository.findByAccount_nicknameAndGroupdto_groupname(nickname,groupname);
+	//		if(gd != null) {
+	//			List<Map<String,String>> result = new ArrayList<>();
+	//			Date time = new Date();
+	//			List<Groupdetail> glist = groupDetailRepository.findByGroupdto_groupname(groupname);
+	//			List<GroupGoal> list = groupGoalRepository.findByDateGreaterThanAndGroupdto_groupname(time,groupname);
+	//			for(int i=0; i<list.size() ;i++) {
+	//				GroupGoal gg = list.get(i);
+	//				Map<String, String> m = new HashMap<>();
+	//				gg.getProblemid();
+	//				for(int j=0; j<glist.size(); j++) {
+	//					List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(glist.get(j).getAccount().getUsername(), gg.getProblemid());
+	//					if(ps!=null) {
+	//						m.put("problemname", gg.getProblemname());
+	//						m.put("problemid", gg.getProblemid());
+	//					}
+	//				}
+	//				System.out.println(list.get(i).getDate());
+	//				System.out.println("=====================");
+	//			}
+	//		}else {
+	//			//return "그룹원이  아닙니다";
+	//		}
+	//
+	//	}
 }

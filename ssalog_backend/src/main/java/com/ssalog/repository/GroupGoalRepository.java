@@ -11,4 +11,5 @@ import com.ssalog.dto.GroupGoal;
 
 public interface GroupGoalRepository extends JpaRepository<GroupGoal, Long>{
 	public List<GroupGoal> findByDateGreaterThanAndGroupdto_groupname(@DateTimeFormat(iso = ISO.DATE_TIME) Date limit,String groupname); 
+	public List<GroupGoal> findByDateLessThanAndGroupdto_groupname(@DateTimeFormat(iso = ISO.DATE_TIME) Date limit,String groupname); 
 }
