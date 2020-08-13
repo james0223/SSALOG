@@ -1,5 +1,6 @@
 package com.ssalog.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,13 +64,15 @@ public class ScrapServiceImpl implements ScrapService {
 		return "fail";
 	}
 	@Override
-	public Map<Integer, Scrapedpost> get_scrapList(String nickname){
+	public List<Scrapedpost> get_scrapList(String nickname){
 		List<Scrap> li = scrapRepository.findByScrap_nickname(nickname);
 		Map<Integer, Scrapedpost> m = new HashMap<>();
+		List<Scrapedpost> list = new ArrayList<>();
 		for(int i=0; i<li.size(); i++) {
 			Scrapedpost p = postSubRepository.findByScoring((li.get(i).getScraped()));
-			m.put(i, (Scrapedpost)p);
+			//m.put(i, (Scrapedpost)p);
+			list.add(p);
 		}
-		return m;
+		return list;
 	}
 }

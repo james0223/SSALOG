@@ -1,5 +1,6 @@
 package com.ssalog.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +44,8 @@ public class ScrapController {
 	
 	@ApiOperation(value = "[scrap 하기] 해당 사용자가 스크랩 하고 있는 글을 볼 수 있습니다.")
 	@GetMapping("newuser/scrap/scraplist")
-	public ResponseEntity<Map<Integer, Scrapedpost>> Scraplist(@RequestParam("nickname") String nickname){
-		return new ResponseEntity<Map<Integer, Scrapedpost>>(scrapService.get_scrapList(nickname), HttpStatus.OK);
+	public ResponseEntity<List<Scrapedpost>> Scraplist(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<List<Scrapedpost>>(scrapService.get_scrapList(nickname), HttpStatus.OK);
 	}
 	
 	
