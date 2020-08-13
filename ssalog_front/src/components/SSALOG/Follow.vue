@@ -1,54 +1,69 @@
 <template>
   <v-card flat height="60vh" class="pa-6 mt-8">
     <!-- <h2 class="text-center mt-16" v-if="isNoResult">팔로우가없습니다</h2> -->
-    <v-btn class="mr-1 pa-10  text-center   rounded-t-xl primary">
+    <v-btn class="mr-1 pa-10  text-center   rounded-t-xl primary" @click="getFollowing()">
       Following
     </v-btn>
-    <v-btn class="pa-10   text-center   rounded-t-xl primary">
+    <v-btn class="pa-10   text-center   rounded-t-xl primary" @click="getFollower">
       Follower
     </v-btn>
     <hr />
 
     <v-row>
-      <v-col v-for="(user, i) in users" :key="i" cols="3">
-        <v-hover style="cursor:pointer" v-slot:default="{ hover }">
-          <v-card
-            @click="visitUserDetail(user.nickname)"
-            align="center"
-            :elevation="hover ? 4 : 1"
-            style=" border-radius:10%; margin:30px;"
-          >
-            <v-img
-              :src="`${$store.state.ImgURL}/${user.imgpath ? user.imgpath : 'default.png'}`"
-              alt="유저 썸네일"
-              height="150px"
-            ></v-img>
+      <template v-if="Object.keys(this.users).length !== 0">
+        <v-col v-for="(user, i) in users" :key="i" cols="3">
+          <v-hover style="cursor:pointer" v-slot:default="{ hover }">
+            <v-card
+              @click="visitUserDetail(i)"
+              align="center"
+              :elevation="hover ? 4 : 1"
+              style=" border-radius:10%; margin:30px;"
+            >
+              <v-img
+                :src="`${$store.state.ImgURL}/${user ? user : 'default.png'}`"
+                alt="유저 썸네일"
+                height="150px"
+              ></v-img>
 
-            <v-card-subtitle> {{ user.nickname }} </v-card-subtitle>
-            <v-btn block color="red" text @click.stop="showAlert">
-              삭제
-            </v-btn>
-          </v-card>
-        </v-hover>
-      </v-col>
+              <v-card-subtitle> {{ i }} </v-card-subtitle>
+              <v-btn
+                v-if="flag && $store.state.nickname === $route.params.nickname"
+                block
+                color="red"
+                text
+                @click.stop="deleteFollow(i)"
+              >
+                <v-icon>mdi-delete-empty</v-icon>
+              </v-btn>
+            </v-card>
+          </v-hover>
+        </v-col>
+      </template>
+      <template v-else-if="flag">
+        <v-row class="col-12" align="center" justify="center">
+          <v-icon size="400">mdi-heart</v-icon>
+        </v-row>
+        <v-row align="center" justify="center">
+          <h2>팔로우를 통해 교류를 시작하세요 👨‍👩‍👧‍👦</h2>
+        </v-row>
+      </template>
+      <template v-else>
+        <v-row class="col-12" align="center" justify="center">
+          <v-icon size="400">mdi-heart</v-icon>
+        </v-row>
+        <v-row align="center" justify="center">
+          <h2>팔로워가 없습니다 😢</h2>
+        </v-row>
+      </template>
     </v-row>
-    <infinite-loading
-      v-if="limit >= searchData.page"
-      @infinite="infiniteHandler"
-      spinner="waveDots"
-    ></infinite-loading>
   </v-card>
 </template>
 
 <script>
 import axios from "axios";
-import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "AccountList",
-  components: {
-    InfiniteLoading
-  },
   data() {
     return {
       searchData: {
@@ -59,54 +74,70 @@ export default {
       },
       limit: 9999,
       users: [],
-      isNoResult: false
+      isNoResult: false,
+      flag: true
     };
   },
   methods: {
-    showAlert() {
-      alert("클릭");
-    },
-    infiniteHandler($state) {
-      setTimeout(() => {
-        this.fetchUserData();
-        $state.loaded();
-      }, 2000);
-    },
-    visitUserDetail(nickname) {
-      this.$router.push({ name: "SSalogMain", params: { nickname } });
-    },
-    async fetchUserData() {
+    async getFollowing() {
+      this.flag = true;
       try {
-        const { data } = await axios.get(
-          `${this.$store.state.ServerURL}/newuser/search/to_nickname`,
+        const res = await axios.get(
+          `${this.$store.state.ServerURL}
+/newuser/follow/myfollow`,
           {
             params: {
-              ...this.searchData
+              nickname: this.$route.params.nickname
             }
           }
         );
-        if (data.totalElements === 0) {
-          this.isNoResult = true;
-        }
-        this.searchData.page += 1; // lint :(
-        this.users = [...this.users, ...data.content];
-        this.limit = Number(data.totalPages);
+        this.users = res.data;
+        // console.dir(Object.keys(this.users).length);
       } catch (e) {
         console.error(e);
       }
+    },
+    async getFollower() {
+      this.flag = false;
+      try {
+        const res = await axios.get(
+          `${this.$store.state.ServerURL}
+/newuser/follow/myfollowing`,
+          {
+            params: {
+              nickname: this.$route.params.nickname
+            }
+          }
+        );
+        this.users = res.data;
+        // console.dir(Object.keys(this.users).length);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async deleteFollow(target) {
+      alert(target);
+      try {
+        const res = await axios.delete(
+          `${this.$store.state.ServerURL}
+/user/follow/cancel_follow`,
+          {
+            params: {
+              following: target
+            }
+          }
+        );
+        console.dir(res);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    visitUserDetail(nickname) {
+      this.$router.push({ name: "SSalogMain", params: { nickname } });
     }
   },
-  // 이거 왜 만들었는지 기억이 안남
-  // watch: {
-  //   searchData: {
-  //     deep: true,
-  //     handler() {
-  //       this.fetchUserData();
-  //     }
-  //   }
-  // },
   mounted() {
-    // this.fetchUserData();
+    this.getFollowing();
   }
 };
 </script>
