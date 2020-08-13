@@ -28,7 +28,7 @@
           >
         </v-row>
         <v-divider></v-divider>
-        <v-row>
+        <v-row v-if="isNoSolve">
           <v-col>
             <p class="p-2 text-center text--secondary  ">👨🏻‍🎓알고리즘 박사가 되는 그날까지👨‍🎓</p>
             <p class="p-3 text-center text--secondary">📙쌀로그에서 알고리즘을 정리하기🧾</p>
