@@ -160,6 +160,7 @@ export default new Vuex.Store({
             }
             if (err.response.status === 500) {
               // logout 한 경우
+              commit("LOGOUT");
               commit("ShowAlert", {
                 flag: true,
                 msg: "로그아웃 되었습니다.",
