@@ -108,29 +108,49 @@
               </template>
             </v-virtual-scroll>
           </v-card>
-          <v-card>
+          <v-card flat>
             <v-toolbar-title>가입 신청 현황</v-toolbar-title>
-            <v-virtual-scroll class="mt-5" :items="applicants" :item-height="20" height="300">
+            <v-virtual-scroll :items="applicants" :item-height="35" height="300">
               <template v-slot="{ item }">
-                <v-list-item>
-                  <v-list-item-avatar size="56">
-                    <v-img :src="item.avatar"> </v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
-                  </v-list-item-content>
-                  <v-spacer></v-spacer>
-                  <v-list-item-action>
-                    <v-btn color="success" tile large icon>
-                      <v-icon>mdi-check-bold</v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-                  <v-list-item-action>
-                    <v-btn color="error" tile large icon>
-                      <v-icon>mdi-close-circle</v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-                </v-list-item>
+                <v-expansion-panels>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>
+                      <v-list-item>
+                        <v-list-item-avatar size="32">
+                          <v-img :src="ImgURL + item.img"> </v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                          <v-list-item-title>{{ item.nickname }}</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-app-bar flat dense color="white">
+                        {{ item.introduce }}
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="success"
+                          class="mr-3"
+                          tile
+                          small
+                          icon
+                          @click.prevent="acceptApplicant(item)"
+                        >
+                          <v-icon>mdi-check-bold</v-icon>
+                        </v-btn>
+                        <v-btn
+                          color="error"
+                          tile
+                          small
+                          icon
+                          @click.prevent="declineApplicant(item)"
+                        >
+                          <v-icon>mdi-close-circle</v-icon>
+                        </v-btn>
+                      </v-app-bar>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </template>
             </v-virtual-scroll>
           </v-card>
@@ -216,11 +236,39 @@ export default {
           }
         });
         console.log(res);
+        this.applicants = res.data;
       } catch (e) {
         console.log("그룹지원자 확인 문제생김");
       }
     },
-
+    async acceptApplicant(item) {
+      try {
+        await this.$http.post(`${this.ServerURL}/user/grouping/apply_accept`, null, {
+          params: {
+            groupname: this.$route.params.groupname,
+            regid: item.regid
+          }
+        });
+        // 가입에 성공했다면 local 의 대기열에서도 pop
+        this.applicants.splice(this.applicants.indexOf(item), 1);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async declineApplicant(item) {
+      try {
+        const res = await this.$http.delete(`${this.ServerURL}/user/grouping/apply_reject`, {
+          params: {
+            groupname: this.$route.params.groupname,
+            regid: item.regid
+          }
+        });
+        console.log(res);
+        this.applicants.splice(this.applicants.indexOf(item, 1));
+      } catch (e) {
+        console.error(e);
+      }
+    },
     // 과제 제출
     async makeHW() {
       try {
@@ -242,7 +290,7 @@ export default {
       }
     }
   },
-  computed: mapState(["ServerURL"]),
+  computed: mapState(["ServerURL", "ImgURL"]),
   mounted() {
     this.getApplicantList();
   }
