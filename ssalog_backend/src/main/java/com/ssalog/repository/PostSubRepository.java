@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.Scrapedpost;
 
 public interface PostSubRepository extends MongoRepository<Post,String>{
 	public Page<PostSub> findByProblemid(String problemid, Pageable pageable);
@@ -20,4 +21,6 @@ public interface PostSubRepository extends MongoRepository<Post,String>{
 	
 	@Query(value= "{'username' : ?0, 'keyword': {$ne:null}}", fields="{ '_id': false, 'keyword': 1}" )
 	public List<PostSub> findPyGraphTouser(String username);
+	
+	public Scrapedpost findByScoring(String Scoring);
 }
