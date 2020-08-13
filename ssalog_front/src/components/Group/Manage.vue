@@ -22,9 +22,9 @@
               <v-divider></v-divider>
               <v-row>
                 <v-col cols="6">
-                  <ValidationObserver ref="hw">
+                  <ValidationObserver ref="form">
                     <v-card flat class="mx-3" width="19vw" height="46vh">
-                      <form>
+                      <form @submit.prevent="makeHW">
                         <ValidationProvider name="문제 제목" rules="required|max:20">
                           <v-text-field
                             slot-scope="{ errors, valid }"
@@ -55,8 +55,9 @@
                           v-model="HW.deadline"
                         >
                         </v-datetime-picker>
+                        <v-spacer></v-spacer>
                         <v-btn type="reset">초기화</v-btn>
-                        <v-btn type="submit" @click.prevent="makeHW">과제 출제</v-btn>
+                        <v-btn type="submit">과제 출제</v-btn>
                       </form>
                     </v-card>
                   </ValidationObserver>
@@ -64,11 +65,11 @@
                 <v-col cols="6">
                   <v-card flat height="44vh" class="px-3" width="18vw" style="overflow-y: scroll;">
                     <v-timeline dense>
-                      <v-timeline-item v-for="n in 5" :key="n" small>
+                      <v-timeline-item v-for="task in HWList" :key="task.name" small>
                         <v-card class="elevation-2">
-                          <v-card-title class="headline">Lorem ipsum</v-card-title>
+                          <v-card-title class="headline">{{ task.name }}</v-card-title>
                           <v-card-text>
-                            Lorem ipsum
+                            {{ task.number }}
                           </v-card-text>
                         </v-card>
                       </v-timeline-item>
@@ -163,6 +164,7 @@
 <script>
 import PieChart from "@/components/PieChart.vue";
 import BarChart from "@/components/BarChart.vue";
+import _ from "lodash";
 
 import { mapState } from "vuex";
 
@@ -180,7 +182,13 @@ export default {
         number: "",
         deadline: new Date()
       },
-      HWList: [],
+      HWList: [
+        {
+          name: "골목한조",
+          number: 2142,
+          deadline: "2020-01-01"
+        }
+      ],
       // 회원 관리
       groupMember: [
         {
@@ -235,7 +243,6 @@ export default {
             groupname: this.$route.params.groupname
           }
         });
-        console.log(res);
         this.applicants = res.data;
       } catch (e) {
         console.log("그룹지원자 확인 문제생김");
@@ -257,13 +264,12 @@ export default {
     },
     async declineApplicant(item) {
       try {
-        const res = await this.$http.delete(`${this.ServerURL}/user/grouping/apply_reject`, {
+        await this.$http.delete(`${this.ServerURL}/user/grouping/apply_reject`, {
           params: {
             groupname: this.$route.params.groupname,
             regid: item.regid
           }
         });
-        console.log(res);
         this.applicants.splice(this.applicants.indexOf(item, 1));
       } catch (e) {
         console.error(e);
@@ -272,7 +278,12 @@ export default {
     // 과제 제출
     async makeHW() {
       try {
-        const res = await this.$http.post(`${this.ServerURL}/user/grouping/make_goal`, null, {
+        const res = await this.$refs.form.validate();
+        // eslint-disable-next-line
+        if (!res) {
+          return;
+        }
+        await this.$http.post(`${this.ServerURL}/user/grouping/make_goal`, null, {
           params: {
             groupname: this.$route.params.groupname,
             limitday: this.HW.deadline,
@@ -280,13 +291,14 @@ export default {
             problemname: this.HW.name
           }
         });
-        console.log(res);
+        const HCopy = _.cloneDeep(this.HW);
+        this.HWList.push(HCopy);
       } catch (err) {
         console.dir(err);
-        // 문제 발생시 초기화
+      } finally {
         this.HW.name = "";
-        this.HW.deadline = new Date();
         this.HW.number = "";
+        this.HW.deadline = new Date();
       }
     }
   },
