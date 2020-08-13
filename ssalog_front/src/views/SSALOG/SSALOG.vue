@@ -91,16 +91,17 @@
             </v-card>
           </v-dialog>
           <v-row justify="center" class="mt-2" style="width:240px; border-bottom : 1px dashed grey">
-            <div class="ma-2 font-weight-bold"><v-icon>mdi-account</v-icon> {{ ownerName }}</div>
+            <div class="ma-2 font-weight-bold">{{ ownerName }}</div>
             <template v-if="$store.state.nickname !== $route.params.nickname">
               <v-btn class="ml-3" large icon @click="followclick">
                 <v-icon :disabled="!isfollow" color="red">mdi-heart</v-icon>
               </v-btn>
             </template>
           </v-row>
-          <v-row>
-            <v-col cols="5"><v-icon class="mr-3">mdi-account-multiple</v-icon>123/123</v-col>
-            <v-col><v-icon class="mr-3">mdi-star</v-icon>232</v-col>
+          <v-row justify="center" style="width:240px; border-bottom : 1px dashed grey ">
+            <v-col title="following"><v-icon>mdi-account-heart</v-icon>{{ following }}</v-col>
+            <v-col title="follower"><v-icon>mdi-account-arrow-left</v-icon>{{ follower }}</v-col>
+            <v-col title="scrap"><v-icon>mdi-star</v-icon>232</v-col>
           </v-row>
 
           <v-tabs vertical class="my-15 pa-3">
@@ -131,6 +132,8 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      follower: 0,
+      following: 0,
       isfollow: false,
       ownerName: this.$route.params.nickname,
       thumbnailDialog: false,
@@ -283,11 +286,49 @@ export default {
           this.isfollow = res.data;
           console.log("flag=".concat(this.isfollow));
         });
+    },
+    async getFollowNum() {
+      try {
+        const res = await axios.get(
+          `${this.$store.state.ServerURL}
+/newuser/follow/myfollow`,
+          {
+            params: {
+              nickname: this.$route.params.nickname
+            }
+          }
+        );
+        // this.users = res.data;
+        // console.dir(Object.keys(res.data).length);
+        this.following = Object.keys(res.data).length;
+        // console.log(res);
+      } catch (e) {
+        console.error(e);
+      }
+
+      try {
+        const res2 = await axios.get(
+          `${this.$store.state.ServerURL}
+/newuser/follow/myfollowing`,
+          {
+            params: {
+              nickname: this.$route.params.nickname
+            }
+          }
+        );
+        // this.users = res2.data;
+        // console.dir(Object.keys(res2.data).length);
+        this.follower = Object.keys(res2.data).length;
+        // console.log(res2);
+      } catch (e) {
+        console.error(e);
+      }
     }
   },
   created() {
     this.getThumbnail();
     this.getFollowFlag();
+    this.getFollowNum();
   }
 };
 </script>
