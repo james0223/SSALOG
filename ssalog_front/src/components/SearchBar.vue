@@ -22,7 +22,6 @@
         multiple
         chips
         hint="3개까지 선택가능합니다."
-        persistent-hint
       ></v-select>
     </v-col>
     <v-col cols="2">
@@ -32,6 +31,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "SearchBar",
   data() {
@@ -43,6 +44,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["ShowAlert"]),
     goSearch() {
       if (this.category.indexOf(this.SelectedCategory) === 3) {
         this.$router.push({ name: "AccountList", query: { q: this.q } });
@@ -65,6 +67,10 @@ export default {
     keywords(newVal) {
       if (newVal.length > 3) {
         this.keywords.pop();
+        this.ShowAlert({ flag: true, msg: "3개까지 선택가능합니다.", color: "primary" });
+        setTimeout(() => {
+          this.ShowAlert({ flag: false, msg: "" });
+        }, 2000);
       }
     }
   },

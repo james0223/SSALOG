@@ -4,7 +4,7 @@
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
     <!-- </v-container> -->
-    <v-snackbar :color="alertColor" top v-model="showAlert">
+    <v-snackbar :color="alertColor" top v-model="showAlert" text>
       {{ AlertMessage }}
     </v-snackbar>
   </v-app>
