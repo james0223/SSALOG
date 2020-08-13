@@ -18,4 +18,5 @@ public interface PostService {
 	public String find_problemname(String problemid);
 	public void set_username(String username, String scoring);
 	public long get_allpost();
+	public Boolean is_solved(String username, String problemid);
 }

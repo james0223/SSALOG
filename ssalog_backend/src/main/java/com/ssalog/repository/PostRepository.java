@@ -14,7 +14,7 @@ public interface PostRepository extends MongoRepository<Post,String>, additional
 	public Post findByScoring(String Scoring);
 	public List<Post> findByProblemidAndLanguage(String problemid, String language);
 	public List<Post> findByProblemid(String problemid);
-	
+	public List<Post> findByUsernameAndProblemid(String username,String problemid);
 	//@Query(value= "{'username' : ?0, 'keyword': {$ne:null}}", fields="{ '_id': false, 'keyword': 1}")
 	@Query(value= "{$and: [{'username' : ?0},{'like':{$gt:0}}]}", fields="{ '_id': false, 'like': 1}")
 	public List<Post> findlikesu(String username);

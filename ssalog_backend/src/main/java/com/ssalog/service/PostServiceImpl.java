@@ -231,4 +231,14 @@ public class PostServiceImpl implements PostService{
 	public long get_allpost() {
 		return postRepository.count();
 	}
+
+	@Override
+	public Boolean is_solved(String username, String problemid) {
+		List<Post> p =postRepository.findByUsernameAndProblemid(username, problemid);
+		if(p.size() == 0) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 }

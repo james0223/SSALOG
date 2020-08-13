@@ -107,7 +107,12 @@ public class PostController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 		
 	}	
-
+	@GetMapping("newuser/post/is_solved")
+	@ApiOperation(value = "[문제 풀었는지 아닌지] 유저가 문제를 풀었는지를 리턴")
+	public ResponseEntity<Boolean> is_solved(@RequestParam("username") String username, @RequestParam("problemid") String problemid){
+		return new ResponseEntity<Boolean>(postService.is_solved(username, problemid),HttpStatus.OK);
+		
+	}	
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("포스트 부분에서 " + e.getClass());
