@@ -176,7 +176,7 @@ export default {
     return {
       editable: false,
       title: null,
-      html: "",
+      html: null,
       isUpdating: false,
       SelectedProblemCategory: [],
       editor: new Editor({
@@ -222,7 +222,6 @@ export default {
   methods: {
     write() {
       this.html = this.editor.getHTML();
-      console.log(this.html);
       axios
         .post(`${this.ServerURL}/user/write_introduce`, {}, { params: { introduce: this.html } })
         .then(response => {
@@ -240,7 +239,6 @@ export default {
             nickname: this.$route.params.nickname
           }
         });
-        console.log(res);
         if (res.data !== "" && res.data !== "fail") {
           this.editor.setContent(res.data);
         }
