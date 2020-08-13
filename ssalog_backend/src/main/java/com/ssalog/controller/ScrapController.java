@@ -45,11 +45,21 @@ public class ScrapController {
 	}
 	
 	@ApiOperation(value = "[scrap 하기] 해당 사용자가 스크랩 하고 있는 글을 볼 수 있습니다.")
-	@GetMapping("newuser/scrap/scraplist")
+	@PostMapping("newuser/scrap/scraplist")
 	public ResponseEntity<List<Scrapedpost>> Scraplist(@RequestParam("nickname") String nickname){
 		return new ResponseEntity<List<Scrapedpost>>(scrapService.get_scrapList(nickname), HttpStatus.OK);
 	}
-	
+	@ApiOperation(value = "[scrap 수 찾기] 닉네임을 입력하면, 해당 사용자의 스크랩 당한 총 회수를 찾을 수 있습니다.")
+	@GetMapping("newuser/scrap/scraped_su")
+	public ResponseEntity<Long> Scrapsu(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<Long>(scrapService.findScrapsu(nickname),HttpStatus.OK);
+	}
+	@ApiOperation(value = "[scrap인지 아닌지] 채점번호를 입력하면, 해당글을 스크랩 중인지 아닌지 알수 있습니다. 스크랩중이면 true 아니면 false 리턴")
+	@GetMapping("user/scrap/is_scrap")
+	public ResponseEntity<Boolean> is_Scrap(HttpServletResponse response, @RequestParam("Scoring") String Scoring){
+		String username = response.getHeader("username");
+		return new ResponseEntity<Boolean>(scrapService.is_scraped(username, Scoring),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("스크랩 부분에서 " + e.getClass());
