@@ -61,24 +61,24 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
-                fab
+                x-large
                 icon
                 class="mt-3 mb-2 mx-4"
                 @click.stop="dialog = true"
                 v-bind="attrs"
                 v-on="on"
-                ><v-icon>mdi-code-braces</v-icon></v-btn
+                ><v-icon color="blue-grey darken-1">mdi-code-braces</v-icon></v-btn
               >
             </template>
             <span>제출 코드 보기</span>
           </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn outlined fab class="mt-3 mb-2" v-bind="attrs" v-on="on"
-                ><v-icon>mdi-star</v-icon></v-btn
+          <v-tooltip v-if="username !== writerUsername" bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="doScrap"
+                ><v-icon :disabled="!scrapped" color="yellow accent-4">mdi-star</v-icon></v-btn
               >
             </template>
-            <span>조아연</span>
+            <span>스크랩</span>
           </v-tooltip>
 
           <!--          dialog 부분-->
@@ -170,6 +170,7 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      scrapped: false,
       thumbnailDialog: false,
       ThumbnailSelect: 0,
       writerThumbnail: null,
@@ -297,9 +298,61 @@ export default {
   computed: mapState(["ServerURL", "ImgURL", "nickname", "username"]),
   created() {
     this.getSSALOG(this.$route.params.id);
+    if (this.$store.state.nickname != null) {
+      this.getScrapped();
+    }
   },
   methods: {
     ...mapMutations(["ShowAlert"]),
+    getScrapped() {
+      axios
+        .get(`${this.$store.state.ServerURL}/user/scrap/is_scrap`, {
+          params: {
+            Scoring: this.$route.params.id
+          }
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        })
+        .then(res => {
+          this.scrapped = res.data;
+        });
+    },
+    doScrap() {
+      // alert("스크랩");
+      // console.log("스크랩");
+      if (!this.scrapped) {
+        axios
+          .post(
+            `${this.ServerURL}/user/scrap/do_scrap`,
+            {},
+            { params: { Scoring: this.$route.params.id } }
+          )
+          .then(response => {
+            console.log(response);
+            this.scrapped = true;
+
+            this.$emit("updateScrap");
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        axios
+          .delete(`${this.ServerURL}/user/scrap/stop_scrap`, {
+            params: { Scoring: this.$route.params.id }
+          })
+          .then(response => {
+            console.log(response);
+            this.scrapped = false;
+            this.$emit("updateScrap");
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
     showCopyMsg() {
       this.ShowAlert({ flag: true, msg: "클립보드에 복사되었습니다.", color: "info" });
       setTimeout(() => {
@@ -313,15 +366,24 @@ export default {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
     },
     async deleteSolution() {
-      this.ShowAlert({
-        flag: true,
-        msg: "게시물을 삭제하였습니다. 메인으로 이동합니다.",
-        color: "info"
-      });
-      setTimeout(() => {
-        this.ShowAlert({ flag: false, msg: "" });
-        this.$router.push({ name: "Home" });
-      }, 2000);
+      try {
+        axios.delete(`${this.$store.state.ServerURL}/user/post/delete_post`, {
+          params: {
+            Scoring: this.$route.params.id
+          }
+        });
+        this.ShowAlert({
+          flag: true,
+          msg: "게시물을 삭제하였습니다.",
+          color: "red"
+        });
+        setTimeout(() => {
+          this.ShowAlert({ flag: false, msg: "" });
+          this.$router.go(-1);
+        }, 1000);
+      } catch (e) {
+        console.error(e);
+      }
     },
     async getSSALOG(pageId) {
       try {
