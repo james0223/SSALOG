@@ -218,17 +218,17 @@ export default {
       // bar chart data
       barLoaded: true,
       barData: {
-        labels: ["백양로", "유투브", "N과M", "기모띠"],
+        labels: [],
         datasets: [
           {
             label: "제출자",
             backgroundColor: "green",
-            data: [20, 30, 20, 40]
+            data: []
           },
           {
             label: "미제출자",
             backgroundColor: "red",
-            data: [20, 10, 40, 230]
+            data: []
           }
         ]
       }
@@ -290,10 +290,23 @@ export default {
       };
       const MultiFetchingData = async HW => {
         const req = HW.map(hw => {
-          console.log("hw", hw);
+          this.barData.labels.push(hw.problemname);
           return fetchHWprogress(hw.problemid).then(res => {
-            console.log(res);
-            console.log(hw.problemid);
+            const values = Object.values(res);
+            let solved = 0;
+            let unsolved = 0;
+            // eslint-disable-next-line
+            for (let i = 0; i < values.length; i++) {
+              // eslint-disable-next-line
+              if (values[i] === "false") unsolved++;
+              else {
+                // eslint-disable-next-line
+                console.log(values[i]);
+                !isNaN(Number(values[i])) && solved++;
+              }
+            }
+            this.barData.datasets[0].data.push(solved);
+            this.barData.datasets[1].data.push(unsolved);
             return res;
           });
         });
