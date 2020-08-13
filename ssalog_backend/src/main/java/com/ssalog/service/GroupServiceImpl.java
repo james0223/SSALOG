@@ -70,7 +70,7 @@ public class GroupServiceImpl implements GroupService{
 
 	// 그룹 가입 신청
 	@Override
-	public String applyGroup(String groupname, String username) {
+	public String applyGroup(String groupname, String username, String introduce) {
 		GroupRegist g = groupRegistRepository.findByGroupdto_groupnameAndAccount_username(groupname, username);
 		if(g != null) {
 			return "exist";
@@ -80,22 +80,26 @@ public class GroupServiceImpl implements GroupService{
 			GroupRegist gr = new GroupRegist();
 			gr.setAccount(ac);
 			gr.setGroupdto(gd);
-			gr.setIntroduce("자기소개");
+			gr.setIntroduce(introduce);
 			groupRegistRepository.save(gr);
 			return "success";
 		}
 	}
 	// 가입 신청 목록
 	@Override
-	public Map<String,String> appliylist(String username,String groupname) {
+	public List<Map<String, String>> appliylist(String username,String groupname) {
 		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
-		Map<String,String> m = new HashMap<>();
+		List<Map<String, String>> li = new ArrayList<>();
 		if(g != null) {
 			List<GroupRegist> list = groupRegistRepository.findByGroupdto_groupname(groupname);
 			for(int i=0; i<list.size(); i++) {
-				m.put(list.get(i).getAccount().getUsername(), list.get(i).getIntroduce());
+				Map<String,String> m = new HashMap<>();
+				m.put("nickname",list.get(i).getAccount().getNickname());
+				m.put("introduce", list.get(i).getIntroduce());
+				m.put("img",list.get(i).getAccount().getImgpath());
+				li.add(m);
 			}
-			return m;
+			return li;
 //		}else {
 //			return null;
 		}
@@ -187,13 +191,4 @@ public class GroupServiceImpl implements GroupService{
 		return null;
 	}
 
-	public List<GroupRegist> appliylist_forowner(String username,String groupname) {
-		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
-		if(g != null) {
-			List<GroupRegist> list = groupRegistRepository.findByGroupdto_groupname(groupname);
-			return list;
-		}else {
-			return null;
-		}
-	}
 }

@@ -10,12 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssalog.config.webhook;
 import com.ssalog.dto.Scrapedpost;
 import com.ssalog.service.ScrapService;
 
@@ -48,5 +50,10 @@ public class ScrapController {
 		return new ResponseEntity<List<Scrapedpost>>(scrapService.get_scrapList(nickname), HttpStatus.OK);
 	}
 	
-	
+	@ExceptionHandler(Exception.class)
+	public void nullex(Exception e) {
+		System.err.println("스크랩 부분에서 " + e.getClass());
+		webhook w = new webhook();
+		w.send("스크랩 부분에서 " + e.getClass());
+	}
 }

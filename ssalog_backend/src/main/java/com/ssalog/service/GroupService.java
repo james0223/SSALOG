@@ -11,8 +11,8 @@ import com.ssalog.dto.GroupRole;
 public interface GroupService {
 
 	public String makeGroup(GroupDTO g,String username);
-	public String applyGroup(String groupname, String username);
-	public Map<String,String> appliylist(String username,String groupname);
+	public String applyGroup(String groupname, String username, String introduce);
+	public List<Map<String, String>> appliylist(String username,String groupname);
 	public String applyaccept(String username,String groupname,Long regid);
 	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit);
 	public Map<String, Boolean> checkGoal(String groupname,String problemid);
