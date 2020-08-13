@@ -31,7 +31,7 @@
       </v-col>
     </v-row>
     <infinite-loading
-      v-if="limit >= searchData.page"
+      v-if="limit >= searchData.page && !isError && !isNoResult"
       @infinite="infiniteHandler"
       spinner="waveDots"
     ></infinite-loading>
@@ -57,20 +57,25 @@ export default {
       },
       limit: 9999,
       users: [],
-      isNoResult: false
+      is_fetching: false,
+      isNoResult: false,
+      isError: false
     };
   },
   methods: {
     infiniteHandler($state) {
       setTimeout(() => {
-        this.fetchUserData();
+        if (!this.is_fetching && !this.isNoResult && !this.isError) {
+          this.fetchUserData();
+        }
         $state.loaded();
-      }, 2000);
+      }, 1000);
     },
     visitUserDetail(nickname) {
       this.$router.push({ name: "SSalogMain", params: { nickname } });
     },
     async fetchUserData() {
+      this.is_fetching = true;
       try {
         const { data } = await axios.get(
           `${this.$store.state.ServerURL}/newuser/search/to_nickname`,
@@ -88,20 +93,10 @@ export default {
         this.limit = Number(data.totalPages);
       } catch (e) {
         console.error(e);
+        this.isError = true;
       }
+      this.is_fetching = false;
     }
-  },
-  // 이거 왜 만들었는지 기억이 안남
-  // watch: {
-  //   searchData: {
-  //     deep: true,
-  //     handler() {
-  //       this.fetchUserData();
-  //     }
-  //   }
-  // },
-  mounted() {
-    // this.fetchUserData();
   }
 };
 </script>

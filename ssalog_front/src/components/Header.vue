@@ -6,7 +6,7 @@
           <v-avatar class="pointButton" color="lighten-5" size="65">
             <v-img
               contain
-              max-height="100%"
+              max-height="90%"
               src="@/assets/images/logo.jpg"
               @click="changeRoute('Home')"
             ></v-img>
