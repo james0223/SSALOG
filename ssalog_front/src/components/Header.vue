@@ -33,7 +33,7 @@
               <small class="pointButton">회원가입</small>
             </v-col>
           </v-row>
-          <v-menu offset-y v-if="$store.state.accessToken" no-gutters>
+          <v-menu open-on-hover offset-y v-if="$store.state.accessToken" no-gutters>
             <template v-slot:activator="{ on, attrs }">
               <v-card v-bind="attrs" v-on="on" flat>
                 <v-row no-gutters>
@@ -80,16 +80,16 @@ export default {
   },
   data() {
     return {
-      items: ["계정설정", "내 쌀로그", "로그아웃"]
+      items: ["내 쌀로그", "계정설정", "로그아웃"]
     };
   },
   computed: mapState(["userThumbnail", "nickname", "accessToken"]),
   methods: {
     userMenu(idx) {
       if (idx === 0) {
-        this.$router.push({ name: "UserSetting", params: { nickname: this.nickname } });
-      } else if (idx === 1) {
         this.$router.push({ name: "SSalogMain", params: { nickname: this.nickname } });
+      } else if (idx === 1) {
+        this.$router.push(`/SSALOG/${this.$store.state.nickname}/UserSetting`);
       } else {
         this.$store.dispatch("LOGOUT");
       }

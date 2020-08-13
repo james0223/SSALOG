@@ -111,6 +111,7 @@
               :key="tab.id"
               :to="tab.route"
               exact
+              :class="{ 'd-none': tab.flag }"
             >
               <v-icon left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
@@ -186,6 +187,13 @@ export default {
           name: "Group",
           route: `/SSALOG/${this.$route.params.nickname}/GroupList`,
           icon: "mdi-account-group"
+        },
+        {
+          id: 6,
+          name: "Setting",
+          route: `/SSALOG/${this.$route.params.nickname}/UserSetting`,
+          icon: "mdi-settings",
+          flag: this.$store.state.nickname === this.$route.params.nickname
         }
       ]
     };
