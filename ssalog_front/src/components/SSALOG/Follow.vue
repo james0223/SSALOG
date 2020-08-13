@@ -127,6 +127,8 @@ export default {
           }
         );
         console.dir(res);
+        this.getFollowing();
+        this.$emit("decrement");
       } catch (e) {
         console.error(e);
       }
