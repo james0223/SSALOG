@@ -101,7 +101,7 @@
           <v-row justify="center" style="width:240px; border-bottom : 1px dashed grey ">
             <v-col title="following"><v-icon>mdi-account-heart</v-icon>{{ following }}</v-col>
             <v-col title="follower"><v-icon>mdi-account-arrow-left</v-icon>{{ follower }}</v-col>
-            <v-col title="scrap"><v-icon>mdi-star</v-icon>232</v-col>
+            <v-col title="scrap"><v-icon>mdi-star</v-icon>{{ scrapSu }}</v-col>
           </v-row>
 
           <v-tabs vertical class="my-15 pa-3">
@@ -120,7 +120,9 @@
         </div>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col lg="8" cols="12"><router-view v-on:decrement="decrementFollow"></router-view> </v-col>
+      <v-col lg="8" cols="12"
+        ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getScrapNum"></router-view>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -133,6 +135,7 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      scrapSu: 0,
       follower: 0,
       following: 0,
       isfollow: false,
@@ -205,7 +208,6 @@ export default {
     },
     async followclick() {
       if (!this.isfollow) {
-        // console.log("팔로우걸기");
         await axios
           .post(
             `${this.$store.state.ServerURL}/user/follow/do_follow`,
@@ -221,7 +223,6 @@ export default {
             alert("로그인이 필요합니다.");
           });
       } else {
-        // console.log("팔로우취소");
         await axios
           .delete(`${this.ServerURL}/user/follow/cancel_follow`, {
             params: { following: this.ownerName }
@@ -332,11 +333,29 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async getScrapNum() {
+      try {
+        const res = await axios.get(
+          `${this.$store.state.ServerURL}
+/newuser/scrap/scraped_su`,
+          {
+            params: {
+              nickname: this.$route.params.nickname
+            }
+          }
+        );
+        this.scrapSu = res.data;
+        console.log("scrapSu=".concat(this.scrapSu));
+      } catch (e) {
+        console.error(e);
+      }
     }
   },
   created() {
     this.getThumbnail();
     this.getFollowNum();
+    this.getScrapNum();
     if (this.$store.state.nickname != null) {
       this.getFollowFlag();
     }
