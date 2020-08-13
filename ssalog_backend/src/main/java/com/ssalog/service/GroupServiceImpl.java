@@ -1,11 +1,14 @@
 package com.ssalog.service;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.swing.text.DateFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,8 +104,8 @@ public class GroupServiceImpl implements GroupService{
 				li.add(m);
 			}
 			return li;
-//		}else {
-//			return null;
+			//		}else {
+			//			return null;
 		}
 		return null;
 	}
@@ -191,5 +194,35 @@ public class GroupServiceImpl implements GroupService{
 		}
 		return null;
 	}
-
+	
+	public void preGoal() {
+		
+	}
+//	// 문제이름, 푼사람, 안푼사람
+//	public void teamstatus(String nickname, String groupname) {
+//		Groupdetail gd = groupDetailRepository.findByAccount_nicknameAndGroupdto_groupname(nickname,groupname);
+//		if(gd != null) {
+//			List<Map<String,String>> result = new ArrayList<>();
+//			Date time = new Date();
+//			List<Groupdetail> glist = groupDetailRepository.findByGroupdto_groupname(groupname);
+//			List<GroupGoal> list = groupGoalRepository.findByDateGreaterThanAndGroupdto_groupname(time,groupname);
+//			for(int i=0; i<list.size() ;i++) {
+//				GroupGoal gg = list.get(i);
+//				Map<String, String> m = new HashMap<>();
+//				gg.getProblemid();
+//				for(int j=0; j<glist.size(); j++) {
+//					List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(glist.get(j).getAccount().getUsername(), gg.getProblemid());
+//					if(ps!=null) {
+//						m.put("problemname", gg.getProblemname());
+//						m.put("problemid", gg.getProblemid());
+//					}
+//				}
+//				System.out.println(list.get(i).getDate());
+//				System.out.println("=====================");
+//			}
+//		}else {
+//			//return "그룹원이  아닙니다";
+//		}
+//
+//	}
 }

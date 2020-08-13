@@ -60,10 +60,7 @@ public class ScrapServiceImpl implements ScrapService {
 			if(s1 != null) {
 				p.get().setLike(p.get().getLike()-1);
 				postRepository.save(p.get());
-				Scrap s = new Scrap();
-				s.setScrap(account);
-				s.setScraped(p.get().getScoring());
-				scrapRepository.delete(s);
+				scrapRepository.delete(s1);
 				return "success";
 			}
 		}
