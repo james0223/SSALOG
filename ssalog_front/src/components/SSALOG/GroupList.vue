@@ -46,7 +46,13 @@
                     <template v-slot="{ item }">
                       <v-list-item>
                         <v-list-item-content>
-                          <v-list-item-title>{{ item.GroupName }}</v-list-item-title>
+                          <v-list-item-title>
+                            <v-icon v-if="item.groupGrade === 'owner'" color="orange"
+                              >mdi-star-circle-outline</v-icon
+                            >
+                            <v-icon v-else>mdi-square-small</v-icon>
+                            {{ item.GroupName }}</v-list-item-title
+                          >
                         </v-list-item-content>
                         <v-list-item-action>
                           <v-btn
@@ -97,14 +103,7 @@ export default {
       // 초기 세팅
       ownerName: this.$route.params.nickname,
       ownerEmail: "",
-      myGroup: [
-        {
-          GroupName: "으으잉"
-        },
-        {
-          GroupName: "호다닥"
-        }
-      ],
+      myGroup: [],
       searchGroup: [],
       // 그룹 생성 관련 data
       createGroupDialog: false,
@@ -139,7 +138,7 @@ export default {
         setTimeout(() => {
           this.$store.commit("ShowAlert", { flag: false, msg: "" });
         }, 2000);
-        this.myGroup.push({ GroupName: this.createGroupName });
+        this.myGroup.push({ GroupName: this.createGroupName, groupGrade: "owner" });
         this.createGroupName = "";
         this.createGroupIntro = "";
         this.createGroupDialog = false;
@@ -160,28 +159,29 @@ export default {
         console.error(err);
       }
     },
-    // mounted 에서 가장 첫번째로 실행.
-    async getownerEmail() {
+    async getGroups() {
       try {
-        const res = await this.$http.get(`${this.ServerURL}/newuser/search/find_username`, {
-          params: {
-            nickname: this.ownerName
-          }
-        });
-        this.ownerEmail = res.data;
+        const { data } = await this.$http.get(`${this.ServerURL}/user/grouping/myGrouplist`, {});
+        const keys = Object.keys(data);
+        // eslint-disable-next-line
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          const grade = data[key];
+          console.log(grade);
+          this.myGroup.push({
+            GroupName: key,
+            groupGrade: grade
+          });
+        }
       } catch (e) {
-        console.error(e);
+        console.log(e);
       }
     }
-    // async getGroups() {
-    //   try {
-    //     await this.$http.get(`${this.ServerURL}`);
-    //     // 여기에 param 으로 ownerEmail 보내서 가입한 group 목록을 불러오고
-    //     // mounted 에서 두번째로 실행
-    //   }
-    // }
   },
-  computed: mapState(["ServerURL"])
+  computed: mapState(["ServerURL"]),
+  mounted() {
+    this.getGroups();
+  }
 };
 </script>
 
