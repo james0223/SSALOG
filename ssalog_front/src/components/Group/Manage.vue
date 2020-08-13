@@ -275,7 +275,45 @@ export default {
         console.error(e);
       }
     },
-    // 과제 제출
+    // 그래프 그리기
+    async getHWProgress() {
+      const HWs = await this.getLiveHW();
+
+      const fetchHWprogress = async problemnum => {
+        const HwInfo = await this.$http.get(`${this.ServerURL}/newuser/grouping/check_goal`, {
+          params: {
+            groupname: this.$route.params.groupname,
+            problemid: problemnum
+          }
+        });
+        return HwInfo.data;
+      };
+      const MultiFetchingData = async HW => {
+        const req = HW.map(hw => {
+          console.log("hw", hw);
+          return fetchHWprogress(hw.problemid).then(res => {
+            console.log(res);
+            console.log(hw.problemid);
+            return res;
+          });
+        });
+        return Promise.all(req);
+      };
+
+      MultiFetchingData(HWs).then(finalres => console.log(finalres));
+    },
+    async getLiveHW() {
+      const res = await this.$http.get(`${this.ServerURL}/user/grouping/pre_goal_list`, {
+        params: {
+          direction: "ASC",
+          groupname: this.$route.params.groupname,
+          page: 1,
+          size: 5000
+        }
+      });
+      return res.data;
+    },
+    // 과제 출제
     async makeHW() {
       try {
         const res = await this.$refs.form.validate();
@@ -295,6 +333,7 @@ export default {
             problemname: this.HW.name
           }
         });
+        console.log("과제 출제 성공!");
         const HCopy = _.cloneDeep(this.HW);
         this.HWList.push(HCopy);
         this.$nextTick(() => {
@@ -312,6 +351,7 @@ export default {
   computed: mapState(["ServerURL", "ImgURL"]),
   mounted() {
     this.getApplicantList();
+    this.getHWProgress();
   }
 };
 </script>
