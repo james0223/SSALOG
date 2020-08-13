@@ -119,7 +119,7 @@
         </div>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col lg="8" cols="12"><router-view></router-view> </v-col>
+      <v-col lg="8" cols="12"><router-view v-on:decrement="decrementFollow"></router-view> </v-col>
     </v-row>
   </v-container>
 </template>
@@ -192,8 +192,10 @@ export default {
   },
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
   methods: {
+    decrementFollow() {
+      this.following = this.following - 1;
+    },
     async followclick() {
-      console.log("flag=".concat(this.isfollow));
       if (!this.isfollow) {
         // console.log("팔로우걸기");
         await axios
@@ -203,8 +205,8 @@ export default {
             { params: { following: this.ownerName } }
           )
           .then(() => {
-            console.log("추가성공");
             this.isfollow = !this.isfollow;
+            this.follower = this.follower + 1;
           })
           .catch(function(error) {
             console.log(error);
@@ -217,7 +219,7 @@ export default {
             params: { following: this.ownerName }
           })
           .then(() => {
-            console.log("취소성공");
+            this.follower = this.follower - 1;
             this.isfollow = !this.isfollow;
           })
           .catch(function(error) {
@@ -284,7 +286,6 @@ export default {
         .then(res => {
           // console.log(res.data);
           this.isfollow = res.data;
-          console.log("flag=".concat(this.isfollow));
         });
     },
     async getFollowNum() {
@@ -327,8 +328,10 @@ export default {
   },
   created() {
     this.getThumbnail();
-    this.getFollowFlag();
     this.getFollowNum();
+    if (this.$store.state.nickname != null) {
+      this.getFollowFlag();
+    }
   }
 };
 </script>
