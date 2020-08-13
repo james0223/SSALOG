@@ -20,7 +20,7 @@ public interface GroupService {
 	public List<Map<String, String>> appliylist(String username,String groupname);
 	public String applyaccept(String username,String groupname,Long regid);
 	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit);
-	public Map<String, Boolean> checkGoal(String groupname,String problemid);
+	public Map<String, String> checkGoal(String groupname,String problemid);
 	public String applyreject(String username,String groupname, Long regid);
 	public Map<String, GroupRole> myGroup(String username);
 	//public void teamstatus(String nickname, String groupname, Date limit);

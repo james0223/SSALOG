@@ -173,18 +173,18 @@ public class GroupServiceImpl implements GroupService{
 
 	// 목표 검사
 	@Override
-	public Map<String, Boolean> checkGoal(String groupname,String problemid) {
+	public Map<String, String> checkGoal(String groupname,String problemid) {
 		List<Groupdetail> gd = groupDetailRepository.findByGroupdto_groupname(groupname);
 		GroupGoal gg = groupGoalRepository.findByProblemidAndGroupdto_groupname(problemid, groupname);
 		if(gg != null) {
-			Map<String, Boolean> m = new HashMap<>();
+			Map<String, String> m = new HashMap<>();
 			for(int i=0; i< gd.size(); i++) {
 				Groupdetail gd2 = gd.get(i);
 				List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(gd2.getAccount().getUsername(), problemid);
 				if(ps.size() != 0) {
-					m.put(gd2.getAccount().getNickname(), true);
+					m.put(gd2.getAccount().getNickname(), "https://ssalog.gq/SSALOG/"+gd2.getAccount().getNickname()+"/Solution/"+ps.get(i).getScoring());
 				}else {
-					m.put(gd2.getAccount().getNickname(), false);
+					m.put(gd2.getAccount().getNickname(), "false");
 				}
 			}
 			return m;

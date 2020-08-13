@@ -86,8 +86,8 @@ public class GroupController {
 	}
 	@GetMapping("newuser/grouping/check_goal")
 	@ApiOperation(value = "[그룹원들이 얼마나 풀었는지 확인합니다.] 내 그룹에 가입신청한 목록을 봅니다.")
-	public ResponseEntity<Map<String, Boolean>> check_goal(@RequestParam("groupname") String groupname, @RequestParam("problemid") String problemid) {
-		return new ResponseEntity<Map<String, Boolean>>(groupService.checkGoal(groupname, problemid),HttpStatus.OK);
+	public ResponseEntity<Map<String, String>> check_goal(@RequestParam("groupname") String groupname, @RequestParam("problemid") String problemid) {
+		return new ResponseEntity<Map<String, String>>(groupService.checkGoal(groupname, problemid),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("user/grouping/apply_reject")
