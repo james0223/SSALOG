@@ -2,7 +2,7 @@
   <v-container class="mt-15">
     <v-row justify="center">
       <v-col cols="12">
-        <v-card class="mb-4 pa-7" tile>
+        <v-card class="mb-4 pt-7 px-7" tile>
           <img
             v-if="isSolved"
             class="corner"
@@ -10,18 +10,25 @@
             title="이 문제를 푸셨습니다!"
             alt="success"
           />
+          <v-card-title class="mb-7">
+            <h1>{{ problemNumber }} - {{ problemTitle }}</h1>
+          </v-card-title>
           <v-row>
-            <v-col cols="8">
-              <v-card-title>
-                <h1>{{ problemNumber }} - {{ problemTitle }}</h1>
-              </v-card-title>
+            <v-col cols="4">
               <v-card-text>
                 <h3><v-icon>mdi-shovel</v-icon>개척자</h3>
                 <h2>
                   <v-avatar>
-                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img> </v-avatar
-                  >arduinho
+                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                  </v-avatar>
+                  arduinho
                 </h2>
+              </v-card-text>
+            </v-col>
+            <v-col cols="4">
+              <v-card-text>
+                <h3><v-icon>mdi-clipboard-check-outline</v-icon>등록된 리뷰</h3>
+                <h2>{{ numberOfSolutions }} 개</h2>
               </v-card-text>
             </v-col>
             <v-col cols="4" class="d-flex align-end justify-end">
@@ -41,12 +48,52 @@
           <v-divider class="mx-3"></v-divider>
 
           <v-row justify="center">
+            <v-col cols="5">
+              <v-card flat>
+                <v-card-title>
+                  <h5>언어별 평균스펙</h5>
+                </v-card-title>
+                <v-card-actions>
+                  <v-row no-gutters class="align-center">
+                    <v-col cols="2" class="d-flex justify-center">
+                      <v-icon x-large @click="fetchAvgData(false)">mdi-chevron-left</v-icon></v-col
+                    >
+                    <v-col cols="8">
+                      <v-carousel hide-delimiters :show-arrows="false" v-model="langIdx">
+                        <v-carousel-item v-for="(language, i) in languages" :key="i">
+                          <v-sheet height="100%" tile light>
+                            <v-row class="fill-height" align="center" justify="center">
+                              <v-card-title>
+                                <v-icon x-large>{{ selectedIco }}</v-icon>
+                                <h3 class="my-0">{{ selectedLang }}</h3>
+                              </v-card-title>
+                              <v-card-title>
+                                <v-icon x-large>mdi-alarm</v-icon>
+                                <h2 class="my-0">{{ userAvgData.time }} ms</h2>
+                              </v-card-title>
+                              <v-card-title>
+                                <v-icon x-large>mdi-memory</v-icon>
+                                <h3 class="my-0">{{ userAvgData.memory }} kb</h3>
+                              </v-card-title>
+                            </v-row>
+                          </v-sheet>
+                        </v-carousel-item>
+                      </v-carousel>
+                    </v-col>
+                    <v-col cols="2" class="d-flex justify-center">
+                      <v-icon x-large @click="fetchAvgData(true)">mdi-chevron-right</v-icon></v-col
+                    >
+                  </v-row></v-card-actions
+                >
+              </v-card>
+            </v-col>
+            <v-col cols="2"></v-col>
             <v-col cols="4">
               <v-card flat class="chart-container">
                 <v-card-title>
                   <h5>주요 풀이기법</h5>
                 </v-card-title>
-                <v-card-text>
+                <v-card-text class="mt-15">
                   <DoughNutChart
                     v-if="doughnutLoaded"
                     v-bind:chart-data="problemData"
@@ -55,60 +102,7 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col cols="3"></v-col>
-            <v-col cols="5">
-              <v-card flat>
-                <v-menu offset-y>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-card-title>
-                      <h5>언어별 평균스펙</h5>
-                      <v-spacer></v-spacer>
-                      <v-btn icon v-bind="attrs" v-on="on">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                    </v-card-title>
-                  </template>
-                  <v-list>
-                    <v-list-item
-                      v-for="(language, i) in languages"
-                      :key="i"
-                      @click="fetchAvgData(language)"
-                    >
-                      <v-list-item-title>{{ language.lang }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-                <v-card-title>
-                  <v-icon>{{ selectedIco }}</v-icon>
-                  {{ selectedLang }}
-                </v-card-title>
-                <v-card-title>
-                  <v-icon>mdi-alarm</v-icon>
-                  {{ userAvgData.time }} ms
-                </v-card-title>
-                <v-card-title>
-                  <v-icon>mdi-memory</v-icon>
-                  {{ userAvgData.memory }} kb
-                </v-card-title>
-
-                <!-- <v-list-item-group v-model="selectedList" color="primary">
-                  <v-list-item v-for="(item, i) in userSolvingData" :key="i">
-                    <v-list-item-icon>
-                      <span v-if="item.avg">평균 시간</span>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.time"></v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-icon>
-                      <span v-if="item.avg">평균 메모리</span>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.memory" class="ml-4"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>-->
-              </v-card>
-            </v-col>
+            <v-col cols="1"></v-col>
           </v-row>
         </v-card>
       </v-col>
@@ -117,7 +111,7 @@
       <v-col cols="12">
         <v-card tile>
           <v-subheader>
-            <h4>풀이 목록</h4>
+            <h3>리뷰 목록</h3>
           </v-subheader>
           <v-data-table
             :loading="SolutionLoading"
@@ -162,11 +156,12 @@ export default {
         { lang: "C11", ico: "mdi-language-c" },
         { lang: "C", ico: "mdi-language-c" }
       ],
-      // 유저가 문제를 풀었는지 아닌지 파악
-      isSolved: true,
+      langIdx: 0,
+      isSolved: true, // 유저가 문제를 풀었는지 아닌지 파악
+      isPioneer: false, // 개척자라면
       problemTitle: null,
       problemNumber: this.$route.params.id,
-      selectedList: 1,
+      numberOfSolutions: null,
       selectedLang: "PyPy3",
       selectedIco: "mdi-language-python",
       userAvgData: {
@@ -176,8 +171,6 @@ export default {
       // doughnutchart 관련 옵션
       doughnutLoaded: false,
       problemData: {
-        // 해당 내용은 보기용
-        // https://vue-chartjs.org/guide/#chart-with-api-data 나중에 이런 식으로 변경해야 함.
         labels: [],
         datasets: [
           {
@@ -210,13 +203,13 @@ export default {
       SolutionPerPage: 10,
       headers: [
         {
-          text: "사용자",
+          text: "작성자",
           align: "start",
           sortable: false,
           filterable: false,
-          // 아마 이메일 튀어나올듯
-          value: "username"
+          value: "nickname"
         },
+        { text: "제목", value: "title" },
         { text: "추천", value: "like" },
         { text: "시간", value: "time" },
         { text: "메모리", value: "memory" },
@@ -226,24 +219,49 @@ export default {
     };
   },
   methods: {
-    async fetchAvgData(lang) {
+    async fetchSolutionNumb() {
+      try {
+        const { data } = await this.$http.get(
+          `${this.$store.state.ServerURL}/newuser/search/detail_page_cnt`,
+          {
+            params: { problemid: this.problemNumber }
+          }
+        );
+        this.numberOfSolutions = data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async fetchAvgData(flag) {
+      if (flag) {
+        if (this.langIdx === 6) {
+          return;
+        }
+        this.langIdx += 1;
+      } else {
+        if (this.langIdx === 0) {
+          return;
+        }
+        this.langIdx -= 1;
+      }
       try {
         const { data } = await this.$http.get(
           `${this.$store.state.ServerURL}/newuser/search/detail_avg`,
           {
             params: {
-              language: lang.lang,
+              language: this.languages[this.langIdx].lang,
               problemid: this.problemNumber
             }
           }
         );
         this.userAvgData.time = data.avg_time;
         this.userAvgData.memory = data.avg_memory;
-        this.selectedLang = lang.lang;
-        this.selectedIco = lang.ico;
+        this.selectedLang = this.languages[this.langIdx].lang;
+        this.selectedIco = this.languages[this.langIdx].ico;
       } catch (e) {
         console.error(e);
       }
+      this.fetchSolvingData();
     },
     // 풀이 데이터 import
     async fetchSolvingData() {
@@ -256,7 +274,8 @@ export default {
               direction: "ASC",
               page: this.SolutionPage,
               problemid: this.problemNumber,
-              size: 10
+              size: 12,
+              language: this.languages[this.langIdx].lang
             }
           }
         );
@@ -303,9 +322,9 @@ export default {
   },
   mounted() {
     this.getProblemName();
-    this.fetchSolvingData();
+    this.fetchSolutionNumb();
     this.fetchDoughnutData();
-    this.fetchAvgData({ lang: "PyPy3" });
+    this.fetchAvgData(true);
   },
   computed: mapState(["ServerURL"]),
   watch: {
