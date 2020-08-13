@@ -26,7 +26,6 @@ import com.ssalog.dto.AccountSub;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
-import com.ssalog.dto.findKeyword;
 import com.ssalog.service.AccountService;
 import com.ssalog.service.PostService;
 import com.ssalog.service.PostSubService;
