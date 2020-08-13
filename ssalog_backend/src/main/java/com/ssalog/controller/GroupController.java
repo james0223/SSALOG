@@ -39,16 +39,21 @@ public class GroupController {
 	
 	@PostMapping("user/grouping/make_group")
 	@ApiOperation(value = "[그룹 만들기] 새로운 그룹을 만든다.")
-	public ResponseEntity<Void> make_group(HttpServletResponse response,@RequestBody GroupDTO groupdto) {
+	public ResponseEntity<String> make_group(HttpServletResponse response,@RequestBody GroupDTO groupdto) {
 		String username = response.getHeader("username"); 
-		groupService.makeGroup(groupdto, username);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		String result = groupService.makeGroup(groupdto, username);
+		if(result.equals("is_exist")) {
+			return new ResponseEntity<String>(result,HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<String>(result, HttpStatus.OK);
+		}
 	}
 	
 	@PostMapping("user/grouping/apply_group")
 	@ApiOperation(value = "[그룹 가입신청] 그룹에 가입을 신청합니다.")
-	public ResponseEntity<String> apply_group(HttpServletResponse response) {
-		return new ResponseEntity<String>(groupService.applyGroup("ssafy", "jso"),HttpStatus.OK);
+	public ResponseEntity<String> apply_group(HttpServletResponse response, @RequestParam("groupname") String groupname) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<String>(groupService.applyGroup(groupname, username),HttpStatus.OK);
 	}
 	
 	@GetMapping("user/grouping/apply_list")
