@@ -138,8 +138,8 @@ public class SearchContoller {
 	
 	@ApiOperation(value ="[쌀로그 페이지] 파이그래프 만들기용,username을 입력하면 해당 user가 푼문제에서 어떤 keyword들을 사용했는지 전부  가져온다.")
 	@GetMapping("/find_pyto")
-	public ResponseEntity<Map<String, Integer>> find_py(@RequestParam("username") String username){
-		return new ResponseEntity<Map<String, Integer>>(postSubService.find_py_graph(username), HttpStatus.OK);
+	public ResponseEntity<Map<String, Integer>> find_py(@RequestParam("username") String username ,@RequestParam("count") Integer count){
+		return new ResponseEntity<Map<String, Integer>>(postSubService.find_py_graph(username, count), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[유저네임 찾기] 해당 닉네임을 가진 user의 username(string)을 리턴. 없으면  fail리턴")

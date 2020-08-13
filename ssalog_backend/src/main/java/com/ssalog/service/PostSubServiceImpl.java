@@ -46,7 +46,7 @@ public class PostSubServiceImpl implements PostSubService{
 		return postSubRepository.findByUsername(username, pageable);
 	}
 	@Override
-	public Map<String, Integer> find_py_graph(String username){
+	public Map<String, Integer> find_py_graph(String username, int num){
 		List<PostSub> list = postSubRepository.findPyGraphTouser(username);
 		Map<String, Integer> result = new TreeMap<String, Integer>();
 		for(int i=0; i<list.size(); i++) {
@@ -63,11 +63,16 @@ public class PostSubServiceImpl implements PostSubService{
 			}
 		}
 		Iterator<Object> it = sortByValue(result).iterator();
+		int k = 0;
+		Map<String, Integer> result2 = new TreeMap<String, Integer>();
 		while(it.hasNext()) {
-            String temp = (String) it.next();
+            if(k == num) break;
+			String temp = (String) it.next();
+			result2.put(temp,result.get(temp));
             System.out.println(temp + " = " + result.get(temp));
+            k++;
         }
-		return result;
+		return result2;
 	}
 
 	@Override
@@ -84,7 +89,7 @@ public class PostSubServiceImpl implements PostSubService{
                 return ((Comparable) v2).compareTo(v1);
             }
         });
-        Collections.reverse(list); // 주석시 오름차순
+        //Collections.reverse(list);
         return list;
     }
 }
