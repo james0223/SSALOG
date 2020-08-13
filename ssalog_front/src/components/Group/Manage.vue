@@ -6,20 +6,12 @@
           <v-col cols="6">
             <v-card height="25vh"
               >과제 제출현황
-              <PieChart
-                v-if="pieLoaded"
-                v-bind:chart-data="examData"
-                v-bind:chart-options="chartOptions"
-                :width="200"
-                :height="100"
-              />
+              <PieChart v-if="pieLoaded" v-bind:chart-data="examData" :width="350" :height="200" />
             </v-card>
           </v-col>
           <v-col cols="6">
-            <v-card height="25vh"
-              >과제 제출현황
-              <br />
-              제출 : {{ examData.datasets[0].data[0] }} 미제출 : {{ examData.datasets[0].data[1] }}
+            <v-card height="25vh">
+              <BarChart v-if="barLoaded" v-bind:chart-data="barData" :width="330" :height="250" />
             </v-card>
           </v-col>
         </v-row>
@@ -150,11 +142,14 @@
 
 <script>
 import PieChart from "@/components/PieChart.vue";
+import BarChart from "@/components/BarChart.vue";
+
 import { mapState } from "vuex";
 
 export default {
   name: "Manage",
   components: {
+    BarChart,
     PieChart
   },
   data() {
@@ -192,18 +187,22 @@ export default {
           }
         ]
       },
-      chartOptions: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        },
-        responsive: false,
-        maintainAspectRatio: false
+      // bar chart data
+      barLoaded: true,
+      barData: {
+        labels: ["백양로", "유투브", "N과M", "기모띠"],
+        datasets: [
+          {
+            label: "제출자",
+            backgroundColor: "green",
+            data: [20, 30, 20, 40]
+          },
+          {
+            label: "미제출자",
+            backgroundColor: "red",
+            data: [20, 10, 40, 230]
+          }
+        ]
       }
     };
   },
