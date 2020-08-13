@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.config.webhook;
 import com.ssalog.dto.GroupDTO;
+import com.ssalog.dto.GroupGoal;
 import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
 import com.ssalog.dto.Groupdetail;
@@ -105,15 +106,15 @@ public class GroupController {
 	}
 	@GetMapping("user/grouping/pre_goal_list")
 	@ApiOperation(value = "[그룹에서 만료시간이 안지난 문제보기] 그룹목표문제 중 만료시간이 안지난 문제리스트를 보여줍니다.. ")
-	public ResponseEntity<Page<Problem>> pre_goal(HttpServletResponse response, @RequestParam("groupname") String groupname, PageRequest pageable) {
+	public ResponseEntity<List<Map<String,Object>>> pre_goal(HttpServletResponse response, @RequestParam("groupname") String groupname, PageRequest pageable) {
 		String username = response.getHeader("username"); 
-		return new ResponseEntity<Page<Problem>>(groupService.preGoal(username, groupname, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<List<Map<String,Object>> >(groupService.preGoal(username, groupname, pageable.of()),HttpStatus.OK);
 	}
 	@GetMapping("user/grouping/post_goal_list")
 	@ApiOperation(value = "[그룹에서 만료시간이 지난 문제보기] 그룹목표문제 중 만료시간이 지난 문제리스트를 보여줍니다.. ")
-	public ResponseEntity<Page<Problem>> post_goal(HttpServletResponse response, @RequestParam("groupname") String groupname, PageRequest pageable) {
+	public ResponseEntity<List<Map<String,Object>>> post_goal(HttpServletResponse response, @RequestParam("groupname") String groupname, PageRequest pageable) {
 		String username = response.getHeader("username"); 
-		return new ResponseEntity<Page<Problem>>(groupService.postGoal(username, groupname, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<List<Map<String,Object>>>(groupService.postGoal(username, groupname, pageable.of()),HttpStatus.OK);
 	}
 	
 	@GetMapping("user/grouping/group_member")
