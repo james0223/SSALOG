@@ -24,10 +24,11 @@ public class GroupGoal {
 	private String problemname;
 	private Date date;
 	private Long cnt;
-	
+	private String mention;
 	public GroupGoal() {}
 
-	public GroupGoal(Long id, GroupDTO groupdto, String problemid, String problemname, Date date, Long cnt) {
+	public GroupGoal(Long id, GroupDTO groupdto, String problemid, String problemname, Date date, Long cnt,
+			String mention) {
 		super();
 		this.id = id;
 		this.groupdto = groupdto;
@@ -35,6 +36,15 @@ public class GroupGoal {
 		this.problemname = problemname;
 		this.date = date;
 		this.cnt = cnt;
+		this.mention = mention;
+	}
+
+	public String getMention() {
+		return mention;
+	}
+
+	public void setMention(String mention) {
+		this.mention = mention;
 	}
 
 	public Long getId() {
