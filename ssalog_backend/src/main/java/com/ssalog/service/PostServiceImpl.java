@@ -149,9 +149,7 @@ public class PostServiceImpl implements PostService{
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
 				if(problem == null) {
 					problem = new Problem();
-//					Account ac = accountRepository.findByUsername(username);
-//					problem.setStarter(username);
-//					problem.setStarter_img(ac.getImgpath()==null?"default.png");
+					problem.setStarter(username);
 				}else {
 					problem = delete_problem(problem, p);
 				}

@@ -14,12 +14,10 @@ public class Problem {
 	private Map<String, solvelang> language;
 	private long all_cnt;
 	private String starter;
-	private String starter_nickname;
-	private String starter_img;
 	public Problem() {}
 	
 	public Problem(String problemid, String name, Map<String, Integer> key, Map<String, solvelang> language,
-			long all_cnt, String starter, String starter_nickname, String starter_img) {
+			long all_cnt, String starter) {
 		super();
 		this.problemid = problemid;
 		this.name = name;
@@ -27,26 +25,9 @@ public class Problem {
 		this.language = language;
 		this.all_cnt = all_cnt;
 		this.starter = starter;
-		this.starter_nickname = starter_nickname;
-		this.starter_img = starter_img;
 	}
 
 
-	public String getStarter_nickname() {
-		return starter_nickname;
-	}
-
-	public void setStarter_nickname(String starter_nickname) {
-		this.starter_nickname = starter_nickname;
-	}
-
-	public String getStarter_img() {
-		return starter_img;
-	}
-
-	public void setStarter_img(String starter_img) {
-		this.starter_img = starter_img;
-	}
 
 	public String getStarter() {
 		return starter;
