@@ -87,9 +87,9 @@ public class GroupController {
 	
 	@DeleteMapping("user/grouping/apply_reject")
 	@ApiOperation(value = "[그룹 가입신청 거절] 내 그룹에 신청한 가입을 거절합니다.")
-	public ResponseEntity<String> apply_accept(HttpServletResponse response, @RequestParam("regid") Long regid) {
+	public ResponseEntity<String> apply_reject(HttpServletResponse response, @RequestParam("groupname") String groupname, @RequestParam("regid") Long regid) {
 		String username = response.getHeader("username"); 
-		return new ResponseEntity<String>(groupService.applyreject(username, regid),HttpStatus.OK);
+		return new ResponseEntity<String>(groupService.applyreject(username,groupname, regid),HttpStatus.OK);
 	}
 	
 	@GetMapping("user/grouping/myGrouplist")

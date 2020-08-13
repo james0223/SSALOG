@@ -16,7 +16,7 @@ public interface GroupService {
 	public String applyaccept(String username,String groupname,Long regid);
 	public String makeGoal(String username, String groupname, String problemid, String problemname, Date limit);
 	public Map<String, Boolean> checkGoal(String groupname,String problemid);
-	public String applyreject(String username,Long regid);
+	public String applyreject(String username,String groupname, Long regid);
 	public Map<String, GroupRole> myGroup(String username);
 	
 }

@@ -109,7 +109,7 @@ public class GroupServiceImpl implements GroupService{
 	// 가입 신청 수락
 	@Override
 	public String applyaccept(String username,String groupname,Long regid){
-		GroupDTO g = groupRepository.findByAccount_username(username);
+		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username,groupname);
 		if(g!= null) {
 			// regist에서 삭제하고, 해당 user를 groupdetail에 넣어주면됨
 			Optional<GroupRegist> gr = groupRegistRepository.findById(regid);
@@ -132,8 +132,8 @@ public class GroupServiceImpl implements GroupService{
 	}
 	// 가입 신청 거절
 	@Override
-	public String applyreject(String username,Long regid){
-		GroupDTO g = groupRepository.findByAccount_username(username);
+	public String applyreject(String username,String groupname, Long regid){
+		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username,groupname);
 		if(g!= null) {
 			// regist에서 삭제하고, 해당 user를 groupdetail에 넣어주면됨
 			Optional<GroupRegist> gr = groupRegistRepository.findById(regid);
