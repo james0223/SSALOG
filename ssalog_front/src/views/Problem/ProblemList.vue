@@ -1,18 +1,50 @@
 <template>
-  <v-container>
-    <row v-if="isNoResult">
-      <h2 class="text-center">검색결과가 없습니다.</h2>
-      <h3 class="text-center">쌀로그의 문제는 여러분의 쌀로그가 모여 생성됩니다.</h3>
-      <h4 class="text-center">그러니까 문제를 풀어서 개척자가 되어주세요!</h4>
-      <a class="text-center" href="https://www.acmicpc.net/">문제풀러가기</a>
-    </row>
+  <v-container class="mt-16">
+    <v-card class="pa-10" v-if="isNoResult" flat>
+      <v-row justify="center">
+        <v-col cols="8"
+          ><v-card-title class="pb-1">
+            <h1>저런!</h1>
+          </v-card-title>
+          <v-card-title>
+            <h2>검색결과가 없네요</h2>
+          </v-card-title>
+          <v-card-text class="px-5">
+            <h3>쌀로그의 문제는 여러분의 리뷰가 작성되면 자동적으로 생성됩니다.</h3>
+            <h3>지금 바로 문제를 풀어서 <span class="info--text">개척자</span>가 되어주세요!</h3>
+          </v-card-text>
+        </v-col>
+        <v-col cols="4">
+          <v-card-text
+            ><v-img
+              class="mx-auto"
+              src="@/assets/images/sorry.png"
+              height="20vh"
+              width="20vh"
+              alt="Freepik from flaticon.com"
+            ></v-img></v-card-text
+          ><v-card-actions class="justify-center"
+            ><a
+              target="_blank"
+              v-bind:href="
+                `https://www.acmicpc.net/search#q=${
+                  $route.query.categoryIdx === 2 ? '' : $route.query.q
+                }`
+              "
+              style="text-decoration: none; "
+              ><v-btn color="info" tile>BOJ에서 검색하기</v-btn></a
+            ></v-card-actions
+          >
+        </v-col>
+      </v-row>
+    </v-card>
     <h2 v-if="!isNoResult">{{ resultMsg }}에 대한 검색결과입니다.</h2>
     <v-row>
       <v-col v-for="(problem, i) in problems" :key="i" cols="12">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card @click="visitProblemDeatil(problem.problemid)" :elevation="hover ? 12 : 2">
-            <v-card-title>{{ problem.problemid }} - {{ problem.problemname }}</v-card-title>
-            <v-card-text>등록된 리뷰 : n개</v-card-text>
+            <v-card-title>{{ problem.problemid }} - {{ problem.name }}</v-card-title>
+            <v-card-text>등록된 리뷰 : {{ problem.all_cnt }}개</v-card-text>
             <div v-if="!!problem.keyword && problem.keyword.length !== 0">
               <v-divider></v-divider>
               <v-card-text>
@@ -96,9 +128,7 @@ export default {
             }
           }
         );
-        console.log(res);
         if (!res.data) {
-          console.log("아무것도 없다.");
           this.isError = true;
           return;
         }

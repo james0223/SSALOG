@@ -16,7 +16,7 @@
           <v-btn :ripple="false" class="pa-0 no-background-hover" text @click="changeRoute(2)"
             >GROUP</v-btn
           >
-        </v-col>-->
+        </v-col> -->
         <v-col cols="8" md="6" class="text-center">
           <SearchBar :SelectedCategoryIdx="0" class="mt-7" />
         </v-col>
