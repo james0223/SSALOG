@@ -193,7 +193,7 @@ export default {
           name: "Setting",
           route: `/SSALOG/${this.$route.params.nickname}/UserSetting`,
           icon: "mdi-settings",
-          flag: this.$store.state.nickname === this.$route.params.nickname
+          flag: this.$store.state.nickname !== this.$route.params.nickname
         }
       ]
     };
