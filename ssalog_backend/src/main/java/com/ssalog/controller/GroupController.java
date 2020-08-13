@@ -100,6 +100,13 @@ public class GroupController {
 		Map<String, GroupRole> m = groupService.myGroup(username);
 		return new ResponseEntity<Map<String, GroupRole>>(m,HttpStatus.OK);
 	}
+	
+//	@GetMapping("newuser/grouping/test")
+//	@ApiOperation(value = "[그룹 보기] 내가 가입한 그룹목록을 보여줍니다. 사용자 입장")
+//	public ResponseEntity<?> test(@RequestParam("limitday") @DateTimeFormat(iso = ISO.DATE_TIME) Date limit) {
+//		groupService.teamstatus("d", "d", limit);
+//		return new ResponseEntity<Void>(HttpStatus.OK);
+//	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
 		System.err.println("그룹 부분에서 " + e.getClass());
