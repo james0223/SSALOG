@@ -36,7 +36,8 @@
 
 <script>
 import axios from "axios";
-// import qs from "qs";
+// 요청에 배열 담을 때 필요
+import qs from "qs";
 import InfiniteLoading from "vue-infinite-loading";
 
 export default {
@@ -82,22 +83,17 @@ export default {
     async fetchProblems() {
       this.is_fetching = true;
       try {
-        // let keywordString = `/?`;
-        // this.$route.query.keywords.forEach(function(keyword) {
-        //   keywordString += `keyword=${keyword}&`;
-        // });
         const res = await axios.get(
           `${this.$store.state.ServerURL}/newuser/search/${this.searchMethods[this.categoryIdx]}`,
           {
             params: {
               param: this.$route.query.keywords,
               ...this.searchData
+            },
+            paramsSerializer: params => {
+              return qs.stringify(params, { arrayFormat: "brackets" });
+              // repeat : param param, brackets : param[], default : param[1] 이렇게 해라...
             }
-            // 배열을 보내기 위한 방법, npm i qs 필요
-            // paramsSerializer: params => {
-            //   console.log(qs.stringify(params));
-            //   return qs.stringify(params);
-            // }
           }
         );
         console.log(res);
