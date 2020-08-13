@@ -1,65 +1,57 @@
 <template>
-  <v-container>
-    <v-card v-if="solvedList == []" flat height="60vh" class="pa-6 mt-8">
-      <h3 class="font-weight-light mb-1">쌀밭</h3>
-      <v-divider></v-divider>
-      <calendar-heatmap
-        v-if="heatmapData"
-        tooltip-unit="개 풀었습니다"
-        class="mt-3"
-        v-bind:values="heatmapData.dates"
-        v-bind:range-color="heatmapData.rangeColor"
-        v-bind:tooltip="true"
-        v-bind:end-date="new Date()"
-      ></calendar-heatmap>
-      <v-row>
-        <v-col cols="5"> <DoughNutChart v-bind:chart-data="chartData" /> </v-col>
-        <v-col cols="7">
-          <v-row no-gutters>
-            <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
-            <v-col cols="3" class="d-flex justify-center"
-              ><h4 class="font-weight-light mb-1">키워드</h4></v-col
+  <v-card flat height="60vh" class="pa-6 mt-8">
+    <h3 class="font-weight-light mb-1">쌀밭</h3>
+    <v-divider></v-divider>
+    <calendar-heatmap
+      tooltip-unit="개 풀었습니다"
+      class="mt-3"
+      v-bind:values="heatmapData.dates"
+      v-bind:range-color="heatmapData.rangeColor"
+      v-bind:tooltip="true"
+      v-bind:end-date="new Date()"
+    ></calendar-heatmap>
+    <v-row>
+      <v-col cols="5"> <DoughNutChart v-bind:chart-data="chartData" /> </v-col>
+      <v-col cols="7">
+        <v-row no-gutters>
+          <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
+          <v-col cols="3" class="d-flex justify-center"
+            ><h4 class="font-weight-light mb-1">키워드</h4></v-col
+          >
+          <v-col cols="3" class="d-flex justify-center"
+            ><h4 class="font-weight-light mb-1">작성날짜</h4></v-col
+          >
+        </v-row>
+        <v-divider></v-divider>
+        <v-list>
+          <v-list-item-group>
+            <v-list-item
+              class="px-1"
+              v-for="(solve, i) in solvedList"
+              :key="i"
+              @click="
+                $router.push({
+                  name: 'LogDetail',
+                  params: { username: ownerName, id: solve.scoring }
+                })
+              "
             >
-            <v-col cols="3" class="d-flex justify-center"
-              ><h4 class="font-weight-light mb-1">작성날짜</h4></v-col
-            >
-          </v-row>
-          <v-divider></v-divider>
-          <v-list>
-            <v-list-item-group>
-              <v-list-item
-                class="px-1"
-                v-for="(solve, i) in solvedList"
-                :key="i"
-                @click="
-                  $router.push({
-                    name: 'LogDetail',
-                    params: { username: ownerName, id: solve.scoring }
-                  })
-                "
-              >
-                <v-row no-gutters class="align-center">
-                  <v-col cols="6"> {{ solve.problemid }} - {{ solve.problemname }} </v-col>
-                  <v-col cols="3" class="d-flex justify-center">
-                    {{ solve.keyword2 }}
-                  </v-col>
-                  <v-col cols="3" class="d-flex justify-center">
-                    {{ solve.regdate }}
-                  </v-col>
-                </v-row>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-          <v-divider></v-divider>
-        </v-col>
-      </v-row>
-    </v-card>
-    <v-card flat v-else height="60vh">
-      <v-card-title class="align-center">
-        <h2>아직 작성한 리뷰가 없습니다. 어서 리뷰를 작성해주세요😄</h2>
-      </v-card-title>
-    </v-card>
-  </v-container>
+              <v-row no-gutters class="align-center">
+                <v-col cols="6"> {{ solve.problemid }} - {{ solve.problemname }} </v-col>
+                <v-col cols="3" class="d-flex justify-center">
+                  {{ solve.keyword2 }}
+                </v-col>
+                <v-col cols="3" class="d-flex justify-center">
+                  {{ solve.regdate }}
+                </v-col>
+              </v-row>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <v-divider></v-divider>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
