@@ -38,15 +38,15 @@ export default {
         },
         {
           name: "그룹원",
-          route: `/Group/${this.$route.params.nickname}/Member`
+          route: `/Group/${this.$route.params.groupname}/Member`
         },
         {
           name: "과제",
-          route: `/Group/${this.$route.params.nickname}/Homework`
+          route: `/Group/${this.$route.params.groupname}/Homework`
         },
         {
           name: "그룹관리",
-          route: `/Group/${this.$route.params.nickname}/Manage`
+          route: `/Group/${this.$route.params.groupname}/Manage`
         }
       ]
     };

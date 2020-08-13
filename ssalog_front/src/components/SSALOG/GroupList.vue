@@ -49,7 +49,11 @@
                           <v-list-item-title>{{ item.GroupName }}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-action>
-                          <v-btn depressed small>
+                          <v-btn
+                            depressed
+                            small
+                            :to="{ name: 'Group', params: { groupname: item.GroupName } }"
+                          >
                             그룹 페이지 가기
                             <v-icon color="secondary" right>
                               mdi-open-in-new
@@ -90,6 +94,9 @@ export default {
   name: "GroupList",
   data() {
     return {
+      // 초기 세팅
+      ownerName: this.$route.params.nickname,
+      ownerEmail: "",
       myGroup: [
         {
           GroupName: "으으잉"
@@ -137,7 +144,27 @@ export default {
       } catch (err) {
         console.error(err);
       }
+    },
+    // mounted 에서 가장 첫번째로 실행.
+    async getownerEmail() {
+      try {
+        const res = await this.$http.get(`${this.ServerURL}/newuser/search/find_username`, {
+          params: {
+            nickname: this.ownerName
+          }
+        });
+        this.ownerEmail = res.data;
+      } catch (e) {
+        console.error(e);
+      }
     }
+    // async getGroups() {
+    //   try {
+    //     await this.$http.get(`${this.ServerURL}`);
+    //     // 여기에 param 으로 ownerEmail 보내서 가입한 group 목록을 불러오고
+    //     // mounted 에서 두번째로 실행
+    //   }
+    // }
   },
   computed: mapState(["ServerURL"])
 };
