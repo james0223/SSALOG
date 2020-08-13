@@ -31,8 +31,13 @@
       </v-simple-table>
     </v-card>
     <v-card flat height="45vh">
-      <v-toolbar-title>제출 목록</v-toolbar-title>
-      <v-data-table :headers="headers" :items="submissions"></v-data-table>
+      <v-toolbar-title class="mb-4">제출 목록</v-toolbar-title>
+      <v-card width="27vw" height="40vh" class="d-inline-block mr-5">
+        <v-subheader>제출자</v-subheader>
+      </v-card>
+      <v-card width="27vw" height="40vh" class="d-inline-block">
+        <v-subheader>미제출자</v-subheader>
+      </v-card>
     </v-card>
   </v-card>
 </template>
