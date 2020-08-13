@@ -1,6 +1,6 @@
 {
   "name": "SSaLog",
-  "version": "1.0",
+  "version": "1.1",
   "description": "알고리즘 포트폴리오 작성을 도와줘요",
   "manifest_version": 2,
   "background": {
