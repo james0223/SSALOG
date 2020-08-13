@@ -1,91 +1,140 @@
 <template>
-  <v-container>
-    <v-row justify="center" no-gutters>
-      <v-col lg="4" cols="12">
-        <v-card flat height="80vh">
-          <v-row justify="center" class="mt-8">
-            <v-card class="mx-auto mb-4">
+  <v-container class="mt-15">
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-card class="mb-4 pa-7" tile>
+          <img
+            v-if="isSolved"
+            class="corner"
+            src="@/assets/images/corner/corner_success.png"
+            title="이 문제를 푸셨습니다!"
+            alt="success"
+          />
+          <v-row>
+            <v-col cols="8">
               <v-card-title>
-                <span class="title mr-4">{{ problemTitle }}</span>
-                <span class="subtitle-1 font-weight-light">{{ problemNumber }}</span>
+                <h1>{{ problemNumber }} - {{ problemTitle }}</h1>
               </v-card-title>
-              <v-list-item>
-                <v-icon class="mr-3">mdi-alarm</v-icon>
-                <span class="body-1 mr-5">제한 시간</span>
-                <span class="body-1">{{ timeLimit }}초</span>
-              </v-list-item>
-              <v-list-item>
-                <v-icon class="mr-3">mdi-memory</v-icon>
-                <span class="body-1 mr-5">메모리 제한</span>
-                <span class="body-1">{{ memoryLimit }} MB</span>
-              </v-list-item>
+              <v-card-text>
+                <h3><v-icon>mdi-shovel</v-icon>개척자</h3>
+                <h2>
+                  <v-avatar>
+                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img> </v-avatar
+                  >arduinho
+                </h2>
+              </v-card-text>
+            </v-col>
+            <v-col cols="4" class="d-flex align-end justify-end">
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text v-if="userSolved">문제 풀러 가기</v-btn>
+                <a
+                  target="_blank"
+                  v-bind:href="`https://www.acmicpc.net/problem/${problemNumber}`"
+                  style="text-decoration: none; "
+                  title="클릭시 문제로 이동합니다."
+                  >BOJ 로 열기</a
+                >
+                <v-icon>mdi-launch</v-icon>
               </v-card-actions>
-            </v-card>
+            </v-col>
           </v-row>
+
+          <v-divider class="mx-3"></v-divider>
+
           <v-row justify="center">
-            <v-card flat width="20vw" height="40vh">
-              <v-container class="chart-container">
-                <DoughNutChart
-                  v-if="doughnutLoaded"
-                  v-bind:chart-data="problemData"
-                  v-bind:chart-options="chartOptions"
-                />
-              </v-container>
-            </v-card>
+            <v-col cols="4">
+              <v-card flat class="chart-container">
+                <v-card-title>
+                  <h5>주요 풀이기법</h5>
+                </v-card-title>
+                <v-card-text>
+                  <DoughNutChart
+                    v-if="doughnutLoaded"
+                    v-bind:chart-data="problemData"
+                    v-bind:chart-options="chartOptions"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="3"></v-col>
+            <v-col cols="5">
+              <v-card flat>
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-card-title>
+                      <h5>언어별 평균스펙</h5>
+                      <v-spacer></v-spacer>
+                      <v-btn icon v-bind="attrs" v-on="on">
+                        <v-icon>mdi-chevron-down</v-icon>
+                      </v-btn>
+                    </v-card-title>
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      v-for="(language, i) in languages"
+                      :key="i"
+                      @click="fetchAvgData(language)"
+                    >
+                      <v-list-item-title>{{ language.lang }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+                <v-card-title>
+                  <v-icon>{{ selectedIco }}</v-icon>
+                  {{ selectedLang }}
+                </v-card-title>
+                <v-card-title>
+                  <v-icon>mdi-alarm</v-icon>
+                  {{ userAvgData.time }} ms
+                </v-card-title>
+                <v-card-title>
+                  <v-icon>mdi-memory</v-icon>
+                  {{ userAvgData.memory }} kb
+                </v-card-title>
+
+                <!-- <v-list-item-group v-model="selectedList" color="primary">
+                  <v-list-item v-for="(item, i) in userSolvingData" :key="i">
+                    <v-list-item-icon>
+                      <span v-if="item.avg">평균 시간</span>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item.time"></v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-icon>
+                      <span v-if="item.avg">평균 메모리</span>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item.memory" class="ml-4"></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>-->
+              </v-card>
+            </v-col>
           </v-row>
         </v-card>
       </v-col>
-      <v-divider vertical></v-divider>
-      <v-col lg="5" cols="12">
-        <v-card flat height="80vh">
-          <v-card class="mx-5 mt-5">
-            <v-list disabled>
-              <v-subheader>나의 풀이</v-subheader>
-              <v-list-item-group v-model="selectedList" color="primary">
-                <v-list-item v-for="(item, i) in userSolvingData" :key="i">
-                  <v-list-item-icon>
-                    <v-icon v-text="item.icon" class="mr-3">mdi-alarm</v-icon>
-                    <span v-if="item.avg">평균 시간</span>
-                    <span v-else>나의 시간</span>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.time"></v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-icon>
-                    <v-icon v-text="item.icon" class="mr-3">mdi-alarm</v-icon>
-                    <span v-if="item.avg">평균 메모리</span>
-                    <span v-else>나의 메모리</span>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.memory" class="ml-4"></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card>
-
-          <v-card class="mx-5 mt-5">
-            <v-data-table
-              :loading="SolutionLoading"
-              loading-text="풀이를 가져오는 중입니다..."
-              :headers="headers"
-              :page.sync="SolutionPage"
-              hide-default-footer
-              :items-per-page="SolutionPerPage"
-              :items="solvedLists"
-            >
-              <template v-slot:item.exectime="{ item }">
-                <v-chip :color="getColor(item.exectime)">{{ item.exectime }}</v-chip>
-              </template>
-              <template v-slot:item.memory="{ item }">
-                <v-chip :color="getColor(item.memory)">{{ item.memory }}</v-chip>
-              </template>
-            </v-data-table>
-            <v-pagination v-model="SolutionPage" :length="SolutionPageCount"></v-pagination>
-          </v-card>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-card tile>
+          <v-subheader>
+            <h4>풀이 목록</h4>
+          </v-subheader>
+          <v-data-table
+            :loading="SolutionLoading"
+            loading-text="풀이를 가져오는 중입니다..."
+            :headers="headers"
+            :page.sync="SolutionPage"
+            hide-default-footer
+            :items-per-page="SolutionPerPage"
+            :items="solvedLists"
+          >
+            <template v-slot:item.exectime="{ item }">
+              <v-chip :color="getColor(item.exectime)">{{ item.exectime }}</v-chip>
+            </template>
+            <template v-slot:item.memory="{ item }">
+              <v-chip :color="getColor(item.memory)">{{ item.memory }}</v-chip>
+            </template>
+          </v-data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -104,19 +153,26 @@ export default {
   },
   data() {
     return {
-      // 유저가 문제를 풀었는지 아닌지 파악
-      userSolved: false,
-      // 왼쪽 오른쪽 카드(문제) 관련 옵션
-      problemTitle: "역학조사",
-      problemNumber: "19541",
-      timeLimit: 3,
-      memoryLimit: 1024,
-      // 오른쪽 위의 카드 (유저문제) 관련 옵션
-      selectedList: 1,
-      userSolvingData: [
-        { avg: true, time: "20", memory: 1024 }, // 각 solve 의 평균값
-        { time: "20", memory: 2014 } // 특정 유저의 값
+      languages: [
+        { lang: "Python3", ico: "mdi-language-python" },
+        { lang: "PyPy3", ico: "mdi-language-python" },
+        { lang: "Java", ico: "mdi-language-java" },
+        { lang: "C++14", ico: "mdi-language-cpp" },
+        { lang: "C++", ico: "mdi-language-cpp" },
+        { lang: "C11", ico: "mdi-language-c" },
+        { lang: "C", ico: "mdi-language-c" }
       ],
+      // 유저가 문제를 풀었는지 아닌지 파악
+      isSolved: true,
+      problemTitle: null,
+      problemNumber: this.$route.params.id,
+      selectedList: 1,
+      selectedLang: "PyPy3",
+      selectedIco: "mdi-language-python",
+      userAvgData: {
+        time: null,
+        memory: null
+      },
       // doughnutchart 관련 옵션
       doughnutLoaded: false,
       problemData: {
@@ -126,7 +182,7 @@ export default {
         datasets: [
           {
             label: "문제 키워드",
-            backgroundColor: "#f87979",
+            backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
             data: []
           }
         ]
@@ -170,6 +226,25 @@ export default {
     };
   },
   methods: {
+    async fetchAvgData(lang) {
+      try {
+        const { data } = await this.$http.get(
+          `${this.$store.state.ServerURL}/newuser/search/detail_avg`,
+          {
+            params: {
+              language: lang.lang,
+              problemid: this.problemNumber
+            }
+          }
+        );
+        this.userAvgData.time = data.avg_time;
+        this.userAvgData.memory = data.avg_memory;
+        this.selectedLang = lang.lang;
+        this.selectedIco = lang.ico;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     // 풀이 데이터 import
     async fetchSolvingData() {
       try {
@@ -180,7 +255,7 @@ export default {
             params: {
               direction: "ASC",
               page: this.SolutionPage,
-              problemid: this.$route.params.id,
+              problemid: this.problemNumber,
               size: 10
             }
           }
@@ -198,12 +273,11 @@ export default {
         `${this.$store.state.ServerURL}/newuser/search/find_problemname/`,
         {
           params: {
-            problemid: this.$route.params.id
+            problemid: this.problemNumber
           }
         }
       );
       this.problemTitle = data;
-      this.problemNumber = this.$route.params.id;
     },
     // 도넛 데이터 받아오기
     async fetchDoughnutData() {
@@ -231,11 +305,12 @@ export default {
     this.getProblemName();
     this.fetchSolvingData();
     this.fetchDoughnutData();
+    this.fetchAvgData({ lang: "PyPy3" });
   },
   computed: mapState(["ServerURL"]),
   watch: {
     // eslint-disable-next-line
-    SolutionPage: function() {
+    SolutionPage: function () {
       this.fetchSolvingData();
     }
   }
@@ -251,5 +326,11 @@ export default {
     position: relative;
     height: 100%;
   }
+}
+.corner {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 7rem;
 }
 </style>
