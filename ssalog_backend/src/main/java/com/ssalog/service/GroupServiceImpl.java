@@ -175,17 +175,21 @@ public class GroupServiceImpl implements GroupService{
 	@Override
 	public Map<String, Boolean> checkGoal(String groupname,String problemid) {
 		List<Groupdetail> gd = groupDetailRepository.findByGroupdto_groupname(groupname);
-		Map<String, Boolean> m = new HashMap<>();
-		for(int i=0; i< gd.size(); i++) {
-			Groupdetail gd2 = gd.get(i);
-			List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(gd2.getAccount().getUsername(), problemid);
-			if(ps !=null) {
-				m.put(gd2.getAccount().getNickname(), true);
-			}else {
-				m.put(gd2.getAccount().getNickname(), false);
+		GroupGoal gg = groupGoalRepository.findByProblemidAndGroupdto_groupname(problemid, groupname);
+		if(gg != null) {
+			Map<String, Boolean> m = new HashMap<>();
+			for(int i=0; i< gd.size(); i++) {
+				Groupdetail gd2 = gd.get(i);
+				List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(gd2.getAccount().getUsername(), problemid);
+				if(ps.size() != 0) {
+					m.put(gd2.getAccount().getNickname(), true);
+				}else {
+					m.put(gd2.getAccount().getNickname(), false);
+				}
 			}
+			return m;
 		}
-		return m;
+		return null;
 	}
 
 	@Override
