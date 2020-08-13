@@ -366,15 +366,24 @@ export default {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
     },
     async deleteSolution() {
-      this.ShowAlert({
-        flag: true,
-        msg: "게시물을 삭제하였습니다. 메인으로 이동합니다.",
-        color: "info"
-      });
-      setTimeout(() => {
-        this.ShowAlert({ flag: false, msg: "" });
-        this.$router.push({ name: "Home" });
-      }, 2000);
+      try {
+        axios.delete(`${this.$store.state.ServerURL}/user/post/delete_post`, {
+          params: {
+            Scoring: this.$route.params.id
+          }
+        });
+        this.ShowAlert({
+          flag: true,
+          msg: "게시물을 삭제하였습니다.",
+          color: "red"
+        });
+        setTimeout(() => {
+          this.ShowAlert({ flag: false, msg: "" });
+          this.$router.go(-1);
+        }, 1000);
+      } catch (e) {
+        console.error(e);
+      }
     },
     async getSSALOG(pageId) {
       try {
