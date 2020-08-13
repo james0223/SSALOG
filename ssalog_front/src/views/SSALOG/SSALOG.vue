@@ -346,7 +346,6 @@ export default {
           }
         );
         this.scrapSu = res.data;
-        console.log("scrapSu=".concat(this.scrapSu));
       } catch (e) {
         console.error(e);
       }

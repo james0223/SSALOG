@@ -72,7 +72,7 @@
             </template>
             <span>제출 코드 보기</span>
           </v-tooltip>
-          <v-tooltip bottom>
+          <v-tooltip v-if="username !== writerUsername" bottom>
             <template v-slot:activator="{ on }">
               <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="doScrap"
                 ><v-icon :disabled="!scrapped" color="yellow accent-4">mdi-star</v-icon></v-btn
@@ -317,7 +317,6 @@ export default {
         })
         .then(res => {
           this.scrapped = res.data;
-          console.log("scrapped=".concat(this.scrapped));
         });
     },
     doScrap() {
