@@ -7,6 +7,8 @@ import java.util.UUID;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -14,11 +16,13 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
 
 @Repository
@@ -78,4 +82,18 @@ public class additionalRepositoryImpl implements additionalRepository{
 //		update.push("comment", comment);
 //		mongoTemplate.updateFirst(q, update, Post.class);
 //	}
+	
+	public Page<Problem> keyword_search(String[] list, Pageable pageable) {
+		Query query = new Query().with(pageable);
+		Criteria criteria = new Criteria();
+		Criteria[] criteria_arr = new Criteria[list.length];
+		
+		for(int i=0; i<list.length; i++) {
+			criteria_arr[i] = Criteria.where("key."+list[i]).gt(0);
+		}
+		query.addCriteria(criteria.andOperator(criteria_arr));
+		List<Problem> plist = mongoTemplate.find(query, Problem.class);
+		//plist.forEach(System.out::println);
+		return PageableExecutionUtils.getPage(plist, pageable, () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Problem.class));
+	}
 }
