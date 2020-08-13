@@ -11,16 +11,20 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.PostSubRepository;
 
 @Service
 public class PostSubServiceImpl implements PostSubService{
 	@Autowired
 	PostSubRepository postSubRepository;
-	
+	@Autowired
+	PostRepository postRepository;
 
 	@Override
 	public Page<PostSub> select_by_problemid(String problemid,String language, PageRequest pageable) {

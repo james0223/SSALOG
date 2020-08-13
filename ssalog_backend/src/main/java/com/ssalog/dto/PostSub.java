@@ -21,12 +21,12 @@ public class PostSub {
 	private List<String> keyword;
 	private String regdate;
 	private String regtime;
+	private String title;
 	
-	public PostSub() {}
-
+	
 	public PostSub(String scoring, String username, String nickname, String language, int len, int memory,
 			String problemid, String problemname, int time, int like, List<String> keyword, String regdate,
-			String regtime) {
+			String regtime, String title) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -41,8 +41,17 @@ public class PostSub {
 		this.keyword = keyword;
 		this.regdate = regdate;
 		this.regtime = regtime;
+		this.title = title;
 	}
 
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public String getNickname() {
 		return nickname;
