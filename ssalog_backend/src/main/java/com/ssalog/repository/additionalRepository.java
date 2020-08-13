@@ -15,5 +15,5 @@ public interface additionalRepository {
 	public void write_subcomment(String id, Comment comment);
 	public void update_subcomment(String id, Comment comment);
 	public Page<Problem> keyword_search(String[] list, Pageable pageable);
-	
+	public Page<Problem> solved_list(String[] list, Pageable pageable);
 }

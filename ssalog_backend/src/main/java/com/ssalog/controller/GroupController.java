@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ import com.ssalog.dto.GroupDTO;
 import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
 import com.ssalog.dto.Groupdetail;
+import com.ssalog.dto.PageRequest;
+import com.ssalog.dto.Problem;
 import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.service.GroupService;
 
@@ -100,11 +103,29 @@ public class GroupController {
 		Map<String, GroupRole> m = groupService.myGroup(username);
 		return new ResponseEntity<Map<String, GroupRole>>(m,HttpStatus.OK);
 	}
+	@GetMapping("user/grouping/pre_goal_list")
+	@ApiOperation(value = "[그룹에서 만료시간이 안지난 문제보기] 그룹목표문제 중 만료시간이 안지난 문제리스트를 보여줍니다.. ")
+	public ResponseEntity<Page<Problem>> pre_goal(HttpServletResponse response, @RequestParam("groupname") String groupname, PageRequest pageable) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<Page<Problem>>(groupService.preGoal(username, groupname, pageable.of()),HttpStatus.OK);
+	}
+	@GetMapping("user/grouping/post_goal_list")
+	@ApiOperation(value = "[그룹에서 만료시간이 지난 문제보기] 그룹목표문제 중 만료시간이 지난 문제리스트를 보여줍니다.. ")
+	public ResponseEntity<Page<Problem>> post_goal(HttpServletResponse response, @RequestParam("groupname") String groupname, PageRequest pageable) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<Page<Problem>>(groupService.postGoal(username, groupname, pageable.of()),HttpStatus.OK);
+	}
 	
+	@GetMapping("user/grouping/group_member")
+	@ApiOperation(value = "[그룹내 멤버보기]내 그룹의 멤버가 누군지 봅시다 ")
+	public ResponseEntity<List<Map<String,Object>>> mymember(HttpServletResponse response, @RequestParam("groupname") String groupname) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<List<Map<String,Object>>>(groupService.Mymember(username, groupname),HttpStatus.OK);
+	}
 //	@GetMapping("newuser/grouping/test")
 //	@ApiOperation(value = "[그룹 보기] 내가 가입한 그룹목록을 보여줍니다. 사용자 입장")
-//	public ResponseEntity<?> test(@RequestParam("limitday") @DateTimeFormat(iso = ISO.DATE_TIME) Date limit) {
-//		groupService.teamstatus("d", "d", limit);
+//	public ResponseEntity<?> test(PageRequest pageable) {
+//		groupService.preGoal("123123123123123", "abc", pageable.of());
 //		return new ResponseEntity<Void>(HttpStatus.OK);
 //	}
 	@ExceptionHandler(Exception.class)

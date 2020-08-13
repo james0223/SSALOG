@@ -21,6 +21,6 @@ public interface PostSubRepository extends MongoRepository<Post,String>{
 	
 	@Query(value= "{'username' : ?0, 'keyword': {$ne:null}}", fields="{ '_id': false, 'keyword': 1}" )
 	public List<PostSub> findPyGraphTouser(String username);
-	
+	public List<PostSub> findByProblemid(String problemid);
 	public Scrapedpost findByScoring(String Scoring);
 }
