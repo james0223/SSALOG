@@ -96,8 +96,8 @@ public class GroupServiceImpl implements GroupService{
 				Map<String,String> m = new HashMap<>();
 				m.put("regid", String.valueOf(list.get(i).getId()));
 				m.put("nickname",list.get(i).getAccount().getNickname());
-				m.put("introduce", list.get(i).getIntroduce());
-				m.put("img",list.get(i).getAccount().getImgpath());
+				m.put("introduce", list.get(i).getIntroduce()==null?"가입부탁드립니다 ^^":list.get(i).getIntroduce());
+				m.put("img",list.get(i).getAccount().getImgpath()==null?"default.png":list.get(i).getAccount().getImgpath());
 				li.add(m);
 			}
 			return li;

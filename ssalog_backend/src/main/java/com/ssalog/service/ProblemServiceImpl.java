@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 
 import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Problem;
+import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
 
 @Service
 public class ProblemServiceImpl implements ProblemService{
 	@Autowired
 	private ProblemRepository problemRepository;
+	
+	@Autowired
+	private PostRepository postRepository;
 	@Override
 	public Page<Problem> select_by_problemid(String problemid, PageRequest pageable) {
 		return problemRepository.findByProblemid(problemid, pageable);
@@ -27,7 +31,7 @@ public class ProblemServiceImpl implements ProblemService{
 	}
 	
 	@Override
-	public Page<Problem> findkey(List<String> keyword, PageRequest pageable){
-		return problemRepository.findAnyOfTheseValues(keyword, pageable);
+	public Page<Problem> findkey(String[] keyword, PageRequest pageable){
+		return postRepository.keyword_search(keyword, pageable);
 	}
 }

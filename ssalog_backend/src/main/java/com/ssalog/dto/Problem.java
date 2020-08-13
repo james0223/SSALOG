@@ -53,7 +53,10 @@ public class Problem {
 	public void setAll_cnt(long all_cnt) {
 		this.all_cnt = all_cnt;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "Problem [problemid=" + problemid + ", name=" + name + ", key=" + key + ", language=" + language
+				+ ", all_cnt=" + all_cnt + "]";
+	}
 	
 }

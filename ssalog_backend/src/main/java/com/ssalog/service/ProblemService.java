@@ -12,7 +12,7 @@ public interface ProblemService {
 
 	public Page<Problem> select_by_problemid(String problemid, PageRequest pageable);
 	public Page<Problem> select_by_problemname(String problemname, PageRequest pageable);
-	public Page<Problem> findkey(List<String> keyword, PageRequest pageable);
-	
+	//public Page<Problem> findkey(List<String> keyword, PageRequest pageable);
+	public Page<Problem> findkey(String[] keyword , PageRequest pageable);
 
 }
