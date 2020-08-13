@@ -379,7 +379,7 @@ export default {
         });
         setTimeout(() => {
           this.ShowAlert({ flag: false, msg: "" });
-          this.$router.go(-1);
+          this.$router.push(`/SSALOG/${this.$route.params.nickname}/SolutionList`);
         }, 1000);
       } catch (e) {
         console.error(e);

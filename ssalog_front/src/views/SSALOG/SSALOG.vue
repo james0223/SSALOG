@@ -91,10 +91,29 @@
             </v-card>
           </v-dialog>
           <v-row justify="center" class="mt-2" style="width:240px; border-bottom : 1px dashed grey">
-            <div class="ma-2 font-weight-bold">{{ ownerName }}</div>
+            <div class="ma-2" id="showLevel" title="level">
+              <v-progress-circular
+                class=" mr-6"
+                :rotate="-90"
+                :size="50"
+                :width="8"
+                :value="exp"
+                color="primary"
+              >
+                <v-icon color="blue" large>mdi-numeric-{{ level }}-circle-outline</v-icon>
+              </v-progress-circular>
+            </div>
+            <div class="mt-4 font-weight-medium ">{{ ownerName }}</div>
             <template v-if="$store.state.nickname !== $route.params.nickname">
-              <v-btn class="ml-3" large icon @click="followclick">
-                <v-icon :disabled="!isfollow" color="red">mdi-heart</v-icon>
+              <v-btn
+                id="thumbnailplus"
+                height="86"
+                width="86"
+                icon
+                @click="followclick"
+                title="follow"
+              >
+                <v-icon :disabled="!isfollow" color="red" size="50">mdi-heart</v-icon>
               </v-btn>
             </template>
           </v-row>
@@ -135,6 +154,9 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      total: 0,
+      level: 0,
+      exp: 0,
       scrapSu: 0,
       follower: 0,
       following: 0,
@@ -202,6 +224,12 @@ export default {
     };
   },
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
+  watch: {
+    total() {
+      this.level = Math.floor(this.total / 20);
+      this.exp = ((this.total % 20) / 20) * 100;
+    }
+  },
   methods: {
     decrementFollow() {
       this.following = this.following - 1;
@@ -349,6 +377,30 @@ export default {
       } catch (e) {
         console.error(e);
       }
+    },
+    async getLevel() {
+      try {
+        const owneremail = await this.$http.get(
+          `${this.$store.state.ServerURL}/newuser/search/find_username`,
+          {
+            params: {
+              nickname: this.$route.params.nickname // 바꿔야함
+            }
+          }
+        );
+        const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/to_username`, {
+          params: {
+            direction: "ASC",
+            page: 1,
+            size: 5000,
+            username: owneremail.data // 수정필요
+          }
+        });
+        // console.log(Object.keys(res.data.content).length);
+        this.total = Object.keys(res.data.content).length;
+      } catch (e) {
+        console.error(e);
+      }
     }
   },
   created() {
@@ -358,6 +410,7 @@ export default {
     if (this.$store.state.nickname != null) {
       this.getFollowFlag();
     }
+    this.getLevel();
   }
 };
 </script>
@@ -369,5 +422,10 @@ export default {
   position: absolute;
   top: 222px;
   left: 190px;
+}
+#showLevel {
+  position: absolute;
+  top: 230px;
+  left: -40px;
 }
 </style>
