@@ -59,9 +59,9 @@ public class GroupController {
 	
 	@GetMapping("user/grouping/apply_list")
 	@ApiOperation(value = "[그룹 가입신청 목록보기] 내 그룹에 가입신청한 목록을 봅니다.")
-	public ResponseEntity<List<GroupRegist>> apply_list(HttpServletResponse response, @RequestParam("groupname") String groupname) {
+	public ResponseEntity<Map<String,String>> apply_list(HttpServletResponse response, @RequestParam("groupname") String groupname) {
 		String username = response.getHeader("username"); 
-		return new ResponseEntity<List<GroupRegist>>(groupService.appliylist(username, groupname),HttpStatus.OK);
+		return new ResponseEntity<Map<String,String>>(groupService.appliylist(username, groupname),HttpStatus.OK);
 	}
 	
 

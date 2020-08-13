@@ -1,5 +1,6 @@
 package com.ssalog.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,14 +87,19 @@ public class GroupServiceImpl implements GroupService{
 	}
 	// 가입 신청 목록
 	@Override
-	public List<GroupRegist> appliylist(String username,String groupname) {
+	public Map<String,String> appliylist(String username,String groupname) {
 		GroupDTO g = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
+		Map<String,String> m = new HashMap<>();
 		if(g != null) {
 			List<GroupRegist> list = groupRegistRepository.findByGroupdto_groupname(groupname);
-			return list;
-		}else {
-			return null;
+			for(int i=0; i<list.size(); i++) {
+				m.put(list.get(i).getAccount().getUsername(), list.get(i).getIntroduce());
+			}
+			return m;
+//		}else {
+//			return null;
 		}
+		return null;
 	}
 	// 가입 신청 수락
 	@Override
