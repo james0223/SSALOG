@@ -207,6 +207,21 @@ export default {
     };
   },
   methods: {
+    // 그룹 지원자 확인
+    async getApplicantList() {
+      try {
+        const res = await this.$http.get(`${this.ServerURL}/user/grouping/apply_list`, {
+          params: {
+            groupname: this.$route.params.groupname
+          }
+        });
+        console.log(res);
+      } catch (e) {
+        console.log("그룹지원자 확인 문제생김");
+      }
+    },
+
+    // 과제 제출
     async makeHW() {
       try {
         const res = await this.$http.post(`${this.ServerURL}/user/grouping/make_goal`, null, {
@@ -227,7 +242,10 @@ export default {
       }
     }
   },
-  computed: mapState(["ServerURL"])
+  computed: mapState(["ServerURL"]),
+  mounted() {
+    this.getApplicantList();
+  }
 };
 </script>
 

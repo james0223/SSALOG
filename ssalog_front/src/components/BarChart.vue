@@ -21,6 +21,9 @@ export default {
           ],
           xAxes: [
             {
+              ticks: {
+                beginAtZero: true
+              },
               gridLines: {
                 display: false
               }
