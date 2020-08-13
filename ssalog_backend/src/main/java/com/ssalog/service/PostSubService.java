@@ -15,6 +15,6 @@ public interface PostSubService {
 	public Page<PostSub> select_by_problemname(String problemname, PageRequest pageable);
 	public Page<PostSub> findkey(List<String> keyword, PageRequest pageable);
 	public Page<PostSub> select_by_username(String username, PageRequest pageable);
-	public Map<String, Integer> find_py_graph(String username);
+	public Map<String, Integer> find_py_graph(String username, int cnt);
 	public long problem_cnt(String problemid);
 }
