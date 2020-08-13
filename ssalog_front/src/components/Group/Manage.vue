@@ -281,6 +281,10 @@ export default {
         const res = await this.$refs.form.validate();
         // eslint-disable-next-line
         if (!res) {
+          // Wait until the models are updated in the UI
+          this.$nextTick(() => {
+            this.$refs.form.reset();
+          });
           return;
         }
         await this.$http.post(`${this.ServerURL}/user/grouping/make_goal`, null, {
@@ -293,6 +297,9 @@ export default {
         });
         const HCopy = _.cloneDeep(this.HW);
         this.HWList.push(HCopy);
+        this.$nextTick(() => {
+          this.$refs.form.reset();
+        });
       } catch (err) {
         console.dir(err);
       } finally {
