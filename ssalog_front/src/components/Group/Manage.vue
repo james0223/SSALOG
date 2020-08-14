@@ -231,7 +231,9 @@ export default {
             data: []
           }
         ]
-      }
+      },
+      // HW progress data
+      hwData: []
     };
   },
   methods: {
@@ -294,7 +296,6 @@ export default {
 
       const MultiFetchingData = async HW => {
         const req = HW.map(hw => {
-          this.barData.labels.push(hw.problemname);
           return fetchHWprogress(hw.problemid).then(res => {
             const values = Object.values(res);
             let solved = 0;
@@ -310,21 +311,33 @@ export default {
                 }
               }
             }
-            this.barData.datasets[0].data.push(solved);
-            this.barData.datasets[1].data.push(unsolved);
+            this.hwData.push({
+              problemname: hw.problemname,
+              problemnum: hw.problemid,
+              solved,
+              unsolved
+            });
             return res;
           });
         });
         return Promise.all(req);
       };
-      MultiFetchingData(HWs).then(finalres => {
-        console.log(finalres);
+      MultiFetchingData(HWs).then(() => {
         this.examData.datasets[0].data.push(solved_total);
         this.examData.datasets[0].data.push(unsolved_total);
         this.pieLoaded = true;
-        this.barLoaded = true;
+        this.drawBarChart();
       });
       /* eslint-enable */
+    },
+    drawBarChart() {
+      // destruct 해서 BarChart 에 데이터 삽입
+      for (let data of this.hwData) {
+        this.barData.labels.push(data["problemname"]);
+        this.barData.datasets[0].data.push(data["solved"]);
+        this.barData.datasets[1].data.push(data["unsolved"]);
+      }
+      this.barLoaded = true;
     },
     async getLiveHW() {
       const res = await this.$http.get(`${this.ServerURL}/user/grouping/pre_goal_list`, {
