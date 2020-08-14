@@ -175,7 +175,8 @@ export default new Vuex.Store({
       setTimeout(res, timeUntilRef);
     },
     async LOGOUT({ commit }) {
-      await Axios.post(`${this.state.ServerURL}/user/out`);
+      await Axios.post(`${this.state.ServerURL}/user/out`, null, {});
+      console.log(res);
       commit("LOGOUT", { undefined });
     },
     async SIGNUP({ dispatch }, signupData) {
