@@ -13,7 +13,7 @@
     <v-row>
       <v-col cols="5">
         <v-row justify="center">
-          <h3>키워드 빈도 그래프</h3>
+          <p class="text-center font-weight-bold">키워드 빈도 그래프</p>
         </v-row>
         <DoughNutChart width="450" height="300" v-bind:chart-data="chartData" />
       </v-col>
@@ -23,14 +23,12 @@
           <v-col cols="3" class="d-flex justify-center"
             ><h4 class="font-weight-light mb-1">키워드</h4></v-col
           >
-          <v-col cols="3" class="d-flex justify-center"
-            ><h4 class="font-weight-light mb-1">작성날짜</h4></v-col
-          >
+          <v-col cols="3" class="text-end"><h4 class="font-weight-light mb-1">작성날짜</h4></v-col>
         </v-row>
         <v-divider></v-divider>
         <v-row v-if="isNoSolve">
           <v-col>
-            <p class="p-2 text-center text--secondary  ">👨🏻‍🎓알고리즘 박사가 되는 그날까지👨‍🎓</p>
+            <p class="p-2 text-center text--secondary">👨🏻‍🎓알고리즘 박사가 되는 그날까지👨‍🎓</p>
             <p class="p-3 text-center text--secondary">📙쌀로그에서 알고리즘을 정리하기🧾</p>
           </v-col>
         </v-row>
@@ -47,13 +45,15 @@
                 })
               "
             >
-              <v-row no-gutters class="align-center">
-                <v-col cols="6"> {{ solve.problemid }} - {{ solve.problemname }} </v-col>
-                <v-col cols="3" class="d-flex justify-center">
-                  {{ solve.keyword2 }}
+              <v-row no-gutters class="">
+                <v-col cols="6">
+                  <span> {{ solve.problemid }} - {{ solve.problemname }}</span>
                 </v-col>
-                <v-col cols="3" class="d-flex justify-center">
-                  {{ solve.regdate }}
+                <v-col cols="3" class=" text-center">
+                  <span> {{ solve.keyword2 }}</span>
+                </v-col>
+                <v-col cols="3" class="text-end">
+                  <span> {{ solve.regdate }}</span>
                 </v-col>
               </v-row>
             </v-list-item>
