@@ -23,6 +23,7 @@ public class PostSub {
 	private String regtime;
 	private String title;
 	
+	public PostSub() {}
 	
 	public PostSub(String scoring, String username, String nickname, String language, int len, int memory,
 			String problemid, String problemname, int time, int like, List<String> keyword, String regdate,

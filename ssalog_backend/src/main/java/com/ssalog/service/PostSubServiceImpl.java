@@ -66,6 +66,7 @@ public class PostSubServiceImpl implements PostSubService{
 				}
 			}
 		}
+		//System.out.println(list.size() + " ddddddddddd");
 		Iterator<Object> it = sortByValue(result).iterator();
 		int k = 0;
 		Map<String, Integer> result2 = new TreeMap<String, Integer>();
@@ -73,7 +74,7 @@ public class PostSubServiceImpl implements PostSubService{
             if(k == num) break;
 			String temp = (String) it.next();
 			result2.put(temp,result.get(temp));
-            System.out.println(temp + " = " + result.get(temp));
+            //System.out.println(temp + " = " + result.get(temp));
             k++;
         }
 		return result2;
