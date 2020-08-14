@@ -56,7 +56,9 @@
                 <v-card-actions>
                   <v-row no-gutters class="align-center">
                     <v-col cols="2" class="d-flex justify-center">
-                      <v-icon x-large @click="changeLangIdx(false)">mdi-chevron-left</v-icon></v-col
+                      <v-icon class="bounce" x-large @click="changeLangIdx(false)"
+                        >mdi-chevron-left</v-icon
+                      ></v-col
                     >
                     <v-col cols="8">
                       <v-carousel
@@ -95,7 +97,9 @@
                       </v-carousel>
                     </v-col>
                     <v-col cols="2" class="d-flex justify-center">
-                      <v-icon x-large @click="changeLangIdx(true)">mdi-chevron-right</v-icon></v-col
+                      <v-icon class="bounce" x-large @click="changeLangIdx(true)"
+                        >mdi-chevron-right</v-icon
+                      ></v-col
                     >
                   </v-row></v-card-actions
                 >
@@ -125,7 +129,6 @@
       <v-col cols="12">
         <v-card tile class="pa-7" elevation="4">
           <v-card-title>
-            {{ asdf }}
             <h2>리뷰 목록</h2>
             <v-spacer></v-spacer>
             <v-select
@@ -152,7 +155,29 @@
               hide-default-footer
               :items-per-page="SolutionPerPage"
               :items="solvedLists"
-            >
+              ><template v-slot:item.nickname="{ item }">
+                <span
+                  style="cursor:pointer"
+                  @click="
+                    $router.push({
+                      name: 'SSalogMain',
+                      params: { nickname: item.nickname }
+                    })
+                  "
+                  >{{ item.nickname }}</span
+                > </template
+              ><template v-slot:item.title="{ item }">
+                <span
+                  style="cursor:pointer"
+                  @click="
+                    $router.push({
+                      name: 'LogDetail',
+                      params: { nickname: item.nickname, id: item.scoring }
+                    })
+                  "
+                  >{{ item.title }}</span
+                >
+              </template>
               <template v-slot:item.time="{ item }">
                 <v-chip :color="getColor(item.time, 'time')">{{ item.time }}</v-chip>
               </template>
@@ -411,5 +436,9 @@ export default {
   top: 0px;
   right: 0px;
   height: 7rem;
+}
+.bounce {
+  animation: bounce;
+  animation-duration: 2s;
 }
 </style>
