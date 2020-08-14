@@ -65,11 +65,11 @@
                 <v-col cols="6">
                   <v-card flat height="44vh" class="px-3" width="18vw" style="overflow-y: scroll;">
                     <v-timeline dense>
-                      <v-timeline-item v-for="task in HWList" :key="task.name" small>
+                      <v-timeline-item v-for="task in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
-                          <v-card-title class="headline">{{ task.name }}</v-card-title>
+                          <v-card-title class="headline">{{ task.problemname }}</v-card-title>
                           <v-card-text>
-                            {{ task.number }}
+                            {{ task.limit }}
                           </v-card-text>
                         </v-card>
                       </v-timeline-item>
@@ -184,9 +184,9 @@ export default {
       },
       HWList: [
         {
-          name: "골목한조",
-          number: 2142,
-          deadline: "2020-01-01"
+          problemname: "골목한조",
+          problemnum: 2142,
+          limit: "2020-01-01"
         }
       ],
       // 회원 관리
@@ -204,19 +204,19 @@ export default {
         }
       ],
       // pie chart data
-      pieLoaded: true,
+      pieLoaded: false,
       examData: {
         labels: ["풀음", "안품"],
         datasets: [
           {
             label: "과제 현황",
-            backgroundColor: "#d28b08",
-            data: [1, 2]
+            backgroundColor: ["#37bf4f", "#d20b0b"],
+            data: []
           }
         ]
       },
       // bar chart data
-      barLoaded: true,
+      barLoaded: false,
       barData: {
         labels: [],
         datasets: [
@@ -277,8 +277,11 @@ export default {
     },
     // 그래프 그리기
     async getHWProgress() {
+      /* eslint-disable */
       const HWs = await this.getLiveHW();
-
+      this.HWList = HWs;
+      let solved_total = 0;
+      let unsolved_total = 0;
       const fetchHWprogress = async problemnum => {
         const HwInfo = await this.$http.get(`${this.ServerURL}/newuser/grouping/check_goal`, {
           params: {
@@ -288,6 +291,7 @@ export default {
         });
         return HwInfo.data;
       };
+
       const MultiFetchingData = async HW => {
         const req = HW.map(hw => {
           this.barData.labels.push(hw.problemname);
@@ -295,14 +299,15 @@ export default {
             const values = Object.values(res);
             let solved = 0;
             let unsolved = 0;
-            // eslint-disable-next-line
             for (let i = 0; i < values.length; i++) {
-              // eslint-disable-next-line
-              if (values[i] === "false") unsolved++;
-              else {
-                // eslint-disable-next-line
-                console.log(values[i]);
-                !isNaN(Number(values[i])) && solved++;
+              if (values[i] === "false") {
+                unsolved++;
+                unsolved_total++;
+              } else {
+                if (isNaN(values[i])) {
+                  solved++;
+                  solved_total++;
+                }
               }
             }
             this.barData.datasets[0].data.push(solved);
@@ -312,8 +317,14 @@ export default {
         });
         return Promise.all(req);
       };
-
-      MultiFetchingData(HWs).then(finalres => console.log(finalres));
+      MultiFetchingData(HWs).then(finalres => {
+        console.log(finalres);
+        this.examData.datasets[0].data.push(solved_total);
+        this.examData.datasets[0].data.push(unsolved_total);
+        this.pieLoaded = true;
+        this.barLoaded = true;
+      });
+      /* eslint-enable */
     },
     async getLiveHW() {
       const res = await this.$http.get(`${this.ServerURL}/user/grouping/pre_goal_list`, {
