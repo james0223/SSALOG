@@ -2,7 +2,7 @@
   <v-container class="mt-15">
     <v-row justify="center">
       <v-col cols="12">
-        <v-card class="mb-4 pt-7 px-7" tile>
+        <v-card class="mb-4 pt-7 px-7" elevation="6" tile>
           <img
             v-if="isSolved"
             class="corner"
@@ -56,32 +56,46 @@
                 <v-card-actions>
                   <v-row no-gutters class="align-center">
                     <v-col cols="2" class="d-flex justify-center">
-                      <v-icon x-large @click="fetchAvgData(false)">mdi-chevron-left</v-icon></v-col
+                      <v-icon x-large @click="changeLangIdx(false)">mdi-chevron-left</v-icon></v-col
                     >
                     <v-col cols="8">
-                      <v-carousel hide-delimiters :show-arrows="false" v-model="langIdx">
+                      <v-carousel
+                        max-height="50vh"
+                        hide-delimiters
+                        :show-arrows="false"
+                        v-model="langIdx"
+                      >
                         <v-carousel-item v-for="(language, i) in languages" :key="i">
-                          <v-sheet height="100%" tile light>
-                            <v-row class="fill-height" align="center" justify="center">
-                              <v-card-title>
-                                <v-icon x-large>{{ selectedIco }}</v-icon>
-                                <h3 class="my-0">{{ selectedLang }}</h3>
-                              </v-card-title>
-                              <v-card-title>
-                                <v-icon x-large>mdi-alarm</v-icon>
-                                <h2 class="my-0">{{ userAvgData.time }} ms</h2>
-                              </v-card-title>
-                              <v-card-title>
-                                <v-icon x-large>mdi-memory</v-icon>
-                                <h3 class="my-0">{{ userAvgData.memory }} kb</h3>
-                              </v-card-title>
-                            </v-row>
-                          </v-sheet>
+                          <v-card
+                            height="100%"
+                            class="d-flex flex-column align-center justify-space-around"
+                            flat
+                            light
+                          >
+                            <v-card-title>
+                              <v-icon x-large>{{ selectedIco }}</v-icon>
+                              <h3 class="my-0">{{ selectedLang }}</h3>
+                            </v-card-title>
+                            <v-card-title v-show="userAvgData.time">
+                              <v-icon x-large>mdi-alarm</v-icon>
+                              <h2 class="my-0">{{ userAvgData.time }} ms</h2>
+                            </v-card-title>
+                            <v-card-title v-show="userAvgData.time">
+                              <v-icon x-large>mdi-memory</v-icon>
+                              <h3 class="my-0">{{ userAvgData.memory }} kb</h3>
+                            </v-card-title>
+                            <v-card-title v-show="!userAvgData.time">
+                              <img src="@/assets/images/idk.png" alt="idk" />
+                            </v-card-title>
+                            <v-card-title class="text-center" v-show="!userAvgData.time">
+                              <h6>해당언어로 등록된 리뷰가 없습니다.</h6>
+                            </v-card-title>
+                          </v-card>
                         </v-carousel-item>
                       </v-carousel>
                     </v-col>
                     <v-col cols="2" class="d-flex justify-center">
-                      <v-icon x-large @click="fetchAvgData(true)">mdi-chevron-right</v-icon></v-col
+                      <v-icon x-large @click="changeLangIdx(true)">mdi-chevron-right</v-icon></v-col
                     >
                   </v-row></v-card-actions
                 >
@@ -89,7 +103,7 @@
             </v-col>
             <v-col cols="2"></v-col>
             <v-col cols="4">
-              <v-card flat class="chart-container">
+              <v-card flat class="chart-container" max-width="35vh">
                 <v-card-title>
                   <h5>주요 풀이기법</h5>
                 </v-card-title>
@@ -109,26 +123,44 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card tile>
-          <v-subheader>
-            <h3>리뷰 목록</h3>
-          </v-subheader>
-          <v-data-table
-            :loading="SolutionLoading"
-            loading-text="풀이를 가져오는 중입니다..."
-            :headers="headers"
-            :page.sync="SolutionPage"
-            hide-default-footer
-            :items-per-page="SolutionPerPage"
-            :items="solvedLists"
-          >
-            <template v-slot:item.exectime="{ item }">
-              <v-chip :color="getColor(item.exectime)">{{ item.exectime }}</v-chip>
-            </template>
-            <template v-slot:item.memory="{ item }">
-              <v-chip :color="getColor(item.memory)">{{ item.memory }}</v-chip>
-            </template>
-          </v-data-table>
+        <v-card tile class="pa-7" elevation="4">
+          <v-card-title>
+            {{ asdf }}
+            <h2>리뷰 목록</h2>
+            <v-spacer></v-spacer>
+            <v-select
+              class="narrow"
+              background-color="blue-grey lighten-1"
+              dark
+              :items="
+                languages.map(item => {
+                  return item.lang;
+                })
+              "
+              v-model="selectedLang"
+              label="Solo field"
+              solo
+              dense
+            ></v-select>
+          </v-card-title>
+          <v-card-text>
+            <v-data-table
+              :loading="SolutionLoading"
+              loading-text="풀이를 가져오는 중입니다..."
+              :headers="headers"
+              :page.sync="SolutionPage"
+              hide-default-footer
+              :items-per-page="SolutionPerPage"
+              :items="solvedLists"
+            >
+              <template v-slot:item.time="{ item }">
+                <v-chip :color="getColor(item.time, 'time')">{{ item.time }}</v-chip>
+              </template>
+              <template v-slot:item.memory="{ item }">
+                <v-chip :color="getColor(item.memory, 'memory')">{{ item.memory }}</v-chip>
+              </template>
+            </v-data-table>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -148,20 +180,20 @@ export default {
   data() {
     return {
       languages: [
-        { lang: "Python3", ico: "mdi-language-python" },
+        { lang: "Python 3", ico: "mdi-language-python" },
         { lang: "PyPy3", ico: "mdi-language-python" },
         { lang: "Java", ico: "mdi-language-java" },
-        { lang: "C++14", ico: "mdi-language-cpp" },
-        { lang: "C++", ico: "mdi-language-cpp" },
-        { lang: "C11", ico: "mdi-language-c" },
-        { lang: "C", ico: "mdi-language-c" }
+        { lang: "C++14", ico: null },
+        { lang: "C++", ico: null },
+        { lang: "C11", ico: null },
+        { lang: "C", ico: null }
       ],
-      langIdx: 0,
-      isSolved: true, // 유저가 문제를 풀었는지 아닌지 파악
+      isSolved: false, // 유저가 문제를 풀었는지 아닌지 파악
       isPioneer: false, // 개척자라면
       problemTitle: null,
       problemNumber: this.$route.params.id,
       numberOfSolutions: null,
+      langIdx: 0,
       selectedLang: "PyPy3",
       selectedIco: "mdi-language-python",
       userAvgData: {
@@ -194,8 +226,6 @@ export default {
         maintainAspectRatio: false
       },
       // table 관련 data
-      timeAvg: "", // 나중에 평균 시간내서 색깔입힐때
-      memoryAvg: "", // 마찬가지
       SolutionLoading: true,
       SolutionPage: 1,
       SolutionPageCount: 1,
@@ -204,16 +234,14 @@ export default {
       headers: [
         {
           text: "작성자",
-          align: "start",
           sortable: false,
           filterable: false,
           value: "nickname"
         },
         { text: "제목", value: "title" },
         { text: "추천", value: "like" },
-        { text: "시간", value: "time" },
-        { text: "메모리", value: "memory" },
-        { text: "언어", value: "language" }
+        { text: "시간(ms)", value: "time" },
+        { text: "메모리(kb)", value: "memory" }
       ],
       solvedLists: []
     };
@@ -232,7 +260,7 @@ export default {
         console.error(e);
       }
     },
-    async fetchAvgData(flag) {
+    changeLangIdx(flag) {
       if (flag) {
         if (this.langIdx === 6) {
           return;
@@ -244,19 +272,22 @@ export default {
         }
         this.langIdx -= 1;
       }
+      this.selectedLang = this.languages[this.langIdx].lang;
+    },
+    async fetchAvgData() {
       try {
         const { data } = await this.$http.get(
           `${this.$store.state.ServerURL}/newuser/search/detail_avg`,
           {
             params: {
-              language: this.languages[this.langIdx].lang,
+              language: this.selectedLang,
               problemid: this.problemNumber
             }
           }
         );
         this.userAvgData.time = data.avg_time;
         this.userAvgData.memory = data.avg_memory;
-        this.selectedLang = this.languages[this.langIdx].lang;
+        this.langIdx = this.languages.findIndex(i => i.lang === this.selectedLang);
         this.selectedIco = this.languages[this.langIdx].ico;
       } catch (e) {
         console.error(e);
@@ -274,8 +305,8 @@ export default {
               direction: "ASC",
               page: this.SolutionPage,
               problemid: this.problemNumber,
-              size: 12,
-              language: this.languages[this.langIdx].lang
+              size: 24, // 스크롤페이징은 나중에 할게
+              language: this.selectedLang
             }
           }
         );
@@ -312,12 +343,34 @@ export default {
       }
       this.doughnutLoaded = true;
     },
-    getColor(exectime) {
-      // 여기 avg 인자를 추가로 받아서
-      // 각각 평균보다 낮으면 green / +- 20 퍼면 중간 / 더 높으면 red 이런식으로
-      if (exectime > 400) return "red";
-      if (exectime > 200) return "orange";
-      return "green";
+    async fetchIsSolved() {
+      if (this.username) {
+        try {
+          const { data } = await this.$http.get(`${this.ServerURL}/newuser/post/is_solved`, {
+            params: {
+              username: this.username,
+              problemid: this.problemNumber
+            }
+          });
+          if (data) {
+            this.isSolved = true;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    },
+    getColor(content, type) {
+      if (type === "time") {
+        if (content > 1.5 * this.userAvgData.time) return "pink lighten-3";
+        if (content > 1.2 * this.userAvgData.time) return "amber darken-1";
+        if (content < 0.7 * this.userAvgData.time) return "green accent-2";
+      } else {
+        if (content > 1.5 * this.userAvgData.memory) return "pink lighten-3";
+        if (content > 1.2 * this.userAvgData.memory) return "amber darken-1";
+        if (content < 0.7 * this.userAvgData.memory) return "green accent-2";
+      }
+      return "white";
     }
   },
   mounted() {
@@ -325,18 +378,25 @@ export default {
     this.fetchSolutionNumb();
     this.fetchDoughnutData();
     this.fetchAvgData(true);
+    this.fetchIsSolved();
   },
-  computed: mapState(["ServerURL"]),
+  computed: mapState(["ServerURL", "username", "ServerURL"]),
   watch: {
     // eslint-disable-next-line
-    SolutionPage: function () {
+    SolutionPage: function() {
       this.fetchSolvingData();
+    },
+    selectedLang() {
+      this.fetchAvgData();
     }
   }
 };
 </script>
 
 <style lang="scss">
+.narrow {
+  max-width: 30vh;
+}
 .chart-container {
   flex-grow: 1;
   min-height: 0;
