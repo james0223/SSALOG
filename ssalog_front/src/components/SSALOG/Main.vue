@@ -15,7 +15,7 @@
         <v-row justify="center">
           <h3>키워드 빈도 그래프</h3>
         </v-row>
-        <DoughNutChart v-bind:chart-data="chartData" />
+        <DoughNutChart width="450" height="300" v-bind:chart-data="chartData" />
       </v-col>
       <v-col cols="7">
         <v-row no-gutters>
@@ -88,15 +88,7 @@ export default {
         ],
         rangeColor: ["#FFFDE7", "#FFF9C4", "#FFF59D", "#FFF176", "#FFEE58"]
       },
-      chartData: {
-        labels: ["자신있는", "알고리즘", "유형파악"],
-        datasets: [
-          {
-            backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
-            data: [4, 2, 1]
-          }
-        ]
-      }
+      chartData: {}
     };
   },
   computed: mapState(["ServerURL"]),
@@ -105,9 +97,14 @@ export default {
       try {
         const res = await this.$http.get(`${this.ServerURL}/newuser/search/find_pyto`, {
           params: {
-            username: this.ownerEmail
+            username: this.ownerEmail,
+            count: 5
           }
         });
+
+        console.log(res);
+
+        console.log(Object.keys(res.data).length);
 
         if (Object.keys(res.data).length !== 0) {
           this.chartData = {
@@ -116,6 +113,16 @@ export default {
               {
                 backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
                 data: Object.values(res.data)
+              }
+            ]
+          };
+        } else {
+          this.chartData = {
+            labels: ["자신있는", "알고리즘", "유형파악"],
+            datasets: [
+              {
+                backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+                data: [4, 2, 1]
               }
             ]
           };
