@@ -4,49 +4,60 @@
       <v-main>
         <section id="hero">
           <v-row no-gutters>
-            <v-img src="@/assets/images/banner3.jpg" height="850px" alt="메인화면 배경이미지">
+            <v-img src="@/assets/images/banner3.jpg" height="92vh" alt="메인화면 배경이미지">
               <v-theme-provider>
-                <v-container fill-height mt-15 pl-10>
-                  <v-row></v-row>
-                  <v-row class="white--text mx-auto" justify="center">
-                    <v-col class="text-center" cols="12" tag="h1">
-                      <span
-                        :class="[$vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2']"
-                        class="font-weight-medium black--text text-end"
-                      >
-                        알고리즘 풀이 정리를 간편하게
-                      </span>
+                <v-row class=" mx-auto" justify="center">
+                  <v-col class="text-center" cols="12">
+                    <vue-particles
+                      color="#dedede"
+                      background-color="black"
+                      :particleOpacity="0.9"
+                      :particlesNumber="100"
+                      shapeType="circle"
+                      :particleSize="3"
+                      linesColor="#dedede"
+                      :linesWidth="2"
+                      :lineLinked="true"
+                      :lineOpacity="0.4"
+                      :linesDistance="200"
+                      :moveSpeed="5"
+                      :hoverEffect="true"
+                      hoverMode="grab"
+                      :clickEffect="true"
+                      clickMode="push"
+                      style="height: 60vh;"
+                    >
+                    </vue-particles>
+                    <span class="font-weight-medium black--text text-end">
+                      알고리즘 풀이 정리를 간편하게
+                    </span>
+                    <br />
+                    <span
+                      :class="[$vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2']"
+                      class="font-weight-black black--text"
+                      justify="right"
+                    >
+                      SSALOG
+                    </span>
+                  </v-col>
 
-                      <br />
-
-                      <span
-                        :class="[$vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2']"
-                        class="font-weight-black black--text"
-                        justify="right"
-                      >
-                        SSALOG
-                      </span>
-                    </v-col>
-
-                    <v-btn large fab outlined @click="$vuetify.goTo('#about-me')">
-                      <v-icon>mdi-chevron-double-down</v-icon>
-                    </v-btn>
-                  </v-row>
-                </v-container>
+                  <v-btn large fab outlined @click="$vuetify.goTo('#about-me')">
+                    <v-icon>mdi-chevron-double-down</v-icon>
+                  </v-btn>
+                </v-row>
               </v-theme-provider>
+              <section id="hero"></section>
             </v-img>
           </v-row>
         </section>
 
         <section id="about-me">
-          <div class="py-12"></div>
-
           <v-container class="text-center">
-            <v-avatar class="elevation-12 mb-12" size="200">
+            <v-avatar class="elevation-12 mb-12 mt-10" size="150">
               <v-img src="@/assets/images/logo.jpg"></v-img>
             </v-avatar>
 
-            <v-responsive class="mx-auto mb-8" width="100">
+            <v-responsive class="mx-auto mb-12" width="100">
               <v-divider class="mb-3"></v-divider>
               <v-divider></v-divider>
             </v-responsive>
@@ -69,20 +80,26 @@
             <v-responsive class="mx-auto title font-weight-light mb-4" max-width="720">
               알고리즘은 훌륭한 프로그래머로 성장하기위해 필요한 영양이 됩니다.
             </v-responsive>
-            <v-responsive class="mx-auto title font-weight-light mb-4" max-width="720">
+            <v-responsive class="mx-auto title font-weight-light mb-10" max-width="720">
               이제 쌀로그에서 쌀을 모아보세요
             </v-responsive>
             <div></div>
+            <v-btn large fab outlined @click="$vuetify.goTo('#features')">
+              <v-icon>mdi-chevron-double-down</v-icon>
+            </v-btn>
           </v-container>
 
           <div class="py-12"></div>
         </section>
 
-        <section id="features" class="lighten-4">
-          <div class="py-12"></div>
+        <section id="features" class="lighten-4" v-intersect="onIntersect">
+          <div class="py-10"></div>
 
-          <v-container class="text-center">
-            <h2 class="display-2 font-weight-bold mb-3">서비스</h2>
+          <v-container
+            class="text-center"
+            v-bind:class="[{ serviceIcon: isIntersecting }, { hidden: !isIntersecting }]"
+          >
+            <h2 class="display-2 font-weight-bold ma-3">서비스</h2>
 
             <v-responsive class="mx-auto mb-1" width="56">
               <v-divider class="mb-1"></v-divider>
@@ -90,11 +107,16 @@
             </v-responsive>
 
             <v-row>
-              <v-col v-for="({ icon, title, text }, i) in features" :key="i" cols="12" md="4">
+              <v-col
+                v-for="({ icon, title, text, color }, i) in features"
+                :key="i"
+                cols="12"
+                md="4"
+              >
                 <v-card class="py-12 px-4" flat>
                   <v-theme-provider dark>
                     <div>
-                      <v-avatar color="black lighten-4" size="88">
+                      <v-avatar :color="color" size="88">
                         <v-icon large v-text="icon"></v-icon>
                       </v-avatar>
                     </div>
@@ -112,6 +134,8 @@
           </v-container>
 
           <div class="py-12"></div>
+
+          <div class="py-12"></div>
         </section>
 
         <section id="stats">
@@ -119,23 +143,34 @@
             :height="$vuetify.breakpoint.smAndDown ? 700 : 500"
             src="@/assets/images/home_middle.jpg"
           >
-            <v-container fill-height>
-              <v-row class="mx-auto">
-                <v-col v-for="[value, title] of stats" :key="title" cols="12" md="6">
-                  <div class="text-center">
-                    <div class="display-3 font-weight-black mb-4" v-text="value"></div>
-
-                    <div class="title font-weight-regular text-uppercase" v-text="title"></div>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-container>
+            <v-lazy
+              :options="{
+                threshold: 0.5
+              }"
+              min-height="200"
+              transition="fade-transition"
+            >
+              <v-container fill-height>
+                <v-row class="mx-auto">
+                  <v-col v-for="[value, title] of stats" :key="title" cols="12" md="6">
+                    <div class="text-center">
+                      <ICountUp
+                        class="display-4 font-weight-black mb-4"
+                        :delay="delay"
+                        :endVal="value"
+                        :options="options"
+                      />
+                      <div class="title font-weight-regular " v-text="title"></div>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-lazy>
           </v-parallax>
         </section>
-
         <section id="blog">
           <div class="py-12"></div>
-
+          <div class="iCountUp"></div>
           <v-container>
             <h2 class="display-2 font-weight-bold mb-3 text-uppercase text-center">
               사용법
@@ -170,7 +205,19 @@
           <div class="py-12"></div>
         </section>
       </v-main>
-
+      <v-btn
+        v-scroll="onScroll"
+        v-show="fab"
+        fab
+        dark
+        fixed
+        bottom
+        right
+        color="blue-grey darken-2"
+        @click="toTop"
+      >
+        <v-icon>keyboard_arrow_up</v-icon>
+      </v-btn>
       <v-footer class="justify-center" color="#292929" height="100">
         <div class="title font-weight-light grey--text text--lighten-1 text-center">
           &copy; none.vat
@@ -182,6 +229,7 @@
 
 <script>
 import axios from "axios";
+import ICountUp from "vue-countup-v2";
 
 const image1 = require("@/assets/images/howto/1.png");
 const image2 = require("@/assets/images/howto/2.png");
@@ -190,8 +238,24 @@ const image4 = require("@/assets/images/howto/4.png");
 const image5 = require("@/assets/images/howto/5.png");
 
 export default {
+  components: {
+    ICountUp
+  },
   data() {
     return {
+      isIntersecting: false,
+      fab: false,
+      delay: 100,
+      endVal: 30,
+      options: {
+        duration: 5.0,
+        useEasing: true,
+        useGrouping: true,
+        separator: ",",
+        decimal: ".",
+        prefix: "",
+        suffix: ""
+      },
       articles: [
         {
           src:
@@ -218,27 +282,33 @@ export default {
       features: [
         {
           icon: "mdi-autorenew",
-          title: "동기화"
+          title: "동기화",
+          color: "light-green darken-1"
         },
         {
           icon: "mdi-account-multiple",
-          title: "팔로우"
+          title: "팔로우",
+          color: "amber lighten-2"
         },
         {
           icon: "mdi-stairs",
-          title: "레벨"
+          title: "레벨",
+          color: "blue-grey lighten-1"
         },
         {
           icon: "mdi-markdown",
-          title: "마크다운"
+          title: "마크다운",
+          color: "deep-purple lighten-1"
         },
         {
           icon: "mdi-eye-outline",
-          title: "코드리뷰"
+          title: "코드리뷰",
+          color: "teal darken-3"
         },
         {
           icon: "mdi-chart-bar",
-          title: "시각화"
+          title: "시각화",
+          color: "red lighten-1"
         }
       ],
       stats: [],
@@ -272,22 +342,36 @@ export default {
     };
   },
   methods: {
+    onIntersect(entries) {
+      // More information about these options
+      // is located here: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+      this.isIntersecting = entries[0].isIntersecting;
+      console.log(this.isIntersecting);
+    },
     async fetchStatDatas() {
       try {
         const problemNum = await axios.get(
           `${this.$store.state.ServerURL}/newuser/search/find_allproblem`
         );
-        const problem = [String(problemNum.data), "풀이 수"];
+        const problem = [problemNum.data, "풀이 수"];
         const userNum = await axios.get(
           `${this.$store.state.ServerURL}/newuser/search/find_alluser`
         );
-        const user = [String(userNum.data), "사용자 수"];
+        const user = [userNum.data, "사용자 수"];
         this.stats.push(problem);
         this.stats.push(user);
         console.log(this.stats);
       } catch (e) {
         console.error(e);
       }
+    },
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.fab = top > 20;
+    },
+    toTop() {
+      this.$vuetify.goTo(0);
     }
   },
   created() {
@@ -295,3 +379,15 @@ export default {
   }
 };
 </script>
+
+<style>
+.hidden {
+  transform: translate(9999px);
+  opacity: 0;
+}
+.serviceIcon {
+  transition: opacity 2s linear;
+  transform: translate(0);
+  opacity: 1;
+}
+</style>

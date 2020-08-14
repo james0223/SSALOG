@@ -13,6 +13,8 @@ import "highlight.js/styles/github.css";
 // countdown;
 // eslint-disable-next-line
 import VueCountdown from "@chenfengyuan/vue-countdown";
+// vue-particles
+import VueParticles from "vue-particles";
 
 import { ValidationObserver, ValidationProvider, extend, localize } from "vee-validate";
 import ko from "vee-validate/dist/locale/ko.json";
@@ -39,6 +41,7 @@ VueClipboard.config.autoSetContainer = true;
 Vue.use(DatetimePicker);
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
+Vue.use(VueParticles);
 new Vue({
   router,
   store,
