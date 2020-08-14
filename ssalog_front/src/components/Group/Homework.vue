@@ -7,19 +7,13 @@
           <thead>
             <tr>
               <th class="text-left">문제</th>
-              <th class="text-left">출제자</th>
-              <th class="text-left">제출인원</th>
-              <th class="text-left">미 제출인원</th>
               <th class="text-left">남은 시간</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="hw in Homeworks" :key="hw.id">
-              <td>{{ hw.title }}</td>
-              <td>{{ hw.manager }}</td>
-              <td>{{ hw.submit }}</td>
-              <td>{{ hw.pending }}</td>
-              <countdown :time="getCount(hw.due)" :interval="1000" tag="td">
+              <td>{{ hw.problemname }}</td>
+              <countdown :time="getCount(hw.limit)" :interval="1000" tag="td">
                 <template slot-scope="props"
                   >{{ props.days }}일 {{ props.hours }}시간 {{ props.minutes }}분
                   {{ props.seconds }}초</template
@@ -34,35 +28,30 @@
       <v-toolbar-title class="mb-4">제출 목록</v-toolbar-title>
       <v-card width="27vw" height="40vh" class="d-inline-block mr-5">
         <v-subheader>제출자</v-subheader>
+        <v-divider></v-divider>
       </v-card>
       <v-card width="27vw" height="40vh" class="d-inline-block">
         <v-subheader>미제출자</v-subheader>
+        <v-divider></v-divider>
       </v-card>
     </v-card>
   </v-card>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Homework",
   data() {
     return {
       Homeworks: [
         {
-          id: 21223225,
-          title: "백양로 브레이크",
-          manager: "gofeel",
-          submit: 4,
-          pending: 3,
-          due: "2020-08-12"
-        },
-        {
-          id: 212323,
-          title: "골목대장 맥크리",
-          submit: 4,
-          pending: 3,
-          manager: "McLee",
-          due: "2020-08-20"
+          title: "아직 출제된 과제가 없습니다.",
+          manager: "",
+          submit: "",
+          pending: "",
+          due: ""
         }
       ],
       // 아래 card
@@ -105,7 +94,23 @@ export default {
       const due = new Date(date);
       const now = new Date();
       return due - now;
+    },
+    async getLiveHW() {
+      const res = await this.$http.get(`${this.ServerURL}/user/grouping/pre_goal_list`, {
+        params: {
+          direction: "ASC",
+          groupname: this.$route.params.groupname,
+          page: 1,
+          size: 5000
+        }
+      });
+      console.log(res);
+      this.Homeworks = res.data;
     }
+  },
+  computed: mapState(["ServerURL"]),
+  mounted() {
+    this.getLiveHW();
   }
 };
 </script>
