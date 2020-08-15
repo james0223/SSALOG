@@ -104,13 +104,39 @@ export default {
           size: 5000
         }
       });
-      console.log(res);
       this.Homeworks = res.data;
+      return res.data;
+    },
+    /* eslint-disable */
+    async totalHWProgress() {
+      const HWs = await this.getLiveHW();
+
+      const fetchHWprogress = async problemnum => {
+        const HwInfo = await this.$http.get(`${this.ServerURL}/newuser/grouping/check_goal`, {
+          params: {
+            groupname: this.$route.params.groupname,
+            problemid: problemnum
+          }
+        });
+        return HwInfo.data;
+      };
+      const fetchingHWs = async HW => {
+        const req = HW.map(hw => {
+          return fetchHWprogress(hw.problemid).then(res => {
+            return res;
+          });
+        });
+        return Promise.all(req);
+      };
+      fetchingHWs(HWs).then(finalres => {
+        console.log(finalres);
+      });
     }
+    /* eslint-enable */
   },
   computed: mapState(["ServerURL"]),
   mounted() {
-    this.getLiveHW();
+    this.totalHWProgress();
   }
 };
 </script>
