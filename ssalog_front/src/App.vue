@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background-color: #EEE9E6;">
     <Header></Header>
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
