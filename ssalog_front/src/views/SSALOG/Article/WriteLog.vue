@@ -13,23 +13,15 @@
     <v-row>
       <v-col cols="12" md="6">
         <div class="editor" spellcheck="false">
-          <editor-menu-bubble
-            :editor="codearea"
-            :keep-in-bounds="keepInBounds"
-            v-slot="{ isActive, menu }"
-          >
+          <editor-menu-bubble :editor="codearea" :keep-in-bounds="keepInBounds" v-slot="{ menu }">
             <div
               class="menububble"
               :class="{ 'is-active': menu.isActive }"
-              :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+              :style="`left: ${menu.left + 50}px; top: ${menu.top}px;`"
             >
-              <button
-                class="menububble__button"
-                :class="{ 'is-active': isActive.bold() }"
-                @click="menububbleClick"
-              >
+              <button class="menububble__button red" @click="menububbleClick">
                 <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
-                <h5>옮기기</h5>
+                <v-icon color="white">mdi-content-cut</v-icon>
               </button>
             </div>
           </editor-menu-bubble>
