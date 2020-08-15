@@ -11,7 +11,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="hw in Homeworks" :key="hw.id">
+            <tr v-for="(hw, idx) in Homeworks" :key="idx" @click="sortMemberByHW(idx)">
               <td>{{ hw.problemname }}</td>
               <countdown :time="getCount(hw.limit)" :interval="1000" tag="td">
                 <template slot-scope="props"
@@ -29,10 +29,36 @@
       <v-card width="27vw" height="40vh" class="d-inline-block mr-5">
         <v-subheader>제출자</v-subheader>
         <v-divider></v-divider>
+        <v-virtual-scroll :items="solvedMembers" :item-height="50" height="500">
+          <template v-slot="{ item }">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title> {{ item.name }}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-btn depressed small v-bind:href="`${item.route}`">
+                  풀이 보러 가기
+                  <v-icon color="secondary" right>
+                    mdi-open-in-new
+                  </v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </template>
+        </v-virtual-scroll>
       </v-card>
       <v-card width="27vw" height="40vh" class="d-inline-block">
         <v-subheader>미제출자</v-subheader>
         <v-divider></v-divider>
+        <v-virtual-scroll :items="unsolvedMembers" :item-height="50" height="500">
+          <template v-slot="{ item }">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title> {{ item.name }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </v-virtual-scroll>
       </v-card>
     </v-card>
   </v-card>
@@ -54,39 +80,9 @@ export default {
           due: ""
         }
       ],
-      // 아래 card
-      searchKeyword: "",
-      headers: [
-        {
-          text: "제출자",
-          align: "start",
-          sortable: false,
-          value: "nickname"
-        },
-        { text: "추천 수", value: "stars" },
-        { text: "시간", value: "time" },
-        { text: "메모리", value: "memory" }
-      ],
-      submissions: [
-        {
-          nickname: "앙기모리",
-          stars: 3,
-          time: 20,
-          memory: 2020
-        },
-        {
-          nickname: "한조",
-          stars: 3,
-          time: 20,
-          memory: 2020
-        },
-        {
-          nickname: "두둥탁",
-          stars: 3,
-          time: 20,
-          memory: 2020
-        }
-      ]
+      taskSubmissionStatus: [],
+      solvedMembers: [],
+      unsolvedMembers: []
     };
   },
   methods: {
@@ -104,13 +100,52 @@ export default {
           size: 5000
         }
       });
-      console.log(res);
       this.Homeworks = res.data;
+      return res.data;
+    },
+    /* eslint-disable */
+    async totalHWProgress() {
+      const HWs = await this.getLiveHW();
+
+      const fetchHWprogress = async problemnum => {
+        const HwInfo = await this.$http.get(`${this.ServerURL}/newuser/grouping/check_goal`, {
+          params: {
+            groupname: this.$route.params.groupname,
+            problemid: problemnum
+          }
+        });
+        return HwInfo.data;
+      };
+      const fetchingHWs = async HW => {
+        const req = HW.map(hw => {
+          return fetchHWprogress(hw.problemid).then(res => {
+            return res;
+          });
+        });
+        return Promise.all(req);
+      };
+      fetchingHWs(HWs).then(finalres => {
+        this.taskSubmissionStatus = finalres;
+      });
+    },
+    sortMemberByHW(idx) {
+      this.solvedMembers = [];
+      this.unsolvedMembers = [];
+      Object.keys(this.taskSubmissionStatus[idx]).map(key => {
+        if (this.taskSubmissionStatus[idx][key] === "false") {
+          this.unsolvedMembers.push({ name: key });
+        } else {
+          this.solvedMembers.push({ name: key, route: this.taskSubmissionStatus[idx][key] });
+        }
+      });
+      console.log("푼사람", this.solvedMembers);
+      console.log("안푼사람", this.unsolvedMembers);
     }
+    /* eslint-enable */
   },
   computed: mapState(["ServerURL"]),
   mounted() {
-    this.getLiveHW();
+    this.totalHWProgress();
   }
 };
 </script>

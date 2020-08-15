@@ -332,10 +332,11 @@ export default {
     },
     drawBarChart() {
       // destruct 해서 BarChart 에 데이터 삽입
-      for (let data of this.hwData) {
-        this.barData.labels.push(data["problemname"]);
-        this.barData.datasets[0].data.push(data["solved"]);
-        this.barData.datasets[1].data.push(data["unsolved"]);
+      // eslint-disable-next-line
+      for (const data of this.hwData) {
+        this.barData.labels.push(data.problemname);
+        this.barData.datasets[0].data.push(data.solved);
+        this.barData.datasets[1].data.push(data.unsolved);
       }
       this.barLoaded = true;
     },
