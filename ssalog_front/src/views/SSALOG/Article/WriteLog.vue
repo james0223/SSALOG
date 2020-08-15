@@ -386,10 +386,10 @@ export default {
         that.title = that.resData.title;
         that.SelectedProblemCategory = that.resData.keyword;
       
-        const userHTML = that.editor.state.tr.insertText(that.resData.html);
-        that.editor.view.dispatch(userHTML);
-        that.editor.commands.code_block();
-        // that.editor.setContent(that.resData.html);
+        // const userHTML = that.editor.state.tr.insertText(that.resData.html);
+        // that.editor.view.dispatch(userHTML);
+        that.editor.setContent(that.resData.html);
+        // that.editor.commands.code_block();
       }
     }
     /* eslint-enable */
