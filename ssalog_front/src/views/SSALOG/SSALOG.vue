@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-row justify="center" no-gutters>
-      <v-col lg="2">
-        <div id="relative_wrapper">
-          <v-avatar size="240" class="mt-8">
+    <v-row>
+      <v-col cols="2 pr-6" style="border-right:1px solid gray">
+        <div id="relative_wrapper" align="center">
+          <v-avatar size="100" class="mt-8">
             <img :src="writerThumbnail" />
             <!--변경해줘야할듯-->
           </v-avatar>
@@ -17,13 +17,13 @@
                 v-bind="attrs"
                 v-on="on"
                 @click="imageUrl = writerThumbnail"
-                class="mx-2"
                 id="thumbnailplus"
-                fab
+                outlined
+                icon
                 dark
                 color="indigo"
               >
-                <v-icon dark>mdi-camera</v-icon>
+                <v-icon small dark>mdi-camera</v-icon>
               </v-btn>
             </template>
             <v-card style="padding:16px;">
@@ -90,25 +90,25 @@
               </v-row>
             </v-card>
           </v-dialog>
-          <v-row justify="center" class="mt-2" style="width:240px; border-bottom : 1px dashed grey">
-            <div class="ma-2" id="showLevel" title="level">
+          <v-row justify="center" class="mt-2" style="border-bottom : 1px dashed grey">
+            <div id="showLevel" title="level">
               <v-progress-circular
                 class=" mr-6"
                 :rotate="-90"
-                :size="50"
-                :width="8"
+                :size="40"
+                :width="9"
                 :value="exp"
                 color="primary"
               >
-                <v-icon color="blue" large>mdi-numeric-{{ level }}-circle-outline</v-icon>
+                <v-icon color="blue" medium>mdi-numeric-{{ level }}-circle-outline</v-icon>
               </v-progress-circular>
             </div>
             <div class="mt-4 font-weight-medium ">{{ ownerName }}</div>
             <template v-if="$store.state.nickname !== $route.params.nickname">
               <v-btn
                 id="thumbnailplus"
-                height="86"
-                width="86"
+                height="40"
+                width="40"
                 icon
                 @click="followclick"
                 title="follow"
@@ -117,13 +117,13 @@
               </v-btn>
             </template>
           </v-row>
-          <v-row justify="center" style="width:240px; border-bottom : 1px dashed grey ">
+          <v-row justify="center" style="border-bottom : 1px dashed grey ">
             <v-col title="following"><v-icon>mdi-account-heart</v-icon>{{ following }}</v-col>
             <v-col title="follower"><v-icon>mdi-account-arrow-left</v-icon>{{ follower }}</v-col>
             <v-col title="scrap"><v-icon>mdi-star</v-icon>{{ scrapSu }}</v-col>
           </v-row>
 
-          <v-tabs vertical class="my-15 pa-3">
+          <v-tabs vertical class="my-5">
             <v-tab
               style="justify-content:left;"
               v-for="tab in tabs"
@@ -138,8 +138,7 @@
           </v-tabs>
         </div>
       </v-col>
-      <v-divider vertical></v-divider>
-      <v-col lg="8" cols="12"
+      <v-col cols="undefined"
         ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getScrapNum"></router-view>
       </v-col>
     </v-row>
@@ -420,12 +419,12 @@ export default {
 }
 #thumbnailplus {
   position: absolute;
-  top: 222px;
-  left: 190px;
+  top: 100px;
+  left: 70%;
 }
 #showLevel {
   position: absolute;
-  top: 230px;
-  left: -40px;
+  top: 140px;
+  left: -5px;
 }
 </style>

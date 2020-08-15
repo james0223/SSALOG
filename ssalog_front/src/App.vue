@@ -39,7 +39,7 @@ export default {
   watch: {
     // eslint-disable-next-line
     AlertMessage: function(newVal) {
-      if (newVal === "엑세스 토큰이 만료되었습니다. 다시 로그인하세요") {
+      if (newVal === "토큰이 만료되었습니다. 다시 로그인하세요") {
         setTimeout(() => {
           this.$router.push("/Login");
         }, 2000);
