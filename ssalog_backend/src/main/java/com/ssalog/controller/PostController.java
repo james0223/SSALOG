@@ -123,6 +123,12 @@ public class PostController {
 		return new ResponseEntity<Boolean>(postService.is_solved(username, problemid),HttpStatus.OK);
 		
 	}	
+	@GetMapping("newuser/post/is_write")
+	@ApiOperation(value = "[문제로 posting을 작성했는지] ")
+	public ResponseEntity<Boolean> is_write(@RequestParam("Scoring") String Scoring){
+		return new ResponseEntity<Boolean>(postService.is_write(Scoring),HttpStatus.OK);
+		
+	}	
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");

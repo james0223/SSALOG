@@ -21,4 +21,5 @@ public interface PostService {
 	public long get_allpost();
 	public Boolean is_solved(String username, String problemid);
 	public TempPost read_temppost(String post_pk);
+	public Boolean is_write(String Scoring);
 }

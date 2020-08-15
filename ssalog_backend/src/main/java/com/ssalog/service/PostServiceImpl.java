@@ -267,6 +267,15 @@ public class PostServiceImpl implements PostService{
 		}
 	}
 	
+	@Override
+	public Boolean is_write(String Scoring) {
+		Optional<Post> p1 = postRepository.findById(Scoring);
+		if(p1.isPresent()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	public String unify_lang(String language) {
 		String result = language;
