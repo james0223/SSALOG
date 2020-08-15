@@ -247,9 +247,9 @@ public class PostServiceImpl implements PostService{
 	}
 	@Override
 	public void set_username(String username,String scoring){
-		Optional<Post> p = postRepository.findById(scoring);
+		Optional<TempPost> p = tempPostRepository.findById(scoring);
 		p.get().setUsername(username);
-		postRepository.save(p.get());
+		tempPostRepository.save(p.get());
 	}
 	public long get_allpost() {
 		return postRepository.count();

@@ -8,6 +8,7 @@ public class TempPost {
 	
 	@MongoId
 	private String scoring;
+	private String username;
 	private String code;
 	private String language;
 	private int len;
@@ -16,9 +17,10 @@ public class TempPost {
 	private String problemname;
 	private int time;
 	public TempPost() {}
-	public TempPost(String scoring, String code, String language, int len, int memory,
+	public TempPost(String scoring, String username,String code, String language, int len, int memory,
 			String problemid, String problemname, int time) {
 		super();
+		this.username = username;
 		this.scoring = scoring;
 		this.code = code;
 		this.language = language;
@@ -27,6 +29,13 @@ public class TempPost {
 		this.problemid = problemid;
 		this.problemname = problemname;
 		this.time = time;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getScoring() {
 		return scoring;
