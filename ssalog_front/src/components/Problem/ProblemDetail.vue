@@ -1,7 +1,10 @@
 <template>
-  <v-container class="mt-15">
+  <div>
+    <v-btn tile class="rounded-t-lg" color="blue-grey darken-3" dark @click="$router.go(-1)"
+      >뒤로가기</v-btn
+    >
     <v-row justify="center">
-      <v-col cols="12">
+      <v-col cols="12" class="pt-0">
         <v-card class="mb-4 pt-7 px-7" elevation="6" tile>
           <img
             v-if="isSolved"
@@ -19,9 +22,8 @@
                 <h3><v-icon>mdi-shovel</v-icon>개척자</h3>
                 <h2>
                   <v-avatar>
-                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                  </v-avatar>
-                  arduinho
+                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img> </v-avatar
+                  >arduinho
                 </h2>
               </v-card-text>
             </v-col>
@@ -61,8 +63,8 @@
                         x-large
                         @click="changeLangIdx(false)"
                         >mdi-chevron-left</v-icon
-                      ></v-col
-                    >
+                      >
+                    </v-col>
                     <v-col cols="8">
                       <v-carousel
                         max-height="50vh"
@@ -105,10 +107,10 @@
                         x-large
                         @click="changeLangIdx(true)"
                         >mdi-chevron-right</v-icon
-                      ></v-col
-                    >
-                  </v-row></v-card-actions
-                >
+                      >
+                    </v-col>
+                  </v-row>
+                </v-card-actions>
               </v-card>
             </v-col>
             <v-col cols="2"></v-col>
@@ -161,7 +163,8 @@
               hide-default-footer
               :items-per-page="SolutionPerPage"
               :items="solvedLists"
-              ><template v-slot:item.nickname="{ item }">
+            >
+              <template v-slot:item.nickname="{ item }">
                 <span
                   style="cursor:pointer"
                   @click="
@@ -171,8 +174,9 @@
                     })
                   "
                   >{{ item.nickname }}</span
-                > </template
-              ><template v-slot:item.title="{ item }">
+                >
+              </template>
+              <template v-slot:item.title="{ item }">
                 <span
                   style="cursor:pointer"
                   @click="
@@ -195,13 +199,13 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import DoughNutChart from "../../components/DoughnutChart.vue";
+import DoughNutChart from "../DoughnutChart.vue";
 
 import "animate.css";
 
@@ -416,7 +420,7 @@ export default {
   computed: mapState(["ServerURL", "username", "ServerURL"]),
   watch: {
     // eslint-disable-next-line
-    SolutionPage: function() {
+    SolutionPage: function () {
       this.fetchSolvingData();
     },
     selectedLang() {

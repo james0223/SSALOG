@@ -7,8 +7,9 @@ import FindId from "@/views/Account/FindId.vue";
 import FindPass from "@/views/Account/FindPass.vue";
 import AccountList from "@/views/Account/AccountList.vue";
 // problem
-import ProblemList from "@/views/Problem/ProblemList.vue";
-import ProblemDetail from "@/views/Problem/ProblemDetail.vue";
+import Problem from "@/views/Problem/Problem.vue";
+import ProblemList from "@/components/Problem/ProblemList.vue";
+import ProblemDetail from "@/components/Problem/ProblemDetail.vue";
 // main
 import Home from "@/views/Home.vue";
 // editor
@@ -43,14 +44,21 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/Problem/List/",
-    name: "ProblemList",
-    component: ProblemList
-  },
-  {
-    path: "/Problem/:id",
-    name: "ProblemDetail",
-    component: ProblemDetail
+    path: "/Problem",
+    name: "Problem",
+    component: Problem,
+    children: [
+      {
+        path: "List/",
+        name: "ProblemList",
+        component: ProblemList
+      },
+      {
+        path: ":id/detail",
+        name: "ProblemDetail",
+        component: ProblemDetail
+      }
+    ]
   },
   {
     path: "/Account/List/",
@@ -176,7 +184,10 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  }
 });
 
 // global guard (login required)

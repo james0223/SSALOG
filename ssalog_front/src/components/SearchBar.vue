@@ -38,8 +38,6 @@ export default {
   data() {
     return {
       category: ["문제번호", "문제제목", "문제유형", "회원"],
-      q: null,
-      keywords: null,
       SelectedCategory: null
     };
   },
@@ -63,7 +61,9 @@ export default {
     }
   },
   props: {
-    SelectedCategoryIdx: Number
+    SelectedCategoryIdx: Number,
+    keywords: Array,
+    q: String
   },
   watch: {
     keywords(newVal) {
