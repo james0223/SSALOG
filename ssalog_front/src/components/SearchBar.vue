@@ -47,16 +47,18 @@ export default {
     ...mapMutations(["ShowAlert"]),
     goSearch() {
       if (this.category.indexOf(this.SelectedCategory) === 3) {
-        this.$router.push({ name: "AccountList", query: { q: this.q } });
+        this.$router.push({ name: "AccountList", query: { q: this.q } }).catch(() => {});
       } else {
-        this.$router.push({
-          name: "ProblemList",
-          query: {
-            q: this.q,
-            keywords: this.keywords,
-            categoryIdx: this.category.indexOf(this.SelectedCategory)
-          }
-        });
+        this.$router
+          .push({
+            name: "ProblemList",
+            query: {
+              q: this.q,
+              keywords: this.keywords,
+              categoryIdx: this.category.indexOf(this.SelectedCategory)
+            }
+          })
+          .catch(() => {});
       }
     }
   },
