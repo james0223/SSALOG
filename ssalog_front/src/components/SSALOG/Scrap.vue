@@ -89,7 +89,6 @@ export default {
             }
           }
         );
-        console.log(res.data);
         this.solutions = res.data.reverse();
         const iterable = this.solutions;
         iterable.forEach(element => {

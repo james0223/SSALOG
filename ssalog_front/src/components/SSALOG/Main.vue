@@ -15,7 +15,7 @@
         <v-row justify="center">
           <p class="text-center font-weight-bold">키워드 빈도 그래프</p>
         </v-row>
-        <DoughNutChart width="450" height="300" v-bind:chart-data="chartData" />
+        <DoughNutChart :width="450" :height="300" v-bind:chart-data="chartData" />
       </v-col>
       <v-col cols="7">
         <v-row no-gutters>
@@ -101,10 +101,6 @@ export default {
             count: 5
           }
         });
-
-        console.log(res);
-
-        console.log(Object.keys(res.data).length);
 
         if (Object.keys(res.data).length !== 0) {
           this.chartData = {

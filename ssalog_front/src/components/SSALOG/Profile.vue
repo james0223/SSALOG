@@ -224,8 +224,7 @@ export default {
       this.html = this.editor.getHTML();
       axios
         .post(`${this.ServerURL}/user/write_introduce`, {}, { params: { introduce: this.html } })
-        .then(response => {
-          console.log(response);
+        .then(() => {
           this.editable = false;
         })
         .catch(function(error) {
