@@ -102,10 +102,6 @@ export default {
           }
         });
 
-        console.log(res);
-
-        console.log(Object.keys(res.data).length);
-
         if (Object.keys(res.data).length !== 0) {
           this.chartData = {
             labels: Object.keys(res.data),
@@ -160,7 +156,6 @@ export default {
           const iterable = this.solvedList;
           iterable.forEach(element => {
             const temp = element;
-            console.log(temp.keyword.length);
             if (temp.keyword.length !== 0) {
               const [foo] = temp.keyword;
               const size = temp.keyword.length - 1;
