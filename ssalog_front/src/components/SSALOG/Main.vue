@@ -15,7 +15,7 @@
         <v-row justify="center">
           <p class="text-center font-weight-bold">키워드 빈도 그래프</p>
         </v-row>
-        <DoughNutChart width="450" height="300" v-bind:chart-data="chartData" />
+        <DoughNutChart :width="450" :height="300" v-bind:chart-data="chartData" />
       </v-col>
       <v-col cols="7">
         <v-row no-gutters>
@@ -160,6 +160,7 @@ export default {
           const iterable = this.solvedList;
           iterable.forEach(element => {
             const temp = element;
+            console.log(temp.keyword.length);
             if (temp.keyword.length !== 0) {
               const [foo] = temp.keyword;
               const size = temp.keyword.length - 1;
