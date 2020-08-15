@@ -346,7 +346,7 @@ export default {
       // More information about these options
       // is located here: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
       this.isIntersecting = entries[0].isIntersecting;
-      console.log(this.isIntersecting);
+      // console.log(this.isIntersecting);
     },
     async fetchStatDatas() {
       try {
@@ -360,7 +360,7 @@ export default {
         const user = [userNum.data, "사용자 수"];
         this.stats.push(problem);
         this.stats.push(user);
-        console.log(this.stats);
+        // console.log(this.stats);
       } catch (e) {
         console.error(e);
       }
