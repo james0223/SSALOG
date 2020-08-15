@@ -56,7 +56,10 @@
                 <v-card-actions>
                   <v-row no-gutters class="align-center">
                     <v-col cols="2" class="d-flex justify-center">
-                      <v-icon class="bounce" x-large @click="changeLangIdx(false)"
+                      <v-icon
+                        class="animate__animated animate__bounce"
+                        x-large
+                        @click="changeLangIdx(false)"
                         >mdi-chevron-left</v-icon
                       ></v-col
                     >
@@ -97,7 +100,10 @@
                       </v-carousel>
                     </v-col>
                     <v-col cols="2" class="d-flex justify-center">
-                      <v-icon class="bounce" x-large @click="changeLangIdx(true)"
+                      <v-icon
+                        class="animate__animated animate__bounce"
+                        x-large
+                        @click="changeLangIdx(true)"
                         >mdi-chevron-right</v-icon
                       ></v-col
                     >
@@ -196,6 +202,8 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import DoughNutChart from "../../components/DoughnutChart.vue";
+
+import "animate.css";
 
 export default {
   name: "ProblemDetail",
@@ -436,9 +444,5 @@ export default {
   top: 0px;
   right: 0px;
   height: 7rem;
-}
-.bounce {
-  animation: bounce;
-  animation-duration: 2s;
 }
 </style>
