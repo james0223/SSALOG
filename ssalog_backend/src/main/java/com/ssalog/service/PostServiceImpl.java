@@ -15,11 +15,13 @@ import org.springframework.stereotype.Service;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.Problem;
+import com.ssalog.dto.TempPost;
 import com.ssalog.dto.jandi;
 import com.ssalog.dto.solvelang;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.ProblemRepository;
+import com.ssalog.repository.TempPostRepository;
 
 
 @Service
@@ -30,9 +32,11 @@ public class PostServiceImpl implements PostService{
 	ProblemRepository problemRepository;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	TempPostRepository tempPostRepository;
 	@Override
-	public Post write_post(Post post) {
-		return postRepository.save(post);
+	public void write_post(TempPost post) {
+		tempPostRepository.save(post);
 	}
 
 	@Override
@@ -79,7 +83,10 @@ public class PostServiceImpl implements PostService{
 					if(m1.containsKey(key.get(i))) {
 						int key_val = m1.get(key.get(i));
 						key_val -=1;
-						m1.put(key.get(i), key_val);
+						if(key_val == 0) {m1.remove(key.get(i));}
+						else{
+							m1.put(key.get(i), key_val);
+						}
 					}
 				}
 				pr.setKey(m1);
@@ -87,10 +94,13 @@ public class PostServiceImpl implements PostService{
 			// solvelang에서 이거만큼 지워
 			Map<String, solvelang> m2 = pr.getLanguage();
 			solvelang l = m2.get(p.getLanguage());
-			l.setCnt(l.getCnt()-1);
-			l.setMemory_sum(l.getMemory_sum()-p.getMemory());
-			l.setTime_sum(l.getTime_sum()-p.getTime());
-			m2.put(p.getLanguage(), l);
+			if((l.getCnt()-1)==0) {m2.remove(p.getLanguage());}
+			else{
+				l.setCnt(l.getCnt()-1);
+				l.setMemory_sum(l.getMemory_sum()-p.getMemory());
+				l.setTime_sum(l.getTime_sum()-p.getTime());
+				m2.put(p.getLanguage(), l);
+			}
 			pr.setLanguage(m2);
 			return pr;
 		}
@@ -146,23 +156,27 @@ public class PostServiceImpl implements PostService{
 		p.setRegtime(time2);
 		if(p1.isPresent()) { // 이전에 해당 채점번호로 작성한 글이 존재하면?
 			if(p1.get().getUsername().equals(username)) { // 똑같은 작성자인지 확인.
+				System.out.println("여기1");
 				Problem problem = problemRepository.findByProblemid(p.getProblemid());
 				if(problem == null) {
 					problem = new Problem();
 					problem.setStarter(username);
 				}else {
-					problem = delete_problem(problem, p);
+					problem = delete_problem(problem, p1.get());
 				}
 				update_problem(problem, p);
+				p.setUsername(username);
 				postRepository.save(p); // 맞으면 update
 				return 1;
 			}else { // 자기가 작성한 글이 아니면, 반려
 				return 2;
 			}
 		}else { // 해당 채점번호로 작성한 글이 없으면.
+			System.out.println("여기2");
 			Problem problem = problemRepository.findByProblemid(p.getProblemid());
 			if(problem == null) {
 				problem = new Problem();
+				problem.setStarter(username);
 			}
 			update_problem(problem,p);
 			p.setIswrite(true);
@@ -183,7 +197,7 @@ public class PostServiceImpl implements PostService{
 		}
 		return mlist;
 	}
-	
+
 	public Map<String, Object> detail_service(String problemid, String language) {
 		Map<String, Object> m = new HashMap<>();
 		Problem problem = problemRepository.findByProblemid(problemid);
@@ -201,18 +215,18 @@ public class PostServiceImpl implements PostService{
 		Problem problem = problemRepository.findByProblemid(problemid);
 		Map<String, Integer> m = problem.getKey();
 		Map<String, Integer> result = new TreeMap<String, Integer>();
-//		long div = problem.getAll_cnt();
+		//		long div = problem.getAll_cnt();
 		for (String key : m.keySet()) {
-            Integer value = m.get(key);
-//            double val = Math.round((((double)value/div)*100)*10)/10.0;
-            result.put(key, value);
-        }
+			Integer value = m.get(key);
+			//            double val = Math.round((((double)value/div)*100)*10)/10.0;
+			result.put(key, value);
+		}
 		return result;
 	}
 	public void input_problem(Problem problem){
 		problemRepository.save(problem);
 	}
-	
+
 	@Override
 	public String find_problemname(String problemid){
 		List<Post> l = postRepository.findByProblemid(problemid);
