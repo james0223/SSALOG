@@ -241,9 +241,14 @@ public class LoginContorller {
     	return new ResponseEntity<String>(ran,HttpStatus.OK);
     } 
     @ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
 		System.err.println("login 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("login 부분에서 " + e.getClass());
+		if(username != null) {
+			w.send(username + "이 사고치는중!\n login 부분에서 " + e.getClass());
+		}else {
+			w.send("login 부분에서 " + e.getClass());
+		}
 	}
 }

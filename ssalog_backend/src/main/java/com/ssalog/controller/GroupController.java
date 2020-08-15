@@ -130,9 +130,14 @@ public class GroupController {
 //		return new ResponseEntity<Void>(HttpStatus.OK);
 //	}
 	@ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
 		System.err.println("그룹 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("그룹 부분에서 " + e.getClass());
+		if(username != null) {
+			w.send(username + "이 사고치는중!\n 그룹 부분에서 " + e.getClass());
+		}else {
+			w.send("그룹 부분에서 " + e.getClass());
+		}
 	}
 }

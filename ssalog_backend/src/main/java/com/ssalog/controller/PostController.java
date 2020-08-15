@@ -124,10 +124,14 @@ public class PostController {
 		
 	}	
 	@ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
-		System.err.println("포스트 부분에서 " + e.getClass());
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
+		System.err.println("post 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("post 부분에서 " + e.getClass());
-		e.printStackTrace();
+		if(username != null) {
+			w.send(username + "이 사고치는중!\n post 부분에서 " + e.getClass());
+		}else {
+			w.send("post 부분에서 " + e.getClass());
+		}
 	}
 }

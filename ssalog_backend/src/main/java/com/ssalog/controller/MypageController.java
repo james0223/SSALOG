@@ -100,10 +100,15 @@ public class MypageController {
 		return new ResponseEntity<String>(accountService.get_intro(nickname),HttpStatus.OK);
 	}
 	@ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
-		System.err.println("img 처리 부분에서 " + e.getClass());
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
+		System.err.println("img처리 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("img 처리 부분에서 " + e.getClass());
+		if(username != null) {
+			w.send(username + "이 사고치는중!\n img처리 부분에서 " + e.getClass());
+		}else {
+			w.send("img처리 부분에서 " + e.getClass());
+		}
 	}
 	
 	

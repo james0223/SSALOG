@@ -61,9 +61,14 @@ public class ScrapController {
 		return new ResponseEntity<Boolean>(scrapService.is_scraped(username, Scoring),HttpStatus.OK);
 	}
 	@ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
-		System.err.println("스크랩 부분에서 " + e.getClass());
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
+		System.err.println("scrap 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("스크랩 부분에서 " + e.getClass());
+		if(username != null) {
+			w.send(username + "이 사고치는중!\n scrap 부분에서 " + e.getClass());
+		}else {
+			w.send("scrap 부분에서 " + e.getClass());
+		}
 	}
 }

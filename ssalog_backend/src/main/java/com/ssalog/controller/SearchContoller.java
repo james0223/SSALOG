@@ -163,7 +163,7 @@ public class SearchContoller {
 		System.err.println("search 부분에서 " + e.getClass());
 		webhook w = new webhook();
 		if(username != null) {
-			w.send(username + "! search 부분에서 " + e.getClass());
+			w.send(username + "이 사고치는중!\n search 부분에서 " + e.getClass());
 		}else {
 			w.send("search 부분에서 " + e.getClass());
 		}

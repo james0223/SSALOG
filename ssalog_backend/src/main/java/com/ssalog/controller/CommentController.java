@@ -95,9 +95,14 @@ public class CommentController {
 //		}
 //	}
 	@ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
 		System.err.println("comment 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("comment 부분에서 " + e.getClass());
+		if(username != null) {
+			w.send(username + "이 사고치는중!\n comment 부분에서 " + e.getClass());
+		}else {
+			w.send("comment 부분에서 " + e.getClass());
+		}
 	}
 }
