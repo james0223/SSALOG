@@ -1,12 +1,14 @@
 <template>
   <v-container mt-3>
-    <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
-    <v-row class="px-3">
-      <v-col cols="3" style="border-left: 1px solid red"> 언어: {{ resData.language }} </v-col>
-      <v-col cols="3" style="border-left: 1px solid red"> 메모리: {{ resData.memory }}KB </v-col>
-      <v-col cols="3" style="border-left: 1px solid red"> 시간: {{ resData.time }}MS </v-col>
-      <v-col cols="3" style="border-left: 1px solid red"> 코드길이: {{ resData.len }}B </v-col>
-    </v-row>
+    <template v-if="resData !== undefined">
+      <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
+      <v-row class="px-3">
+        <v-col cols="3" style="border-left: 1px solid red"> 언어: {{ resData.language }} </v-col>
+        <v-col cols="3" style="border-left: 1px solid red"> 메모리: {{ resData.memory }}KB </v-col>
+        <v-col cols="3" style="border-left: 1px solid red"> 시간: {{ resData.time }}MS </v-col>
+        <v-col cols="3" style="border-left: 1px solid red"> 코드길이: {{ resData.len }}B </v-col>
+      </v-row>
+    </template>
     <br />
     <v-row>
       <v-col cols="12" md="6">
@@ -167,18 +169,7 @@
             </div>
           </editor-menu-bar>
           <editor-content class="editor__content article" :editor="editor" />
-          <div id="example-3">
-            <template v-for="(item, i) in items">
-              <input
-                type="checkbox"
-                v-bind:key="item.eng"
-                v-bind:value="item.kor"
-                v-model="SelectedProblemCategory"
-              />
-              <label v-bind:key="i" v-bind:for="item.eng">{{ item.kor }}</label>
-            </template>
-            <br />
-          </div>
+          <br />
           <v-btn color="info" tile block @click="write">
             {{ isUpdating ? "수정하기" : "작성하기 " }}</v-btn
           >
@@ -233,6 +224,7 @@ export default {
   },
   data() {
     return {
+      keepInBounds: false,
       title: null,
       resData: undefined,
       isUpdating: false,
@@ -325,9 +317,6 @@ export default {
     addUsername() {
       axios
         .get(`${this.ServerURL}/user/post/get_username?Scoring=${this.$route.params.id}`)
-        .then(response => {
-          console.log(response);
-        })
         .catch(function(error) {
           // handle error
           console.log(error);
@@ -351,8 +340,7 @@ export default {
       this.resData.title = this.title; // 글 제목
       axios
         .put(`${this.ServerURL}/user/post/update_post`, this.resData)
-        .then(response => {
-          console.log(response);
+        .then(() => {
           this.$router.push({
             name: "LogDetail",
             // eslint-disable-next-line
@@ -381,7 +369,7 @@ export default {
           `${that.resData.problemname} 은(는) 진짜 전설이다...`,
           `가슴이 웅장해지는 ${that.resData.problemname} 풀이`,
           `${that.resData.problemname} 왜이렇게 어렵냐...`,
-          `${that.resData.problemname} 빛의 속도로 풀었음`,
+          `${that.resData.problemname} 빛의 속도로 풀었음`
         ]);
         that.resData.SelectedProblemCategory = [];
         that.resData.html = "";
