@@ -1,6 +1,7 @@
 package com.ssalog.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -146,6 +147,13 @@ public class SearchContoller {
 	@GetMapping("/find_username")
 	public ResponseEntity<String> find_username(@RequestParam("nickname") String nickname){
 		return new ResponseEntity<String>(accountService.find_username(nickname), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value ="[test]")
+	@GetMapping("/test")
+	public void test(){
+		Date d = new Date();
+		System.out.println(d);
 	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(Exception e) {
