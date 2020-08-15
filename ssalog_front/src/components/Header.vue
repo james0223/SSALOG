@@ -95,7 +95,12 @@ export default {
       }
     },
     changeRoute(name) {
-      this.$router.push({ name });
+      // console.log(this.$route.name === name);
+      if (this.$route.name === name) {
+        this.$router.go({ name });
+      } else {
+        this.$router.push({ name });
+      }
     },
     goSite(site) {
       const win = window.open(site, "_blank");

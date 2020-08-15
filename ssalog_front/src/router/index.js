@@ -182,7 +182,11 @@ const router = new VueRouter({
 // global guard (login required)
 router.beforeEach(function(to, from, next) {
   // 같은 이름으로 라우팅이 안되는 문제 해결
+  // console.log(to);
+  // console.log(from);
+  // console.log(next);
   if (from.name === to.name) {
+    // console.log("음..");
     next();
   } else if (
     to.matched.some(function(routeInfo) {
@@ -202,4 +206,5 @@ router.beforeEach(function(to, from, next) {
     next();
   }
 });
+
 export default router;
