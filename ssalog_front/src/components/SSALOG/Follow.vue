@@ -1,9 +1,9 @@
 <template>
-  <v-card flat height="60vh" class="pa-6 mt-8">
+  <v-card flat height="60vh" class="pa-1 mt-8">
     <!-- <h2 class="text-center mt-16" v-if="isNoResult">팔로우가없습니다</h2> -->
     <v-tabs background-color="white" color="blue accent-4" grow>
       <v-tab @click="getFollowing()">Following</v-tab>
-      <v-tab @click="getFollower">Follower</v-tab>
+      <v-tab @click="getFollower()">Follower</v-tab>
     </v-tabs>
 
     <v-row>

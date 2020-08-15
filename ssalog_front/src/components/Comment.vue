@@ -32,7 +32,7 @@
               style="cursor: pointer;"
               class="headline"
               @click="$router.push({ name: 'SSalogMain', params: { username: comment.userid } })"
-              >{{ comment.userid }}</v-list-item-title
+              >{{ comment.nickname }}</v-list-item-title
             >
             <v-list-item-subtitle>{{ comment.time }}</v-list-item-subtitle>
           </v-list-item-content>

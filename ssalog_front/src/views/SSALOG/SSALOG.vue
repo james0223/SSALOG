@@ -138,7 +138,7 @@
           </v-tabs>
         </div>
       </v-col>
-      <v-col cols="undefined"
+      <v-col cols="10"
         ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getScrapNum"></router-view>
       </v-col>
     </v-row>

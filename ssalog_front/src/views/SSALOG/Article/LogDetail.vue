@@ -481,7 +481,7 @@ export default {
 }
 .table_of_contents {
   position: fixed;
-  top: 35vh;
+  top: 40vh;
   border-left: 2px solid rgb(233, 236, 239) !important;
 }
 </style>
