@@ -31,7 +31,7 @@ public class FileServiceImpl implements FileService{
 		if (multipartFile != null && !multipartFile.isEmpty()) {
 			String originFileName = multipartFile.getOriginalFilename();
 			String type = FilenameUtils.getExtension(originFileName);
-			if(type.equals("jpg") || type.equals("png") || type.equals("jpeg")) {
+			if(type.equalsIgnoreCase("jpg") || type.equalsIgnoreCase("png") || type.equalsIgnoreCase("jpeg")) {
 				String rootPath = "/home/ubuntu/apps/upload"; //servletContext.getRealPath("/upload");
 				Account ac = accountRepository.findByUsername(username);
 				System.out.println("rootpath = " + rootPath);
