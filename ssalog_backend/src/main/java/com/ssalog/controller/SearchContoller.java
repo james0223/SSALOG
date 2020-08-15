@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,9 +158,14 @@ public class SearchContoller {
 		System.out.println(d);
 	}
 	@ExceptionHandler(Exception.class)
-	public void nullex(Exception e) {
+	public void nullex(HttpServletResponse response,Exception e) {
+		String username = response.getHeader("username");
 		System.err.println("search 부분에서 " + e.getClass());
 		webhook w = new webhook();
-		w.send("search 부분에서 " + e.getClass());
+		if(username != null) {
+			w.send(username + "! search 부분에서 " + e.getClass());
+		}else {
+			w.send("search 부분에서 " + e.getClass());
+		}
 	}
 }
