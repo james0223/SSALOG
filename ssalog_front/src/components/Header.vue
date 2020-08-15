@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-row class="align-center">
         <v-col cols="1">
-          <v-avatar class="pointButton" color="lighten-5" size="65">
+          <v-avatar class="pointButton" color="lighten-5" size="60">
             <v-img
               contain
               max-height="90%"
@@ -41,7 +41,6 @@
             >문제</v-btn
           >
         </v-col>
-
         <v-col cols="1" class="text-center">
           <v-btn
             :ripple="false"
@@ -58,13 +57,16 @@
             >그룹</v-btn
           >
         </v-col>
-        <v-col cols="6" md="4" class="text-center">
-          <SearchBar :SelectedCategoryIdx="0" class="mt-7" />
+        <v-spacer></v-spacer>
+        <v-col cols="3" class="text-center mt-7">
+          <v-text-field
+            v-model="q"
+            append-icon="mdi-magnify"
+            @keypress.enter="goSearch"
+          ></v-text-field>
         </v-col>
-        <!-- <v-col cols="1.5" class="text-center">
-          <v-btn :ripple="false" class="pa-0 no-background-hover" text>Community</v-btn>
-        </v-col>-->
-        <v-col cols="3" class="text-center py-0">
+        <v-spacer></v-spacer>
+        <v-col cols="3" lg="2" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
             <v-col cols="5">
               <small @click="changeRoute('Login')" class="pointButton">로그인</small>
@@ -83,11 +85,11 @@
                       <v-img contain max-height="80%" :src="userThumbnail" alt="유저썸네일"></v-img>
                     </v-avatar>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="7">
                     <div class="text-left subtitle">{{ nickname }} 님</div>
                     <div class="text-left caption">환영합니다</div>
                   </v-col>
-                  <v-col cols="2" class="d-flex align-center">
+                  <v-col cols="1" class="d-flex align-center">
                     <v-icon>mdi-chevron-down</v-icon>
                   </v-col>
                 </v-row>
@@ -102,6 +104,8 @@
             </v-list>
           </v-menu>
         </v-col>
+        <v-spacer></v-spacer>
+
         <v-col cols="1" class="d-none d-md-flex">
           <v-btn text block @click="goSite('https://www.acmicpc.net/')"
             ><img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
@@ -114,16 +118,13 @@
 
 <script>
 import { mapState } from "vuex";
-import SearchBar from "@/components/SearchBar.vue";
 
 export default {
   name: "Header",
-  components: {
-    SearchBar
-  },
   data() {
     return {
-      items: ["내 쌀로그", "계정설정", "로그아웃"]
+      items: ["내 쌀로그", "계정설정", "로그아웃"],
+      q: null
     };
   },
   computed: mapState(["userThumbnail", "nickname", "accessToken"]),
@@ -151,6 +152,11 @@ export default {
     goSite(site) {
       const win = window.open(site, "_blank");
       win.focus();
+    },
+    goSearch() {
+      this.$router
+        .push({ name: "ProblemList", query: { q: this.q, categoryIdx: 0 } })
+        .catch(() => {});
     }
   }
 };
