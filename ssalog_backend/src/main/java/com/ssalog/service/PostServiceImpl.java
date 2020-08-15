@@ -36,6 +36,8 @@ public class PostServiceImpl implements PostService{
 	TempPostRepository tempPostRepository;
 	@Override
 	public void write_post(TempPost post) {
+		String changelang = unify_lang(post.getLanguage());
+		post.setLanguage(changelang);
 		tempPostRepository.save(post);
 	}
 
@@ -263,5 +265,20 @@ public class PostServiceImpl implements PostService{
 		}else {
 			return true;
 		}
+	}
+	
+	
+	public String unify_lang(String language) {
+		String result = language;
+		if(result.equals("Java") || result.equals("Java (OpenJDK)") || result.equals("Java 11")) {
+			result = "Java";
+		}else if(result.equals("C++14") || result.equals("C++") || result.equals("C++11") || result.equals("C++17") || result.equals("C++2a")){
+			result = "C++";
+		}else if(result.equals("C") || result.equals("C11")) {
+			result = "C";
+		}else if(result.equals("Python 3") || result.equals("PyPy3") || result.equals("Python 2") || result.equals("PyPy2")){
+			result = "Python";
+		}
+		return result;
 	}
 }

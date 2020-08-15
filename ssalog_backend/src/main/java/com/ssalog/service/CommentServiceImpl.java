@@ -40,6 +40,8 @@ public class CommentServiceImpl implements CommentService{
 			c.setMessage(comment);
 			c.setUniqueid(uid);
 			c.setUsername(username);
+			Account ac=  accountRepository.findByUsername(username);
+			c.setNickname(ac.getNickname());
 			Date date = new Date();
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String time1 = format1.format(date);
