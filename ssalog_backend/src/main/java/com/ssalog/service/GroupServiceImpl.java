@@ -188,7 +188,8 @@ public class GroupServiceImpl implements GroupService{
 				Groupdetail gd2 = gd.get(i);
 				List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(gd2.getAccount().getUsername(), problemid);
 				if(ps.size() != 0) {
-					m.put(gd2.getAccount().getNickname(), "https://ssalog.gq/SSALOG/"+gd2.getAccount().getNickname()+"/Solution/"+ps.get(i).getScoring());
+					// 살짝애매하네 고쳐야함.
+					m.put(gd2.getAccount().getNickname(), "https://ssalog.gq/SSALOG/"+gd2.getAccount().getNickname()+"/Solution/"+ps.get(0).getScoring());
 				}else {
 					m.put(gd2.getAccount().getNickname(), "false");
 				}

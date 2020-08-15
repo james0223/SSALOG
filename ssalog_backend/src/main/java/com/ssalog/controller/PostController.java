@@ -70,7 +70,16 @@ public class PostController {
 			return new ResponseEntity<String>("not exist!",HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+	@GetMapping("newuser/post/import_view")
+	@ApiOperation(value = "[posting] 백준에서 문제를 익스텐션으로 긁어왔을때, 화면에 띄우기 위한 용도, 해당하는 게시물이 존재 하지 않으면 400 error를 발생시킨다. ")
+	public ResponseEntity<?> get_Temppost(@RequestParam("Scoring") String Scoring){
+		TempPost p = postService.read_temppost(Scoring);
+		if( p != null) {
+			return new ResponseEntity<TempPost>(p,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<String>("not exist!",HttpStatus.BAD_REQUEST);
+		}
+	}
 	@DeleteMapping("user/post/delete_post")
 	@ApiOperation(value = "[posting delete] 채점번호에 해당하는 게시글을 삭제함, 자기가 작성한 글만 가능, 본인 글이 아닌데 삭제하려한다? 바로 400 발생, 게시글이 존재하지 않으면 400발생")
 	public ResponseEntity<String> delete_post(HttpServletResponse response,@RequestParam("Scoring") String Scoring){
@@ -119,5 +128,6 @@ public class PostController {
 		System.err.println("포스트 부분에서 " + e.getClass());
 		webhook w = new webhook();
 		w.send("post 부분에서 " + e.getClass());
+		e.printStackTrace();
 	}
 }

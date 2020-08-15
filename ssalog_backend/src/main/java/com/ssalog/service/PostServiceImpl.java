@@ -49,6 +49,15 @@ public class PostServiceImpl implements PostService{
 		}
 	}
 	@Override
+	public TempPost read_temppost(String post_pk) {
+		Optional<TempPost> p = tempPostRepository.findById(post_pk);
+		if(p.isPresent()) {
+			return p.get();
+		}else {
+			return null;
+		}
+	}
+	@Override
 	public int delete_post(String post_pk, String username) {
 		Optional<Post> p = postRepository.findById(post_pk);
 		if(p.isPresent()) { // 존재하면
