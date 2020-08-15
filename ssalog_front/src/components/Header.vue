@@ -2,7 +2,7 @@
   <v-app-bar color="white" max-height="65">
     <v-container fluid>
       <v-row class="align-center">
-        <v-col cols="1" md="2">
+        <v-col cols="1">
           <v-avatar class="pointButton" color="lighten-5" size="65">
             <v-img
               contain
@@ -12,12 +12,37 @@
             ></v-img>
           </v-avatar>
         </v-col>
-        <!-- <v-col cols="1.5" class="text-center">
-          <v-btn :ripple="false" class="pa-0 no-background-hover" text @click="changeRoute(2)"
-            >GROUP</v-btn
+        <v-col cols="1" class="text-center">
+          <v-btn
+            :ripple="false"
+            class="pa-0 no-background-hover"
+            text
+            @click="
+              $router.push({
+                name: 'ProblemList',
+                query: {
+                  q: '',
+                  categoryIdx: 1
+                }
+              })
+            "
+            >문제</v-btn
           >
-        </v-col> -->
-        <v-col cols="8" md="6" class="text-center">
+        </v-col>
+        <v-col cols="1" class="text-center">
+          <v-btn
+            :ripple="false"
+            class="pa-0 no-background-hover"
+            text
+            @click="
+              $router.push({
+                name: 'AccountList'
+              })
+            "
+            >쌀로그</v-btn
+          >
+        </v-col>
+        <v-col cols="7" md="5" class="text-center">
           <SearchBar :SelectedCategoryIdx="0" class="mt-7" />
         </v-col>
         <!-- <v-col cols="1.5" class="text-center">
@@ -25,12 +50,12 @@
         </v-col>-->
         <v-col cols="3" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
-            <v-col cols="5" @click="changeRoute('Login')">
-              <small class="pointButton">로그인</small>
+            <v-col cols="5">
+              <small @click="changeRoute('Login')" class="pointButton">로그인</small>
             </v-col>
             <v-col cols="1">|</v-col>
-            <v-col cols="6" @click="changeRoute('SignUp')">
-              <small class="pointButton">회원가입</small>
+            <v-col cols="6">
+              <small @click="changeRoute('SignUp')" class="pointButton">회원가입</small>
             </v-col>
           </v-row>
           <v-menu open-on-hover offset-y v-if="$store.state.accessToken" no-gutters>
@@ -87,7 +112,10 @@ export default {
   methods: {
     userMenu(idx) {
       if (idx === 0) {
-        this.$router.push({ name: "SSalogMain", params: { nickname: this.nickname } });
+        this.$router.push({
+          name: "SSalogMain",
+          params: { nickname: this.nickname }
+        });
       } else if (idx === 1) {
         this.$router.push(`/SSALOG/${this.$store.state.nickname}/UserSetting`);
       } else {

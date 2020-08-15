@@ -4,7 +4,11 @@
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
     <!-- </v-container> -->
+<<<<<<< HEAD
     <v-snackbar :color="alertColor" :value="showAlert" centered multi-line>
+=======
+    <v-snackbar :color="alertColor" top v-model="showAlert">
+>>>>>>> feat/front/리스트페이지수정_회원
       {{ AlertMessage }}
     </v-snackbar>
   </v-app>

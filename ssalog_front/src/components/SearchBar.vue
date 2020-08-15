@@ -38,8 +38,6 @@ export default {
   data() {
     return {
       category: ["문제번호", "문제제목", "문제유형", "회원"],
-      q: null,
-      keywords: null,
       SelectedCategory: null
     };
   },
@@ -47,21 +45,25 @@ export default {
     ...mapMutations(["ShowAlert"]),
     goSearch() {
       if (this.category.indexOf(this.SelectedCategory) === 3) {
-        this.$router.push({ name: "AccountList", query: { q: this.q } });
+        this.$router.push({ name: "AccountList", query: { q: this.q } }).catch(() => {});
       } else {
-        this.$router.push({
-          name: "ProblemList",
-          query: {
-            q: this.q,
-            keywords: this.keywords,
-            categoryIdx: this.category.indexOf(this.SelectedCategory)
-          }
-        });
+        this.$router
+          .push({
+            name: "ProblemList",
+            query: {
+              q: this.q,
+              keywords: this.keywords,
+              categoryIdx: this.category.indexOf(this.SelectedCategory)
+            }
+          })
+          .catch(() => {});
       }
     }
   },
   props: {
-    SelectedCategoryIdx: Number
+    SelectedCategoryIdx: Number,
+    keywords: Array,
+    q: String
   },
   watch: {
     keywords(newVal) {
