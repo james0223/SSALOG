@@ -8,7 +8,6 @@ export default async function getSSALOG(pageId) {
         Scoring: pageId
       }
     });
-    console.log(res);
     return Promise.resolve(res.data);
   } catch (e) {
     console.error(e);
