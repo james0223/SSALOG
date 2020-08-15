@@ -10,7 +10,19 @@
               src="@/assets/images/logo.jpg"
               @click="changeRoute('Home')"
             ></v-img>
-          </v-avatar>
+          </v-avatar> </v-col
+        ><v-col cols="1" class="text-center">
+          <v-btn
+            :ripple="false"
+            class="pa-0 no-background-hover"
+            text
+            @click="
+              $router.push({
+                name: 'AccountList'
+              })
+            "
+            >쌀로그</v-btn
+          >
         </v-col>
         <v-col cols="1" class="text-center">
           <v-btn
@@ -29,6 +41,7 @@
             >문제</v-btn
           >
         </v-col>
+
         <v-col cols="1" class="text-center">
           <v-btn
             :ripple="false"
@@ -36,13 +49,16 @@
             text
             @click="
               $router.push({
-                name: 'AccountList'
+                name: 'GroupList',
+                params: {
+                  nickname
+                }
               })
             "
-            >쌀로그</v-btn
+            >그룹</v-btn
           >
         </v-col>
-        <v-col cols="7" md="5" class="text-center">
+        <v-col cols="6" md="4" class="text-center">
           <SearchBar :SelectedCategoryIdx="0" class="mt-7" />
         </v-col>
         <!-- <v-col cols="1.5" class="text-center">
@@ -87,7 +103,9 @@
           </v-menu>
         </v-col>
         <v-col cols="1" class="d-none d-md-flex">
-          <v-btn text block @click="goSite('https://www.acmicpc.net/')">백준</v-btn>
+          <v-btn text block @click="goSite('https://www.acmicpc.net/')"
+            ><img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
