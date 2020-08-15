@@ -26,6 +26,7 @@ import com.ssalog.dto.Comment;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.TempPost;
 import com.ssalog.service.CommentService;
 import com.ssalog.service.PostService;
 import com.ssalog.service.PostSubService;
@@ -48,8 +49,8 @@ public class PostController {
 	
 	@PostMapping("newuser/post/write")
 	@ApiOperation(value = "[posting작성] extension에서 백준에서 데이터를 가져올때 사용하는 api")
-	public Post write(@RequestBody Post post) {
-		return postService.write_post(post);
+	public void write(@RequestBody TempPost post) {
+		postService.write_post(post);
 	}
 	
 	@GetMapping("user/post/my_write_list")

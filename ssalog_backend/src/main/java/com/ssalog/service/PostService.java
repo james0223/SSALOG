@@ -5,9 +5,10 @@ import java.util.Map;
 
 
 import com.ssalog.dto.Post;
+import com.ssalog.dto.TempPost;
 
 public interface PostService {
-	public Post write_post(Post post);
+	public void write_post(TempPost post);
 	public Post read_post(String post_pk);
 	public int delete_post(String post_pk, String username);
 	public int update_post(Post p, String username);
