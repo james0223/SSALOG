@@ -19,7 +19,7 @@
         </v-card>
       </v-col>
       <v-divider vertical></v-divider>
-      <v-col lg="8">
+      <v-col>
         <router-view></router-view>
       </v-col>
     </v-row>
