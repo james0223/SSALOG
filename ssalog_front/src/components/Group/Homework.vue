@@ -7,12 +7,18 @@
           <thead>
             <tr>
               <th class="text-left">문제</th>
+              <th class="text-left">문제 설명</th>
               <th class="text-left">남은 시간</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(hw, idx) in Homeworks" :key="idx" @click="sortMemberByHW(idx)">
-              <td>{{ hw.problemname }}</td>
+              <td>
+                <a :href="`https://www.acmicpc.net/problem/${hw.problemid}`">
+                  {{ hw.problemname }}
+                </a>
+              </td>
+              <td>{{ hw.mention }}</td>
               <countdown :time="getCount(hw.limit)" :interval="1000" tag="td">
                 <template slot-scope="props"
                   >{{ props.days }}일 {{ props.hours }}시간 {{ props.minutes }}분
@@ -71,15 +77,7 @@ export default {
   name: "Homework",
   data() {
     return {
-      Homeworks: [
-        {
-          title: "아직 출제된 과제가 없습니다.",
-          manager: "",
-          submit: "",
-          pending: "",
-          due: ""
-        }
-      ],
+      Homeworks: [],
       taskSubmissionStatus: [],
       solvedMembers: [],
       unsolvedMembers: []
@@ -101,6 +99,7 @@ export default {
         }
       });
       this.Homeworks = res.data;
+      console.log(res.data);
       return res.data;
     },
     /* eslint-disable */
