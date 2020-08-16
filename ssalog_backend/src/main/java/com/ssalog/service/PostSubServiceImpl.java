@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.jandi;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.PostSubRepository;
 
@@ -97,4 +98,9 @@ public class PostSubServiceImpl implements PostSubService{
         //Collections.reverse(list);
         return list;
     }
+	@Override
+	public List<PostSub> latestPost(int cnt){
+		List<PostSub> list = postRepository.latestpost(cnt).getMappedResults();
+		return list;
+	}
 }

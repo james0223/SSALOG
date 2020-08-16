@@ -129,6 +129,13 @@ public class PostController {
 		return new ResponseEntity<Boolean>(postService.is_write(Scoring),HttpStatus.OK);
 		
 	}	
+	
+	@GetMapping("newuser/post/latestPost")
+	@ApiOperation(value = "[문제로 posting을 작성했는지] ")
+	public ResponseEntity<List<PostSub>> latestPost(@RequestParam("count") int count){
+		return new ResponseEntity<List<PostSub>>(postSubService.latestPost(count),HttpStatus.OK);
+		
+	}		
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");

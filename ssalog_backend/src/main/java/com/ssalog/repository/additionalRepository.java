@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 
 import com.ssalog.dto.Comment;
+import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
 
@@ -16,4 +17,6 @@ public interface additionalRepository {
 	public void update_subcomment(String id, Comment comment);
 	public Page<Problem> keyword_search(String[] list, Pageable pageable);
 	public Page<Problem> solved_list(String[] list, Pageable pageable);
+	
+	public  AggregationResults<PostSub> latestpost(int cnt);
 }

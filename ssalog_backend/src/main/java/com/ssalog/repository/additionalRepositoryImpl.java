@@ -9,6 +9,9 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.grou
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.BasicDBObject;
 import com.ssalog.dto.Comment;
 import com.ssalog.dto.Post;
+import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
 
@@ -109,5 +113,13 @@ public class additionalRepositoryImpl implements additionalRepository{
 		List<Problem> plist = mongoTemplate.find(query, Problem.class);
 		plist.forEach(System.out::println);
 		return PageableExecutionUtils.getPage(plist, pageable, () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Problem.class));
+	}
+	
+	public  AggregationResults<PostSub> latestpost(int cnt){
+		List<AggregationOperation> list = new ArrayList<AggregationOperation>();
+		list.add(Aggregation.sort(Sort.Direction.DESC,"regdate").and(Sort.Direction.DESC,"regtime"));
+		list.add(Aggregation.limit(cnt));
+		Aggregation aggregation = Aggregation.newAggregation(list);
+		return mongoTemplate.aggregate(aggregation,"post", PostSub.class);
 	}
 }
