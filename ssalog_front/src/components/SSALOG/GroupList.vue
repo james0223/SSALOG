@@ -96,9 +96,16 @@
                   <v-list v-if="selectedGroup">
                     <v-list-item>
                       <v-list-item-content>
-                        <v-list-item-title>{{ selectedGroup.groupname }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ selectedGroup.groupdes }}</v-list-item-subtitle>
-                        <v-list-item-title> {{ selectedGroup.groupowner }}</v-list-item-title>
+                        <v-list-item-title
+                          >그룹명 : {{ selectedGroup.groupname }}</v-list-item-title
+                        >
+                        <v-list-item-subtitle
+                          >그룹 설명 : {{ selectedGroup.groupdes }}</v-list-item-subtitle
+                        >
+                        <v-list-item-title
+                          >그룹장: {{ selectedGroup.groupowner }}</v-list-item-title
+                        >
+                        <v-btn @click="applyGroup(selectedGroup.groupname)">그룹 신청하기</v-btn>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -170,11 +177,11 @@ export default {
         console.error(err);
       }
     },
-    async applyGroup() {
+    async applyGroup(selectedGroup) {
       try {
         await this.$http.post(`${this.ServerURL}/user/grouping/apply_group`, null, {
           params: {
-            groupname: this.searchedGroup
+            groupname: selectedGroup
           }
         });
       } catch (err) {
@@ -224,7 +231,6 @@ export default {
         }
       });
       this.searchGroup = res.data;
-      console.log("ya", res.data);
       this.GroupListLoading = false;
     }
   }
