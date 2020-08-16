@@ -75,10 +75,6 @@ public class SearchContoller {
 	@ApiOperation(value ="[post keyword 조회] list로 전달한 keyword를 모두 사용하여 해결한 포스팅한 글들을 찾아온다.")
 	@GetMapping("/to_keyword")
 	public ResponseEntity<Page<Problem>> findBykeyword(@RequestParam(value ="param[]") String[] keyword, PageRequest pageable){
-//		List<String> s = new ArrayList<>();
-//		for(int i=0; i<keyword.length; i++) {
-//			s.add(keyword[i]);
-//		}
 		return new ResponseEntity<Page<Problem>>(problemService.findkey(keyword, pageable.of()),HttpStatus.OK);
 	}
 	
@@ -151,12 +147,6 @@ public class SearchContoller {
 		return new ResponseEntity<String>(accountService.find_username(nickname), HttpStatus.OK);
 	}
 	
-	@ApiOperation(value ="[test]")
-	@GetMapping("/test")
-	public void test(){
-		Date d = new Date();
-		System.out.println(d);
-	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");
