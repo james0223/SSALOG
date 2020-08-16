@@ -217,6 +217,14 @@
         @click="toTop"
       >
         <v-icon>keyboard_arrow_up</v-icon>
+        <v-footer class="font-weight-medium" height="110" color="#26272b">
+          <v-col class="text-center grey--text" cols="12 ">
+            2020-&copy;SSALOG
+          </v-col>
+          <v-col class="text-center grey--text" cols="12">
+            <v-icon color="grey">mdi-email-outline</v-icon>ssalogofficial@gmail.com
+          </v-col>
+        </v-footer>
       </v-btn>
     </v-app>
   </div>
