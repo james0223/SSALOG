@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.Problem;
 import com.ssalog.dto.jandi;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.PostSubRepository;
+import com.ssalog.repository.ProblemRepository;
 
 @Service
 public class PostSubServiceImpl implements PostSubService{
@@ -27,6 +29,8 @@ public class PostSubServiceImpl implements PostSubService{
 	@Autowired
 	PostRepository postRepository;
 
+	@Autowired
+	ProblemRepository problemRepository;
 	@Override
 	public Page<PostSub> select_by_problemid(String problemid,String language, PageRequest pageable) {
 		return postSubRepository.findByProblemidAndLanguage(problemid, language, pageable);
@@ -102,5 +106,29 @@ public class PostSubServiceImpl implements PostSubService{
 	public List<PostSub> latestPost(int cnt){
 		List<PostSub> list = postRepository.latestpost(cnt).getMappedResults();
 		return list;
+	}
+	@Override
+	public Map<String, Integer> detail_py(String problemid, int cnt){
+		Problem problem = problemRepository.findByProblemid(problemid);
+		Map<String, Integer> result = new TreeMap<String, Integer>();
+		if(problem != null) {
+			Map<String, Integer> m = problem.getKey();
+			//		long div = problem.getAll_cnt();
+			for (String key : m.keySet()) {
+				Integer value = m.get(key);
+				//            double val = Math.round((((double)value/div)*100)*10)/10.0;
+				result.put(key, value);
+			}
+		}
+		Iterator<Object> it = sortByValue(result).iterator();
+		int k = 0;
+		Map<String, Integer> result2 = new TreeMap<String, Integer>();
+		while(it.hasNext()) {
+            if(k == cnt) break;
+			String temp = (String) it.next();
+			result2.put(temp,result.get(temp));
+            k++;
+        }
+		return result2;
 	}
 }
