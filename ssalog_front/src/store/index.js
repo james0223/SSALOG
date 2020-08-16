@@ -61,6 +61,10 @@ const getDefaultState = () => {
     formerLink: null
   };
 };
+
+// initial state
+// const state = getDefaultState();
+
 export default new Vuex.Store({
   state: getDefaultState(),
   plugins: [createPersistedState()],
@@ -134,14 +138,15 @@ export default new Vuex.Store({
           .then(result => {
             // 토큰이 만료되었을때
             if (result.data.success === false) {
-              commit("LOGOUT");
               commit("ShowAlert", {
                 flag: true,
                 msg: "토큰이 만료되었습니다. 다시 로그인하세요",
                 color: "error"
               });
               setTimeout(() => {
-                commit("ShowAlert", { flag: false, msg: "" });
+                commit("LOGOUT");
+                // commit("ShowAlert", { flag: false, msg: "" });
+                window.location.reload();
               }, 2000);
             }
             commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
@@ -150,20 +155,22 @@ export default new Vuex.Store({
           .catch(err => {
             if (err.response.status === 401 || err.response.status === 9999) {
               // 토큰 갱신 실패 (9999) 처리
-              console.log("너는 은하철도");
-              commit("LOGOUT");
+              // console.log("너는 은하철도");
               commit("ShowAlert", {
                 flag: true,
                 msg: "토큰이 만료되었습니다. 다시 로그인하세요",
                 color: "error"
               });
               setTimeout(() => {
-                commit("ShowAlert", { flag: false, msg: "" });
+                commit("LOGOUT");
+                // commit("ShowAlert", { flag: false, msg: "" });
+                window.location.reload();
               }, 2000);
             }
             if (err.response.status === 500) {
               // logout 한 경우
               commit("LOGOUT");
+              window.location.reload();
             }
           });
       };
@@ -171,14 +178,14 @@ export default new Vuex.Store({
     },
     async LOGOUT({ commit }) {
       await Axios.post(`${this.state.ServerURL}/user/out`, null, {});
-      commit("LOGOUT", { undefined });
       commit("ShowAlert", {
         flag: true,
         msg: "로그아웃 되었습니다.",
         color: "info"
       });
       setTimeout(() => {
-        commit("ShowAlert", { flag: false, msg: "" });
+        commit("LOGOUT");
+        window.location.reload();
       }, 2000);
     },
     async SIGNUP({ dispatch }, signupData) {
