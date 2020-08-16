@@ -62,6 +62,11 @@ public class FollowController {
 		String username = response.getHeader("username");
 	 	return new ResponseEntity<String>(followService.canclefollow(username, following), HttpStatus.OK);
 	 }
+	 @ApiOperation(value = "[왼쪽 user_info 컴포넌트용] 닉네임을 주면 해당 사람의 정보(팔로우수, 팔로윙수, 스크랩 수, 등등)를 보여줍니다")
+	 @GetMapping("newuser/user_info")
+	 public ResponseEntity<Map<String,Object>> user_info(@RequestParam("nickname") String nickname){
+	 	return new ResponseEntity<Map<String, Object>>(followService.user_info(nickname), HttpStatus.OK);
+	 }
 	 @ExceptionHandler(Exception.class)
 		public void nullex(HttpServletResponse response,Exception e) {
 			String username = response.getHeader("username");

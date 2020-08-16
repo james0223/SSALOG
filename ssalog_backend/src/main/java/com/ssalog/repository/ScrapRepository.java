@@ -10,4 +10,5 @@ public interface ScrapRepository extends JpaRepository<Scrap, Long>{
 	public Scrap findByScrap_usernameAndScraped(String username, String Scoring);
 	public List<Scrap> findByScrap_username(String username);
 	public List<Scrap> findByScrap_nickname(String nickname);
+	public long countByScrapeduser_nickname(String nickname);
 }

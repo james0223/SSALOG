@@ -24,4 +24,5 @@ public interface PostSubRepository extends MongoRepository<Post,String>{
 	public List<PostSub> findPyGraphTouser(String username);
 	public List<PostSub> findByProblemid(String problemid);
 	public Scrapedpost findByScoring(String Scoring);
+	public long countByUsername(String username);
 }

@@ -21,15 +21,30 @@ public class Scrap {
 	private Account scrap;
 	
 	private String scraped;
-
+	
+	@ManyToOne(targetEntity=Account.class, fetch=FetchType.LAZY)
+	@JoinColumnOrFormula(column = @JoinColumn(name="scrapeduser"))
+	private Account scrapeduser;
 	public Scrap() {}
 
-	public Scrap(Long id, Account scrap, String scraped) {
+	public Scrap(Long id, Account scrap, String scraped, Account scrapeduser) {
 		super();
 		this.id = id;
 		this.scrap = scrap;
 		this.scraped = scraped;
+		this.scrapeduser = scrapeduser;
 	}
+
+
+	public Account getScrapeduser() {
+		return scrapeduser;
+	}
+
+
+	public void setScrapeduser(Account scrapeduser) {
+		this.scrapeduser = scrapeduser;
+	}
+
 
 	public Long getId() {
 		return id;
