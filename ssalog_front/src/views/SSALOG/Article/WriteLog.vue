@@ -156,7 +156,9 @@
               </button>
             </div>
           </editor-menu-bar>
-          <editor-content class="editor__content article" :editor="editor" />
+          <div v-on:click="select()">
+            <editor-content class="editor__content article" :editor="editor" />
+          </div>
           <br />
           <v-btn color="info" tile block @click="write">
             {{ isUpdating ? "수정하기" : "작성하기 " }}</v-btn
@@ -189,7 +191,8 @@ import {
   Strike,
   Underline,
   History,
-  Focus
+  Focus,
+  TrailingNode
 } from "tiptap-extensions";
 import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
@@ -252,13 +255,35 @@ export default {
           new Focus({
             className: "has-focus",
             nested: true
+          }),
+          new TrailingNode({
+            node: "paragraph",
+            notAfter: ["paragraph"]
           })
         ],
         autoFocus: true,
         content: "",
         onUpdate: ({ getHTML }) => {
           this.resData.html = getHTML();
-        }
+        },
+        // onTransaction: ({ state }) => {
+        //   console.log(state);
+        // },
+        editorProps: {
+          handleDOMEvents: {
+            drop: (view, e) => {
+              // console.log(view);
+              // console.log(e);
+              e.preventDefault();
+            }
+          }
+        },
+        // hide the drop position indicator
+        dropCursor: { width: 0, color: "transparent" }
+        // onDrop: (view, event, slice, moved) => {
+        //   console.log(`ondrop`);
+        //   console.log(view, event, slice, moved);
+        // }
       }),
       codearea: new Editor({
         extensions: [
@@ -296,11 +321,14 @@ export default {
       const { selection, state } = this.codearea;
       const { from, to } = selection;
       const text = state.doc.textBetween(from, to);
-      // alert(text);
+      // console.log(text);
       // this.editor.setContent("1");
       const transaction = this.editor.state.tr.insertText(text);
+      // console.log(transaction);
       this.editor.view.dispatch(transaction);
       this.editor.commands.code_block();
+      this.editor.commands.horizontal_rule();
+      // console.log(this.editor);
     },
     addUsername() {
       axios
@@ -348,7 +376,7 @@ export default {
         }
       });
 
-      if(iswrite.data){
+      if (iswrite.data) {
         that.resData = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
           params: {
             Scoring: that.$route.params.id
@@ -356,11 +384,9 @@ export default {
         });
 
         that.resData = that.resData.data;
-      }else{
+      } else {
         that.resData = await getSSALOG(that.$route.params.id);
-
       }
-;
       that.isUpdating = that.resData.html == undefined ? false : true;
 
       if (!that.isUpdating) {
@@ -378,19 +404,27 @@ export default {
           `${that.resData.problemname} 빛의 속도로 풀었음`
         ]);
         that.resData.SelectedProblemCategory = [];
-        that.resData.html = "";
+        that.resData.html = "<p></p><p></p><p></p><p></p><p></p><p></p>";
       } else {
         const transCode = that.codearea.state.tr.insertText(that.resData.code);
         that.codearea.view.dispatch(transCode);
         that.codearea.commands.code_block();
         that.title = that.resData.title;
         that.SelectedProblemCategory = that.resData.keyword;
-      
+
         // const userHTML = that.editor.state.tr.insertText(that.resData.html);
         // that.editor.view.dispatch(userHTML);
+        // console.log(that.resData.html);
+        if (that.resData.html == "<p></p>") {
+          that.resData.html = "<p></p><p></p><p></p><p></p><p></p>";
+        }
         that.editor.setContent(that.resData.html);
         // that.editor.commands.code_block();
       }
+    },
+    select: function() {
+      // console.log("클릭"); // returns 'foo'
+      this.editor.view.dom.focus();
     }
     /* eslint-enable */
   },

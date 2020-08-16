@@ -22,8 +22,13 @@
                 <h3><v-icon>mdi-shovel</v-icon>개척자</h3>
                 <h2>
                   <v-avatar>
-                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img> </v-avatar
-                  >arduinho
+                    <v-img :src="`${$store.state.ImgURL}${pioneerImg}`"></v-img>
+                  </v-avatar>
+                  <span
+                    style="cursor:pointer;"
+                    @click="$router.push({ name: 'SSalogMain', params: { nickname: pioneer } })"
+                    >{{ pioneer }}</span
+                  >
                 </h2>
               </v-card-text>
             </v-col>
@@ -222,8 +227,9 @@ export default {
         { lang: "C++", ico: null },
         { lang: "C", ico: null }
       ],
-      isSolved: false, // 유저가 문제를 풀었는지 아닌지 파악
-      isPioneer: false, // 개척자라면
+      pioneer: null,
+      pioneerImg: null,
+      UserSolved: false,
       problemTitle: null,
       problemNumber: this.$route.params.id,
       numberOfSolutions: null,
@@ -361,7 +367,9 @@ export default {
           }
         }
       );
-      this.problemTitle = data;
+      this.problemTitle = data.problemname;
+      this.pioneer = data.starter;
+      this.pioneerImg = data.starter_img ? data.starter_img : "default.png";
     },
     // 도넛 데이터 받아오기
     async fetchDoughnutData() {
@@ -387,7 +395,7 @@ export default {
             }
           });
           if (data) {
-            this.isSolved = true;
+            this.UserSolved = true;
           }
         } catch (e) {
           console.error(e);
@@ -414,7 +422,15 @@ export default {
     this.fetchAvgData(true);
     this.fetchIsSolved();
   },
-  computed: mapState(["ServerURL", "username", "ServerURL"]),
+  computed: {
+    ...mapState(["ServerURL", "username", "nickname", "ServerURL"]),
+    isPioneer() {
+      return this.nickname && this.pioneer === this.nickname;
+    },
+    isSolved() {
+      return this.nickname && this.UserSolved;
+    }
+  },
   watch: {
     // eslint-disable-next-line
     SolutionPage: function () {

@@ -86,12 +86,16 @@ public class GroupServiceImpl implements GroupService{
 		}else {
 			Account ac = accountRepository.findByUsername(username);
 			GroupDTO gd = groupRepository.findByGroupname(groupname);
-			GroupRegist gr = new GroupRegist();
-			gr.setAccount(ac);
-			gr.setGroupdto(gd);
-			gr.setIntroduce(introduce);
-			groupRegistRepository.save(gr);
-			return "success";
+			if(gd.getAccount().getUsername().equals("username")) {
+				return "mygroup";
+			}else {
+				GroupRegist gr = new GroupRegist();
+				gr.setAccount(ac);
+				gr.setGroupdto(gd);
+				gr.setIntroduce(introduce);
+				groupRegistRepository.save(gr);
+				return "success";
+			}
 		}
 	}
 	// 가입 신청 목록
@@ -285,7 +289,7 @@ public class GroupServiceImpl implements GroupService{
 		}
 		return null;
 	}
-	
+
 	// 그룹 검색
 	@Override
 	public List<Map<String, String>> findGroup(String groupname, PageRequest pageable){

@@ -424,16 +424,16 @@ export default {
       } catch (e) {
         console.error(e);
       }
-      this.getThumbnail();
+      // this.getThumbnail();
     },
-    async getThumbnail() {
-      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
-        params: {
-          username: this.writerUsername
-        }
-      });
-      this.writerThumbnail = `${this.ImgURL}${res.data}`;
-    },
+    // async getThumbnail() {
+    //   const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img`, {
+    //     params: {
+    //       username: this.writerUsername
+    //     }
+    //   });
+    //   this.writerThumbnail = `${this.ImgURL}${res.data}`;
+    // },
     setTOC(toc) {
       this.TOC = toc;
       this.tocLoaded = true;

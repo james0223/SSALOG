@@ -10,8 +10,9 @@
               src="@/assets/images/logo.jpg"
               @click="changeRoute('Home')"
             ></v-img>
-          </v-avatar> </v-col
-        ><v-col cols="1" class="text-center d-none d-sm-flex">
+          </v-avatar>
+        </v-col>
+        <v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
             :ripple="false"
             class="pa-0 no-background-hover"
@@ -61,9 +62,10 @@
         <v-col cols="3" class="text-center mt-7 d-none d-sm-flex">
           <v-text-field
             v-model="q"
-            append-icon="mdi-magnify"
+            placeholder="문제번호를 입력하세요"
             @keypress.enter="goSearch"
           ></v-text-field>
+          <v-icon @click="goSearch" class="mb-4">mdi-magnify</v-icon>
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="8" sm="3" lg="2" class="text-center py-0">
@@ -106,10 +108,12 @@
         </v-col>
         <v-spacer></v-spacer>
 
-        <v-col cols="1" class="d-none d-md-flex">
+        <v-col cols="1" class="d-none d-md-flex mr-6">
           <v-btn text block @click="goSite('https://www.acmicpc.net/')"
-            ><img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
-          >
+            ><img
+              style="height:1.5rem;"
+              src="https://d2gd6pc034wcta.cloudfront.net/images/logo@2x.png"
+          /></v-btn>
         </v-col>
         <v-col cols="1" class="d-flex d-sm-none mr-3">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>

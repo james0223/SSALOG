@@ -255,7 +255,7 @@ public class PostServiceImpl implements PostService{
 			Account ac = accountRepository.findByUsername(p.getStarter());
 			m.put("problemname", p.getName());
 			m.put("starter", ac.getNickname());
-			m.put("starter_img", ac.getImgpath());
+			m.put("starter_img", ac.getImgpath()==null?"default.png":ac.getImgpath());
 		}
 		return m;
 	}
