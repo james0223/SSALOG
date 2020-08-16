@@ -7,11 +7,18 @@
       <v-col cols="12" class="pt-0">
         <v-card class="CardCss mb-4 pt-7 px-7" elevation="6" tile>
           <img
-            v-if="isSolved"
+            v-if="isSolved && pioneer !== nickname"
             class="corner"
             src="@/assets/images/corner/corner_success.png"
             title="이 문제를 푸셨습니다!"
             alt="success"
+          />
+          <img
+            v-if="pioneer === nickname"
+            class="corner"
+            src="@/assets/images/corner/corner_pioneer.png"
+            title="이 문제의 개척자이십니다!"
+            alt="you are pioneer"
           />
           <v-card-title class="mb-7">
             <h1>{{ problemNumber }} - {{ problemTitle }}</h1>
