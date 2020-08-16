@@ -41,4 +41,7 @@ public class PageRequest {
 	public org.springframework.data.domain.PageRequest ofs() {
 		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "time");
 	}
+	public org.springframework.data.domain.PageRequest ofs2() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "groupname");
+	}
 }

@@ -123,12 +123,18 @@ public class GroupController {
 		String username = response.getHeader("username"); 
 		return new ResponseEntity<List<Map<String,Object>>>(groupService.Mymember(username, groupname),HttpStatus.OK);
 	}
-//	@GetMapping("newuser/grouping/test")
-//	@ApiOperation(value = "[그룹 보기] 내가 가입한 그룹목록을 보여줍니다. 사용자 입장")
-//	public ResponseEntity<?> test(PageRequest pageable) {
-//		groupService.preGoal("123123123123123", "abc", pageable.of());
-//		return new ResponseEntity<Void>(HttpStatus.OK);
-//	}
+	
+	@DeleteMapping("user/grouping/kick_member")
+	@ApiOperation(value = "[그룹강퇴하기] (그룹장만 이용가능, 그룹장은 강퇴불가!) 그룹이름과, 강퇴하고 싶음 사람의 닉네임을 주면, 그룹에서 추방한다. 문제없이 작동하면 true, 중간에 조건이 안맞으면 false")
+	public ResponseEntity<Boolean> kick_member(HttpServletResponse response, @RequestParam("groupname") String groupname, @RequestParam("wantkick") String wantkick) {
+		String username = response.getHeader("username"); 
+		return new ResponseEntity<Boolean>(groupService.group_kick(username, groupname, wantkick),HttpStatus.OK);
+	}
+	@GetMapping("newuser/grouping/search_group")
+	@ApiOperation(value = "[그룹 이름 검색] 그룹이름으로 그룹을 검색합니다!")
+	public ResponseEntity<List<Map<String, String>>> search_group(@RequestParam(required=false) String groupname, PageRequest pageable) {
+		return new ResponseEntity<List<Map<String, String>>>(groupService.findGroup(groupname, pageable.ofs2()),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");

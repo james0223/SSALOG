@@ -225,6 +225,7 @@ public class GroupServiceImpl implements GroupService{
 				m.put("problemname", list.get(i).getProblemname());
 				m.put("limit", list.get(i).getDate());
 				m.put("id",list.get(i).getId());
+				m.put("mention",list.get(i).getMention());
 				lm.add(m);
 			}
 			//			String[] slist = new String[list.size()];
@@ -251,6 +252,7 @@ public class GroupServiceImpl implements GroupService{
 				m.put("problemname", list.get(i).getProblemname());
 				m.put("limit", list.get(i).getDate());
 				m.put("id",list.get(i).getId());
+				m.put("mention",list.get(i).getMention());
 				lm.add(m);
 			}
 			return lm;
@@ -283,31 +285,40 @@ public class GroupServiceImpl implements GroupService{
 		}
 		return null;
 	}
-	//	// 문제이름, 푼사람, 안푼사람
-	//	public void teamstatus(String nickname, String groupname) {
-	//		Groupdetail gd = groupDetailRepository.findByAccount_nicknameAndGroupdto_groupname(nickname,groupname);
-	//		if(gd != null) {
-	//			List<Map<String,String>> result = new ArrayList<>();
-	//			Date time = new Date();
-	//			List<Groupdetail> glist = groupDetailRepository.findByGroupdto_groupname(groupname);
-	//			List<GroupGoal> list = groupGoalRepository.findByDateGreaterThanAndGroupdto_groupname(time,groupname);
-	//			for(int i=0; i<list.size() ;i++) {
-	//				GroupGoal gg = list.get(i);
-	//				Map<String, String> m = new HashMap<>();
-	//				gg.getProblemid();
-	//				for(int j=0; j<glist.size(); j++) {
-	//					List<PostSub> ps = postSubRepository.findByUsernameAndProblemid(glist.get(j).getAccount().getUsername(), gg.getProblemid());
-	//					if(ps!=null) {
-	//						m.put("problemname", gg.getProblemname());
-	//						m.put("problemid", gg.getProblemid());
-	//					}
-	//				}
-	//				System.out.println(list.get(i).getDate());
-	//				System.out.println("=====================");
-	//			}
-	//		}else {
-	//			//return "그룹원이  아닙니다";
-	//		}
-	//
-	//	}
+	
+	// 그룹 검색
+	@Override
+	public List<Map<String, String>> findGroup(String groupname, PageRequest pageable){
+		List<Map<String, String>> lm = new ArrayList<>();
+		List<GroupDTO> li = new ArrayList<>();
+		if(groupname != null) {
+			li = groupRepository.findByGroupnameLike("%"+groupname+"%", pageable);
+		}else {
+			li = groupRepository.findByGroupnameLike("%",pageable);
+		}
+		for(int i=0; i<li.size(); i++) {
+			Map<String, String> m = new HashMap<>();
+			m.put("groupname", li.get(i).getGroupname());
+			m.put("groupdes", li.get(i).getGroupdesc());
+			m.put("groupowner", li.get(i).getAccount().getNickname());
+			lm.add(m);
+		}
+		return lm;
+	}
+	// 그룹 강퇴
+	@Override
+	public Boolean group_kick(String username, String groupname,String wantkick) {
+		Groupdetail gd = groupDetailRepository.findByAccount_usernameAndGroupdto_groupname(username, groupname);
+		if(gd!= null && gd.getRole().equals(GroupRole.owner)) {
+			Groupdetail gd2 = groupDetailRepository.findByAccount_nicknameAndGroupdto_groupname(wantkick, groupname);
+			if(gd2 != null && gd2.getRole().equals(GroupRole.member)) {
+				groupDetailRepository.delete(gd2);
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
 }

@@ -27,4 +27,6 @@ public interface GroupService {
 	public List<Map<String,Object>> preGoal(String nickname, String groupname, PageRequest pageable);
 	public List<Map<String,Object>> postGoal(String nickname, String groupname, PageRequest pageable);
 	public List<Map<String, Object>> Mymember(String username, String groupname);
+	public List<Map<String, String>> findGroup(String groupname, PageRequest pageable);
+	public Boolean group_kick(String username, String groupname, String wantkick);
 }
