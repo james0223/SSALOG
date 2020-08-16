@@ -4,14 +4,14 @@
       <v-col cols="8">
         <v-row>
           <v-col cols="6">
-            <v-card height="25vh"
+            <v-card height="25vh" class="chart-container"
               >과제 제출현황
-              <PieChart v-if="pieLoaded" v-bind:chart-data="examData" :width="350" :height="200" />
+              <PieChart class="pie" v-if="pieLoaded" v-bind:chart-data="examData" />
             </v-card>
           </v-col>
           <v-col cols="6">
-            <v-card height="25vh">
-              <BarChart v-if="barLoaded" v-bind:chart-data="barData" :width="330" :height="250" />
+            <v-card height="25vh" class="chart-container">
+              <BarChart class="bar" v-if="barLoaded" v-bind:chart-data="barData" />
             </v-card>
           </v-col>
         </v-row>
@@ -431,4 +431,18 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.chart-container {
+  flex-grow: 1;
+  min-height: 0;
+
+  > .pie {
+    position: relative;
+    height: 80%;
+  }
+  > .bar {
+    position: relative;
+    height: 100%;
+  }
+}
+</style>

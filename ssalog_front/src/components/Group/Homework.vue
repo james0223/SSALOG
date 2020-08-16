@@ -32,7 +32,7 @@
     </v-card>
     <v-card flat height="45vh">
       <v-toolbar-title class="mb-4">제출 목록</v-toolbar-title>
-      <v-card width="27vw" height="40vh" class="d-inline-block mr-5">
+      <v-card min-width="40%" height="35vh" class="d-inline-block mx-5">
         <v-subheader>제출자</v-subheader>
         <v-divider></v-divider>
         <v-virtual-scroll :items="solvedMembers" :item-height="50" height="500">
@@ -53,7 +53,7 @@
           </template>
         </v-virtual-scroll>
       </v-card>
-      <v-card width="27vw" height="40vh" class="d-inline-block">
+      <v-card min-width="40%" height="35vh" class="d-inline-block">
         <v-subheader>미제출자</v-subheader>
         <v-divider></v-divider>
         <v-virtual-scroll :items="unsolvedMembers" :item-height="50" height="500">

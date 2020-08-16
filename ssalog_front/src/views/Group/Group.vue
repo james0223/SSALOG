@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center" no-gutters>
-      <v-col lg="2">
+      <v-col cols="2">
         <v-card flat height="70vh">
           <v-tabs vertical class="my-15 pa-3">
             <v-tab
