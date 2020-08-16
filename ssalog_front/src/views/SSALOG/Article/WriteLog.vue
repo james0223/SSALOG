@@ -400,7 +400,7 @@ export default {
               nickname: this.nickname
             }
           });
-          console.log(res)  ;
+          // console.log(res)  ;
           if(res.data===null || res.data==="fail"){
             res.data = "<h2>접근방법</h2><hr><p></p><h2>코드분석</h2><hr>";
           }

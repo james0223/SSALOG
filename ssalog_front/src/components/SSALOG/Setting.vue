@@ -335,7 +335,9 @@ export default {
             nickname: this.$route.params.nickname
           }
         });
-        // console.log(res);
+        if (res.data === null || res.data === "fail") {
+          res.data = "<h2>접근방법</h2><hr><p></p><h2>코드분석</h2><hr>";
+        }
         this.editor.setContent(res.data);
       } catch (e) {
         console.error(e);
