@@ -106,10 +106,12 @@
         </v-col>
         <v-spacer></v-spacer>
 
-        <v-col cols="1" class="d-none d-md-flex">
+        <v-col cols="1" class="d-none d-md-flex mr-6">
           <v-btn text block @click="goSite('https://www.acmicpc.net/')"
-            ><img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
-          >
+            ><img
+              style="height:1.5rem;"
+              src="https://d2gd6pc034wcta.cloudfront.net/images/logo@2x.png"
+          /></v-btn>
         </v-col>
         <v-col cols="1" class="d-flex d-sm-none mr-3">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
