@@ -85,9 +85,8 @@
                       <v-timeline-item v-for="task in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
                           <v-card-title class="headline">{{ task.problemname }}</v-card-title>
-                          <v-card-text>
-                            {{ task.limit }}
-                          </v-card-text>
+                          <v-card-subtitle>{{ task.mention }}</v-card-subtitle>
+                          <v-card-text> 마감일 : {{ task.limit.substr(0, 10) }} </v-card-text>
                         </v-card>
                       </v-timeline-item>
                     </v-timeline>
