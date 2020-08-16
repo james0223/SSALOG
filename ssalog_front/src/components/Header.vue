@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="white" max-height="65">
+  <v-app-bar class="Header" color="transparent" max-height="65">
     <v-container fluid>
       <v-row class="align-center">
         <v-col cols="1">
@@ -7,7 +7,7 @@
             <v-img
               contain
               max-height="90%"
-              src="@/assets/images/logo.jpg"
+              src="@/assets/images/logo.png"
               @click="changeRoute('Home')"
             ></v-img>
           </v-avatar>
@@ -80,7 +80,7 @@
           </v-row>
           <v-menu open-on-hover offset-y v-if="$store.state.accessToken" no-gutters>
             <template v-slot:activator="{ on, attrs }">
-              <v-card v-bind="attrs" v-on="on" flat>
+              <v-card color="transparent" v-bind="attrs" v-on="on" flat>
                 <v-row no-gutters>
                   <v-col cols="4">
                     <v-avatar>
@@ -175,5 +175,7 @@ export default {
 }
 .no-background-hover::before {
   background-color: transparent !important;
+}
+.Header {
 }
 </style>

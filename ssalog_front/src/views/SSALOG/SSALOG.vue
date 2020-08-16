@@ -123,7 +123,7 @@
             <v-col title="scrap"><v-icon>mdi-star</v-icon>{{ scrapSu }}</v-col>
           </v-row>
 
-          <v-tabs vertical class="my-5">
+          <v-tabs vertical background-color="transparent" class="my-5">
             <v-tab
               style="justify-content:left;"
               v-for="tab in tabs"

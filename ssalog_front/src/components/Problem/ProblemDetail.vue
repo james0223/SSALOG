@@ -5,7 +5,7 @@
     >
     <v-row justify="center">
       <v-col cols="12" class="pt-0">
-        <v-card class="mb-4 pt-7 px-7" elevation="6" tile>
+        <v-card class="CardCss mb-4 pt-7 px-7" elevation="6" tile>
           <img
             v-if="isSolved"
             class="corner"
@@ -56,7 +56,7 @@
 
           <v-row justify="center">
             <v-col cols="5">
-              <v-card flat>
+              <v-card color="transparent" flat>
                 <v-card-title>
                   <h5>언어별 평균스펙</h5>
                 </v-card-title>
@@ -82,6 +82,7 @@
                             height="100%"
                             class="d-flex flex-column align-center justify-space-around"
                             flat
+                            color="transparent"
                             light
                           >
                             <v-card-title>
@@ -120,7 +121,7 @@
             </v-col>
             <v-col cols="2"></v-col>
             <v-col cols="4">
-              <v-card flat class="chart-container" max-width="35vh">
+              <v-card color="transparent" flat class="chart-container" max-width="35vh">
                 <v-card-title>
                   <h5>주요 풀이기법</h5>
                 </v-card-title>
@@ -462,5 +463,7 @@ export default {
   top: 0px;
   right: 0px;
   height: 7rem;
+}
+.CardCss {
 }
 </style>

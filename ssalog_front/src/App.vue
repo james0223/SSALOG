@@ -1,5 +1,5 @@
 <template>
-  <v-app style="background-color: #EEE9E6;">
+  <v-app class="Background">
     <Header></Header>
     <!-- <v-container> -->
     <router-view :key="$route.fullPath"></router-view>
@@ -56,3 +56,14 @@ export default {
   }
 };
 </script>
+<style scoped>
+.Background {
+  background: rgb(255, 255, 255);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 66%,
+    rgba(237, 237, 237, 1) 100%
+  ) !important;
+}
+</style>
