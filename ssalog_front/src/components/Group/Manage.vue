@@ -195,13 +195,7 @@ export default {
         mention: "",
         deadline: new Date()
       },
-      HWList: [
-        {
-          problemname: "골목한조",
-          problemnum: 2142,
-          limit: "2020-01-01"
-        }
-      ],
+      HWList: [],
       // 회원 관리
       groupMember: [],
       // 회원가입 관리
@@ -218,7 +212,7 @@ export default {
         datasets: [
           {
             label: "과제 현황",
-            backgroundColor: ["#37bf4f", "#d20b0b"],
+            backgroundColor: ["#9AD0F5", "#FFB1C1"],
             data: []
           }
         ]
@@ -230,12 +224,12 @@ export default {
         datasets: [
           {
             label: "제출자",
-            backgroundColor: "green",
+            backgroundColor: "#9AD0F5",
             data: []
           },
           {
             label: "미제출자",
-            backgroundColor: "red",
+            backgroundColor: "#FFB1C1",
             data: []
           }
         ]
@@ -375,6 +369,7 @@ export default {
           params: {
             groupname: this.$route.params.groupname,
             limitday: this.HW.deadline,
+            mention: this.HW.mention,
             problemid: this.HW.number,
             problemname: this.HW.name
           }
@@ -382,15 +377,10 @@ export default {
         console.log("과제 출제 성공!");
         const HCopy = _.cloneDeep(this.HW);
         this.HWList.push(HCopy);
-        this.$nextTick(() => {
-          this.$refs.form.reset();
-        });
       } catch (err) {
         console.dir(err);
       } finally {
-        this.HW.name = "";
-        this.HW.number = "";
-        this.HW.deadline = new Date();
+        this.$router.go();
       }
     },
     async getGroupMember() {
