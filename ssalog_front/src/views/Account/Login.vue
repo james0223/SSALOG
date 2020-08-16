@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row no-gutters class="mt-16">
-      <v-col cols="5">
+      <v-col cols="12" sm="5">
         <v-card rounded="false" outlined class="pa-9" height="600px" align="center">
           <v-card-title class="pa-0 mb-7 justify-space-between">
             <h1 class="ma-0" style="font-family: 'Do Hyeon', sans-serif;">쌀로그인</h1>
@@ -49,7 +49,7 @@
           </v-form>
         </v-card>
       </v-col>
-      <v-col cols="7">
+      <v-col cols="7" class="d-none d-sm-flex">
         <v-img src="@/assets/images/login_main.jpg" height="600px"></v-img>
       </v-col>
     </v-row>

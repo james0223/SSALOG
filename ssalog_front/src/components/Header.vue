@@ -11,7 +11,7 @@
               @click="changeRoute('Home')"
             ></v-img>
           </v-avatar> </v-col
-        ><v-col cols="1" class="text-center">
+        ><v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
             :ripple="false"
             class="pa-0 no-background-hover"
@@ -24,7 +24,7 @@
             >쌀로그</v-btn
           >
         </v-col>
-        <v-col cols="1" class="text-center">
+        <v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
             :ripple="false"
             class="pa-0 no-background-hover"
@@ -41,7 +41,7 @@
             >문제</v-btn
           >
         </v-col>
-        <v-col cols="1" class="text-center">
+        <v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
             :ripple="false"
             class="pa-0 no-background-hover"
@@ -58,7 +58,7 @@
           >
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="3" class="text-center mt-7">
+        <v-col cols="3" class="text-center mt-7 d-none d-sm-flex">
           <v-text-field
             v-model="q"
             append-icon="mdi-magnify"
@@ -66,7 +66,7 @@
           ></v-text-field>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="3" lg="2" class="text-center py-0">
+        <v-col cols="8" sm="3" lg="2" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
             <v-col cols="5">
               <small @click="changeRoute('Login')" class="pointButton">로그인</small>
@@ -110,6 +110,9 @@
           <v-btn text block @click="goSite('https://www.acmicpc.net/')"
             ><img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
           >
+        </v-col>
+        <v-col cols="1" class="d-flex d-sm-none mr-3">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         </v-col>
       </v-row>
     </v-container>
