@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ssalog.dto.Account;
 import com.ssalog.dto.AccountSub;
 import com.ssalog.repository.AccountRepository;
+import com.ssalog.repository.PostRepository;
 import com.ssalog.util.Mail;
 
 @Service
@@ -18,6 +19,8 @@ public class AccountServiceImpl implements AccountService{
     private PasswordEncoder bcryptEncoder;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	PostRepository postRepository;
 	public Page<AccountSub> find_toNickname(String nickname, PageRequest pageable){
 		if(nickname == null) {
 			return accountRepository.findByNicknameLike("%",pageable);
@@ -47,6 +50,7 @@ public class AccountServiceImpl implements AccountService{
 			return "exist";
 		}else if(ac != null) {
 			ac.setNickname(nickname);
+			postRepository.update_nickname(nickname, username);
 			accountRepository.save(ac);
 			return "sucess";
 		}else {

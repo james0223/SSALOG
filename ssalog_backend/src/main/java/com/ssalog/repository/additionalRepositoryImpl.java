@@ -115,11 +115,18 @@ public class additionalRepositoryImpl implements additionalRepository{
 		return PageableExecutionUtils.getPage(plist, pageable, () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Problem.class));
 	}
 	
-	public  AggregationResults<PostSub> latestpost(int cnt){
+	public AggregationResults<PostSub> latestpost(int cnt){
 		List<AggregationOperation> list = new ArrayList<AggregationOperation>();
 		list.add(Aggregation.sort(Sort.Direction.DESC,"regdate").and(Sort.Direction.DESC,"regtime"));
 		list.add(Aggregation.limit(cnt));
 		Aggregation aggregation = Aggregation.newAggregation(list);
 		return mongoTemplate.aggregate(aggregation,"post", PostSub.class);
+	}
+	public void update_nickname(String nickname, String username) {
+		Query q = new Query();
+		q.addCriteria(Criteria.where("username").is(username));
+		Update update = new Update();
+		update.set("nickname", nickname);
+		mongoTemplate.updateMulti(q, update, "post");
 	}
 }
