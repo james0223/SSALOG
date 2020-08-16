@@ -33,11 +33,16 @@ public class Account {
     
     @Column(columnDefinition = "TEXT")
     private String introduce;
+    
+    @Column(columnDefinition = "TEXT")
+    private String form;
+    
 	public Account() {
 		super();
 	}
+	
 	public Account(String username, String nickname, String password, Date regdate, Date updatedate, String role,
-			String imgpath, String introduce) {
+			String imgpath, String introduce, String form) {
 		super();
 		this.username = username;
 		this.nickname = nickname;
@@ -47,7 +52,17 @@ public class Account {
 		this.role = role;
 		this.imgpath = imgpath;
 		this.introduce = introduce;
+		this.form = form;
 	}
+
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
 	public String getUsername() {
 		return username;
 	}

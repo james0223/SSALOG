@@ -14,4 +14,6 @@ public interface AccountService {
 	public String set_intro(String username, String intro);
 	public String get_intro(String username);
 	public Boolean find_pw(String username);
+	public String set_form(String username, String form);
+	public String get_form(String username);
 }
