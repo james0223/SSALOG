@@ -210,7 +210,8 @@ export default {
           id: 5,
           name: "Group",
           route: `/SSALOG/${this.$route.params.nickname}/GroupList`,
-          icon: "mdi-account-group"
+          icon: "mdi-account-group",
+          flag: this.$store.state.nickname !== this.$route.params.nickname
         },
         {
           id: 6,
