@@ -86,7 +86,7 @@ public class GroupServiceImpl implements GroupService{
 		}else {
 			Account ac = accountRepository.findByUsername(username);
 			GroupDTO gd = groupRepository.findByGroupname(groupname);
-			if(gd.getAccount().getUsername().equals("username")) {
+			if(gd.getAccount().getUsername().equals(username)) {
 				return "mygroup";
 			}else {
 				GroupRegist gr = new GroupRegist();
