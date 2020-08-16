@@ -67,8 +67,8 @@
                         >
                         </v-datetime-picker>
                         <v-spacer></v-spacer>
-                        <v-btn type="reset">초기화</v-btn>
-                        <v-btn type="submit">과제 출제</v-btn>
+                        <v-btn class="button_margin" type="reset">초기화</v-btn>
+                        <v-btn class="ml-5" type="submit">과제 출제</v-btn>
                       </form>
                     </v-card>
                   </ValidationObserver>
@@ -438,6 +438,9 @@ export default {
 </script>
 
 <style lang="scss">
+.button_margin {
+  margin-left: 4.5vw;
+}
 .chart-container {
   flex-grow: 1;
   min-height: 0;
