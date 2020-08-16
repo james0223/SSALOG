@@ -212,25 +212,32 @@ public class PostServiceImpl implements PostService{
 	public Map<String, Object> detail_service(String problemid, String language) {
 		Map<String, Object> m = new HashMap<>();
 		Problem problem = problemRepository.findByProblemid(problemid);
-		Map<String, solvelang> map = problem.getLanguage();
-		if(map!=null) {
-			solvelang lang = map.get(language);
-			double avg_t = Math.round((double)lang.getTime_sum()/lang.getCnt());
-			double avg_m = Math.round((double)lang.getMemory_sum()/lang.getCnt());
-			m.put("avg_time", avg_t);
-			m.put("avg_memory", avg_m);
+		Map<String, solvelang> map = new HashMap<>();
+		if(problem != null) {
+			map = problem.getLanguage();
+			if(map!=null) {
+				solvelang lang = map.get(language);
+				if(lang != null) {
+					double avg_t = Math.round((double)lang.getTime_sum()/lang.getCnt());
+					double avg_m = Math.round((double)lang.getMemory_sum()/lang.getCnt());
+					m.put("avg_time", avg_t);
+					m.put("avg_memory", avg_m);
+				}
+			}
 		}
 		return m;
 	}
 	public Map<String, Integer> detail_py(String problemid){
 		Problem problem = problemRepository.findByProblemid(problemid);
-		Map<String, Integer> m = problem.getKey();
 		Map<String, Integer> result = new TreeMap<String, Integer>();
-		//		long div = problem.getAll_cnt();
-		for (String key : m.keySet()) {
-			Integer value = m.get(key);
-			//            double val = Math.round((((double)value/div)*100)*10)/10.0;
-			result.put(key, value);
+		if(problem != null) {
+			Map<String, Integer> m = problem.getKey();
+			//		long div = problem.getAll_cnt();
+			for (String key : m.keySet()) {
+				Integer value = m.get(key);
+				//            double val = Math.round((((double)value/div)*100)*10)/10.0;
+				result.put(key, value);
+			}
 		}
 		return result;
 	}
@@ -239,13 +246,18 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public String find_problemname(String problemid){
-		List<Post> l = postRepository.findByProblemid(problemid);
-		if(l == null) {
-			return "not exists";
+	public Map<String,String> find_problemname(String problemid){
+		Problem p = problemRepository.findByProblemid(problemid);
+		Map<String, String> m = new HashMap<>();
+		if(p == null) {
+			m.put("result", "not exists");
 		}else {
-			return l.get(0).getProblemname();
+			Account ac = accountRepository.findByUsername(p.getStarter());
+			m.put("problemname", p.getName());
+			m.put("starter", ac.getNickname());
+			m.put("starter_img", ac.getImgpath()==null?"default.png":ac.getImgpath());
 		}
+		return m;
 	}
 	@Override
 	public void set_username(String username,String scoring){
@@ -266,7 +278,7 @@ public class PostServiceImpl implements PostService{
 			return true;
 		}
 	}
-	
+
 	@Override
 	public Boolean is_write(String Scoring) {
 		Optional<Post> p1 = postRepository.findById(Scoring);
@@ -276,7 +288,7 @@ public class PostServiceImpl implements PostService{
 			return false;
 		}
 	}
-	
+
 	public String unify_lang(String language) {
 		String result = language;
 		if(result.equals("Java") || result.equals("Java (OpenJDK)") || result.equals("Java 11")) {

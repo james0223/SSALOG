@@ -26,10 +26,12 @@ import com.ssalog.dto.Comment;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.Problem;
 import com.ssalog.dto.TempPost;
 import com.ssalog.service.CommentService;
 import com.ssalog.service.PostService;
 import com.ssalog.service.PostSubService;
+import com.ssalog.service.ProblemService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -47,6 +49,8 @@ public class PostController {
 	@Autowired
 	CommentService commentService;
 	
+	@Autowired
+	ProblemService problemService;
 	@PostMapping("newuser/post/write")
 	@ApiOperation(value = "[posting작성] extension에서 백준에서 데이터를 가져올때 사용하는 api")
 	public void write(@RequestBody TempPost post) {
@@ -127,6 +131,19 @@ public class PostController {
 	@ApiOperation(value = "[문제로 posting을 작성했는지] ")
 	public ResponseEntity<Boolean> is_write(@RequestParam("Scoring") String Scoring){
 		return new ResponseEntity<Boolean>(postService.is_write(Scoring),HttpStatus.OK);
+		
+	}	
+	
+	@GetMapping("newuser/post/latestPost")
+	@ApiOperation(value = "[가장 최근 post] 가장 최근에 posting된글들을 가져옵니다. count로 준 만큼 가져옴! ")
+	public ResponseEntity<List<PostSub>> latestPost(@RequestParam("count") int count){
+		return new ResponseEntity<List<PostSub>>(postSubService.latestPost(count),HttpStatus.OK);
+		
+	}		
+	@GetMapping("newuser/post/starter_list")
+	@ApiOperation(value = "[개척한 문제] nickname을 주면 해당 유저가 개척한 문제 목록을 보여줍니다. ")
+	public ResponseEntity<List<Problem>> Starter_list(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<List<Problem>>(problemService.find_starter(nickname),HttpStatus.OK);
 		
 	}	
 	@ExceptionHandler(Exception.class)

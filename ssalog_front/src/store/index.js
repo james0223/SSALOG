@@ -66,6 +66,9 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   getters: {},
   mutations: {
+    NicknameChange(state, payload) {
+      state.nickname = payload;
+    },
     LOGIN(state, payload) {
       state.nickname = payload.nickname;
       state.username = payload.username;

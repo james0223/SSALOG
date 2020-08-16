@@ -12,6 +12,8 @@ import ProblemList from "@/components/Problem/ProblemList.vue";
 import ProblemDetail from "@/components/Problem/ProblemDetail.vue";
 // main
 import Home from "@/views/Home.vue";
+import Page404 from "@/views/Page404.vue";
+import Naruto from "@/views/narutoHome.vue";
 // editor
 import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
@@ -44,6 +46,15 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "*",
+    redirect: "/404"
+  },
+  {
+    path: "Naruto",
+    name: "Naruto",
+    component: Naruto
+  },
+  {
     path: "/Problem",
     name: "Problem",
     component: Problem,
@@ -74,6 +85,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/404",
+    name: "404",
+    component: Page404
   },
   {
     path: "/SignUp",

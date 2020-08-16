@@ -16,4 +16,5 @@ public interface ProblemRepository extends  MongoRepository<Problem,String>{
 	public Problem findByProblemid(String problemid);
 	@Query(value = "{ 'key' : {$all : [?0] }}")
 	public Page<Problem> findAnyOfTheseValues(List<String> keyword,Pageable pageable);
+	public List<Problem> findByStarter(String username);
 }
