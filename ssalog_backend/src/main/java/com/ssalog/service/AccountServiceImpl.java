@@ -99,4 +99,22 @@ public class AccountServiceImpl implements AccountService{
 		}
 		return "fail";
 	}
+	@Override
+	public String set_form(String username, String form) {
+		Account ac = accountRepository.findByUsername(username);
+		if(ac != null) {
+			ac.setForm(form);
+			accountRepository.save(ac);
+			return "success";
+		}
+		return "fail";
+	}
+	@Override
+	public String get_form(String username) {
+		Account ac = accountRepository.findByNickname(username);
+		if(ac != null) {
+			return ac.getForm();
+		}
+		return "fail";
+	}
 }

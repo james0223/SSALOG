@@ -94,10 +94,21 @@ public class MypageController {
 		String username =  response.getHeader("username");
 		return new ResponseEntity<String>(accountService.set_intro(username, introduce),HttpStatus.OK);
 	}
-	@ApiOperation(value = "[프로필 소개글 가져오기] 기능: 프로필 소개글을 가져옵니다.성공시 success, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@ApiOperation(value = "[프로필 소개글 가져오기] 기능: 프로필 소개글을 가져옵니다.성공시 해당 소개글을, 실패(해당 유저가 존재하지 않다면) 시 fail")
 	@GetMapping(path="/newuser/get_introduce")
 	public ResponseEntity<String> get_introduce(@RequestParam("nickname") String nickname){
 		return new ResponseEntity<String>(accountService.get_intro(nickname),HttpStatus.OK);
+	}
+	@ApiOperation(value = "[입력양식 작성] 기능: 입력양식을 저장합니다.성공시 success, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@PostMapping(path="/user/write_form")
+	public ResponseEntity<String> write_form(HttpServletResponse response, @RequestParam("form") String form){
+		String username =  response.getHeader("username");
+		return new ResponseEntity<String>(accountService.set_form(username, form),HttpStatus.OK);
+	}
+	@ApiOperation(value = "[입력양식 가져오기] 기능: 입력양식을 가져옵니다..성공시 해당 양식을 가져오고, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@GetMapping(path="/newuser/get_form")
+	public ResponseEntity<String> get_form(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<String>(accountService.get_form(nickname),HttpStatus.OK);
 	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
