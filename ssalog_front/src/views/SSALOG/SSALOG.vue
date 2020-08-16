@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="2 pr-6" style="border-right:1px solid gray">
+      <v-col class="d-none d-sm-flex" cols="2 pr-6" style="border-right:1px solid gray">
         <div id="relative_wrapper" align="center">
           <v-avatar size="100" class="mt-8">
             <img :src="writerThumbnail" />
@@ -138,7 +138,7 @@
           </v-tabs>
         </div>
       </v-col>
-      <v-col cols="10"
+      <v-col cols="12" sm="10"
         ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getScrapNum"></router-view>
       </v-col>
     </v-row>

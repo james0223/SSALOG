@@ -12,7 +12,7 @@
         background-color="white"
       ></v-textarea>
     </v-card-actions>
-    <v-card-actions>
+    <v-card-actions v-if="nickname">
       <v-spacer></v-spacer>
       <v-btn dark color="rgb(32, 201, 151)" @click="createComment()">댓글 작성</v-btn>
     </v-card-actions>

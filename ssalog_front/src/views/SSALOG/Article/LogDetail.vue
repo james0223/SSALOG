@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="pa-0 pa-sm-3">
     <v-row no-gutters>
-      <v-col lg="10" cols="12" class="pl-3">
+      <v-col lg="10" cols="12">
         <!-- <v-card> -->
         <v-card class="pa-3 mb-10" color="transparent" tile>
           <v-card-title
@@ -39,10 +39,12 @@
           </v-card-text>
           <v-card-text>
             <v-row>
-              <v-col cols="3"> <v-icon>mdi-lead-pencil</v-icon> 언어: {{ language }} </v-col>
-              <v-col cols="3"> <v-icon>mdi-memory</v-icon> 메모리: {{ memory }}KB </v-col>
-              <v-col cols="3"> <v-icon>mdi-timer</v-icon> 시간: {{ time }}MS </v-col>
-              <v-col cols="3"><v-icon>mdi-sort-variant</v-icon> 코드길이: {{ len }}B </v-col>
+              <v-col cols="12" sm="3"><v-icon>mdi-lead-pencil</v-icon> 언어: {{ language }} </v-col>
+              <v-col cols="12" sm="3"><v-icon>mdi-memory</v-icon> 메모리: {{ memory }}KB </v-col>
+              <v-col cols="12" sm="3"><v-icon>mdi-timer</v-icon> 시간: {{ time }}MS </v-col>
+              <v-col cols="12" sm="3"
+                ><v-icon>mdi-sort-variant</v-icon> 코드길이: {{ len }}B
+              </v-col>
             </v-row>
           </v-card-text>
           <v-card-text v-if="!!keyword">
@@ -54,8 +56,8 @@
             </v-chip-group>
           </v-card-text>
         </v-card>
-        <v-card flat color="transparent" min-height="40vh" class="pa-3 mb-10">
-          <v-card-text>
+        <v-card flat color="transparent" min-height="40vh" class="pa-0 pa-sm-3 mb-10">
+          <v-card-text class="pa-0 pa-sm-3">
             <editor-content class="main_content editor__content article" :editor="editor" />
           </v-card-text>
         </v-card>
