@@ -135,6 +135,11 @@ public class GroupController {
 	public ResponseEntity<List<Map<String, String>>> search_group(@RequestParam(required=false) String groupname, PageRequest pageable) {
 		return new ResponseEntity<List<Map<String, String>>>(groupService.findGroup(groupname, pageable.ofs2()),HttpStatus.OK);
 	}
+	@GetMapping("user/grouping/check_role")
+	@ApiOperation(value = "[그룹 권한 체크] 그룹이름과 nickname을 줘서 해당 사용자의 권한을 확인합니다. owner, member두개가 존재하고 둘다에 해당하지 않으면 false를 return합니다.")
+	public ResponseEntity<String> check_role(@RequestParam("groupname") String groupname,@RequestParam("nickname") String nickname) {
+		return new ResponseEntity<String>(groupService.Check_Role(groupname, nickname),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");
