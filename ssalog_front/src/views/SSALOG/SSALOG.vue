@@ -223,12 +223,6 @@ export default {
     };
   },
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
-  watch: {
-    total() {
-      this.level = Math.floor(this.total / 20);
-      this.exp = ((this.total % 20) / 20) * 100;
-    }
-  },
   methods: {
     decrementFollow() {
       this.following = this.following - 1;
@@ -268,15 +262,6 @@ export default {
       const file = e;
       this.imageUrl = URL.createObjectURL(file);
       this.imageFile = file;
-    },
-    async getThumbnail() {
-      const res = await axios.get(`${this.ServerURL}/newuser/get_profile_img_nick`, {
-        params: {
-          nickname: this.$route.params.nickname
-        }
-      });
-      this.writerThumbnail = `${this.ImgURL}${res.data}`;
-      this.imageUrl = this.writerThumbnail;
     },
     deleteImage() {
       try {
@@ -324,48 +309,11 @@ export default {
           this.isfollow = res.data;
         });
     },
-    async getFollowNum() {
-      try {
-        const res = await axios.get(
-          `${this.$store.state.ServerURL}
-/newuser/follow/myfollow`,
-          {
-            params: {
-              nickname: this.$route.params.nickname
-            }
-          }
-        );
-        // this.users = res.data;
-        // console.dir(Object.keys(res.data).length);
-        this.following = Object.keys(res.data).length;
-        // console.log(res);
-      } catch (e) {
-        console.error(e);
-      }
-
-      try {
-        const res2 = await axios.get(
-          `${this.$store.state.ServerURL}
-/newuser/follow/myfollowing`,
-          {
-            params: {
-              nickname: this.$route.params.nickname
-            }
-          }
-        );
-        // this.users = res2.data;
-        // console.dir(Object.keys(res2.data).length);
-        this.follower = Object.keys(res2.data).length;
-        // console.log(res2);
-      } catch (e) {
-        console.error(e);
-      }
-    },
     async getScrapNum() {
       try {
         const res = await axios.get(
           `${this.$store.state.ServerURL}
-/newuser/scrap/scraped_su`,
+    /newuser/scrap/scraped_su`,
           {
             params: {
               nickname: this.$route.params.nickname
@@ -377,39 +325,32 @@ export default {
         console.error(e);
       }
     },
-    async getLevel() {
+    async getInfo() {
       try {
-        const owneremail = await this.$http.get(
-          `${this.$store.state.ServerURL}/newuser/search/find_username`,
-          {
-            params: {
-              nickname: this.$route.params.nickname // 바꿔야함
-            }
-          }
-        );
-        const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/to_username`, {
+        const info = await this.$http.get(`${this.$store.state.ServerURL}/newuser/user_info`, {
           params: {
-            direction: "ASC",
-            page: 1,
-            size: 5000,
-            username: owneremail.data // 수정필요
+            nickname: this.$route.params.nickname
           }
         });
-        // console.log(Object.keys(res.data.content).length);
-        this.total = Object.keys(res.data.content).length;
+
+        console.log(info.data);
+        this.level = info.data.level;
+        this.exp = info.data.exp;
+        this.scrapSu = info.data.scraped_num;
+        this.following = info.data.follow_num;
+        this.follower = info.data.following_num;
+        this.writerThumbnail = `${this.ImgURL}${info.data.imgpath}`;
+        this.imageUrl = this.writerThumbnail;
       } catch (e) {
         console.error(e);
       }
     }
   },
   created() {
-    this.getThumbnail();
-    this.getFollowNum();
-    this.getScrapNum();
+    this.getInfo();
     if (this.$store.state.nickname != null) {
       this.getFollowFlag();
     }
-    this.getLevel();
   }
 };
 </script>
