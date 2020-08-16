@@ -13,6 +13,8 @@ import com.ssalog.dto.Account;
 import com.ssalog.dto.Follow;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.FollowRepository;
+import com.ssalog.repository.PostSubRepository;
+import com.ssalog.repository.ScrapRepository;
 
 @Service
 @Transactional
@@ -23,6 +25,12 @@ public class FollowServiceImpl implements FollowService{
 
 	@Autowired
 	AccountRepository accountRepository;
+
+	@Autowired
+	ScrapRepository scrapRepository;
+
+	@Autowired
+	PostSubRepository postSubRepository;
 	@Override
 	public String do_follow(String follower, String following) {
 		//		Account ac = accountRepository.findByNickname(follower);
@@ -96,4 +104,25 @@ public class FollowServiceImpl implements FollowService{
 			return "fail";
 		}
 	}
+
+	@Override
+	public Map<String, Object> user_info(String nickname){
+		Account ac = accountRepository.findByNickname(nickname);
+		Map<String, Object> m = new HashMap<>();
+		if(ac != null) {
+			String imgpath = ac.getImgpath()==null?"default.png":ac.getImgpath();
+			long follow_num = followRepository.countByFollower_nickname(nickname);
+			long following_num = followRepository.countByFollowing_nickname(nickname);
+			long scraped_num = scrapRepository.countByScrapeduser_nickname(nickname);
+			double level = postSubRepository.countByUsername(ac.getUsername())/20.0;
+			m.put("imgpath", imgpath);
+			m.put("follow_num", follow_num);
+			m.put("following_num", following_num);
+			m.put("scraped_num", scraped_num);
+			m.put("level", level);
+		}
+		return m;
+
+	}
+
 }

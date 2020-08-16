@@ -65,7 +65,6 @@ public class CommentServiceImpl implements CommentService{
 		}else {
 			list = p.getComment();
 		}
-		
 		if(list == null) {
 			return new ArrayList<Comment>();
 		}else {

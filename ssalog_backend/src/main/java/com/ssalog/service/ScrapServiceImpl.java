@@ -45,6 +45,8 @@ public class ScrapServiceImpl implements ScrapService {
 				Scrap s = new Scrap();
 				s.setScrap(account);
 				s.setScraped(p.get().getScoring());
+				Account account2 = accountRepository.findByUsername(p.get().getUsername());
+				s.setScrapeduser(account2);
 				scrapRepository.save(s);
 				return "success";
 			}
