@@ -217,10 +217,12 @@ public class PostServiceImpl implements PostService{
 			map = problem.getLanguage();
 			if(map!=null) {
 				solvelang lang = map.get(language);
-				double avg_t = Math.round((double)lang.getTime_sum()/lang.getCnt());
-				double avg_m = Math.round((double)lang.getMemory_sum()/lang.getCnt());
-				m.put("avg_time", avg_t);
-				m.put("avg_memory", avg_m);
+				if(lang != null) {
+					double avg_t = Math.round((double)lang.getTime_sum()/lang.getCnt());
+					double avg_m = Math.round((double)lang.getMemory_sum()/lang.getCnt());
+					m.put("avg_time", avg_t);
+					m.put("avg_memory", avg_m);
+				}
 			}
 		}
 		return m;
