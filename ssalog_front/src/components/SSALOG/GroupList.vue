@@ -58,7 +58,7 @@
                           <v-btn
                             depressed
                             small
-                            :to="{ name: 'Group', params: { groupname: item.GroupName } }"
+                            :to="{ name: 'Member', params: { groupname: item.GroupName } }"
                           >
                             그룹 페이지 가기
                             <v-icon color="secondary" right>
