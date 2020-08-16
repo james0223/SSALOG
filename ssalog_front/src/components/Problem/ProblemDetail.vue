@@ -375,7 +375,8 @@ export default {
     async fetchDoughnutData() {
       const res = await axios.get(`${this.$store.state.ServerURL}/newuser/search/detail_py`, {
         params: {
-          problemid: this.$route.params.id
+          problemid: this.$route.params.id,
+          count: 5
         }
       });
       // eslint-disable-next-line
