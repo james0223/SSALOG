@@ -123,8 +123,8 @@ public class SearchContoller {
 	
 	@ApiOperation(value ="[문제 이름 찾기] 문제 번호를 주면 문제이름을 찾아줍니다.")
 	@GetMapping("/find_problemname")
-	public ResponseEntity<String> find_problemname(@RequestParam("problemid") String problemid){
-		return new ResponseEntity<String>(postService.find_problemname(problemid), HttpStatus.OK);
+	public ResponseEntity<Map<String,String>> find_problemname(@RequestParam("problemid") String problemid){
+		return new ResponseEntity<Map<String,String>>(postService.find_problemname(problemid), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[사용자 수 찾기] 쌀로그를 이용하는 모든 사용자들을 검색합니다.")

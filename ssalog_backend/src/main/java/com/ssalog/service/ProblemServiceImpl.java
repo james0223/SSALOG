@@ -34,4 +34,9 @@ public class ProblemServiceImpl implements ProblemService{
 	public Page<Problem> findkey(String[] keyword, PageRequest pageable){
 		return postRepository.keyword_search(keyword, pageable);
 	}
+	
+	@Override
+	public Problem find_problemid(String problemid) {
+		return problemRepository.findByProblemid(problemid);
+	}
 }

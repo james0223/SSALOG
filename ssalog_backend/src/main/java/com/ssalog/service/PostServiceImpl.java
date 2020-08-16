@@ -239,13 +239,18 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public String find_problemname(String problemid){
-		List<Post> l = postRepository.findByProblemid(problemid);
-		if(l == null) {
-			return "not exists";
+	public Map<String,String> find_problemname(String problemid){
+		Problem p = problemRepository.findByProblemid(problemid);
+		Map<String, String> m = new HashMap<>();
+		if(p == null) {
+			m.put("result", "not exists");
 		}else {
-			return l.get(0).getProblemname();
+			Account ac = accountRepository.findByUsername(p.getStarter());
+			m.put("problemname", p.getName());
+			m.put("starter", ac.getNickname());
+			m.put("starter_img", ac.getImgpath());
 		}
+		return m;
 	}
 	@Override
 	public void set_username(String username,String scoring){
