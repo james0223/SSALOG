@@ -2,9 +2,9 @@
   <div>
     <h1>문제</h1>
     <SearchBar
-      :SelectedCategoryIdx="$route.query.categoryIdx"
-      :q="$route.query.q"
-      :keywords="$route.query.keywords"
+      :SelectedCategoryIdx="Number($route.query.categoryIdx)"
+      :Q="$route.query.q"
+      :Keywords="$route.query.keywords"
     />
     <v-card color="transparent" class="pa-10" v-if="isNoResult" flat>
       <v-row justify="center">
@@ -22,11 +22,10 @@
               <span class="info--text">개척자</span>가 되어주세요!
             </h3>
           </v-card-text>
-          <v-card-text class="text--secondary ml-1"
-            >개척자란?
-            <br />
-            문제에 처음으로 리뷰를 등록하는 유저에게 부여되는 칭호입니다.</v-card-text
-          >
+          <v-card-text class="text--secondary ml-1">
+            개척자란?
+            <br />문제에 처음으로 리뷰를 등록하는 유저에게 부여되는 칭호입니다.
+          </v-card-text>
         </v-col>
         <v-col cols="4">
           <v-card-text>
@@ -139,7 +138,10 @@ export default {
           `${this.$store.state.ServerURL}/newuser/search/${this.searchMethods[this.categoryIdx]}`,
           {
             params: {
-              param: this.$route.query.keywords,
+              param:
+                typeof this.$route.query.keywords === "string"
+                  ? [this.$route.query.keywords]
+                  : this.$route.query.keywords,
               ...this.searchData
             },
             paramsSerializer: params => {
