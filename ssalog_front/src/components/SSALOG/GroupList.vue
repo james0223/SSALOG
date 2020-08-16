@@ -74,16 +74,30 @@
             </v-col>
             <v-divider vertical></v-divider>
             <v-col cols="3.5">
-              <v-card class="mt-5 mx-2" height="70vh">
+              <v-card flat class="mt-5 mx-2" height="70vh">
                 <v-card-title>그룹 가입하기</v-card-title>
                 <v-card-text>
-                  <v-text-field
-                    label="그룹 검색하기"
-                    append-icon="mdi-magnify"
-                    v-model="searchedGroup"
-                  ></v-text-field>
-                  <v-btn text @click.prevent="applyGroup">지원하기</v-btn>
+                  <v-autocomplete
+                    v-model="groupList"
+                    :items="items"
+                    :loading="GroupListLoading"
+                    :search-input.sync="GroupSearch"
+                    hide-no-data="true"
+                    hide-selected="true"
+                    prepend-icon="mdi-account-search"
+                    placeholder="그룹을 검색해보세요"
+                    label="그룹 검색"
+                  >
+                  </v-autocomplete>
                 </v-card-text>
+                <v-expand-transition>
+                  <v-list v-if="groupList">
+                    <v-list-item v-for="(field, i) in fields" :key="i">
+                      <v-list-item-title v-text="field.key"></v-list-item-title>
+                      <v-list-item-subtitle v-text="field.value"></v-list-item-subtitle>
+                    </v-list-item>
+                  </v-list>
+                </v-expand-transition>
               </v-card>
             </v-col>
           </v-row>
@@ -111,6 +125,8 @@ export default {
       createGroupIntro: "",
       // 그룹 신청 관련 data
       searchedGroup: ""
+      // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/autocompletes/simple/api.vue
+      // 저기 보면서 완성시킬 것
     };
   },
   methods: {
