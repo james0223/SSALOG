@@ -44,6 +44,18 @@ export default {
   methods: {
     ...mapMutations(["ShowAlert"]),
     goSearch() {
+      if (this.category.indexOf(this.SelectedCategory) === 2) {
+        if (!this.keywords || this.keywords.length === 0) {
+          this.SelectedCategory = "문제제목";
+          this.q = null;
+        }
+      }
+      // if (this.category.indexOf(this.SelectedCategory) === 1) {
+      //   if (!this.q) {
+      //     this.SelectedCategory = "문제제목";
+      //     this.q = null;
+      //   }
+      // }
       if (this.category.indexOf(this.SelectedCategory) === 3) {
         this.$router.push({ name: "AccountList", query: { q: this.q } }).catch(() => {});
       } else {
@@ -51,7 +63,7 @@ export default {
           .push({
             name: "ProblemList",
             query: {
-              q: this.q,
+              q: !this.q ? null : this.q,
               keywords: this.keywords,
               categoryIdx: this.category.indexOf(this.SelectedCategory)
             }
