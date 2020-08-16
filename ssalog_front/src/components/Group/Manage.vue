@@ -47,6 +47,17 @@
                             required
                           ></v-text-field>
                         </ValidationProvider>
+                        <ValidationProvider name="문제 제목" rules="required|max:20">
+                          <v-text-field
+                            slot-scope="{ errors, valid }"
+                            v-model="HW.mention"
+                            :error-messages="errors"
+                            :success="valid"
+                            :counter="20"
+                            label="문제 설명"
+                            required
+                          ></v-text-field>
+                        </ValidationProvider>
                         <v-datetime-picker
                           required
                           ok-text="시간선택"
@@ -83,7 +94,7 @@
       </v-col>
       <v-col cols="4">
         <v-card class="mt-3" height="80vh">
-          <v-card class="mb-3">
+          <v-card flat class="mb-3">
             <v-toolbar-title>회원 관리</v-toolbar-title>
             <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" height="300">
               <template v-slot="{ item }">
@@ -109,6 +120,7 @@
               </template>
             </v-virtual-scroll>
           </v-card>
+          <v-divider></v-divider>
           <v-card flat>
             <v-toolbar-title>가입 신청 현황</v-toolbar-title>
             <v-virtual-scroll :items="applicants" :item-height="35" height="300">
@@ -180,6 +192,7 @@ export default {
       HW: {
         name: "",
         number: "",
+        mention: "",
         deadline: new Date()
       },
       HWList: [
