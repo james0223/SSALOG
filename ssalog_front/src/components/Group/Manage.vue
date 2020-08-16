@@ -4,14 +4,14 @@
       <v-col cols="8">
         <v-row>
           <v-col cols="6">
-            <v-card height="25vh"
+            <v-card height="25vh" class="chart-container"
               >과제 제출현황
-              <PieChart v-if="pieLoaded" v-bind:chart-data="examData" :width="350" :height="200" />
+              <PieChart class="pie" v-if="pieLoaded" v-bind:chart-data="examData" />
             </v-card>
           </v-col>
           <v-col cols="6">
-            <v-card height="25vh">
-              <BarChart v-if="barLoaded" v-bind:chart-data="barData" :width="330" :height="250" />
+            <v-card height="25vh" class="chart-container">
+              <BarChart class="bar" v-if="barLoaded" v-bind:chart-data="barData" />
             </v-card>
           </v-col>
         </v-row>
@@ -74,7 +74,13 @@
                   </ValidationObserver>
                 </v-col>
                 <v-col cols="6">
-                  <v-card flat height="44vh" class="px-3" width="18vw" style="overflow-y: scroll;">
+                  <v-card
+                    flat
+                    height="44vh"
+                    class="px-3"
+                    min-width="18vw"
+                    style="overflow-y: scroll;"
+                  >
                     <v-timeline dense>
                       <v-timeline-item v-for="task in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
@@ -96,7 +102,7 @@
         <v-card class="mt-3" height="80vh">
           <v-card flat class="mb-3">
             <v-toolbar-title>회원 관리</v-toolbar-title>
-            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" height="300">
+            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" min-height="20vh">
               <template v-slot="{ item }">
                 <v-list-item>
                   <v-list-item-avatar size="48">
@@ -121,7 +127,7 @@
           <v-divider></v-divider>
           <v-card flat>
             <v-toolbar-title>가입 신청 현황</v-toolbar-title>
-            <v-virtual-scroll :items="applicants" :item-height="35" height="300">
+            <v-virtual-scroll :items="applicants" :item-height="35" min-height="30vh">
               <template v-slot="{ item }">
                 <v-expansion-panels>
                   <v-expansion-panel>
@@ -431,4 +437,18 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.chart-container {
+  flex-grow: 1;
+  min-height: 0;
+
+  > .pie {
+    position: relative;
+    height: 80%;
+  }
+  > .bar {
+    position: relative;
+    height: 100%;
+  }
+}
+</style>
