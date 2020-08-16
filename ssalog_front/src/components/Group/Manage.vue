@@ -107,12 +107,10 @@
                   </v-list-item-content>
                   <v-spacer></v-spacer>
                   <v-list-item-action>
-                    <v-btn color="amber lighten-2" tile large icon>
+                    <v-btn v-if="item.role === 'owner'" color="amber lighten-2" tile large icon>
                       <v-icon>mdi-trophy-award</v-icon>
                     </v-btn>
-                  </v-list-item-action>
-                  <v-list-item-action>
-                    <v-btn color="error" tile large icon>
+                    <v-btn v-else color="error" tile large icon @click="kick_member(item.nickname)">
                       <v-icon>mdi-close-circle</v-icon>
                     </v-btn>
                   </v-list-item-action>
@@ -279,6 +277,16 @@ export default {
         console.error(e);
       }
     },
+    // 그룹 인원 강퇴
+    async kick_member(member) {
+      await this.$http.delete(`${this.ServerURL}/user/grouping/kick_member`, {
+        params: {
+          groupname: this.$route.params.groupname,
+          wantkick: member
+        }
+      });
+      this.$router.go();
+    },
     // 그래프 그리기
     async getHWProgress() {
       /* eslint-disable */
@@ -391,9 +399,27 @@ export default {
           }
         });
         this.groupMember = data;
+        /* eslint-disable */
+        for (let idx = 0; idx < this.groupMember.length; idx++) {
+          if (this.groupMember[idx].role === "owner") {
+            this.array_move(this.groupMember, idx, 0);
+            break;
+          }
+        }
+        console.log(data);
       } catch (e) {
         console.log(e);
       }
+    },
+    array_move(arr, old_idx, new_idx) {
+      if (new_idx >= arr.length) {
+        let k = (new_idx = arr.length + 1);
+        while (k--) {
+          arr.push(undefined);
+        }
+      }
+      arr.splice(new_idx, 0, arr.splice(old_idx, 1)[0]);
+      return arr;
     }
   },
   computed: mapState(["ServerURL", "ImgURL"]),
