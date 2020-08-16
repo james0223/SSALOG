@@ -12,7 +12,7 @@
         >내 쌀로그</v-btn
       >
     </div>
-    <SearchBar :SelectedCategoryIdx="3" :q="$route.query.q" :keywords="$route.query.keywords" />
+    <SearchBar :SelectedCategoryIdx="3" :Q="$route.query.q" :Keywords="$route.query.keywords" />
     <h2 class="text-center mt-10" v-if="isNoResult">검색결과가 없습니다 :P</h2>
     <h2 v-if="!isNoResult">
       {{ searchData.nickname ? `${searchData.nickname}님에 대한 검색결과입니다.` : null }}

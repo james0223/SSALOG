@@ -38,7 +38,9 @@ export default {
   data() {
     return {
       category: ["문제번호", "문제제목", "문제유형", "회원"],
-      SelectedCategory: null
+      SelectedCategory: null,
+      q: null,
+      keywords: []
     };
   },
   methods: {
@@ -74,8 +76,8 @@ export default {
   },
   props: {
     SelectedCategoryIdx: Number,
-    keywords: Array,
-    q: String
+    Keywords: [String, Array],
+    Q: String
   },
   watch: {
     keywords(newVal) {
@@ -89,6 +91,13 @@ export default {
     }
   },
   mounted() {
+    this.q = this.Q;
+    if (typeof this.Keywords === "string") {
+      this.keywords = [this.Keywords];
+    } else {
+      this.keywords = this.Keywords ? this.Keywords : [];
+    }
+
     this.SelectedCategory = this.category[this.SelectedCategoryIdx];
   }
 };
