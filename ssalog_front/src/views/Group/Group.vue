@@ -34,11 +34,8 @@ export default {
     return {
       GroupMenu: [
         {
-          name: "메인"
-        },
-        {
           name: "그룹원",
-          route: `/Group/${this.$route.params.groupname}/Member`
+          route: `/Group/${this.$route.params.groupname}/`
         },
         {
           name: "과제",

@@ -27,7 +27,6 @@ import SolutionList from "@/components/SSALOG/SolutionList.vue";
 import UserSetting from "@/components/SSALOG/Setting.vue";
 // group
 import Group from "@/views/Group/Group.vue";
-import GroupMain from "@/components/Group/GroupMain.vue";
 import Member from "@/components/Group/Member.vue";
 import GroupHW from "@/components/Group/Homework.vue";
 import GroupManage from "@/components/Group/Manage.vue";
@@ -115,15 +114,10 @@ const routes = [
     path: "/Group/:groupname/",
     name: "Group",
     component: Group,
-    // meta: { authRequired: true },
+    meta: { authRequired: true },
     children: [
       {
-        path: "Main",
-        name: "GroupMain",
-        component: GroupMain
-      },
-      {
-        path: "Member",
+        path: "",
         name: "Member",
         component: Member
       },
