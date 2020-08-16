@@ -64,6 +64,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="checkNickname">중복확인</v-btn>
             <v-dialog v-model="changeNick.dialog" max-width="60vh">
               <v-card>
                 <v-card-title>
