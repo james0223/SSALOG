@@ -217,12 +217,9 @@ export default {
   data() {
     return {
       languages: [
-        { lang: "Python 3", ico: "mdi-language-python" },
-        { lang: "PyPy3", ico: "mdi-language-python" },
+        { lang: "Python", ico: "mdi-language-python" },
         { lang: "Java", ico: "mdi-language-java" },
-        { lang: "C++14", ico: null },
         { lang: "C++", ico: null },
-        { lang: "C11", ico: null },
         { lang: "C", ico: null }
       ],
       isSolved: false, // 유저가 문제를 풀었는지 아닌지 파악
@@ -231,7 +228,7 @@ export default {
       problemNumber: this.$route.params.id,
       numberOfSolutions: null,
       langIdx: 0,
-      selectedLang: "PyPy3",
+      selectedLang: "Python",
       selectedIco: "mdi-language-python",
       userAvgData: {
         time: null,
@@ -299,7 +296,7 @@ export default {
     },
     changeLangIdx(flag) {
       if (flag) {
-        if (this.langIdx === 6) {
+        if (this.langIdx === 3) {
           return;
         }
         this.langIdx += 1;
