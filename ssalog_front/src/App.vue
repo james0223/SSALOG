@@ -7,12 +7,12 @@
     <v-snackbar :color="alertColor" :value="showAlert" centered multi-line>
       {{ AlertMessage }}
     </v-snackbar>
-    <v-footer class="font-weight-medium" height="110" color="#37474F">
-      <v-col class="text-center white--text" cols="12 ">
+    <v-footer class="font-weight-medium" height="110" color="#26272b">
+      <v-col class="text-center grey--text" cols="12 ">
         2020-&copy;SSALOG
       </v-col>
-      <v-col class="text-center white--text" cols="12">
-        ssalogofficial@gmail.com
+      <v-col class="text-center grey--text" cols="12">
+        <v-icon color="grey">mdi-email-outline</v-icon>ssalogofficial@gmail.com
       </v-col>
     </v-footer>
   </v-app>
