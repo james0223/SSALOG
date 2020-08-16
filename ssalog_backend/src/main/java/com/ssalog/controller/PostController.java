@@ -131,7 +131,7 @@ public class PostController {
 	}	
 	
 	@GetMapping("newuser/post/latestPost")
-	@ApiOperation(value = "[문제로 posting을 작성했는지] ")
+	@ApiOperation(value = "[가장 최근 post] 가장 최근에 posting된글들을 가져옵니다. count로 준 만큼 가져옴! ")
 	public ResponseEntity<List<PostSub>> latestPost(@RequestParam("count") int count){
 		return new ResponseEntity<List<PostSub>>(postSubService.latestPost(count),HttpStatus.OK);
 		
