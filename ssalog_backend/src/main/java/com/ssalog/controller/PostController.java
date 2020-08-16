@@ -26,10 +26,12 @@ import com.ssalog.dto.Comment;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
+import com.ssalog.dto.Problem;
 import com.ssalog.dto.TempPost;
 import com.ssalog.service.CommentService;
 import com.ssalog.service.PostService;
 import com.ssalog.service.PostSubService;
+import com.ssalog.service.ProblemService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -47,6 +49,8 @@ public class PostController {
 	@Autowired
 	CommentService commentService;
 	
+	@Autowired
+	ProblemService problemService;
 	@PostMapping("newuser/post/write")
 	@ApiOperation(value = "[posting작성] extension에서 백준에서 데이터를 가져올때 사용하는 api")
 	public void write(@RequestBody TempPost post) {
@@ -136,6 +140,12 @@ public class PostController {
 		return new ResponseEntity<List<PostSub>>(postSubService.latestPost(count),HttpStatus.OK);
 		
 	}		
+	@GetMapping("newuser/post/starter_list")
+	@ApiOperation(value = "[개척한 문제] nickname을 주면 해당 유저가 개척한 문제 목록을 보여줍니다. ")
+	public ResponseEntity<List<Problem>> Starter_list(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<List<Problem>>(problemService.find_starter(nickname),HttpStatus.OK);
+		
+	}	
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");
