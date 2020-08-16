@@ -74,16 +74,35 @@
             </v-col>
             <v-divider vertical></v-divider>
             <v-col cols="3.5">
-              <v-card class="mt-5 mx-2" height="70vh">
+              <v-card flat class="mt-5 mx-2" height="70vh">
                 <v-card-title>그룹 가입하기</v-card-title>
                 <v-card-text>
-                  <v-text-field
-                    label="그룹 검색하기"
-                    append-icon="mdi-magnify"
-                    v-model="searchedGroup"
-                  ></v-text-field>
-                  <v-btn text @click.prevent="applyGroup">지원하기</v-btn>
+                  <v-autocomplete
+                    v-model="selectedGroup"
+                    :items="searchGroup"
+                    :loading="GroupListLoading"
+                    :search-input.sync="GroupSearch"
+                    hide-no-data
+                    hide-selected
+                    item-text="groupname"
+                    prepend-icon="mdi-account-search"
+                    placeholder="그룹을 검색해보세요"
+                    label="그룹 검색"
+                    return-object
+                  >
+                  </v-autocomplete>
                 </v-card-text>
+                <v-expand-transition>
+                  <v-list v-if="selectedGroup">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ selectedGroup.groupname }}</v-list-item-title>
+                        <v-list-item-subtitle>{{ selectedGroup.groupdes }}</v-list-item-subtitle>
+                        <v-list-item-title> {{ selectedGroup.groupowner }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-expand-transition>
               </v-card>
             </v-col>
           </v-row>
@@ -104,13 +123,17 @@ export default {
       ownerName: this.$route.params.nickname,
       ownerEmail: "",
       myGroup: [],
-      searchGroup: [],
       // 그룹 생성 관련 data
       createGroupDialog: false,
       createGroupName: "",
       createGroupIntro: "",
       // 그룹 신청 관련 data
-      searchedGroup: ""
+      GroupListLoading: false,
+      searchGroup: [],
+      selectedGroup: null,
+      GroupSearch: null
+      // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/autocompletes/simple/api.vue
+      // 저기 보면서 완성시킬 것
     };
   },
   methods: {
@@ -149,12 +172,11 @@ export default {
     },
     async applyGroup() {
       try {
-        const res = await this.$http.post(`${this.ServerURL}/user/grouping/apply_group`, null, {
+        await this.$http.post(`${this.ServerURL}/user/grouping/apply_group`, null, {
           params: {
             groupname: this.searchedGroup
           }
         });
-        console.log(res);
       } catch (err) {
         console.error(err);
       }
@@ -167,7 +189,6 @@ export default {
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
           const grade = data[key];
-          console.log(grade);
           this.myGroup.push({
             GroupName: key,
             groupGrade: grade
@@ -178,9 +199,34 @@ export default {
       }
     }
   },
-  computed: mapState(["ServerURL"]),
+  computed: {
+    ...mapState(["ServerURL"])
+  },
   mounted() {
     this.getGroups();
+  },
+  watch: {
+    // eslint-disable-next-line
+    selectedGroup(val) {
+      if (val != null) console.log(val);
+    },
+    // eslint-disable-next-line
+    async GroupSearch(val) {
+      console.log(val);
+      if (this.searchGroup.length > 0) return;
+      this.GroupListLoading = true;
+
+      const res = await this.$http.get(`${this.ServerURL}/newuser/grouping/search_group`, {
+        params: {
+          direction: "ASC",
+          page: 1,
+          size: 999
+        }
+      });
+      this.searchGroup = res.data;
+      console.log("ya", res.data);
+      this.GroupListLoading = false;
+    }
   }
 };
 </script>
