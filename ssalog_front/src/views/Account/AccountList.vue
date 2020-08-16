@@ -18,7 +18,7 @@
       {{ searchData.nickname ? `${searchData.nickname}님에 대한 검색결과입니다.` : null }}
     </h2>
     <v-row>
-      <v-col v-if="!nickname && showCard && !isNoResult" cols="3">
+      <v-col v-if="!nickname && showCard && !isNoResult" cols="12" sm="3">
         <v-hover v-slot:default="{ hover }">
           <v-card class="toNewbee" height="100%" dark elevation="8">
             <v-card-title>
@@ -46,7 +46,7 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col v-for="(user, i) in users" :key="i" cols="3">
+      <v-col v-for="(user, i) in users" :key="i" cols="12" sm="3">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card
             @click="visitUserDetail(user.nickname)"

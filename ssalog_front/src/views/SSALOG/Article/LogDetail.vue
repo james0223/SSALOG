@@ -1,8 +1,9 @@
 <template>
-  <v-container>
+  <v-container class="pa-0 pa-sm-3">
     <v-row no-gutters>
-      <v-col lg="10" cols="12" class="pl-3">
-        <v-card class="pa-3 mb-10" outlined>
+      <v-col lg="10" cols="12">
+        <!-- <v-card> -->
+        <v-card class="pa-3 mb-10" color="transparent" tile>
           <v-card-title
             ><h2>{{ title }}</h2>
             <v-spacer></v-spacer>
@@ -15,16 +16,22 @@
             ><v-row>
               <v-col
                 ><h3>
-                  문제 :<a
-                    target="_blank"
-                    v-bind:href="this.getlink()"
-                    style="text-decoration: none; "
-                    title="클릭시 문제로 이동합니다."
+                  문제 :
+                  <span
+                    class="innerLink blue--text"
+                    @click="$router.push({ name: 'ProblemDetail', params: { id: problemNum } })"
+                    outlined
+                    >{{ problemNum }} {{ problemTitle }}</span
+                  ><v-btn
+                    height="1rem"
+                    class="ml-1 mb-1 pb-1 no-background-hover"
+                    text
+                    @click="goSite(`https://www.acmicpc.net/problem/${problemNum}`)"
                   >
-                    {{ problemNum }} {{ problemTitle }}</a
+                    <img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
                   >
-                </h3></v-col
-              >
+                </h3>
+              </v-col>
               <v-col
                 ><h3>작성일 : {{ updatedDate }}</h3></v-col
               ></v-row
@@ -32,10 +39,12 @@
           </v-card-text>
           <v-card-text>
             <v-row>
-              <v-col cols="3"> <v-icon>mdi-lead-pencil</v-icon> 언어: {{ language }} </v-col>
-              <v-col cols="3"> <v-icon>mdi-memory</v-icon> 메모리: {{ memory }}KB </v-col>
-              <v-col cols="3"> <v-icon>mdi-timer</v-icon> 시간: {{ time }}MS </v-col>
-              <v-col cols="3"><v-icon>mdi-sort-variant</v-icon> 코드길이: {{ len }}B </v-col>
+              <v-col cols="12" sm="3"><v-icon>mdi-lead-pencil</v-icon> 언어: {{ language }} </v-col>
+              <v-col cols="12" sm="3"><v-icon>mdi-memory</v-icon> 메모리: {{ memory }}KB </v-col>
+              <v-col cols="12" sm="3"><v-icon>mdi-timer</v-icon> 시간: {{ time }}MS </v-col>
+              <v-col cols="12" sm="3"
+                ><v-icon>mdi-sort-variant</v-icon> 코드길이: {{ len }}B
+              </v-col>
             </v-row>
           </v-card-text>
           <v-card-text v-if="!!keyword">
@@ -47,12 +56,13 @@
             </v-chip-group>
           </v-card-text>
         </v-card>
-        <v-card flat min-height="40vh" class="pa-3 mb-10">
-          <v-card-text>
+        <v-card flat color="transparent" min-height="40vh" class="pa-0 pa-sm-3 mb-10">
+          <v-card-text class="pa-0 pa-sm-3">
             <editor-content class="main_content editor__content article" :editor="editor" />
           </v-card-text>
         </v-card>
         <Comment />
+        <!-- </v-card> -->
       </v-col>
       <v-col lg="2">
         <div class="ml-8 mt-5 code_button">
@@ -72,7 +82,7 @@
             </template>
             <span>제출 코드 보기</span>
           </v-tooltip>
-          <v-tooltip v-if="username !== writerUsername" bottom>
+          <v-tooltip v-if="username && username !== writerUsername" bottom>
             <template v-slot:activator="{ on }">
               <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="doScrap"
                 ><v-icon :disabled="!scrapped" color="yellow accent-4">mdi-star</v-icon></v-btn
@@ -100,15 +110,15 @@
         </div>
         <v-card
           tile
-          flat
+          color="transparent"
           min-height="15vh"
           width="15vw"
           class="mx-8 table_of_contents"
           v-once
           v-if="tocLoaded"
         >
-          <v-list dense>
-            <v-subheader>목 차</v-subheader>
+          <v-card-title><h5>목 차</h5></v-card-title>
+          <v-list color="transparent" dense>
             <v-list-item-group v-model="TOC" color="primary">
               <v-list-item v-for="(item, i) in TOC" :key="i">
                 <v-list-item-content>
@@ -304,6 +314,10 @@ export default {
   },
   methods: {
     ...mapMutations(["ShowAlert"]),
+    goSite(site) {
+      const win = window.open(site, "_blank");
+      win.focus();
+    },
     getScrapped() {
       axios
         .get(`${this.$store.state.ServerURL}/user/scrap/is_scrap`, {
@@ -358,9 +372,6 @@ export default {
       setTimeout(() => {
         this.ShowAlert({ flag: false, msg: "" });
       }, 2000);
-    },
-    getlink() {
-      return "https://www.acmicpc.net/problem/".concat(this.problemNum);
     },
     editSolution() {
       this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
@@ -483,5 +494,11 @@ export default {
   position: fixed;
   top: 40vh;
   border-left: 2px solid rgb(233, 236, 239) !important;
+}
+.innerLink {
+  cursor: pointer;
+}
+.no-background-hover::before {
+  background-color: transparent !important;
 }
 </style>

@@ -6,7 +6,7 @@
       :q="$route.query.q"
       :keywords="$route.query.keywords"
     />
-    <v-card class="pa-10" v-if="isNoResult" flat>
+    <v-card color="transparent" class="pa-10" v-if="isNoResult" flat>
       <v-row justify="center">
         <v-col cols="8">
           <v-card-title class="pb-1">

@@ -85,14 +85,14 @@
         <v-card class="mt-3" height="80vh">
           <v-card class="mb-3">
             <v-toolbar-title>회원 관리</v-toolbar-title>
-            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="20" height="300">
+            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" height="300">
               <template v-slot="{ item }">
                 <v-list-item>
-                  <v-list-item-avatar size="56">
-                    <v-img :src="item.avatar"> </v-img>
+                  <v-list-item-avatar size="48">
+                    <v-img :src="ImgURL + item.img"> </v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    <v-list-item-title>{{ item.nickname }}</v-list-item-title>
                   </v-list-item-content>
                   <v-spacer></v-spacer>
                   <v-list-item-action>
@@ -190,12 +190,7 @@ export default {
         }
       ],
       // 회원 관리
-      groupMember: [
-        {
-          name: "바스티온",
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-        }
-      ],
+      groupMember: [],
       // 회원가입 관리
       applicants: [
         {
@@ -384,10 +379,23 @@ export default {
         this.HW.number = "";
         this.HW.deadline = new Date();
       }
+    },
+    async getGroupMember() {
+      try {
+        const { data } = await this.$http.get(`${this.ServerURL}/user/grouping/group_member`, {
+          params: {
+            groupname: this.$route.params.groupname
+          }
+        });
+        this.groupMember = data;
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   computed: mapState(["ServerURL", "ImgURL"]),
   mounted() {
+    this.getGroupMember();
     this.getApplicantList();
     this.getHWProgress();
   }

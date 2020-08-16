@@ -13,27 +13,23 @@
     <v-row>
       <v-col cols="12" md="6">
         <div class="editor" spellcheck="false">
-          <editor-menu-bubble
-            :editor="codearea"
-            :keep-in-bounds="keepInBounds"
-            v-slot="{ isActive, menu }"
-          >
+          <editor-menu-bubble :editor="codearea" :keep-in-bounds="keepInBounds" v-slot="{ menu }">
             <div
               class="menububble"
               :class="{ 'is-active': menu.isActive }"
-              :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+              :style="`left: ${menu.left + 50}px; top: ${menu.top}px;`"
             >
-              <button
-                class="menububble__button"
-                :class="{ 'is-active': isActive.bold() }"
-                @click="menububbleClick"
-              >
+              <button class="menububble__button red" @click="menububbleClick">
                 <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
-                <h5>옮기기</h5>
+                <v-icon color="white">mdi-content-cut</v-icon>
               </button>
             </div>
           </editor-menu-bubble>
-          <editor-content class="editor__content usercode" :editor="codearea" />
+          <editor-content
+            class="editor__content usercode"
+            :editor="codearea"
+            style="height : 100vh;"
+          />
         </div>
       </v-col>
       <v-col cols="12" md="6">
@@ -89,14 +85,6 @@
                 @click="commands.code"
               >
                 <img class="icon" src="@/assets/tiptap/icons/code.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.paragraph() }"
-                @click="commands.paragraph"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/paragraph.svg" />
               </button>
 
               <button
@@ -354,9 +342,27 @@ export default {
     },
     /*eslint-disable */
     async getData(that) {
-      that.resData = await getSSALOG(that.$route.params.id);
-      // 이미 작성한 것을 수정할때
-      that.isUpdating = that.resData.html == null ? false : true;
+      const iswrite = await axios.get(`${this.ServerURL}/newuser/post/is_write`, {
+        params: {
+          Scoring: that.$route.params.id
+        }
+      });
+
+      if(iswrite.data){
+        that.resData = await axios.get(`${this.ServerURL}/newuser/post/get_detail`, {
+          params: {
+            Scoring: that.$route.params.id
+          }
+        });
+
+        that.resData = that.resData.data;
+      }else{
+        that.resData = await getSSALOG(that.$route.params.id);
+
+      }
+;
+      that.isUpdating = that.resData.html == undefined ? false : true;
+
       if (!that.isUpdating) {
         // 속성이 없다면.
         // 속성 추가해주기
@@ -379,7 +385,11 @@ export default {
         that.codearea.commands.code_block();
         that.title = that.resData.title;
         that.SelectedProblemCategory = that.resData.keyword;
+      
+        // const userHTML = that.editor.state.tr.insertText(that.resData.html);
+        // that.editor.view.dispatch(userHTML);
         that.editor.setContent(that.resData.html);
+        // that.editor.commands.code_block();
       }
     }
     /* eslint-enable */
