@@ -13,7 +13,7 @@
           </v-list-item-content>
           <v-spacer></v-spacer>
           <v-list-item-action>
-            <v-btn color="amber lighten-2" tile large icon>
+            <v-btn v-if="item.role === 'owner'" color="amber lighten-2" tile large icon>
               <v-icon>mdi-trophy-award</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -44,13 +44,27 @@ export default {
         console.log(data);
         this.groupMember = [];
         // eslint-disable-next-line
-        for (let i = 0; i < data.length; i++) {
-          this.groupMember.push(data[i]);
+        for (let idx = 0; idx < data.length; idx++) {
+          if (data[idx].role === "owner") {
+            this.array_move(data, idx, 0);
+            break;
+          }
         }
-        console.log(this.groupMember);
+        this.groupMember = data;
       } catch (e) {
         console.log(e);
       }
+    },
+    /* eslint-disable */
+    array_move(arr, old_idx, new_idx) {
+      if (new_idx >= arr.length) {
+        let k = (new_idx = arr.length + 1);
+        while (k--) {
+          arr.push(undefined);
+        }
+      }
+      arr.splice(new_idx, 0, arr.splice(old_idx, 1)[0]);
+      return arr;
     }
   },
   computed: mapState(["ServerURL", "ImgURL"]),
