@@ -42,7 +42,10 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public String change_nickname(String nickname, String username) {
 		Account ac = accountRepository.findByUsername(username);
-		if(ac != null) {
+		Account ac2 = accountRepository.findByNickname(nickname);
+		if(ac2 != null) {
+			return "exist";
+		}else if(ac != null) {
 			ac.setNickname(nickname);
 			accountRepository.save(ac);
 			return "sucess";
