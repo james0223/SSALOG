@@ -6,9 +6,9 @@
         @click="$router.push({ name: 'SSalogMain', params: { nickname } })"
         tile
         v-if="nickname"
-        color="blue-grey darken-1"
+        color="#2E6FF2"
         dark
-        class="animate__animated animate__bounce"
+        class="animate__animated animate__bounce "
         >내 쌀로그</v-btn
       >
     </div>
@@ -49,6 +49,8 @@
       <v-col v-for="(user, i) in users" :key="i" cols="12" sm="3">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card
+            tile
+            color="transparent"
             @click="visitUserDetail(user.nickname)"
             align="center"
             :elevation="hover ? 12 : 2"

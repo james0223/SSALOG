@@ -25,7 +25,7 @@
       ></v-select>
     </v-col>
     <v-col cols="2">
-      <v-btn rounded block outlined color="primary" @click="goSearch">검색</v-btn>
+      <v-btn rounded block outlined color="#2E6FF2" @click="goSearch">검색</v-btn>
     </v-col>
   </v-row>
 </template>

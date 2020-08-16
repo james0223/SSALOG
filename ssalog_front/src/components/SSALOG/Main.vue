@@ -1,5 +1,5 @@
 <template>
-  <v-card flat height="60vh" class="pa-6 mt-8">
+  <v-card color="transparent" flat height="60vh" class="pa-6 mt-8">
     <h3 class="font-weight-light mb-1">쌀밭</h3>
     <v-divider></v-divider>
     <calendar-heatmap
@@ -32,7 +32,7 @@
             <p class="p-3 text-center text--secondary">📙쌀로그에서 알고리즘을 정리하기🧾</p>
           </v-col>
         </v-row>
-        <v-list>
+        <v-list color="transparent">
           <v-list-item-group>
             <v-list-item
               class="px-1"
