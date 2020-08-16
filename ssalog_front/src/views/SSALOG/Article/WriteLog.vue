@@ -354,6 +354,7 @@ export default {
       this.resData.keyword = this.SelectedProblemCategory;
       this.resData.nickname = this.nickname; // 작성자 닉
       this.resData.title = this.title; // 글 제목
+      this.resData.html = this.editor.getHTML();
       axios
         .put(`${this.ServerURL}/user/post/update_post`, this.resData)
         .then(() => {
@@ -392,6 +393,21 @@ export default {
       if (!that.isUpdating) {
         // 속성이 없다면.
         // 속성 추가해주기
+        let res = null;
+        try {
+           res = await this.$http.get(`${this.$store.state.ServerURL}/newuser/get_form`, {
+            params: {
+              nickname: this.nickname
+            }
+          });
+          console.log(res)  ;
+          if(res.data==="null" || res.data==="fail"){
+            res.data = "<h2>접근방법</h2><hr><p></p><h2>코드분석</h2><hr>";
+          }
+        } catch (e) {
+          console.error(e);
+        }
+
         const transCode = that.codearea.state.tr.insertText(that.resData.code);
         that.codearea.view.dispatch(transCode);
         that.codearea.commands.code_block();
@@ -404,7 +420,8 @@ export default {
           `${that.resData.problemname} 빛의 속도로 풀었음`
         ]);
         that.resData.SelectedProblemCategory = [];
-        that.resData.html = "<p></p><p></p><p></p><p></p><p></p><p></p>";
+        that.editor.setContent(res.data);
+        // that.resData.html = res.data; // <- 여기
       } else {
         const transCode = that.codearea.state.tr.insertText(that.resData.code);
         that.codearea.view.dispatch(transCode);
@@ -415,9 +432,9 @@ export default {
         // const userHTML = that.editor.state.tr.insertText(that.resData.html);
         // that.editor.view.dispatch(userHTML);
         // console.log(that.resData.html);
-        if (that.resData.html == "<p></p>") {
-          that.resData.html = "<p></p><p></p><p></p><p></p><p></p>";
-        }
+        // if (that.resData.html == "<p></p>") {
+        //   that.resData.html = "<p></p><p></p><p></p><p></p><p></p>";
+        // }
         that.editor.setContent(that.resData.html);
         // that.editor.commands.code_block();
       }

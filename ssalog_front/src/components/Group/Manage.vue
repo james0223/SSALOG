@@ -67,8 +67,8 @@
                         >
                         </v-datetime-picker>
                         <v-spacer></v-spacer>
-                        <v-btn type="reset">초기화</v-btn>
-                        <v-btn type="submit">과제 출제</v-btn>
+                        <v-btn class="button_margin" type="reset">초기화</v-btn>
+                        <v-btn class="ml-5" type="submit">과제 출제</v-btn>
                       </form>
                     </v-card>
                   </ValidationObserver>
@@ -85,9 +85,8 @@
                       <v-timeline-item v-for="task in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
                           <v-card-title class="headline">{{ task.problemname }}</v-card-title>
-                          <v-card-text>
-                            {{ task.limit }}
-                          </v-card-text>
+                          <v-card-subtitle>{{ task.mention }}</v-card-subtitle>
+                          <v-card-text> 마감일 : {{ task.limit.substr(0, 10) }} </v-card-text>
                         </v-card>
                       </v-timeline-item>
                     </v-timeline>
@@ -438,6 +437,9 @@ export default {
 </script>
 
 <style lang="scss">
+.button_margin {
+  margin-left: 4.5vw;
+}
 .chart-container {
   flex-grow: 1;
   min-height: 0;

@@ -113,7 +113,11 @@ public class AccountServiceImpl implements AccountService{
 	public String get_form(String username) {
 		Account ac = accountRepository.findByNickname(username);
 		if(ac != null) {
-			return ac.getForm();
+			if(ac.getForm() != null) {
+				return ac.getForm();
+			}else {
+				return "null";
+			}
 		}
 		return "fail";
 	}
