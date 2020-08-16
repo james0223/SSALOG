@@ -227,20 +227,6 @@ public class PostServiceImpl implements PostService{
 		}
 		return m;
 	}
-	public Map<String, Integer> detail_py(String problemid){
-		Problem problem = problemRepository.findByProblemid(problemid);
-		Map<String, Integer> result = new TreeMap<String, Integer>();
-		if(problem != null) {
-			Map<String, Integer> m = problem.getKey();
-			//		long div = problem.getAll_cnt();
-			for (String key : m.keySet()) {
-				Integer value = m.get(key);
-				//            double val = Math.round((((double)value/div)*100)*10)/10.0;
-				result.put(key, value);
-			}
-		}
-		return result;
-	}
 	public void input_problem(Problem problem){
 		problemRepository.save(problem);
 	}

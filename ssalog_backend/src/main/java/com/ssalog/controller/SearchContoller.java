@@ -113,8 +113,8 @@ public class SearchContoller {
 	}
 	@ApiOperation(value ="[detail page] 문제번호를 주면, 해당 문제를 푼 키워드의 종류와 각각 키워드 사용횟수를 줌")
 	@GetMapping("/detail_py")
-	public ResponseEntity<Map<String, Integer>> detail_py(@RequestParam("problemid") String problemid){
-		return new ResponseEntity<Map<String, Integer>>(postService.detail_py(problemid), HttpStatus.OK);
+	public ResponseEntity<Map<String, Integer>> detail_py(@RequestParam("problemid") String problemid, @RequestParam("count") Integer count){
+		return new ResponseEntity<Map<String, Integer>>(postSubService.detail_py(problemid,count), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[문제 이름 찾기] 문제 번호를 주면 문제이름을 찾아줍니다.")

@@ -18,4 +18,5 @@ public interface PostSubService {
 	public Map<String, Integer> find_py_graph(String username, int cnt);
 	public long problem_cnt(String problemid);
 	public List<PostSub> latestPost(int cnt);
+	public Map<String, Integer> detail_py(String problemid, int cnt);
 }
