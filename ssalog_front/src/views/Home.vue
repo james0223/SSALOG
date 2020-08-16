@@ -218,11 +218,6 @@
       >
         <v-icon>keyboard_arrow_up</v-icon>
       </v-btn>
-      <v-footer class="justify-center" color="#292929" height="100">
-        <div class="title font-weight-light grey--text text--lighten-1 text-center">
-          &copy; none.vat
-        </div>
-      </v-footer>
     </v-app>
   </div>
 </template>
