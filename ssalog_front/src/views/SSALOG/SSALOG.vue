@@ -147,7 +147,7 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -224,38 +224,45 @@ export default {
   },
   computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
   methods: {
+    ...mapMutations(["ShowAlert"]),
     decrementFollow() {
       this.following = this.following - 1;
     },
     async followclick() {
-      if (!this.isfollow) {
-        await axios
-          .post(
-            `${this.$store.state.ServerURL}/user/follow/do_follow`,
-            {},
-            { params: { following: this.ownerName } }
-          )
-          .then(() => {
-            this.isfollow = !this.isfollow;
-            this.follower = this.follower + 1;
-          })
-          .catch(function(error) {
-            console.log(error);
-            alert("로그인이 필요합니다.");
-          });
+      if (this.$store.state.nickname != null) {
+        if (!this.isfollow) {
+          await axios
+            .post(
+              `${this.$store.state.ServerURL}/user/follow/do_follow`,
+              {},
+              { params: { following: this.ownerName } }
+            )
+            .then(() => {
+              this.isfollow = !this.isfollow;
+              this.follower = this.follower + 1;
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else {
+          await axios
+            .delete(`${this.ServerURL}/user/follow/cancel_follow`, {
+              params: { following: this.ownerName }
+            })
+            .then(() => {
+              this.follower = this.follower - 1;
+              this.isfollow = !this.isfollow;
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
       } else {
-        await axios
-          .delete(`${this.ServerURL}/user/follow/cancel_follow`, {
-            params: { following: this.ownerName }
-          })
-          .then(() => {
-            this.follower = this.follower - 1;
-            this.isfollow = !this.isfollow;
-          })
-          .catch(function(error) {
-            console.log(error);
-            alert("로그인이 필요합니다.");
-          });
+        // alert("로그인이 필요합니다.");
+        this.ShowAlert({ flag: true, msg: "로그인이 필요한 기능입니다.", color: "cyan darken-2" });
+        setTimeout(() => {
+          this.ShowAlert({ flag: false, msg: "" });
+        }, 2000);
       }
     },
     onChangeImages(e) {
@@ -333,7 +340,7 @@ export default {
           }
         });
 
-        console.log(info.data);
+        // console.log(info.data);
         this.level = info.data.level;
         this.exp = info.data.exp;
         this.scrapSu = info.data.scraped_num;
