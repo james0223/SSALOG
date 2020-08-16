@@ -17,6 +17,6 @@ public interface additionalRepository {
 	public void update_subcomment(String id, Comment comment);
 	public Page<Problem> keyword_search(String[] list, Pageable pageable);
 	public Page<Problem> solved_list(String[] list, Pageable pageable);
-	
+	public void update_nickname(String nickname, String username);
 	public  AggregationResults<PostSub> latestpost(int cnt);
 }
