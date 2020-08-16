@@ -325,4 +325,18 @@ public class GroupServiceImpl implements GroupService{
 			return false;
 		}
 	}
+	@Override
+	public String Check_Role( String groupname,String nickname) {
+		Groupdetail gd = groupDetailRepository.findByAccount_nicknameAndGroupdto_groupname(nickname, groupname);
+		if(gd!= null ) {
+			if(gd.getRole().equals(GroupRole.owner)) {
+				return "owner";
+			}else if(gd.getRole().equals(GroupRole.member)){
+				return "member";
+			}
+			return "false";
+		}else {
+			return "false";
+		}
+	}
 }
