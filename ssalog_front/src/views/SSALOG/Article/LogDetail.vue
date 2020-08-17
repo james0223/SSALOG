@@ -9,7 +9,21 @@
             <v-spacer></v-spacer>
             <div v-if="username === writerUsername">
               <v-btn text @click="editSolution">수정</v-btn>
-              <v-btn text @click="deleteSolution">삭제</v-btn>
+              <v-btn text color="red" @click="isDelete = true">삭제</v-btn>
+              <v-dialog v-model="isDelete" max-width="60vh">
+                <v-card>
+                  <v-card-title>
+                    <h5>글 삭제</h5>
+                  </v-card-title>
+                  <v-card-text>정말 삭제하시겠어요?</v-card-text>
+                  <v-card-text>삭제 이후에는 복구할 수 없습니다.</v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" text @click="deleteSolution">삭제</v-btn>
+                    <v-btn color="grey" text @click="isDelete = false">취소</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </div>
           </v-card-title>
           <v-card-text
@@ -180,6 +194,7 @@ export default {
   data() {
     return {
       // 왼쪽 thumbnail 관련
+      isDelete: false, // delete 모달
       scrapped: false,
       thumbnailDialog: false,
       ThumbnailSelect: 0,
@@ -395,6 +410,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
+      this.isDelete = false;
     },
     async getSSALOG(pageId) {
       try {

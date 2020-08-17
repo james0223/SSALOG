@@ -78,9 +78,9 @@ export default {
           value: "problemid"
         },
         { text: "문제이름", sortable: false, value: "problemname" },
-        { text: "제목", sortable: false, width: 600, value: "title" },
-        { text: "좋아요", align: "center", width: 100, value: "like" },
-        { text: "키워드", sortable: false, width: 160, value: "keyword" },
+        { text: "제목", sortable: false, value: "title" },
+        { text: "좋아요", value: "like" },
+        { text: "키워드", sortable: false, value: "keyword" },
         { text: "작성날짜", width: 120, value: "regdate" }
       ],
       solutions: []
