@@ -8,8 +8,8 @@ import VueClipboard from "vue-clipboard2";
 // import tiptap-style
 import "./assets/tiptap/sass/main.scss";
 // eslint-disable-next-line
-import Highlight from "vue-markdown-highlight";
-import "highlight.js/styles/github.css";
+// import Highlight from "vue-markdown-highlight";
+import "highlight.js/styles/xcode.css";
 // countdown;
 // eslint-disable-next-line
 import VueCountdown from "@chenfengyuan/vue-countdown";
@@ -35,7 +35,7 @@ Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
 // Register it globally
 Vue.component(VueCountdown.name, VueCountdown);
-Vue.use(Highlight);
+// Vue.use(Highlight);
 Vue.use(VueClipboard);
 VueClipboard.config.autoSetContainer = true;
 Vue.use(DatetimePicker);
