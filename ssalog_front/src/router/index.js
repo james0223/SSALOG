@@ -14,6 +14,7 @@ import ProblemDetail from "@/components/Problem/ProblemDetail.vue";
 import Home from "@/views/Home.vue";
 import Page404 from "@/views/Page404.vue";
 import Naruto from "@/views/narutoHome.vue";
+import Index from "@/views/Main.vue";
 // editor
 import WriteLog from "@/views/SSALOG/Article/WriteLog.vue";
 import LogDetail from "@/views/SSALOG/Article/LogDetail.vue";
@@ -49,9 +50,14 @@ const routes = [
     redirect: "/404"
   },
   {
-    path: "Naruto",
+    path: "/Naruto",
     name: "Naruto",
     component: Naruto
+  },
+  {
+    path: "/Index",
+    name: "Index",
+    component: Index
   },
   {
     path: "/Problem",
