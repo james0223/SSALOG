@@ -61,9 +61,9 @@ public class CommentController {
 	}
 	@PutMapping("user/post/put_comment")
 	@ApiOperation(value = "[댓글업데이트] 댓글의 id와 수정할 내용을 줘서 해당 댓글을 수정한다.")
-	public ResponseEntity<String> update_comment(HttpServletResponse response,@RequestParam("id") String id, @RequestBody Comment comment) {
+	public ResponseEntity<String> update_comment(HttpServletResponse response,@RequestParam("id") String id, @RequestParam("message") String message) {
 		String username = response.getHeader("username");
-		commentService.update_comment(comment, id, username);
+		commentService.update_comment(message, id, username);
 		return new ResponseEntity<String>("수정 완료!", HttpStatus.OK);
 	}
 	
