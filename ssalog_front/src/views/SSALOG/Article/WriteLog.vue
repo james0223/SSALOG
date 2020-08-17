@@ -201,7 +201,7 @@ import clike from "highlight.js/lib/languages/c-like";
 import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
-import "highlight.js/styles/github.css";
+import "highlight.js/styles/xcode.css";
 
 import lodash from "lodash";
 import axios from "axios";
