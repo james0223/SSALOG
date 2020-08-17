@@ -72,7 +72,10 @@
         </v-card>
         <v-card flat color="transparent" min-height="40vh" class="pa-0 pa-sm-3 mb-10">
           <v-card-text class="pa-0 pa-sm-3">
-            <editor-content class="main_content editor__content article" :editor="editor" />
+            <editor-content
+              class="main_content editor__content article text-sm-caption text-md-subtitle-1"
+              :editor="editor"
+            />
           </v-card-text>
         </v-card>
         <Comment />
