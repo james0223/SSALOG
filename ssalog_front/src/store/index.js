@@ -138,14 +138,18 @@ export default new Vuex.Store({
           .then(result => {
             // 토큰이 만료되었을때
             if (result.data.success === false) {
+              commit("LOGOUT");
               commit("ShowAlert", {
                 flag: true,
                 msg: "토큰이 만료되었습니다. 다시 로그인하세요",
                 color: "error"
               });
               setTimeout(() => {
-                commit("LOGOUT");
                 // commit("ShowAlert", { flag: false, msg: "" });
+                commit("ShowAlert", {
+                  flag: false,
+                  msg: ""
+                });
                 window.location.reload();
               }, 2000);
             }
@@ -156,14 +160,14 @@ export default new Vuex.Store({
             if (err.response.status === 401 || err.response.status === 9999) {
               // 토큰 갱신 실패 (9999) 처리
               // console.log("너는 은하철도");
+              commit("LOGOUT");
               commit("ShowAlert", {
                 flag: true,
                 msg: "토큰이 만료되었습니다. 다시 로그인하세요",
                 color: "error"
               });
               setTimeout(() => {
-                commit("LOGOUT");
-                // commit("ShowAlert", { flag: false, msg: "" });
+                commit("ShowAlert", { flag: false, msg: "" });
                 window.location.reload();
               }, 2000);
             }
@@ -177,16 +181,20 @@ export default new Vuex.Store({
       setTimeout(res, timeUntilRef);
     },
     async LOGOUT({ commit }) {
-      await Axios.post(`${this.state.ServerURL}/user/out`, null, {});
+      await Axios.post(`${this.state.ServerURL}/user/out`);
+      commit("LOGOUT");
       commit("ShowAlert", {
         flag: true,
         msg: "로그아웃 되었습니다.",
         color: "info"
       });
       setTimeout(() => {
-        commit("LOGOUT");
+        commit("ShowAlert", {
+          flag: false,
+          msg: ""
+        });
         window.location.reload();
-      }, 2000);
+      }, 1000);
     },
     async SIGNUP({ dispatch }, signupData) {
       const { data } = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
