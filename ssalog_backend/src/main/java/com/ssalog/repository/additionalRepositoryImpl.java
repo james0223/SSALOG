@@ -52,7 +52,13 @@ public class additionalRepositoryImpl implements additionalRepository{
 		update.pull("comment", new BasicDBObject("_id", id));
 		mongoTemplate.updateFirst(q, update, "post");
 	}
-	
+//	public Comment get_comment(String id) {
+//		Query q = new Query();
+//		q.addCriteria(Criteria.where("comment")
+//						.elemMatch(Criteria.where("_id").is(id)));
+//		return mongoTemplate.findOne(q, Post.class);
+//	}
+//	
 	public void update_comment(Comment comment, String id) {
 		Query q = new Query();
 		q.addCriteria(Criteria.where("comment")
