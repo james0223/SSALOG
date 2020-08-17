@@ -457,7 +457,7 @@ export default {
   padding: 1em 1.5em;
   display: block;
   word-wrap: break-word;
-  font-size: 1rem;
+  /* font-size: 1rem; */
   overflow-x: auto;
 }
 .content-title {
