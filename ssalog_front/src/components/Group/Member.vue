@@ -1,5 +1,5 @@
 <template>
-  <v-card flat height="70vh" class="mx-7 my-15">
+  <v-card color="transparent" flat height="70vh" class="mx-7 my-15">
     <v-toolbar-title>그룹 멤버</v-toolbar-title>
     <v-divider></v-divider>
     <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" height="300">
@@ -41,7 +41,6 @@ export default {
             groupname: this.$route.params.groupname
           }
         });
-        console.log(data);
         this.groupMember = [];
         // eslint-disable-next-line
         for (let idx = 0; idx < data.length; idx++) {
