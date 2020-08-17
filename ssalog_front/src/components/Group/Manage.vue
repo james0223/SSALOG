@@ -387,7 +387,6 @@ export default {
             problemname: this.HW.name
           }
         });
-        console.log("과제 출제 성공!");
         const HCopy = _.cloneDeep(this.HW);
         this.HWList.push(HCopy);
       } catch (err) {
@@ -411,7 +410,6 @@ export default {
             break;
           }
         }
-        console.log(data);
       } catch (e) {
         console.log(e);
       }

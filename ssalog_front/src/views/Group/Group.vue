@@ -2,8 +2,8 @@
   <v-container>
     <v-row justify="center" no-gutters>
       <v-col cols="2">
-        <v-card flat height="70vh">
-          <v-tabs vertical class="my-15 pa-3">
+        <v-card color="transparent" flat height="70vh">
+          <v-tabs vertical background-color="transparent" class="my-15 pa-3">
             <v-tab
               style="justify-content:left;"
               v-for="menu in GroupMenu"

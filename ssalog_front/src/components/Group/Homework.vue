@@ -1,6 +1,6 @@
 <template>
-  <v-card flat height="70vh" class="mx-7 my-15">
-    <v-card flat class="mb-5">
+  <v-card color="transparent" flat height="70vh" class="mx-7 my-15">
+    <v-card color="transparent" flat class="mb-5">
       <v-toolbar-title>과제 목록</v-toolbar-title>
       <v-simple-table height="20vh">
         <template v-slot:default>
@@ -30,7 +30,7 @@
         </template>
       </v-simple-table>
     </v-card>
-    <v-card flat height="45vh">
+    <v-card color="transparent" flat height="45vh">
       <v-toolbar-title class="mb-4">제출 목록</v-toolbar-title>
       <v-card min-width="40%" height="35vh" class="d-inline-block mx-5">
         <v-subheader>제출자</v-subheader>
@@ -99,7 +99,6 @@ export default {
         }
       });
       this.Homeworks = res.data;
-      console.log(res.data);
       return res.data;
     },
     /* eslint-disable */
@@ -137,8 +136,6 @@ export default {
           this.solvedMembers.push({ name: key, route: this.taskSubmissionStatus[idx][key] });
         }
       });
-      console.log("푼사람", this.solvedMembers);
-      console.log("안푼사람", this.unsolvedMembers);
     }
     /* eslint-enable */
   },
