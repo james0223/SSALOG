@@ -55,9 +55,54 @@
     </v-card>
     <h2>{{ entryMsg }}</h2>
     <v-row>
+      <v-col v-if="!username && showCard && !isNoResult" cols="12">
+        <v-hover v-slot:default="{ hover }">
+          <v-card min-height="11rem" class="toNewbee" dark elevation="8">
+            <v-row align="center">
+              <v-col cols="7"
+                ><v-card-title>
+                  <h3 class="ml-3 mt-5">
+                    쌀로그와 함께<br />
+                    문제를 풀어주세요!😃
+                  </h3></v-card-title
+                ></v-col
+              >
+              <v-col cols="5"
+                ><v-card-title>
+                  <h1 class="mt-9"><v-icon x-large>mdi-login-variant</v-icon>Go SSaLog</h1>
+                </v-card-title></v-col
+              >
+            </v-row>
+
+            <v-card
+              v-if="hover"
+              class="d-flex flex-column black v-card--reveal white--text pa-4"
+              elevation="12"
+            >
+              <v-card-actions
+                ><v-btn color="black" large rounded @click="$router.push({ name: 'Login' })"
+                  ><v-icon>mdi-login</v-icon>로그인</v-btn
+                ></v-card-actions
+              >
+              <v-card-actions>
+                <v-btn color="black" large rounded @click="$router.push({ name: 'SignUp' })">
+                  <v-icon>mdi-checkbox-marked-circle-outline</v-icon>회원가입</v-btn
+                ></v-card-actions
+              >
+            </v-card>
+          </v-card>
+        </v-hover>
+      </v-col>
       <v-col v-for="(problem, i) in problems" :key="i" cols="12">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card @click="visitProblemDeatil(problem.problemid)" :elevation="hover ? 12 : 2">
+            <img
+              v-if="problem.starter === username"
+              class="corner"
+              src="@/assets/images/corner/corner_pioneer.png"
+              title="이 문제의 개척자이십니다!"
+              alt="you are pioneer"
+            />
             <v-card-title>{{ problem.problemid }} - {{ problem.name }}</v-card-title>
             <v-card-text>등록된 리뷰 : {{ problem.all_cnt }}개</v-card-text>
             <div v-if="JSON.stringify(problem.key) !== '{}'">
@@ -106,6 +151,7 @@ export default {
         size: 12
       },
       limit: 9999,
+      showCard: false,
       categoryIdx: this.$route.query.categoryIdx,
       searchMethods: ["to_problemid", "to_problemname", "to_keyword"],
       problems: [],
@@ -165,9 +211,13 @@ export default {
         console.error(e);
       }
       this.is_fetching = false;
+      this.showCard = true;
     }
   },
   computed: {
+    username() {
+      return this.$store.state.username;
+    },
     entryMsg() {
       if (this.isNoResult) {
         return "";
@@ -189,4 +239,23 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.corner {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 4rem;
+}
+.toNewbee {
+  background: rgb(122, 6, 118);
+  background: linear-gradient(145deg, rgba(122, 6, 118, 1) 16%, rgba(0, 220, 255, 1) 92%);
+}
+.v-card--reveal {
+  bottom: 0;
+  opacity: 0.85;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+</style>

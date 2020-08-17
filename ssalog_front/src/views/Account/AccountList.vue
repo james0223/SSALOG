@@ -117,7 +117,6 @@ export default {
       setTimeout(() => {
         if (!this.is_fetching && !this.isNoResult && !this.isError) {
           this.fetchUserData();
-          this.showCard = true;
         }
         $state.loaded();
       }, 1000);
@@ -147,6 +146,7 @@ export default {
         this.isError = true;
       }
       this.is_fetching = false;
+      this.showCard = true;
     }
   }
 };

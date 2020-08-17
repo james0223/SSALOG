@@ -83,8 +83,18 @@
       </v-expand-transition>
     </v-card-text>
     <v-divider></v-divider>
-    <v-card-title>
-      <h3 class="font-weight-light mb-3">양식 변경</h3>
+    <v-card-title class="mb-4">
+      <h3 class="font-weight-light mb-3">
+        내 양식 설정<v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn class="pa-0" small text v-bind="attrs" v-on="on"
+              ><v-icon>mdi-help-circle-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>풀이 작성시 자동으로 양식을 불러와줘요!</span>
+        </v-tooltip>
+      </h3>
+
       <v-spacer></v-spacer>
 
       <div class="text-center">
@@ -96,7 +106,11 @@
           </template>
 
           <v-card>
-            <v-card-text>
+            <v-card-title>
+              <h2>내 양식 설정</h2>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text class="mt-5">
               <editor-menu-bar
                 :editor="editor"
                 v-slot="{ commands, isActive }"
@@ -234,7 +248,7 @@
               <v-btn color="primary" text @click="saveForm">
                 저장
               </v-btn>
-              <v-btn color="primary" text @click="changeForm.dialog = false">
+              <v-btn text @click="changeForm.dialog = false">
                 취소
               </v-btn>
             </v-card-actions>
