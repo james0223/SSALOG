@@ -194,13 +194,14 @@ import {
   Focus,
   TrailingNode
 } from "tiptap-extensions";
-import cpp from "highlight.js/lib/languages/cpp";
 import css from "highlight.js/lib/languages/css";
-import c from "highlight.js/lib/languages/c";
 import clike from "highlight.js/lib/languages/c-like";
 import python from "highlight.js/lib/languages/python";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
+// import cpp from "highlight.js/lib/languages/cpp";
+// import c from "highlight.js/lib/languages/c";
+
 import "highlight.js/styles/xcode.css";
 
 import lodash from "lodash";
@@ -243,9 +244,9 @@ export default {
           }),
           new CodeBlockHighlight({
             languages: {
-              cpp,
+              // cpp,
               css,
-              c,
+              // c,
               clike,
               python,
               java,
@@ -289,9 +290,9 @@ export default {
         extensions: [
           new CodeBlockHighlight({
             languages: {
-              cpp,
+              // cpp,
               css,
-              c,
+              // c,
               clike,
               python,
               java,
