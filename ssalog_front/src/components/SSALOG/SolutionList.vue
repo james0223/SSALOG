@@ -31,10 +31,26 @@
         nextIcon: 'mdi-plus'
       }"
     >
+      <template v-slot:[`item.title`]="{ item }">
+        <span
+          style="cursor:pointer"
+          @click="$router.push({ name: 'LogDetail', params: { id: item.scoring } })"
+          >{{ item.title }}</span
+        >
+      </template>
+      <template v-slot:[`item.problemid`]="{ item }">
+        <span
+          style="cursor:pointer"
+          @click="$router.push({ name: 'ProblemDetail', params: { id: item.problemid } })"
+          >{{ item.problemid }}</span
+        >
+      </template>
       <template v-slot:[`item.problemname`]="{ item }">
-        <a style=" color: black; " :href="`Solution/${item.scoring}`">
-          {{ item.problemname }}
-        </a>
+        <span
+          style="cursor:pointer"
+          @click="$router.push({ name: 'ProblemDetail', params: { id: item.problemid } })"
+          >{{ item.problemname }}</span
+        >
       </template>
       <template v-slot:[`item.keyword`]="{ item }">
         <span :title="item.keyword">{{ item.keyword2 }}</span>
@@ -57,12 +73,12 @@ export default {
       singleExpand: true,
       headers: [
         {
-          text: "문제",
-          align: "start",
+          text: "문제번호",
           sortable: false,
-          value: "problemname"
+          value: "problemid"
         },
-        { text: "문제번호", sortable: false, width: 100, value: "problemid" },
+        { text: "문제이름", sortable: false, value: "problemname" },
+        { text: "제목", sortable: false, width: 600, value: "title" },
         { text: "좋아요", align: "center", width: 100, value: "like" },
         { text: "키워드", sortable: false, width: 160, value: "keyword" },
         { text: "작성날짜", width: 120, value: "regdate" }
