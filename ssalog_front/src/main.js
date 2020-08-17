@@ -9,6 +9,7 @@ import VueClipboard from "vue-clipboard2";
 import "./assets/tiptap/sass/main.scss";
 // eslint-disable-next-line
 // import Highlight from "vue-markdown-highlight";
+import "highlight.js";
 import "highlight.js/styles/xcode.css";
 // countdown;
 // eslint-disable-next-line
