@@ -64,7 +64,9 @@
               </v-avatar>
             </v-card-text>
             <v-card-text>
-              {{ user.nickname }}
+              <!-- {{ user.nickname }} -->
+
+              <h3>{{ user.nickname }}</h3>
             </v-card-text>
           </v-card>
         </v-hover>
