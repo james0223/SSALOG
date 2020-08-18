@@ -4,14 +4,20 @@
       <v-col cols="8">
         <v-row>
           <v-col cols="6">
-            <v-card height="25vh" class="chart-container"
+            <v-card v-if="HWList.length" height="25vh" class="chart-container"
               >과제 제출현황
               <PieChart class="pie" v-if="pieLoaded" v-bind:chart-data="examData" />
             </v-card>
+            <v-card v-else height="25vh">
+              <v-img :src="require('@/assets/images/html_programming1.png')"></v-img>
+            </v-card>
           </v-col>
           <v-col cols="6">
-            <v-card height="25vh" class="chart-container">
+            <v-card v-if="HWList.length" height="25vh" class="chart-container">
               <BarChart class="bar" v-if="barLoaded" v-bind:chart-data="barData" />
+            </v-card>
+            <v-card v-else height="25vh">
+              <v-img :src="require('@/assets/images/html_programming2.png')"></v-img>
             </v-card>
           </v-col>
         </v-row>
@@ -81,7 +87,7 @@
                     min-width="18vw"
                     style="overflow-y: scroll;"
                   >
-                    <v-timeline dense>
+                    <v-timeline v-if="HWList.length" dense>
                       <v-timeline-item v-for="(task, idx) in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
                           <v-card-title class="headline"
@@ -103,6 +109,10 @@
                         </v-card>
                       </v-timeline-item>
                     </v-timeline>
+                    <p class="mt-15 display-2 text--primary" style="line-height: 4rem" v-else>
+                      📚과제를 <br />
+                      출제해주세요
+                    </p>
                   </v-card>
                 </v-col>
               </v-row>
@@ -139,7 +149,12 @@
           <v-divider></v-divider>
           <v-card flat>
             <v-toolbar-title>가입 신청 현황</v-toolbar-title>
-            <v-virtual-scroll :items="applicants" :item-height="35" min-height="30vh">
+            <v-virtual-scroll
+              v-if="applicants.length"
+              :items="applicants"
+              :item-height="35"
+              min-height="30vh"
+            >
               <template v-slot="{ item }">
                 <v-expansion-panels>
                   <v-expansion-panel>
@@ -182,6 +197,7 @@
                 </v-expansion-panels>
               </template>
             </v-virtual-scroll>
+            <h4 class="mt-5 ml-5" v-else>가입신청한 회원이 없습니다😭</h4>
           </v-card>
         </v-card>
       </v-col>
@@ -237,12 +253,7 @@ export default {
       // 회원 관리
       groupMember: [],
       // 회원가입 관리
-      applicants: [
-        {
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-          name: "오지네"
-        }
-      ],
+      applicants: [],
       // pie chart data
       pieLoaded: false,
       examData: {
