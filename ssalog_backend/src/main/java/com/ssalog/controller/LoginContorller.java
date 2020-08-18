@@ -193,7 +193,6 @@ public class LoginContorller {
         Map<String, Object> map = new HashMap<>();
         String refreshToken = response.getHeader("jwtToken2");
         try {
-
             if (refreshToken != null) { //refresh를 같이 보냈으면.
             	String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
                 try {

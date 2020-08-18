@@ -80,6 +80,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         		jwtToken2 = refreshToken.substring(7);
         		//jwtToken = requestTokenHeader.substring(7);
         		System.out.println("여기진입");
+        		response.setHeader("jwtToken2", jwtToken2);
         	}else {
         		jwtToken = requestTokenHeader.substring(7);
         		logger.info("token in requestfilter: " + jwtToken);
@@ -111,7 +112,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             //만든 authentication 객체로 매번 인증받기
             SecurityContextHolder.getContext().setAuthentication(authen);
             response.setHeader("jwtToken", jwtToken);
-            response.setHeader("jwtToken2", jwtToken2);
             response.setHeader("username", username);
         }
         chain.doFilter(request, response);
