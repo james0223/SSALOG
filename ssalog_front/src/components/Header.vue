@@ -81,7 +81,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-card color="transparent" v-bind="attrs" v-on="on" flat>
                   <v-row no-gutters>
-                    <v-col cols="4" class="d-md-none">
+                    <v-col cols="4" class="d-nome d-md-flex">
                       <v-avatar>
                         <v-img
                           contain
