@@ -237,7 +237,7 @@ export default {
         { lang: "C", ico: null }
       ],
       pioneer: null,
-      pioneerImg: null,
+      pioneerImg: "default.png",
       UserSolved: false,
       problemTitle: null,
       problemNumber: this.$route.params.id,
