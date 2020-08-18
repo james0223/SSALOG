@@ -20,7 +20,7 @@
       <v-col cols="7" class="font-weight-light">
         <v-row no-gutters>
           <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
-          <v-col cols="3" class="d-flex justify-center"
+          <v-col cols="3" class="d-flex justify-end"
             ><h4 class="font-weight-light mb-1">키워드</h4></v-col
           >
           <v-col cols="3" class="text-end"><h4 class="font-weight-light mb-1">작성일자</h4></v-col>
@@ -46,13 +46,13 @@
               "
             >
               <v-row no-gutters class="text-caption">
-                <v-col cols="6">
-                  <span> {{ solve.problemid }} - {{ solve.title }}</span>
+                <v-col cols="6" style="width : 1px;" class="text-truncate d-sm-flex d-md-block">
+                  <span>{{ solve.problemid }} - {{ solve.title }}</span>
                 </v-col>
-                <v-col cols="3" class=" text-center">
+                <v-col cols="3" style="width : 1px;" class=" text-end text-truncate">
                   <span> {{ solve.keyword2 }}</span>
                 </v-col>
-                <v-col cols="3" class="text-end">
+                <v-col cols="3" style="width : 1px;" class="text-end text-truncate">
                   <span> {{ solve.regdate }}</span>
                 </v-col>
               </v-row>
@@ -155,11 +155,11 @@ export default {
           this.solvedList = data.content;
           const iterable = this.solvedList;
           iterable.forEach(element => {
-            const lengths = 17; // 표시할 글자수 기준
+            // const lengths = 17; // 표시할 글자수 기준
             const temp = element;
-            if (temp.title.length > lengths) {
-              temp.title = temp.title.substr(0, lengths - 2).concat("...");
-            }
+            // if (temp.title.length > lengths) {
+            //   temp.title = temp.title.substr(0, lengths - 2).concat("...");
+            // }
 
             if (temp.keyword.length !== 0) {
               const [foo] = temp.keyword;
