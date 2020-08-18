@@ -62,7 +62,7 @@
           <v-divider class="mx-3"></v-divider>
 
           <v-row justify="center">
-            <v-col cols="5">
+            <v-col cols="6">
               <v-card color="transparent" flat>
                 <v-card-title>
                   <h5>언어별 평균스펙</h5>
@@ -126,14 +126,16 @@
                 </v-card-actions>
               </v-card>
             </v-col>
-            <v-col cols="2"></v-col>
-            <v-col cols="4">
-              <v-card color="transparent" flat class="chart-container" max-width="35vh">
+            <v-col cols="1"></v-col>
+            <v-col cols="5">
+              <v-card color="transparent" flat class="chart-container" max-width="2000vh">
                 <v-card-title>
                   <h5>주요 풀이기법</h5>
                 </v-card-title>
                 <v-card-text class="mt-15">
                   <DoughNutChart
+                    :width="450"
+                    :height="400"
                     v-if="doughnutLoaded"
                     v-bind:chart-data="problemData"
                     v-bind:chart-options="chartOptions"
@@ -141,7 +143,6 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col cols="1"></v-col>
           </v-row>
         </v-card>
       </v-col>
