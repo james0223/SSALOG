@@ -139,7 +139,7 @@
         </div>
       </v-col>
       <v-col cols="12" sm="10"
-        ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getScrapNum"></router-view>
+        ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getInfo"></router-view>
       </v-col>
     </v-row>
   </v-container>
