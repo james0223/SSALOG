@@ -8,7 +8,7 @@
             <tr>
               <th class="text-left">문제</th>
               <th class="text-left">문제 설명</th>
-              <th class="text-left">남은 시간</th>
+              <th class="text-left">과제 완료율</th>
               <th class="text-left">문제 링크</th>
             </tr>
           </thead>
@@ -18,12 +18,7 @@
                 {{ hw.problemname }}
               </td>
               <td>{{ hw.mention }}</td>
-              <countdown :time="getCount(hw.limit)" :interval="1000" tag="td">
-                <template slot-scope="props"
-                  >{{ props.days }}일 {{ props.hours }}시간 {{ props.minutes }}분
-                  {{ props.seconds }}초</template
-                >
-              </countdown>
+              <td>{{ solvedRate }}%</td>
               <th>
                 <a target="_blank" :href="`https://www.acmicpc.net/problem/${hw.problemid}`">
                   문제 링크
@@ -84,7 +79,10 @@ export default {
       Homeworks: [],
       taskSubmissionStatus: [],
       solvedMembers: [],
-      unsolvedMembers: []
+      unsolvedMembers: [],
+      solvedNum: 0,
+      unsolvedNum: 0,
+      solvedRate: 0
     };
   },
   methods: {
@@ -140,6 +138,9 @@ export default {
           this.solvedMembers.push({ name: key, route: this.taskSubmissionStatus[idx][key] });
         }
       });
+      this.solvedNum = this.solvedMembers.length;
+      this.unsolvedNum = this.unsolvedMembers.length;
+      this.solvedRate = this.solvedNum / (this.solvedNum + this.unsolvedNum);
     }
     /* eslint-enable */
   },
