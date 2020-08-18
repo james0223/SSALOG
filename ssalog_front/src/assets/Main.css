@@ -25,10 +25,10 @@
   position: fixed;
   top: 4rem;
   left: 13vw;
-  opacity: 90% !important;
+  opacity: 0.9 !important;
 }
 .profile_card {
-  opacity: 90% !important;
+  opacity: 0.9 !important;
   background: rgb(26, 69, 255);
   background: linear-gradient(
     326deg,
