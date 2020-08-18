@@ -1,5 +1,5 @@
 <template>
-  <v-card color="transparent" flat height="60vh" class="pa-6 mt-8">
+  <v-card color="transparent" flat class="pa-6 mt-8">
     <h3 class="font-weight-light mb-1">쌀밭</h3>
     <v-divider></v-divider>
     <calendar-heatmap
