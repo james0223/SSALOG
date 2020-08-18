@@ -132,7 +132,6 @@ public class LoginContorller {
         //발행한 redis에 저장하는 로직으로, hashmap과 같은 key,value 구조임
         ValueOperations<String, Object> vop = redisTemplate.opsForValue();
         vop.set(username, retok); // key, value 값으로 redis에 저장
-        redisTemplate.expire(username, jwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY, TimeUnit.MILLISECONDS);
         
         String nickname = accountRepository.findByUsername(username).getNickname();
         logger.info("generated access token: " + accessToken);
@@ -206,8 +205,10 @@ public class LoginContorller {
                 } catch (IllegalArgumentException e) {
                     logger.warn("illegal argument!!");
                 }
+                System.out.println();
                 //둘이 일치하고 만료도 안됐으면 재발급 해주기.
                 if (refreshToken.equals(refreshTokenFromDb) && !jwtTokenUtil.isTokenExpired(refreshToken)) {
+                	
                     final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                     String newtok =  jwtTokenUtil.generateAccessToken(userDetails);
                     map.put("success", true);
