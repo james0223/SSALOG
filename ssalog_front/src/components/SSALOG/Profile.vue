@@ -8,9 +8,17 @@
             style="float:right"
             v-if="$store.state.nickname === $route.params.nickname"
           >
-            <input type="checkbox" id="editable" v-model="editable" />
-            <label for="editable">수정하기</label>
+            <v-btn @click="modeClick" :color="modeColor" class="white--text">{{ mode }}</v-btn>
+            <!-- <input type="checkbox" id="editable" v-model="editable" /> -->
+            <!-- <label for="editable">수정하기</label> -->
           </div>
+
+          <div class="checkbox" style="float:right" v-if="editable">
+            <v-btn @click="write" color="green" class="white--text">저장</v-btn>
+            <!-- <input type="checkbox" id="editable" v-model="editable" /> -->
+            <!-- <label for="editable">수정하기</label> -->
+          </div>
+
           <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
             <div class="menubar is-hidden" :class="{ 'is-focused': editable }">
               <button
@@ -135,7 +143,6 @@
           <div id="example-3">
             <br />
           </div>
-          <v-btn color="info" tile block @click="write" v-if="editable"> 작성하기</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -174,6 +181,8 @@ export default {
   },
   data() {
     return {
+      modeColor: "primary",
+      mode: "수정하기",
       editable: false,
       title: null,
       html: null,
@@ -217,9 +226,20 @@ export default {
       this.editor.setOptions({
         editable: this.editable
       });
+      if (this.mode === "수정하기") {
+        this.mode = "취소";
+        this.modeColor = "red";
+      } else {
+        this.modeColor = "primary";
+        this.$router.go();
+        this.mode = "수정하기";
+      }
     }
   },
   methods: {
+    modeClick() {
+      this.editable = !this.editable;
+    },
     write() {
       this.html = this.editor.getHTML();
       axios
