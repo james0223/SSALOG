@@ -1,7 +1,75 @@
 <template>
   <v-container mt-3>
     <template v-if="resData !== undefined">
-      <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
+      <v-row>
+        <v-col cols="11">
+          <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
+        </v-col>
+        <!-- <v-col cols="1"
+          ><button><v-icon size="25">mdi-help-circle-outline</v-icon></button>
+        </v-col> -->
+        <v-col cols="1">
+          <template>
+            <div class="text-center">
+              <v-dialog v-model="tool" width="500">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon size="25">mdi-help-circle-outline</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-card>
+                  <v-card-title class="headline white lighten-2">
+                    Tooltip
+                  </v-card-title>
+
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                      ><v-col>마크다운 문법 적용 가능한 에디터 입니다.<br /></v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                      ><v-col
+                        >소스코드를 부분 드래그 후 나타나는
+                        <span style="background-color  : #f8f8f8"
+                          ><v-icon color="red">mdi-chevron-triple-right</v-icon></span
+                        >을 클릭하여 에디터 현재 커서위치로 옮길 수 있습니다.</v-col
+                      >
+                    </v-row>
+
+                    <v-row>
+                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                      ><v-col
+                        >코드블럭을 빠져나올때는
+                        <span style="background-color  : #f8f8f8">ctrl+enter</span> 을
+                        입력합니다.</v-col
+                      >
+                    </v-row>
+
+                    <v-row>
+                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                      ><v-col
+                        >에디터의 기본양식은 계정설정의 양식변경을 통해서 변경이 가능합니다
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+
+                  <v-divider></v-divider>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="tool = false">
+                      닫기
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </template></v-col
+        >
+      </v-row>
       <v-row class="px-3">
         <v-col cols="3" style="border-left: 1px solid red"> 언어: {{ resData.language }} </v-col>
         <v-col cols="3" style="border-left: 1px solid red"> 메모리: {{ resData.memory }}KB </v-col>
@@ -21,7 +89,7 @@
             >
               <button class="menububble__button red" @click="menububbleClick">
                 <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
-                <v-icon color="white">mdi-content-cut</v-icon>
+                <v-icon color="white">mdi-chevron-triple-right</v-icon>
               </button>
             </div>
           </editor-menu-bubble>
@@ -216,6 +284,7 @@ export default {
   },
   data() {
     return {
+      tool: false,
       keepInBounds: false,
       title: null,
       resData: undefined,
@@ -396,13 +465,13 @@ export default {
         // 속성 추가해주기
         let res = null;
         try {
-           res = await this.$http.get(`${this.$store.state.ServerURL}/newuser/get_form`, {
+          res = await this.$http.get(`${this.$store.state.ServerURL}/newuser/get_form`, {
             params: {
               nickname: this.nickname
             }
           });
           // console.log(res)  ;
-          if(res.data===null || res.data==="fail"){
+          if (res.data === null || res.data === "fail") {
             res.data = "<h2>접근방법</h2><hr><p></p><h2>코드분석</h2><hr>";
           }
         } catch (e) {
