@@ -2,7 +2,7 @@
   <v-app class="Background">
     <Header></Header>
     <!-- <v-container> -->
-    <router-view :key="$route.fullPath" class="mb-16"></router-view>
+    <router-view :key="$route.fullPath" class="mb-6"></router-view>
     <!-- </v-container> -->
     <v-snackbar :color="alertColor" :value="showAlert" centered multi-line>
       {{ AlertMessage }}
