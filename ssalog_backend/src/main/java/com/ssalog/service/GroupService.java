@@ -30,4 +30,5 @@ public interface GroupService {
 	public List<Map<String, String>> findGroup(String groupname, PageRequest pageable);
 	public Boolean group_kick(String username, String groupname, String wantkick);
 	public String Check_Role(String groupname, String nickname);
+	public String delete_goal(String username, long id);
 }

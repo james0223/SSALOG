@@ -64,10 +64,9 @@
               </v-avatar>
             </v-card-text>
             <v-card-text>
-              {{ user.nickname }}
-            </v-card-text>
-            <v-card-text>
-              제출한 리뷰 : n개
+              <!-- {{ user.nickname }} -->
+
+              <h3>{{ user.nickname }}</h3>
             </v-card-text>
           </v-card>
         </v-hover>
