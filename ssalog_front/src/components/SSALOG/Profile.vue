@@ -8,13 +8,15 @@
             style="float:right"
             v-if="$store.state.nickname === $route.params.nickname"
           >
-            <v-btn @click="modeClick" :color="modeColor" class="white--text">{{ mode }}</v-btn>
+            <v-btn @click="modeClick" :text="editable" :color="modeColor" class="white--text">{{
+              mode
+            }}</v-btn>
             <!-- <input type="checkbox" id="editable" v-model="editable" /> -->
             <!-- <label for="editable">수정하기</label> -->
           </div>
 
           <div class="checkbox" style="float:right" v-if="editable">
-            <v-btn @click="write" color="green" class="white--text">저장</v-btn>
+            <v-btn @click="write" text color="green" class="white--text">저장</v-btn>
             <!-- <input type="checkbox" id="editable" v-model="editable" /> -->
             <!-- <label for="editable">수정하기</label> -->
           </div>
