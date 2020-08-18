@@ -70,16 +70,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         System.out.println("REQUEST : " + request.getHeader("Authorization"));
         String requestTokenHeader = request.getHeader("Authorization");
         String refreshToken = request.getHeader("refreshToken");
+        
         logger.info("tokenHeader: " + requestTokenHeader);
         String username = null;
         String jwtToken = null;
         String jwtToken2 = null;
         // Bearer를 앞에 쓰는 이유눈 업계 표준, 함부로 바꿔서 사용하면 안된다. ex) ssalog로 바꿔서 쓰려고 했는데 클날뻔...ㅎㅎ
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        	System.out.println("??????????????????????????????????????????");
         	if(refreshToken != null) {
         		jwtToken2 = refreshToken.substring(7);
         		//jwtToken = requestTokenHeader.substring(7);
-        		System.out.println("여기진입");
         		response.setHeader("jwtToken2", jwtToken2);
         	}else {
         		jwtToken = requestTokenHeader.substring(7);

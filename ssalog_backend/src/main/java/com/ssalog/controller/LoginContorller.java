@@ -192,7 +192,8 @@ public class LoginContorller {
     public ResponseEntity<Map<String, Object>> requestForNewAccessToken(HttpServletResponse response) {
         String refreshTokenFromDb = null;
         Map<String, Object> map = new HashMap<>();
-        String refreshToken = response.getHeader("jwtToken2");
+        String refreshToken =response.getHeader("jwtToken2");
+        System.out.println(refreshToken + " =================");
         try {
             if (refreshToken != null) { //refresh를 같이 보냈으면.
             	String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
