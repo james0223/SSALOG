@@ -93,7 +93,7 @@
         </section>
 
         <section id="features" class="lighten-4" v-intersect="onIntersect">
-          <div class="py-10"></div>
+          <div class="py-12"></div>
 
           <v-container
             class="text-center"
@@ -189,16 +189,10 @@
               </v-btn>
             </v-row>
 
-            <v-carousel
-              cycle
-              hide-delimiters
-              height="800"
-              hide-delimiter-background
-              show-arrows-on-hover
-            >
+            <v-carousel cycle height="80vh" whide-delimiter-background show-arrows-on-hover>
               <v-carousel-item v-for="slide in slides" :key="slide.id">
-                <v-sheet color="black" height="100%">
-                  <v-row class="fill-height" align="center" justify="center">
+                <v-sheet color="white" height="100%">
+                  <v-row class="fill-width fill-height" align="center" justify="center">
                     <v-img :src="slide.image" height="90%" width="100%" contain />
                     <div class="display-3">
                       <h6 black>{{ slide.desc }}</h6>
