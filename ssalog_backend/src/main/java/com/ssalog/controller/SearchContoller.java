@@ -69,7 +69,7 @@ public class SearchContoller {
 	@ApiOperation(value ="[post problemname 조회] 문제이름으로 검색해서, 그 문제를 포스팅한 글들을 모두 찾아온다.")
 	@GetMapping("/to_problemname")
 	public ResponseEntity<Page<Problem>> findByproblemname(@RequestParam("problemname") String problemname, PageRequest pageable){
-		return new ResponseEntity<Page<Problem>>(problemService.select_by_problemname(problemname, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<Page<Problem>>(problemService.select_by_problemname(problemname, pageable.ofs3()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[post keyword 조회] list로 전달한 keyword를 모두 사용하여 해결한 포스팅한 글들을 찾아온다.")
