@@ -8,7 +8,6 @@
             <tr>
               <th class="text-left">문제</th>
               <th class="text-left">문제 설명</th>
-              <th class="text-left">과제 완료율</th>
               <th class="text-left">문제 링크</th>
             </tr>
           </thead>
@@ -18,7 +17,6 @@
                 {{ hw.problemname }}
               </td>
               <td>{{ hw.mention }}</td>
-              <td>{{ solvedRate }}%</td>
               <th>
                 <a target="_blank" :href="`https://www.acmicpc.net/problem/${hw.problemid}`">
                   문제 링크
