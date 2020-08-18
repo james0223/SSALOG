@@ -22,6 +22,7 @@
       item-key="scoring"
       :items-per-page="8"
       class="elevation-1"
+      cols="1"
       :footer-props="{
         itemsPerPageOptions: [8],
         showFirstLastPage: true,
@@ -32,11 +33,13 @@
       }"
     >
       <template v-slot:[`item.title`]="{ item }">
-        <span
-          style="cursor:pointer"
+        <v-flex
+          style="cursor:pointer; width : 100%;"
+          class="text-truncate"
           @click="$router.push({ name: 'LogDetail', params: { id: item.scoring } })"
-          >{{ item.title }}</span
         >
+          {{ item.title }}
+        </v-flex>
       </template>
       <template v-slot:[`item.problemid`]="{ item }">
         <span
@@ -77,11 +80,11 @@ export default {
           sortable: false,
           value: "problemid"
         },
-        { text: "문제이름", sortable: false, value: "problemname" },
         { text: "제목", sortable: false, value: "title" },
+        { text: "문제이름", sortable: false, value: "problemname" },
         { text: "좋아요", value: "like" },
         { text: "키워드", sortable: false, value: "keyword" },
-        { text: "작성날짜", width: 120, value: "regdate" }
+        { text: "작성날짜", value: "regdate" }
       ],
       solutions: []
     };
@@ -112,12 +115,12 @@ export default {
         this.solutions = res.data.content.reverse();
         const iterable = this.solutions;
         iterable.forEach(element => {
-          const lengths = 20; // 표시할 글자수 기준
+          // const lengths = 20; // 표시할 글자수 기준
           const temp = element;
-          console.log(temp.title);
-          if (temp.title && temp.title.length > lengths) {
-            temp.title = temp.title.substr(0, lengths - 2).concat("...");
-          }
+          // console.log(temp.title);
+          // if (temp.title && temp.title.length > lengths) {
+          //   temp.title = temp.title.substr(0, lengths - 2).concat("...");
+          // }
           if (temp.keyword && temp.keyword.length !== 0) {
             // temp.keyword2 = temp.keyword.join(" / ");
             const [foo] = temp.keyword;
