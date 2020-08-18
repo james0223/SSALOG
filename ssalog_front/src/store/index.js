@@ -1,10 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Axios from "axios";
+import axios from "axios";
 // eslint-disable-next-line
 import jwt_decode from "jwt-decode";
 import createPersistedState from "vuex-persistedstate";
-import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -94,7 +93,7 @@ export default new Vuex.Store({
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
       // 앞으로의 모든 HTTP 요청 헤더에 Auth 추가
-      Axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
+      axios.defaults.headers.common.Authorization = `Bearer ${state.accessToken}`;
     },
     Thumbnail(state, payload) {
       state.userThumbnail = `${state.ImgURL}${payload}`;
@@ -110,8 +109,8 @@ export default new Vuex.Store({
   },
   actions: {
     async LOGIN({ commit, dispatch }, loginData) {
-      Axios.defaults.headers.common.Authorization = ``;
-      const { data } = await Axios.post(`${this.state.ServerURL}/newuser/login`, null, {
+      axios.defaults.headers.common.Authorization = ``;
+      const { data } = await axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
         }
@@ -127,7 +126,7 @@ export default new Vuex.Store({
       dispatch("Thumbnail", loginData.username);
     },
     async LOGOUT({ commit }) {
-      await Axios.post(`${this.state.ServerURL}/user/out`);
+      await axios.post(`${this.state.ServerURL}/user/out`);
       commit("LOGOUT");
       commit("ShowAlert", {
         flag: true,
@@ -143,7 +142,7 @@ export default new Vuex.Store({
       }, 1000);
     },
     async SIGNUP({ dispatch }, signupData) {
-      const { data } = await Axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
+      const { data } = await axios.post(`${this.state.ServerURL}/newuser/add`, signupData);
       if (data.success === true) {
         const loginData = { username: signupData.username, password: signupData.password };
         dispatch("LOGIN", loginData);
@@ -152,7 +151,7 @@ export default new Vuex.Store({
       }
     },
     async Thumbnail({ commit }, payload) {
-      const res = await Axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
+      const res = await axios.get(`${this.state.ServerURL}/newuser/get_profile_img`, {
         params: {
           username: payload
         }
