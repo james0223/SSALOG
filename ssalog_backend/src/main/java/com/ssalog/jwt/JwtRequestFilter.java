@@ -78,12 +78,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
         	if(refreshToken != null) {
         		jwtToken2 = refreshToken.substring(7);
-        		jwtToken = requestTokenHeader.substring(7);
-        		try {
-        			username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        		} catch (IllegalArgumentException e) {
-        			logger.warn("Unable to get JWT Token");
-        		} 
+        		//jwtToken = requestTokenHeader.substring(7);
+        		System.out.println("여기진입");
         	}else {
         		jwtToken = requestTokenHeader.substring(7);
         		logger.info("token in requestfilter: " + jwtToken);
@@ -95,7 +91,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         		}
         		catch (ExpiredJwtException e) {
         			username = e.getClaims().getSubject();  
-        			logger.info("[access token이 만료된 사용자 이름] " + username);
+        			logger.info("[access token이 만료된 사용자 이름123] " + username);
         			response.setHeader("error", "expired");
 //        			webhook w = new webhook();
 //        			w.send(e.toString() + "\n토큰 만료 error");
