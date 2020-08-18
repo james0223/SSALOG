@@ -66,9 +66,6 @@
             <v-card-text>
               {{ user.nickname }}
             </v-card-text>
-            <v-card-text>
-              제출한 리뷰 : n개
-            </v-card-text>
           </v-card>
         </v-hover>
       </v-col>
