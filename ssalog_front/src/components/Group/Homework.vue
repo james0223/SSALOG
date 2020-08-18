@@ -9,14 +9,13 @@
               <th class="text-left">문제</th>
               <th class="text-left">문제 설명</th>
               <th class="text-left">남은 시간</th>
+              <th class="text-left">문제 링크</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(hw, idx) in Homeworks" :key="idx" @click="sortMemberByHW(idx)">
               <td>
-                <a :href="`https://www.acmicpc.net/problem/${hw.problemid}`">
-                  {{ hw.problemname }}
-                </a>
+                {{ hw.problemname }}
               </td>
               <td>{{ hw.mention }}</td>
               <countdown :time="getCount(hw.limit)" :interval="1000" tag="td">
@@ -25,6 +24,11 @@
                   {{ props.seconds }}초</template
                 >
               </countdown>
+              <th>
+                <a target="_blank" :href="`https://www.acmicpc.net/problem/${hw.problemid}`">
+                  문제 링크
+                </a>
+              </th>
             </tr>
           </tbody>
         </template>
