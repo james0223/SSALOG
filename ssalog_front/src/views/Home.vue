@@ -74,8 +74,8 @@
               다른 사람들의 풀이를 함께 리뷰하며 실력을 키워보세요.
             </v-responsive>
             <v-responsive class="mx-auto title font-weight-light mb-4" max-width="720"
-              >쌀은 우리 몸에 영양분을 공급하고 주요한 열량원이 되어주기 때문에 사람이 살아가는데
-              있어 가장 중요한 곡물이듯,
+              >쌀은 우리 몸에 영양분을 공급하고 주요한 열량원이 되어주기 때문에 <br />사람이
+              살아가는데 있어 가장 중요한 곡물이듯,
             </v-responsive>
             <v-responsive class="mx-auto title font-weight-light mb-4" max-width="720">
               알고리즘은 훌륭한 프로그래머로 성장하기위해 필요한 영양이 됩니다.
