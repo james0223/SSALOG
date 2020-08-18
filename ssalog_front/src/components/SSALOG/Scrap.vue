@@ -1,7 +1,7 @@
 <template>
-  <v-card flat class="pa-6 mt-8" min-height="80vh">
-    <v-card-title>
-      스크랩목록
+  <v-card color="transparent" flat class="pa-1 mt-6">
+    <v-card-title
+      >스크랩
       <v-spacer></v-spacer>
       <v-text-field
         append-icon="mdi-magnify"
@@ -31,13 +31,16 @@
       }"
     >
       <template v-slot:[`item.title`]="{ item }">
-        <a
-          style=" color: black; "
-          target="_blank"
-          :href="`/SSALOG/${item.nickname}/Solution/${item.scoring}`"
+        <span
+          style="cursor:pointer"
+          @click="
+            $router.push({
+              name: 'LogDetail',
+              params: { id: item.scoring, nickname: item.nickname }
+            })
+          "
+          >{{ item.title }}</span
         >
-          {{ item.title }}
-        </a>
       </template>
       <template v-slot:[`item.keyword`]="{ item }">
         <span :title="item.keyword">{{ item.keyword2 }}</span>
@@ -65,10 +68,10 @@ export default {
           sortable: false,
           value: "title"
         },
-        { text: "작성자", align: "center", width: 100, value: "nickname" },
-        { text: "문제이름", width: 120, value: "problemname" },
+        { text: "작성자", width: 100, value: "nickname" },
+        { text: "문제이름", width: 150, value: "problemname" },
         { text: "문제번호", sortable: false, width: 100, value: "problemid" },
-        { text: "키워드", sortable: false, width: 160, value: "keyword" }
+        { text: "키워드", sortable: false, width: 120, value: "keyword" }
       ],
       solutions: []
     };

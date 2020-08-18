@@ -2,7 +2,7 @@
   <v-app class="Background">
     <Header></Header>
     <!-- <v-container> -->
-    <router-view :key="$route.fullPath"></router-view>
+    <router-view :key="$route.fullPath" class="mb-16"></router-view>
     <!-- </v-container> -->
     <v-snackbar :color="alertColor" :value="showAlert" centered multi-line>
       {{ AlertMessage }}
@@ -49,6 +49,7 @@ export default {
 </script>
 <style scoped>
 .Background {
+  overflow: auto;
   background: rgb(255, 255, 255);
   background: radial-gradient(
     circle,

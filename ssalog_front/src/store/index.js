@@ -10,6 +10,12 @@ Vue.use(Vuex);
 
 const getDefaultState = () => {
   return {
+    isDark: false,
+    ColorSet: {
+      Prime: "#2556f8", // 파랑
+      Mid: "#8a50db", // 보라
+      Sub: "#8dffb3" // 초록
+    },
     // 유저 정보 관리용 변수
     accessToken: null,
     refreshToken: null,
@@ -72,6 +78,9 @@ export default new Vuex.Store({
   mutations: {
     NicknameChange(state, payload) {
       state.nickname = payload;
+    },
+    ChangeDark(state) {
+      state.isDark = !state.isDark;
     },
     LOGIN(state, payload) {
       state.nickname = payload.nickname;

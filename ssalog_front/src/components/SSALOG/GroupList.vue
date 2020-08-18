@@ -2,10 +2,10 @@
   <v-container fluid>
     <v-row justify="center" no-gutters>
       <v-col cols="12">
-        <v-card class="mx-5 mt-15 mp-2" height="75vh">
+        <v-card color="transparent" class="mx-5 mt-15 mp-2" height="75vh">
           <v-row>
             <v-col cols="8">
-              <v-card class="mt-5 mx-2" flat height="70vh">
+              <v-card color="transparent" class="mt-5 mx-2" flat height="70vh">
                 <v-card-title>
                   나의 그룹
                   <v-spacer></v-spacer>
@@ -74,7 +74,7 @@
             </v-col>
             <v-divider vertical></v-divider>
             <v-col cols="3.5">
-              <v-card flat class="mt-5 mx-2" height="70vh">
+              <v-card color="transparent" flat class="mt-5 mx-2" height="70vh">
                 <v-card-title>그룹 가입하기</v-card-title>
                 <v-card-text>
                   <v-autocomplete

@@ -14,7 +14,7 @@
     </v-card-actions>
     <v-card-actions v-if="nickname">
       <v-spacer></v-spacer>
-      <v-btn dark color="rgb(32, 201, 151)" @click="createComment()">댓글 작성</v-btn>
+      <v-btn dark :color="ColorSet.Mid" @click="createComment()">댓글 작성</v-btn>
     </v-card-actions>
     <v-card-text class="" v-for="(comment, idx) in comments" :key="idx">
       <v-list-item>
@@ -58,7 +58,7 @@
         >
       </v-card-text>
       <v-card-text v-show="isPut !== idx" class="mb-5">
-        <div class="text--primary">{{ comment.message }}</div>
+        <div>{{ comment.message }}</div>
       </v-card-text>
       <v-divider v-if="idx < comments.length - 1"></v-divider>
     </v-card-text>
@@ -81,7 +81,7 @@ export default {
       comments: []
     };
   },
-  computed: mapState(["ServerURL", "nickname", "username"]),
+  computed: mapState(["ServerURL", "nickname", "username", "ColorSet"]),
   mounted() {
     this.getComments();
   },

@@ -1,0 +1,38 @@
+#relative_wrapper {
+  position: relative;
+}
+
+.to_pointer {
+  cursor: pointer;
+}
+.thumbnailplus {
+  position: absolute;
+  z-index: 99;
+  top: 82%;
+  left: 82%;
+  transform: translate(-50%, -50%);
+}
+#showLevel {
+  position: absolute;
+  top: 18%;
+  left: 5%;
+}
+.card_mother {
+  position: relative;
+}
+.absolute_card {
+  width: 11vw;
+  position: fixed;
+  top: 4rem;
+  left: 13vw;
+  opacity: 90% !important;
+}
+.profile_card {
+  opacity: 90% !important;
+  background: rgb(26, 69, 255);
+  background: linear-gradient(
+    326deg,
+    rgba(26, 69, 255, 1) 0%,
+    rgba(141, 255, 179, 0.8018557764902836) 98%
+  );
+}
