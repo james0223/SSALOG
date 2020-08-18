@@ -532,16 +532,16 @@ export default {
 <style>
 .v-application code {
   all: unset;
-  border: 1px solid #ddd;
-  border-left: 3px solid #f36d33;
-  background: #f8f8f8;
+  /* border: 1px solid #ddd; */
+  border-left: 2px solid #5086f2;
+  background: #fbfbfb;
   page-break-inside: avoid;
   font-family: monospace;
   line-height: 1.6;
-  margin-bottom: 1.6em;
+  margin-bottom: 1.6rem;
   max-width: 100%;
   overflow: auto;
-  padding: 1em 1.5em;
+  padding: 1rem 1.5rem;
   display: block;
   word-wrap: break-word;
   /* font-size: 1rem; */
