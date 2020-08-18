@@ -17,7 +17,7 @@
         </v-row>
         <DoughNutChart :width="450" :height="300" v-bind:chart-data="chartData" />
       </v-col>
-      <v-col cols="7">
+      <v-col cols="7" class="font-weight-light">
         <v-row no-gutters>
           <v-col cols="7"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
           <v-col cols="2" class="d-flex justify-center"
@@ -45,7 +45,7 @@
                 })
               "
             >
-              <v-row no-gutters>
+              <v-row no-gutters class="text-caption">
                 <v-col cols="7">
                   <span> {{ solve.problemid }} - {{ solve.title }}</span>
                 </v-col>
