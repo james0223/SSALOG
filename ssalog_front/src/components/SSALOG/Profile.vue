@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container min-height="80vh">
     <v-row>
       <v-col cols="12">
         <div class="editor" spellcheck="false">
