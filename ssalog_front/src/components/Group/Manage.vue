@@ -82,7 +82,7 @@
                     style="overflow-y: scroll;"
                   >
                     <v-timeline dense>
-                      <v-timeline-item v-for="task in HWList" :key="task.id" small>
+                      <v-timeline-item v-for="(task, idx) in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
                           <v-card-title class="headline"
                             >{{ task.problemname }} <v-spacer></v-spacer>
@@ -92,6 +92,7 @@
                               @click="
                                 openDeleteHW = true;
                                 taskBeErased = task.id;
+                                taskBeErasedOrder = idx;
                               "
                             >
                               <v-icon>mdi-close-circle</v-icon>
@@ -188,10 +189,19 @@
     <v-dialog v-model="openDeleteHW" persistent width="30vw">
       <v-card>
         <v-card-title class="headline">정말 과제를 삭제하시겠습니까?</v-card-title>
+        <v-card-text>{{ taskBeErased }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="openDeleteHW = false">과제 삭제 취소</v-btn>
-          <v-btn color="green darken-1" text @click="openDeleteHW = false">과제 삭제</v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="
+              openDeleteHW = false;
+              deleteHW(taskBeErased);
+            "
+            >과제 삭제</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -222,6 +232,7 @@ export default {
       },
       openDeleteHW: false,
       taskBeErased: null,
+      taskBeErasedOrder: null,
       HWList: [],
       // 회원 관리
       groupMember: [],
@@ -418,6 +429,21 @@ export default {
         console.dir(err);
       } finally {
         this.$router.go();
+      }
+    },
+    // 과제 삭제
+    async deleteHW(hwNum) {
+      try {
+        await this.$http.delete(`${this.ServerURL}/user/grouping/delete_goal`, {
+          params: {
+            id: hwNum
+          }
+        });
+        console.log(this.HWList);
+        this.HWList.splice(this.HWList.indexOf(this.taskBeErasedOrder), 1);
+        console.log(this.HWList);
+      } catch (e) {
+        console.error(e);
       }
     },
     async getGroupMember() {

@@ -1,14 +1,14 @@
 <template>
   <v-card color="transparent" flat height="70vh" class="mx-7 my-15">
     <v-card color="transparent" flat class="mb-5">
-      <v-toolbar-title>과제 목록</v-toolbar-title>
+      <v-toolbar-title>이전 과제 목록</v-toolbar-title>
       <v-simple-table height="20vh">
         <template v-slot:default>
           <thead>
             <tr>
               <th class="text-left">문제</th>
               <th class="text-left">문제 설명</th>
-              <th class="text-left">남은 시간</th>
+              <th class="text-left">과제 완료율</th>
               <th class="text-left">문제 링크</th>
             </tr>
           </thead>
@@ -18,12 +18,7 @@
                 {{ hw.problemname }}
               </td>
               <td>{{ hw.mention }}</td>
-              <countdown :time="getCount(hw.limit)" :interval="1000" tag="td">
-                <template slot-scope="props"
-                  >{{ props.days }}일 {{ props.hours }}시간 {{ props.minutes }}분
-                  {{ props.seconds }}초</template
-                >
-              </countdown>
+              <td>{{ solvedRate }}%</td>
               <th>
                 <a target="_blank" :href="`https://www.acmicpc.net/problem/${hw.problemid}`">
                   문제 링크
@@ -39,8 +34,8 @@
       <v-card min-width="40%" height="35vh" class="d-inline-block mx-5">
         <v-subheader
           >제출자 <v-spacer></v-spacer>
-          <h4>{{ solvedNum }}명</h4>
-        </v-subheader>
+          <h4>{{ solvedNum }}명</h4></v-subheader
+        >
         <v-divider></v-divider>
         <v-virtual-scroll :items="solvedMembers" :item-height="50" height="500">
           <template v-slot="{ item }">
@@ -62,7 +57,7 @@
       </v-card>
       <v-card min-width="40%" height="35vh" class="d-inline-block">
         <v-subheader
-          >미제출자<v-spacer></v-spacer>
+          >미제출자 <v-spacer></v-spacer>
           <h4>{{ unsolvedNum }}명</h4></v-subheader
         >
         <v-divider></v-divider>
@@ -91,8 +86,8 @@ export default {
       taskSubmissionStatus: [],
       solvedMembers: [],
       unsolvedMembers: [],
-      solvedNum: null,
-      unsolvedNum: null,
+      solvedNum: 0,
+      unsolvedNum: 0,
       solvedRate: null
     };
   },
@@ -102,8 +97,8 @@ export default {
       const now = new Date();
       return due - now;
     },
-    async getLiveHW() {
-      const res = await this.$http.get(`${this.ServerURL}/user/grouping/pre_goal_list`, {
+    async getDeadHW() {
+      const res = await this.$http.get(`${this.ServerURL}/user/grouping/post_goal_list`, {
         params: {
           direction: "ASC",
           groupname: this.$route.params.groupname,
@@ -115,8 +110,8 @@ export default {
       return res.data;
     },
     /* eslint-disable */
-    async totalHWProgress() {
-      const HWs = await this.getLiveHW();
+    async totalFormerHWProgress() {
+      const HWs = await this.getDeadHW();
 
       const fetchHWprogress = async problemnum => {
         const HwInfo = await this.$http.get(`${this.ServerURL}/newuser/grouping/check_goal`, {
@@ -157,7 +152,7 @@ export default {
   },
   computed: mapState(["ServerURL"]),
   mounted() {
-    this.totalHWProgress();
+    this.totalFormerHWProgress();
   }
 };
 </script>

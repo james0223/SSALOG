@@ -43,6 +43,10 @@ export default {
           route: `/Group/${this.$route.params.groupname}/Homework`
         },
         {
+          name: "만료된 과제",
+          route: `/Group/${this.$route.params.groupname}/ExpiredHomeWork`
+        },
+        {
           name: "그룹관리",
           route: `/Group/${this.$route.params.groupname}/Manage`,
           flag: true
@@ -59,8 +63,9 @@ export default {
             nickname: this.nickname
           }
         });
+        console.log(data);
         if (data === "owner") {
-          this.GroupMenu[2].flag = false;
+          this.GroupMenu[3].flag = false;
         }
       } catch (e) {
         console.log("에러", e);
