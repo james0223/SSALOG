@@ -346,6 +346,7 @@ public class GroupServiceImpl implements GroupService{
 		if(gg.isPresent()) {
 			GroupGoal gg2 = gg.get();
 			if(gg2.getGroupdto().getAccount().getUsername().equals(username)) {
+				gg2.setGroupdto(null);
 				groupGoalRepository.delete(gg2);
 				return "success";
 			}else {
