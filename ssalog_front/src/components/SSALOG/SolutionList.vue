@@ -1,5 +1,5 @@
 <template>
-  <v-card color="transparent" flat height="60vh" class="pa-6 mt-8">
+  <v-card color="transparent" flat class="pa-1 mt-6">
     <v-card-title>
       풀이목록
       <v-spacer></v-spacer>

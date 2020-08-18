@@ -1,153 +1,183 @@
 <template>
-  <v-container>
+  <v-card
+    height="100%"
+    elevation="8"
+    :width="imageHeight ? '95vw' : '76vw'"
+    class="mx-auto mt-16 px-3 card_mother"
+  >
     <v-row>
-      <v-col class="d-none d-sm-flex" cols="2 pr-6" style="border-right:1px solid gray">
-        <div id="relative_wrapper" align="center">
-          <v-avatar size="100" class="mt-8">
-            <img :src="writerThumbnail" />
-            <!--변경해줘야할듯-->
-          </v-avatar>
-          <v-dialog
-            v-if="$store.state.nickname === $route.params.nickname"
-            v-model="thumbnailDialog"
-            max-width="400px"
+      <v-col class="d-none d-sm-flex" cols="2">
+        <v-card height="105vh"></v-card>
+        <div class="absolute_card">
+          <v-card
+            shaped
+            :dark="!isDark"
+            elevation="12"
+            class="flex-column align-center pt-3 profile_card"
           >
-            <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="$router.push({ name: 'SSalogMain' })"
+              style="text-transform: none !important;"
+              text
+              block
+              >{{ ownerName }}</v-btn
+            >
+            <v-card-title class="mb-4" id="relative_wrapper">
               <v-btn
-                v-bind="attrs"
-                v-on="on"
-                @click="imageUrl = writerThumbnail"
-                id="thumbnailplus"
-                outlined
-                icon
-                dark
-                color="indigo"
-              >
-                <v-icon small dark>mdi-camera</v-icon>
-              </v-btn>
-            </template>
-            <v-card style="padding:16px;">
-              <v-card-title>
-                <span class="headline">프로필사진 관리</span>
-              </v-card-title>
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
-                  <v-file-input
-                    prepend-icon="mdi-camera"
-                    style="display: inline"
-                    placeholder="사진선택"
-                    accept="image/png, image/jpeg, image/jpg"
-                    @change="onChangeImages"
-                    outlined
-                    clear-icon
-                  ></v-file-input>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="2"></v-col>
-                <v-avatar size="240">
-                  <v-img :src="imageUrl" />
-                </v-avatar>
-              </v-row>
-              <v-row>
-                <v-col cols="6">
-                  <v-list rounded>
-                    <v-list-item-group v-model="ThumbnailSelect" color="blue">
-                      <v-list-item @click="uploadImage()">
-                        <v-list-item-content>
-                          <v-list-item-title class="d-flex justify-center">저장</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-col>
-                <v-col cols="6">
-                  <v-list rounded>
-                    <v-list-item-group v-model="ThumbnailSelect" color="red">
-                      <v-list-item @click="thumbnailDialog = false">
-                        <v-list-item-content>
-                          <v-list-item-title class="d-flex justify-center">취소</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-col>
-
-                <v-col cols="3"> </v-col>
-                <v-col cols="6">
-                  <v-list rounded>
-                    <v-list-item-group v-model="ThumbnailSelect" color="green">
-                      <v-list-item @click="deleteImage()">
-                        <v-list-item-content>
-                          <v-list-item-title class="d-flex justify-center"
-                            >기본이미지</v-list-item-title
-                          >
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-dialog>
-          <v-row justify="center" class="mt-2" style="border-bottom : 1px dashed grey">
-            <div id="showLevel" title="level">
-              <v-progress-circular
-                class=" mr-6"
-                :rotate="-90"
-                :size="40"
-                :width="9"
-                :value="exp"
-                color="primary"
-              >
-                <v-icon color="blue" medium>mdi-numeric-{{ level }}-circle-outline</v-icon>
-              </v-progress-circular>
-            </div>
-            <div class="mt-4 font-weight-medium ">{{ ownerName }}</div>
-            <template v-if="$store.state.nickname !== $route.params.nickname">
-              <v-btn
-                id="thumbnailplus"
+                v-if="nickname && nickname !== ownerName"
+                class="thumbnailplus"
                 height="40"
                 width="40"
-                icon
+                fab
                 @click="followclick"
                 title="follow"
               >
-                <v-icon :disabled="!isfollow" color="red" size="50">mdi-heart</v-icon>
+                <v-icon :disabled="!isfollow" color="red">mdi-heart</v-icon>
               </v-btn>
-            </template>
-          </v-row>
-          <v-row justify="center" style="border-bottom : 1px dashed grey ">
-            <v-col title="following"><v-icon>mdi-account-heart</v-icon>{{ following }}</v-col>
-            <v-col title="follower"><v-icon>mdi-account-arrow-left</v-icon>{{ follower }}</v-col>
-            <v-col title="scrap"><v-icon>mdi-star</v-icon>{{ scrapSu }}</v-col>
-          </v-row>
+              <v-avatar size="100%" class="mt-2 mx-auto">
+                <img :src="writerThumbnail" />
+              </v-avatar>
+              <v-dialog
+                v-if="nickname && nickname === ownerName"
+                v-model="thumbnailDialog"
+                max-width="400px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    fab
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="imageUrl = writerThumbnail"
+                    class="thumbnailplus d-none d-lg-flex"
+                    small
+                    dark
+                    color="dark"
+                  >
+                    <v-icon small dark>mdi-camera</v-icon>
+                  </v-btn>
+                </template>
+                <v-card style="padding:16px;">
+                  <v-card-title>
+                    <span class="headline">프로필사진 관리</span>
+                  </v-card-title>
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-file-input
+                        prepend-icon="mdi-camera"
+                        style="display: inline"
+                        placeholder="사진선택"
+                        accept="image/png, image/jpeg, image/jpg"
+                        @change="onChangeImages"
+                        outlined
+                        clear-icon
+                      ></v-file-input>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="2"></v-col>
+                    <v-avatar size="240">
+                      <v-img :src="imageUrl" />
+                    </v-avatar>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-list rounded>
+                        <v-list-item-group v-model="ThumbnailSelect" :color="ColorSet.Prime">
+                          <v-list-item @click="uploadImage()">
+                            <v-list-item-content>
+                              <v-list-item-title class="d-flex justify-center"
+                                >저장</v-list-item-title
+                              >
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list-item-group>
+                      </v-list>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-list rounded>
+                        <v-list-item-group v-model="ThumbnailSelect" color="red">
+                          <v-list-item @click="thumbnailDialog = false">
+                            <v-list-item-content>
+                              <v-list-item-title class="d-flex justify-center"
+                                >취소</v-list-item-title
+                              >
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list-item-group>
+                      </v-list>
+                    </v-col>
 
-          <v-tabs vertical background-color="transparent" class="my-5">
+                    <v-col cols="3"></v-col>
+                    <v-col cols="6">
+                      <v-list rounded>
+                        <v-list-item-group v-model="ThumbnailSelect" color="green">
+                          <v-list-item @click="deleteImage()">
+                            <v-list-item-content>
+                              <v-list-item-title class="d-flex justify-center"
+                                >기본이미지</v-list-item-title
+                              >
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list-item-group>
+                      </v-list>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-dialog>
+            </v-card-title>
+            <v-divider></v-divider>
+            <div class="d-none d-lg-flex" id="showLevel" title="레벨">
+              <v-progress-circular
+                :rotate="-90"
+                :size="40"
+                width="3"
+                :value="exp"
+                :color="levelColor"
+              >
+                <v-icon :color="levelColor" large>mdi-numeric-{{ level }}</v-icon>
+              </v-progress-circular>
+            </div>
+            <v-row justify="center" class="d-none d-lg-flex pb-2">
+              <v-col title="following" class="pr-3 pl-6">
+                <v-icon>mdi-account-heart</v-icon>
+                {{ following }}
+              </v-col>
+              <v-col title="follower" class="px-0">
+                <v-icon>mdi-account-arrow-left</v-icon>
+                {{ follower }}
+              </v-col>
+              <v-col title="scrap" class="pl-3 pr-6">
+                <v-icon>mdi-star</v-icon>
+                {{ scrapSu }}
+              </v-col>
+            </v-row>
+          </v-card>
+          <v-tabs vertical :color="ColorSet.Prime" background-color="transparent" class="my-1">
             <v-tab
-              style="justify-content:left;"
+              style="justify-content:left; height:6vh"
               v-for="tab in tabs"
               :key="tab.id"
               :to="tab.route"
               exact
               :class="{ 'd-none': tab.flag }"
             >
-              <v-icon left>{{ tab.icon }}</v-icon>
+              <v-icon class="d-none d-lg-flex" left>{{ tab.icon }}</v-icon>
               {{ tab.name }}
             </v-tab>
           </v-tabs>
         </div>
       </v-col>
-      <v-col cols="12" sm="10"
-        ><router-view v-on:decrement="decrementFollow" v-on:updateScrap="getInfo"></router-view>
+      <v-col cols="12" sm="10">
+        <router-view v-on:decrement="decrementFollow" v-on:updateScrap="getInfo"></router-view>
       </v-col>
     </v-row>
-  </v-container>
+  </v-card>
 </template>
 
 <script>
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
+import "@/assets/Main.css";
 
 export default {
   data() {
@@ -223,7 +253,45 @@ export default {
       ]
     };
   },
-  computed: mapState(["ServerURL", "ImgURL", "userThumbnail"]),
+  computed: {
+    ...mapState([
+      "ServerURL",
+      "ColorSet",
+      "ImgURL",
+      "userThumbnail",
+      "username",
+      "nickname",
+      "isDark"
+    ]),
+    levelColor() {
+      switch (this.level) {
+        case 0:
+          return "blue-grey darken-2";
+        case 1:
+          return "light-blue accent-4";
+        case 2:
+          return "purple lighten-2";
+        default:
+          return "teal accent-3";
+      }
+    },
+    imageHeight() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return true;
+        case "sm":
+          return true;
+        case "md":
+          return false;
+        case "lg":
+          return false;
+        case "xl":
+          return false;
+        default:
+          return false;
+      }
+    }
+  },
   methods: {
     ...mapMutations(["ShowAlert"]),
     decrementFollow() {
@@ -260,7 +328,11 @@ export default {
         }
       } else {
         // alert("로그인이 필요합니다.");
-        this.ShowAlert({ flag: true, msg: "로그인이 필요한 기능입니다.", color: "cyan darken-2" });
+        this.ShowAlert({
+          flag: true,
+          msg: "로그인이 필요한 기능입니다.",
+          color: "cyan darken-2"
+        });
         setTimeout(() => {
           this.ShowAlert({ flag: false, msg: "" });
         }, 2000);
@@ -362,18 +434,4 @@ export default {
   }
 };
 </script>
-<style>
-#relative_wrapper {
-  position: relative;
-}
-#thumbnailplus {
-  position: absolute;
-  top: 100px;
-  left: 70%;
-}
-#showLevel {
-  position: absolute;
-  top: 140px;
-  left: -5px;
-}
-</style>
+<style></style>

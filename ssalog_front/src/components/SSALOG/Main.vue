@@ -1,6 +1,6 @@
 <template>
-  <v-card color="transparent" flat height="60vh" class="pa-6 mt-8">
-    <h3 class="font-weight-light mb-1">쌀밭</h3>
+  <v-card color="transparent" flat class="pa-1 mt-6">
+    <h3 class="font-weight-light mb-1">1일1쌀밭</h3>
     <v-divider></v-divider>
     <calendar-heatmap
       tooltip-unit="개 풀었습니다"
@@ -12,14 +12,27 @@
     ></calendar-heatmap>
     <v-row>
       <v-col cols="5">
-        <v-row justify="center">
-          <p class="text-center font-weight-bold">키워드 빈도 그래프</p>
-        </v-row>
+        <h4 class="font-weight-light mb-1">
+          키워드 빈도 그래프
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }"
+              ><v-icon v-bind="attrs" v-on="on">mdi-help-circle-outline</v-icon>
+            </template>
+            <span>{{ ownerName }}님이 자주 사용한 알고리즘이에요!</span>
+          </v-tooltip>
+        </h4>
+        <v-divider></v-divider>
         <DoughNutChart :width="450" :height="300" v-bind:chart-data="chartData" />
       </v-col>
       <v-col cols="7" class="font-weight-light">
         <v-row no-gutters>
-          <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
+          <v-col cols="6">
+            <h4 class="font-weight-light mb-1">
+              <span @click="$router.push({ name: 'SolutionList' })" class="to_pointer info--text"
+                >작성한 글</span
+              >
+            </h4>
+          </v-col>
           <v-col cols="3" class="d-flex justify-center"
             ><h4 class="font-weight-light mb-1">키워드</h4></v-col
           >
@@ -86,7 +99,7 @@ export default {
           { date: "2020-3-6", count: 6 },
           { date: "2020-3-4", count: 6 }
         ],
-        rangeColor: ["#FFFDE7", "#FFF9C4", "#FFF59D", "#FFF176", "#FFEE58"]
+        rangeColor: ["#f4fffa", "#c1fff8", "#52a0da", "#5489d5", "#453ffe"]
       },
       chartData: {}
     };
@@ -107,7 +120,7 @@ export default {
             labels: Object.keys(res.data),
             datasets: [
               {
-                backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+                backgroundColor: ["#8dffb3", "#8087b5", "#7209b7", "#3a0ca3", "#4361ee"],
                 data: Object.values(res.data)
               }
             ]
@@ -117,7 +130,7 @@ export default {
             labels: ["자신있는", "알고리즘", "유형파악"],
             datasets: [
               {
-                backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+                backgroundColor: ["#8dffb3", "#8087b5", "#7209b7", "#3a0ca3", "#4361ee"],
                 data: [4, 2, 1]
               }
             ]

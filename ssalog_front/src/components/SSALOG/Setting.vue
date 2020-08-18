@@ -33,7 +33,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="changePassword">변경</v-btn>
+            <v-btn :color="ColorSet.Prime" text @click="changePassword">변경</v-btn>
           </v-card-actions>
         </div>
       </v-expand-transition>
@@ -42,7 +42,7 @@
     <v-card-title>
       <h3 class="font-weight-light mb-3">닉네임 변경</h3>
       <v-spacer></v-spacer>
-      <v-btn fab color="secondary" dark @click="showNickChange = !showNickChange">
+      <v-btn fab color="Secondary" dark @click="showNickChange = !showNickChange">
         <v-icon>{{ showNickChange ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
       </v-btn>
     </v-card-title>
@@ -64,7 +64,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="checkNickname">중복확인</v-btn>
+            <v-btn :color="ColorSet.Prime" text @click="checkNickname">중복확인</v-btn>
             <v-dialog v-model="changeNick.dialog" max-width="60vh">
               <v-card>
                 <v-card-title>
@@ -85,11 +85,11 @@
     <v-divider></v-divider>
     <v-card-title>
       <h3 class="font-weight-light mb-3">
-        내 양식 설정<br />
-        <small style="font-size:small"
-          ><v-icon small>mdi-information-outline</v-icon> 풀이 작성시 자동으로 양식을
-          불러와줘요!</small
-        >
+        내 양식 설정
+        <br />
+        <small style="font-size:small">
+          <v-icon small>mdi-information-outline</v-icon>풀이 작성시 자동으로 양식을 불러와줘요!
+        </small>
       </h3>
 
       <v-spacer></v-spacer>
@@ -97,9 +97,7 @@
       <div class="text-center">
         <v-dialog v-model="changeForm.dialog" width="800">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="secondary" fab dark v-bind="attrs" v-on="on" @click="getForm">
-              +
-            </v-btn>
+            <v-btn :color="ColorSet.Sub" fab v-bind="attrs" v-on="on" @click="getForm">+</v-btn>
           </template>
 
           <v-card>
@@ -242,12 +240,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="saveForm">
-                저장
-              </v-btn>
-              <v-btn text @click="changeForm.dialog = false">
-                취소
-              </v-btn>
+              <v-btn :color="ColorSet.Prime" text @click="saveForm">저장</v-btn>
+              <v-btn text @click="changeForm.dialog = false">취소</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -258,6 +252,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Placeholder,
@@ -337,6 +332,7 @@ export default {
       })
     };
   },
+  computed: mapState(["ColorSet"]),
   methods: {
     async getForm() {
       this.changeForm.dialog = true;

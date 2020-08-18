@@ -1,7 +1,8 @@
 <template>
-  <v-card flat height="60vh" class="pa-1 mt-8">
+  <v-card color="transparent" flat class="pa-1 mt-6">
+    <v-card-title>팔로우 관리</v-card-title>
     <!-- <h2 class="text-center mt-16" v-if="isNoResult">팔로우가없습니다</h2> -->
-    <v-tabs background-color="white" color="blue accent-4" grow>
+    <v-tabs grow :color="$store.state.ColorSet.Prime">
       <v-tab @click="getFollowing()">Following</v-tab>
       <v-tab @click="getFollower()">Follower</v-tab>
     </v-tabs>
@@ -11,6 +12,7 @@
         <v-col v-for="(user, i) in users" :key="i" cols="3">
           <v-hover style="cursor:pointer" v-slot:default="{ hover }">
             <v-card
+              color="transparent"
               @click="visitUserDetail(i)"
               align="center"
               :elevation="hover ? 4 : 1"

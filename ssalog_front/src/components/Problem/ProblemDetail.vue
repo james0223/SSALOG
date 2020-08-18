@@ -256,7 +256,7 @@ export default {
         datasets: [
           {
             label: "문제 키워드",
-            backgroundColor: ["#377DF0", "#30C7BE", "#40AD58", "#92C43F", "#BDAA3D"],
+            backgroundColor: ["#8dffb3", "#8087b5", "#7209b7", "#3a0ca3", "#4361ee"],
             data: []
           }
         ]
