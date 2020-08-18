@@ -32,7 +32,10 @@
     <v-card color="transparent" flat height="45vh">
       <v-toolbar-title class="mb-4">제출 목록</v-toolbar-title>
       <v-card min-width="40%" height="35vh" class="d-inline-block mx-5">
-        <v-subheader>제출자</v-subheader>
+        <v-subheader
+          >제출자 <v-spacer></v-spacer>
+          <h4>{{ solvedNum }}명</h4></v-subheader
+        >
         <v-divider></v-divider>
         <v-virtual-scroll :items="solvedMembers" :item-height="50" height="500">
           <template v-slot="{ item }">
@@ -53,7 +56,10 @@
         </v-virtual-scroll>
       </v-card>
       <v-card min-width="40%" height="35vh" class="d-inline-block">
-        <v-subheader>미제출자</v-subheader>
+        <v-subheader
+          >미제출자 <v-spacer></v-spacer>
+          <h4>{{ unsolvedNum }}명</h4></v-subheader
+        >
         <v-divider></v-divider>
         <v-virtual-scroll :items="unsolvedMembers" :item-height="50" height="500">
           <template v-slot="{ item }">
@@ -82,7 +88,7 @@ export default {
       unsolvedMembers: [],
       solvedNum: 0,
       unsolvedNum: 0,
-      solvedRate: 0
+      solvedRate: null
     };
   },
   methods: {
