@@ -30,6 +30,7 @@ import UserSetting from "@/components/SSALOG/Setting.vue";
 import Group from "@/views/Group/Group.vue";
 import Member from "@/components/Group/Member.vue";
 import GroupHW from "@/components/Group/Homework.vue";
+import FormerHW from "@/components/Group/FormerHW.vue";
 import GroupManage from "@/components/Group/Manage.vue";
 import GroupList from "@/components/SSALOG/GroupList.vue";
 // search
@@ -120,6 +121,11 @@ const routes = [
         path: "",
         name: "Member",
         component: Member
+      },
+      {
+        path: "ExpiredHomeWork",
+        name: "ExpiredHW",
+        component: FormerHW
       },
       {
         path: "Homework",
