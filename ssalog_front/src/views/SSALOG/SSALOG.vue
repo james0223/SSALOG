@@ -117,7 +117,7 @@
               </v-btn>
             </template>
           </v-row>
-          <v-row justify="center ma-3" style="border-bottom : 1px dashed grey ">
+          <v-row justify="center" class=" ma-3" style="border-bottom : 1px dashed grey ">
             <v-col title="following"><v-icon>mdi-account-heart</v-icon>{{ following }}</v-col>
             <v-col title="follower"><v-icon>mdi-account-arrow-left</v-icon>{{ follower }}</v-col>
             <v-col title="scrap"><v-icon>mdi-star</v-icon>{{ scrapSu }}</v-col>
