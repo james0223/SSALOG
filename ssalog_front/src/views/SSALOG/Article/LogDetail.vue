@@ -390,7 +390,18 @@ export default {
       if (!this.nickname) {
         this.ShowAlert({
           flag: true,
-          msg: "로그인 후 이용가능해요.",
+          msg: "스크랩 기능은 로그인 후 가능해요.",
+          color: "info"
+        });
+        setTimeout(() => {
+          this.ShowAlert({ flag: false, msg: "" });
+        }, 2000);
+        return;
+      }
+      if (this.nickname === this.writerNickname) {
+        this.ShowAlert({
+          flag: true,
+          msg: "본인 게시물은 스크랩할 수 없어요",
           color: "info"
         });
         setTimeout(() => {
@@ -406,14 +417,13 @@ export default {
             {},
             { params: { Scoring: this.$route.params.id } }
           )
-          .then(response => {
-            console.log(response);
+          .then(() => {
             this.scrapped = true;
 
             this.$emit("updateScrap");
           })
-          .catch(function(error) {
-            console.log(error);
+          .catch(e => {
+            console.error(e);
           });
       } else {
         this.like -= 1;
@@ -421,8 +431,7 @@ export default {
           .delete(`${this.ServerURL}/user/scrap/stop_scrap`, {
             params: { Scoring: this.$route.params.id }
           })
-          .then(response => {
-            console.log(response);
+          .then(() => {
             this.scrapped = false;
             this.$emit("updateScrap");
           })

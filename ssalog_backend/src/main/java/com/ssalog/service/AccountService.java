@@ -16,4 +16,6 @@ public interface AccountService {
 	public Boolean find_pw(String username);
 	public String set_form(String username, String form);
 	public String get_form(String username);
+	public String set_language(String username, String language);
+	public String get_language(String nickname);
 }

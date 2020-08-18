@@ -121,4 +121,29 @@ public class AccountServiceImpl implements AccountService{
 		}
 		return "fail";
 	}
+	
+	@Override
+	public String set_language(String username, String language) {
+		Account ac = accountRepository.findByUsername(username);
+		if(ac!=null) {
+			ac.setLanguage(language);
+			accountRepository.save(ac);
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	
+	@Override
+	public String get_language(String nickname) {
+		Account ac = accountRepository.findByNickname(nickname);
+		if(ac!=null) {
+			if(ac.getLanguage() != null) {
+				return ac.getLanguage();
+			}else {
+				return "null";
+			}
+		}
+		return "fail";
+	}
 }

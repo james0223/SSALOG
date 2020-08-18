@@ -187,13 +187,12 @@ public class LoginContorller {
 //    }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
-    @PostMapping(path="/user/refresh")
+    @PostMapping(path="/newuser/refresh")
     public ResponseEntity<Map<String, Object>> requestForNewAccessToken(HttpServletResponse response) {
         String refreshTokenFromDb = null;
         Map<String, Object> map = new HashMap<>();
         String refreshToken = response.getHeader("jwtToken2");
         try {
-
             if (refreshToken != null) { //refresh를 같이 보냈으면.
             	String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
                 try {

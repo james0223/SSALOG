@@ -19,8 +19,8 @@
       </v-col>
       <v-col cols="7" class="font-weight-light">
         <v-row no-gutters>
-          <v-col cols="7"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
-          <v-col cols="2" class="d-flex justify-center"
+          <v-col cols="6"> <h4 class="font-weight-light mb-1">작성한 글</h4> </v-col>
+          <v-col cols="3" class="d-flex justify-center"
             ><h4 class="font-weight-light mb-1">키워드</h4></v-col
           >
           <v-col cols="3" class="text-end"><h4 class="font-weight-light mb-1">작성일자</h4></v-col>
@@ -46,10 +46,10 @@
               "
             >
               <v-row no-gutters class="text-caption">
-                <v-col cols="7">
+                <v-col cols="6">
                   <span> {{ solve.problemid }} - {{ solve.title }}</span>
                 </v-col>
-                <v-col cols="2" class=" text-center">
+                <v-col cols="3" class=" text-center">
                   <span> {{ solve.keyword2 }}</span>
                 </v-col>
                 <v-col cols="3" class="text-end">

@@ -37,12 +37,13 @@ public class Account {
     @Column(columnDefinition = "TEXT")
     private String form;
     
+    private String language;
 	public Account() {
 		super();
 	}
 	
 	public Account(String username, String nickname, String password, Date regdate, Date updatedate, String role,
-			String imgpath, String introduce, String form) {
+			String imgpath, String introduce, String form, String language) {
 		super();
 		this.username = username;
 		this.nickname = nickname;
@@ -53,12 +54,23 @@ public class Account {
 		this.imgpath = imgpath;
 		this.introduce = introduce;
 		this.form = form;
+		this.language = language;
+	}
+	
+	
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public String getForm() {
 		return form;
 	}
 
+	
 	public void setForm(String form) {
 		this.form = form;
 	}

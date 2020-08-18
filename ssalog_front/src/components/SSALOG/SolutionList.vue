@@ -112,7 +112,11 @@ export default {
         this.solutions = res.data.content.reverse();
         const iterable = this.solutions;
         iterable.forEach(element => {
+          const lengths = 20; // 표시할 글자수 기준
           const temp = element;
+          if (temp.title.length > lengths) {
+            temp.title = temp.title.substr(0, lengths - 2).concat("...");
+          }
           if (temp.keyword && temp.keyword.length !== 0) {
             // temp.keyword2 = temp.keyword.join(" / ");
             const [foo] = temp.keyword;

@@ -110,6 +110,17 @@ public class MypageController {
 	public ResponseEntity<String> get_form(@RequestParam("nickname") String nickname){
 		return new ResponseEntity<String>(accountService.get_form(nickname),HttpStatus.OK);
 	}
+	@ApiOperation(value = "[주 사용언어 설정] 기능: 주사용언어를 설정합니다.성공시 success, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@PostMapping(path="/user/write_language")
+	public ResponseEntity<String> write_language(HttpServletResponse response, @RequestParam("language") String language){
+		String username =  response.getHeader("username");
+		return new ResponseEntity<String>(accountService.set_language(username, language),HttpStatus.OK);
+	}
+	@ApiOperation(value = "[주사용언어 가져오기] 기능: 닉네임을 통해 주사용언어를 가져옵니다. 성공시 해당유저의 주사용언어를 가져오고, 비어있다면 null값, 실패(해당 유저가 존재하지 않다면) 시 fail")
+	@GetMapping(path="/newuser/get_language")
+	public ResponseEntity<String> get_language(@RequestParam("nickname") String nickname){
+		return new ResponseEntity<String>(accountService.get_language(nickname),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");
