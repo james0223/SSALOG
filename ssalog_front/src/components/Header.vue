@@ -14,8 +14,7 @@
         </v-col>
         <v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
-            :ripple="false"
-            class="pa-0 no-background-hover"
+            class="pa-0"
             text
             @click="
               $router.push({
@@ -27,8 +26,7 @@
         </v-col>
         <v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
-            :ripple="false"
-            class="pa-0 no-background-hover"
+            class="pa-0"
             text
             @click="
               $router.push({
@@ -44,8 +42,8 @@
         </v-col>
         <v-col cols="1" class="text-center d-none d-sm-flex">
           <v-btn
-            :ripple="false"
-            class="pa-0 no-background-hover"
+            v-if="nickname"
+            class="pa-0"
             text
             @click="
               $router.push({
@@ -71,11 +69,11 @@
         <v-col cols="8" sm="3" lg="2" class="text-center py-0">
           <v-row no-gutters v-if="!$store.state.accessToken">
             <v-col cols="5">
-              <small @click="changeRoute('Login')" class="pointButton">로그인</small>
+              <v-btn text @click="changeRoute('Login')" class="">로그인</v-btn>
             </v-col>
-            <v-col cols="1">|</v-col>
+            <v-col cols="1" class=""><v-divider vertical></v-divider> </v-col>
             <v-col cols="6">
-              <small @click="changeRoute('SignUp')" class="pointButton">회원가입</small>
+              <v-btn text @click="changeRoute('SignUp')" class="">회원가입</v-btn>
             </v-col>
           </v-row>
           <v-menu open-on-hover offset-y v-if="$store.state.accessToken" no-gutters>
@@ -84,15 +82,17 @@
                 <v-row no-gutters>
                   <v-col cols="4">
                     <v-avatar>
-                      <v-img contain max-height="80%" :src="userThumbnail" alt="유저썸네일"></v-img>
+                      <v-img
+                        contain
+                        max-height="100%"
+                        :src="userThumbnail"
+                        alt="유저썸네일"
+                      ></v-img>
                     </v-avatar>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="8">
                     <div class="text-left subtitle">{{ nickname }} 님</div>
                     <div class="text-left caption">환영합니다</div>
-                  </v-col>
-                  <v-col cols="1" class="d-flex align-center">
-                    <v-icon>mdi-chevron-down</v-icon>
                   </v-col>
                 </v-row>
               </v-card>
@@ -111,6 +111,7 @@
         <v-col cols="1" class="d-none d-md-flex mr-6">
           <v-btn text block @click="goSite('https://www.acmicpc.net/')"
             ><img
+              title="백준으로 이동합니다."
               style="height:1.5rem;"
               src="https://d2gd6pc034wcta.cloudfront.net/images/logo@2x.png"
           /></v-btn>
@@ -172,10 +173,5 @@ export default {
 <style scoped>
 .pointButton {
   cursor: pointer;
-}
-.no-background-hover::before {
-  background-color: transparent !important;
-}
-.Header {
 }
 </style>
