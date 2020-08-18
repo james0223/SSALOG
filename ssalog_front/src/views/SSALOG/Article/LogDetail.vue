@@ -115,7 +115,7 @@
       <Comment />
       <!-- </v-card> -->
     </v-col>
-    <v-col class="d-none d-lg-flex" cols="2">
+    <v-col class="d-none d-md-flex" cols="2">
       <div class="ml-8 mt-5 code_button">
         <v-tooltip bottom>
           <!-- eslint-disable-next-line -->
