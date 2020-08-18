@@ -339,4 +339,20 @@ public class GroupServiceImpl implements GroupService{
 			return "false";
 		}
 	}
+	
+	@Override
+	public String delete_goal(String username, long id) {
+		Optional<GroupGoal> gg = groupGoalRepository.findById(id);
+		if(gg.isPresent()) {
+			GroupGoal gg2 = gg.get();
+			if(gg2.getGroupdto().getAccount().getUsername().equals(username)) {
+				groupGoalRepository.delete(gg2);
+				return "success";
+			}else {
+				return "fail";
+			}
+		}else {
+			return "fail";
+		}
+	}
 }

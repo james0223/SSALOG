@@ -140,6 +140,12 @@ public class GroupController {
 	public ResponseEntity<String> check_role(@RequestParam("groupname") String groupname,@RequestParam("nickname") String nickname) {
 		return new ResponseEntity<String>(groupService.Check_Role(groupname, nickname),HttpStatus.OK);
 	}
+	@DeleteMapping("user/grouping/delete_goal")
+	@ApiOperation(value = "[그룹의 목표를 제거합니다.] 해당 goal의 id를 줘서 제거합니다. 관리자만이 삭제할 수 있습니다.")
+	public ResponseEntity<String> delete_goal(HttpServletResponse response,@RequestParam("id") Long id) {
+		String username = response.getHeader("username");
+		return new ResponseEntity<String>(groupService.delete_goal(username, id),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");
