@@ -172,15 +172,22 @@
           <div class="py-12"></div>
           <div class="iCountUp"></div>
           <v-container>
-            <h2 class="display-2 font-weight-bold mb-3 text-uppercase text-center">
+            <h3 class="display-2 font-weight-bold mb-3 text-uppercase text-center">
               사용법
-            </h2>
+            </h3>
 
-            <v-responsive class="mx-auto mb-12" width="56">
-              <v-divider class="mb-1"></v-divider>
-
-              <v-divider></v-divider>
-            </v-responsive>
+            <v-row justify="end" class="mb-6 mr-2">
+              <v-btn
+                outlined
+                fab
+                color="light-blue"
+                elevation="5"
+                target="_blank"
+                href="https://chrome.google.com/webstore/detail/ssalog/gkjliingjedcflnjneackchlejifljpj?utm_source=chrome-ntp-icon"
+              >
+                <v-icon size="50" color="light-blue">mdi-cloud-download-outline</v-icon>
+              </v-btn>
+            </v-row>
 
             <v-carousel
               cycle
