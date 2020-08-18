@@ -84,7 +84,19 @@
                     <v-timeline dense>
                       <v-timeline-item v-for="task in HWList" :key="task.id" small>
                         <v-card class="elevation-2">
-                          <v-card-title class="headline">{{ task.problemname }}</v-card-title>
+                          <v-card-title class="headline"
+                            >{{ task.problemname }} <v-spacer></v-spacer>
+                            <v-btn
+                              color="error"
+                              icon
+                              @click="
+                                openDeleteHW = true;
+                                taskBeErased = task.id;
+                              "
+                            >
+                              <v-icon>mdi-close-circle</v-icon>
+                            </v-btn>
+                          </v-card-title>
                           <v-card-subtitle>{{ task.mention }}</v-card-subtitle>
                           <v-card-text> 마감일 : {{ task.limit.substr(0, 10) }} </v-card-text>
                         </v-card>
@@ -173,6 +185,16 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="openDeleteHW" persistent width="30vw">
+      <v-card>
+        <v-card-title class="headline">정말 과제를 삭제하시겠습니까?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="openDeleteHW = false">과제 삭제 취소</v-btn>
+          <v-btn color="green darken-1" text @click="openDeleteHW = false">과제 삭제</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -198,6 +220,8 @@ export default {
         mention: "",
         deadline: new Date()
       },
+      openDeleteHW: false,
+      taskBeErased: null,
       HWList: [],
       // 회원 관리
       groupMember: [],
@@ -265,6 +289,7 @@ export default {
         });
         // 가입에 성공했다면 local 의 대기열에서도 pop
         this.applicants.splice(this.applicants.indexOf(item), 1);
+        this.$router.go();
       } catch (e) {
         console.log(e);
       }

@@ -4,6 +4,7 @@ import Axios from "axios";
 // eslint-disable-next-line
 import jwt_decode from "jwt-decode";
 import createPersistedState from "vuex-persistedstate";
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -68,7 +69,6 @@ const getDefaultState = () => {
 export default new Vuex.Store({
   state: getDefaultState(),
   plugins: [createPersistedState()],
-  getters: {},
   mutations: {
     NicknameChange(state, payload) {
       state.nickname = payload;
@@ -116,69 +116,6 @@ export default new Vuex.Store({
         refreshToken: data.refreshToken
       });
       dispatch("Thumbnail", loginData.username);
-      dispatch("autoRefresh");
-    },
-    // eslint-disable-next-line
-    autoRefresh({ state, dispatch, commit }) {
-      const { accessToken, refreshToken } = state;
-      const { exp } = jwt_decode(accessToken);
-      const now = Date.now() / 1000;
-      // eslint-disable-next-line
-      let timeUntilRef = exp - now;
-      timeUntilRef -= 5 * 60;
-      timeUntilRef *= 1000;
-      const res = () => {
-        // eslint-disable-next-line
-        Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-        Axios.post(`${this.state.ServerURL}/user/refresh`, null, {
-          headers: {
-            refreshToken: `Bearer ${refreshToken}`
-          }
-        })
-          .then(result => {
-            // 토큰이 만료되었을때
-            if (result.data.success === false) {
-              commit("LOGOUT");
-              commit("ShowAlert", {
-                flag: true,
-                msg: "토큰이 만료되었습니다. 다시 로그인하세요",
-                color: "error"
-              });
-              setTimeout(() => {
-                // commit("ShowAlert", { flag: false, msg: "" });
-                commit("ShowAlert", {
-                  flag: false,
-                  msg: ""
-                });
-                window.location.reload();
-              }, 2000);
-            }
-            commit("TOKEN", { accessToken: result.data.accessToken, refreshToken });
-            dispatch("autoRefresh");
-          })
-          .catch(err => {
-            if (err.response.status === 401 || err.response.status === 9999) {
-              // 토큰 갱신 실패 (9999) 처리
-              // console.log("너는 은하철도");
-              commit("LOGOUT");
-              commit("ShowAlert", {
-                flag: true,
-                msg: "토큰이 만료되었습니다. 다시 로그인하세요",
-                color: "error"
-              });
-              setTimeout(() => {
-                commit("ShowAlert", { flag: false, msg: "" });
-                window.location.reload();
-              }, 2000);
-            }
-            if (err.response.status === 500) {
-              // logout 한 경우
-              commit("LOGOUT");
-              window.location.reload();
-            }
-          });
-      };
-      setTimeout(res, timeUntilRef);
     },
     async LOGOUT({ commit }) {
       await Axios.post(`${this.state.ServerURL}/user/out`);

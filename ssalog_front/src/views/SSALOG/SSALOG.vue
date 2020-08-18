@@ -308,13 +308,14 @@ export default {
             following: this.$route.params.nickname
           }
         })
-        .catch(function(error) {
-          // handle error
-          console.log(error);
-        })
         .then(res => {
           // console.log(res.data);
           this.isfollow = res.data;
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+          console.error(error);
         });
     },
     async getScrapNum() {
@@ -354,10 +355,10 @@ export default {
       }
     }
   },
-  created() {
-    this.getInfo();
+  async created() {
+    await this.getInfo();
     if (this.$store.state.nickname != null) {
-      this.getFollowFlag();
+      await this.getFollowFlag();
     }
   }
 };
