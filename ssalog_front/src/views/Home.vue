@@ -239,7 +239,6 @@ const image1 = require("@/assets/images/howto/1.png");
 const image2 = require("@/assets/images/howto/2.png");
 const image3 = require("@/assets/images/howto/3.png");
 const image4 = require("@/assets/images/howto/4.png");
-const image5 = require("@/assets/images/howto/5.png");
 
 export default {
   components: {
@@ -313,11 +312,6 @@ export default {
           id: "4",
           image: image4,
           desc: "4.마크다운 문서 작성"
-        },
-        {
-          id: "5",
-          image: image5,
-          desc: "5.작성완료"
         }
       ]
     };
