@@ -176,7 +176,7 @@
               사용법
             </h3>
 
-            <v-row justify="end" class="mb-6 mr-10">
+            <v-row justify="end" class="mb-5  pr-12 mr-12">
               <v-btn
                 outlined
                 fab
@@ -189,7 +189,7 @@
               </v-btn>
             </v-row>
 
-            <v-carousel cycle height="70vh" whide-delimiter-background show-arrows-on-hover>
+            <v-carousel cycle height="85vh" whide-delimiter-background show-arrows-on-hover>
               <v-carousel-item v-for="slide in slides" :key="slide.id">
                 <v-sheet color="white" height="100%">
                   <v-row class="fill-width fill-height" align="center" justify="center">
