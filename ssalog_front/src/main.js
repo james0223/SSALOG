@@ -26,6 +26,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import { flatMapComponents } from "vue-router/src/util/resolve-components";
 
 Object.keys(rules).forEach(rule => {
   extend(rule, rules[rule]);
@@ -59,7 +60,11 @@ axios.interceptors.response.use(
     return response;
   },
   async function(error) {
-    if (error.response.status === 9999) {
+    // 9999 에러나 401 에러가 발생하고, 리프레시 토큰이 있을때
+    if (
+      (error.response.status === 9999 || error.response.status === 401) &&
+      store.state.refreshToken
+    ) {
       const refreshToken = store.state.refreshToken;
       try {
         const { data } = await axios.post(`${store.state.ServerURL}/newuser/refresh`, null, {
@@ -72,7 +77,20 @@ axios.interceptors.response.use(
         error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
         return axios(error.config);
       } catch (e) {
-        console.error(e);
+        // 리프레시 토큰이 만료되었거나 뭔가 정상이 아닐때
+        store.commit("LOGOUT");
+        store.commit("ShowAlert", {
+          flag: true,
+          msg: "리프레시 토큰이 만료되었습니다. 다시 로그인하세요",
+          color: "error"
+        });
+        setTimeout(() => {
+          store.commit("ShowAlert", {
+            flag: false,
+            msg: ""
+          });
+          router.push("/Login");
+        }, 1000);
       }
       // window.location.reload();
     }
