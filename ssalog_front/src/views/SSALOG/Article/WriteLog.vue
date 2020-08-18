@@ -1,239 +1,266 @@
 <template>
-  <v-container mt-3>
+  <v-container class="pa-0">
     <template v-if="resData !== undefined">
+      <div class="my-15 text-center">
+        <h1>쌀로그 {{ isUpdating ? "수정" : "작성 " }}</h1>
+      </div>
       <v-row>
-        <v-col cols="11">
-          <h1>{{ resData.problemid }}번 : {{ resData.problemname }}</h1>
+        <v-col cols="12" md="6">
+          <v-col cols="12" class="pa-0">
+            <h2>
+              <v-icon>mdi-feather</v-icon>문제: {{ resData.problemid }} -
+              {{ resData.problemname }}
+            </h2>
+          </v-col>
+          <v-row class="mt-10 mb-12">
+            <v-col cols="12" md="6">
+              <v-icon>mdi-lead-pencil</v-icon>
+              언어: {{ resData.language }}
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-icon>mdi-memory</v-icon>
+              메모리: {{ resData.memory }}KB
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-icon>mdi-timer</v-icon>
+              시간: {{ resData.time }}MS
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-icon>mdi-sort-variant</v-icon>
+              코드길이: {{ resData.len }}B
+            </v-col>
+          </v-row>
+          <div class="editor" spellcheck="false">
+            <editor-menu-bubble :editor="codearea" :keep-in-bounds="keepInBounds" v-slot="{ menu }">
+              <div
+                class="menububble"
+                :class="{ 'is-active': menu.isActive }"
+                :style="`left: ${menu.left + 50}px; top: ${menu.top}px;`"
+              >
+                <button class="menububble__button red" @click="menububbleClick">
+                  <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
+                  <v-icon color="white">mdi-chevron-triple-right</v-icon>
+                </button>
+              </div>
+            </editor-menu-bubble>
+            <editor-content
+              class="editor__content usercode"
+              :editor="codearea"
+              style="height : 100vh;"
+            />
+          </div>
         </v-col>
-        <!-- <v-col cols="1"
-          ><button><v-icon size="25">mdi-help-circle-outline</v-icon></button>
-        </v-col> -->
-        <v-col cols="1">
-          <template>
-            <div class="text-center">
-              <v-dialog v-model="tool" width="500">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn icon v-bind="attrs" v-on="on">
-                    <v-icon size="25">mdi-help-circle-outline</v-icon>
-                  </v-btn>
-                </template>
-
-                <v-card>
-                  <v-card-title class="headline white lighten-2">
-                    Tooltip
-                  </v-card-title>
-
-                  <v-card-text>
-                    <v-row>
-                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
-                      ><v-col>마크다운 문법 적용 가능한 에디터 입니다.<br /></v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
-                      ><v-col
-                        >소스코드를 부분 드래그 후 나타나는
-                        <span style="background-color  : #f8f8f8"
-                          ><v-icon color="red">mdi-chevron-triple-right</v-icon></span
-                        >을 클릭하여 에디터 현재 커서위치로 옮길 수 있습니다.</v-col
-                      >
-                    </v-row>
-
-                    <v-row>
-                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
-                      ><v-col
-                        >코드블럭을 빠져나올때는
-                        <span style="background-color  : #f8f8f8">ctrl+enter</span> 을
-                        입력합니다.</v-col
-                      >
-                    </v-row>
-
-                    <v-row>
-                      <v-col cols="1"> <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
-                      ><v-col
-                        >에디터의 기본양식은 계정설정의 양식변경을 통해서 변경이 가능합니다
-                      </v-col>
-                    </v-row>
-                  </v-card-text>
-
-                  <v-divider></v-divider>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="tool = false">
-                      닫기
+        <v-col cols="12" md="6">
+          <v-col cols="12" class="px-0">
+            <template>
+              <div class="text-right">
+                <v-dialog v-model="tool" width="500">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon :color="ColorSet.Prime" large>mdi-help-circle-outline</v-icon>
                     </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </div>
-          </template></v-col
-        >
-      </v-row>
-      <v-row class="px-3">
-        <v-col cols="3" style="border-left: 1px solid red"> 언어: {{ resData.language }} </v-col>
-        <v-col cols="3" style="border-left: 1px solid red"> 메모리: {{ resData.memory }}KB </v-col>
-        <v-col cols="3" style="border-left: 1px solid red"> 시간: {{ resData.time }}MS </v-col>
-        <v-col cols="3" style="border-left: 1px solid red"> 코드길이: {{ resData.len }}B </v-col>
+                  </template>
+
+                  <v-card>
+                    <v-card-title class="headline white lighten-2">
+                      Tooltip
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-row>
+                        <v-col cols="1">
+                          <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                        ><v-col>마크다운 문법 적용 가능한 에디터 입니다.<br /></v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col cols="1">
+                          <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                        ><v-col
+                          >소스코드를 부분 드래그 후 나타나는
+                          <span style="background-color  : #f8f8f8"
+                            ><v-icon color="red">mdi-chevron-triple-right</v-icon></span
+                          >을 클릭하여 에디터 현재 커서위치로 옮길 수 있습니다.</v-col
+                        >
+                      </v-row>
+
+                      <v-row>
+                        <v-col cols="1">
+                          <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                        ><v-col
+                          >코드블럭을 빠져나올때는
+                          <span style="background-color  : #f8f8f8">ctrl+enter</span> 을
+                          입력합니다.</v-col
+                        >
+                      </v-row>
+
+                      <v-row>
+                        <v-col cols="1">
+                          <v-icon color="black">mdi-menu-right-outline</v-icon></v-col
+                        ><v-col
+                          >에디터의 기본양식은 계정설정의 양식변경을 통해서 변경이 가능합니다
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" text @click="tool = false">
+                        닫기
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
+            </template>
+          </v-col>
+          <div class="editor" spellcheck="false">
+            <v-text-field
+              outlined
+              :color="ColorSet.Prime"
+              label="글 제목"
+              autofocus="true"
+              v-model="title"
+            ></v-text-field>
+            <v-select
+              class="my-0"
+              v-model="SelectedProblemCategory"
+              :items="$store.state.ProblemCategory"
+              :item-text="'kor'"
+              :item-value="'kor'"
+              attach
+              chips
+              label="알고리즘 분류"
+              multiple
+            ></v-select>
+            <v-card elevation="8" tile class="editor_header">
+              <editor-menu-bar class="mb-0" :editor="editor" v-slot="{ commands, isActive }">
+                <div class="menubar">
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.bold() }"
+                    @click="commands.bold"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/bold.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.italic() }"
+                    @click="commands.italic"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/italic.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.strike() }"
+                    @click="commands.strike"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/strike.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.underline() }"
+                    @click="commands.underline"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/underline.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.code() }"
+                    @click="commands.code"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/code.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+                    @click="commands.heading({ level: 1 })"
+                  >
+                    H1
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+                    @click="commands.heading({ level: 2 })"
+                  >
+                    H2
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+                    @click="commands.heading({ level: 3 })"
+                  >
+                    H3
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.bullet_list() }"
+                    @click="commands.bullet_list"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/ul.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.ordered_list() }"
+                    @click="commands.ordered_list"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/ol.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.blockquote() }"
+                    @click="commands.blockquote"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/quote.svg" />
+                  </button>
+
+                  <button
+                    class="menubar__button"
+                    :class="{ 'is-active': isActive.code_block() }"
+                    @click="commands.code_block"
+                  >
+                    <img class="icon" src="@/assets/tiptap/icons/code.svg" />
+                  </button>
+
+                  <button class="menubar__button" @click="commands.horizontal_rule">
+                    <img class="icon" src="@/assets/tiptap/icons/hr.svg" />
+                  </button>
+
+                  <button class="menubar__button" @click="commands.undo">
+                    <img class="icon" src="@/assets/tiptap/icons/undo.svg" />
+                  </button>
+
+                  <button class="menubar__button" @click="commands.redo">
+                    <img class="icon" src="@/assets/tiptap/icons/redo.svg" />
+                  </button>
+                </div>
+              </editor-menu-bar>
+            </v-card>
+            <v-card elevation="8" tile class="pt-2 main_input">
+              <div v-on:click="select()">
+                <editor-content class="editor__content article" :editor="editor" />
+              </div>
+            </v-card>
+            <br />
+            <v-btn :color="ColorSet.Prime" large dark tile block @click="write">
+              {{ isUpdating ? "수정하기" : "작성하기 " }}</v-btn
+            >
+          </div>
+        </v-col>
       </v-row>
     </template>
-    <br />
-    <v-row>
-      <v-col cols="12" md="6">
-        <div class="editor" spellcheck="false">
-          <editor-menu-bubble :editor="codearea" :keep-in-bounds="keepInBounds" v-slot="{ menu }">
-            <div
-              class="menububble"
-              :class="{ 'is-active': menu.isActive }"
-              :style="`left: ${menu.left + 50}px; top: ${menu.top}px;`"
-            >
-              <button class="menububble__button red" @click="menububbleClick">
-                <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
-                <v-icon color="white">mdi-chevron-triple-right</v-icon>
-              </button>
-            </div>
-          </editor-menu-bubble>
-          <editor-content
-            class="editor__content usercode"
-            :editor="codearea"
-            style="height : 100vh;"
-          />
-        </div>
-      </v-col>
-      <v-col cols="12" md="6">
-        <div class="editor" spellcheck="false">
-          <v-text-field label="제목" v-model="title"></v-text-field>
-          <v-select
-            v-model="SelectedProblemCategory"
-            :items="$store.state.ProblemCategory"
-            :item-text="'kor'"
-            :item-value="'kor'"
-            attach
-            chips
-            label="알고리즘 분류"
-            multiple
-          ></v-select>
-          <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-            <div class="menubar">
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.bold() }"
-                @click="commands.bold"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/bold.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.italic() }"
-                @click="commands.italic"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/italic.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.strike() }"
-                @click="commands.strike"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/strike.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.underline() }"
-                @click="commands.underline"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/underline.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.code() }"
-                @click="commands.code"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/code.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-                @click="commands.heading({ level: 1 })"
-              >
-                H1
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-                @click="commands.heading({ level: 2 })"
-              >
-                H2
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-                @click="commands.heading({ level: 3 })"
-              >
-                H3
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.bullet_list() }"
-                @click="commands.bullet_list"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/ul.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.ordered_list() }"
-                @click="commands.ordered_list"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/ol.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.blockquote() }"
-                @click="commands.blockquote"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/quote.svg" />
-              </button>
-
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.code_block() }"
-                @click="commands.code_block"
-              >
-                <img class="icon" src="@/assets/tiptap/icons/code.svg" />
-              </button>
-
-              <button class="menubar__button" @click="commands.horizontal_rule">
-                <img class="icon" src="@/assets/tiptap/icons/hr.svg" />
-              </button>
-
-              <button class="menubar__button" @click="commands.undo">
-                <img class="icon" src="@/assets/tiptap/icons/undo.svg" />
-              </button>
-
-              <button class="menubar__button" @click="commands.redo">
-                <img class="icon" src="@/assets/tiptap/icons/redo.svg" />
-              </button>
-            </div>
-          </editor-menu-bar>
-          <div v-on:click="select()">
-            <editor-content class="editor__content article" :editor="editor" />
-          </div>
-          <br />
-          <v-btn color="info" tile block @click="write">
-            {{ isUpdating ? "수정하기" : "작성하기 " }}</v-btn
-          >
-        </div>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
@@ -381,7 +408,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL", "nickname", "username"]),
+  computed: mapState(["ServerURL", "nickname", "username", "ColorSet"]),
   beforeDestroy() {
     this.editor.destroy();
   },
@@ -581,9 +608,8 @@ symbol {
 // article 부분 style
 .article {
   padding: 15px 10px;
-  border: 3px solid;
   overflow-y: scroll;
-  height: 60vh;
+  height: 86vh;
 }
 .editor *.is-empty:nth-child(1)::before {
   content: attr(data-empty-text);
@@ -596,5 +622,19 @@ symbol {
 .has-focus {
   border-radius: 3px;
   box-shadow: 0 0 0 3px #3ea4ffe6;
+}
+.main_input {
+  border-bottom: 2px solid #8dffb3;
+  border-right: 2px solid #8dffb3;
+  border-left: 2px solid #8dffb3;
+}
+// .article_header {
+//   border-right: 2px solid rgb(140, 99, 219);
+//   border-left: 2px solid #8dffb3;
+//   border-top: 2px solid #8dffb3;
+// }
+.editor_header {
+  background: rgb(140, 99, 219);
+  background: linear-gradient(218deg, rgba(140, 99, 219, 1) 0%, rgba(141, 255, 179, 1) 64%);
 }
 </style>
