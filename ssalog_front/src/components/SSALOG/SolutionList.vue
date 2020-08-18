@@ -20,10 +20,10 @@
       :search="search"
       no-data-text="😢 데이터가 없습니다 😢"
       item-key="scoring"
-      :items-per-page="10"
+      :items-per-page="8"
       class="elevation-1"
       :footer-props="{
-        itemsPerPageOptions: [10],
+        itemsPerPageOptions: [8],
         showFirstLastPage: true,
         firstIcon: 'mdi-arrow-collapse-left',
         lastIcon: 'mdi-arrow-collapse-right',

@@ -84,17 +84,12 @@
     </v-card-text>
     <v-divider></v-divider>
     <v-card-title class="mb-4">
-      <h3 class="font-weight-light mb-3">
-        내 양식 설정<v-tooltip right>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn class="pa-0" small text v-bind="attrs" v-on="on"
-              ><v-icon>mdi-help-circle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>풀이 작성시 자동으로 양식을 불러와줘요!</span>
-        </v-tooltip>
-      </h3>
-
+      <div>
+        <h3 class="font-weight-light mb-3">양식 변경</h3>
+        <h6 class="font-weight-light mb-3 white">
+          풀이 작성시 자동으로 불러올 양식을 변경합니다.
+        </h6>
+      </div>
       <v-spacer></v-spacer>
 
       <div class="text-center">
@@ -107,7 +102,7 @@
 
           <v-card>
             <v-card-title>
-              <h2>내 양식 설정</h2>
+              <h2>양식 변경</h2>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text class="mt-5">
