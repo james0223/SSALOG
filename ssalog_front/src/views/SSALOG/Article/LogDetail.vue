@@ -417,13 +417,13 @@ export default {
             {},
             { params: { Scoring: this.$route.params.id } }
           )
-          .then(response => {
+          .then(() => {
             this.scrapped = true;
 
             this.$emit("updateScrap");
           })
-          .catch(function(error) {
-            console.log(error);
+          .catch(e => {
+            console.error(e);
           });
       } else {
         this.like -= 1;
@@ -431,7 +431,7 @@ export default {
           .delete(`${this.ServerURL}/user/scrap/stop_scrap`, {
             params: { Scoring: this.$route.params.id }
           })
-          .then(response => {
+          .then(() => {
             this.scrapped = false;
             this.$emit("updateScrap");
           })
