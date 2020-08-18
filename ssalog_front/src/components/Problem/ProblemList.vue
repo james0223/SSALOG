@@ -144,7 +144,7 @@ export default {
   data() {
     return {
       searchData: {
-        direction: "ASC",
+        direction: "DESC",
         problemid: this.$route.query.q,
         problemname: this.$route.query.q,
         page: 1,
