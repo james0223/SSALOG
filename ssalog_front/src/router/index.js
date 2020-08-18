@@ -38,12 +38,6 @@ import store from "@/store";
 
 Vue.use(VueRouter);
 
-// saving former path
-// const savingPath = () => (to, from, next) => {
-//   console.log(from);
-//   return next();
-// };
-
 const routes = [
   {
     path: "*",

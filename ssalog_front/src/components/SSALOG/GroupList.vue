@@ -93,22 +93,21 @@
                   </v-autocomplete>
                 </v-card-text>
                 <v-expand-transition>
-                  <v-list v-if="selectedGroup">
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-list-item-title
-                          >그룹명 : {{ selectedGroup.groupname }}</v-list-item-title
-                        >
-                        <v-list-item-subtitle
-                          >그룹 설명 : {{ selectedGroup.groupdes }}</v-list-item-subtitle
-                        >
-                        <v-list-item-title
-                          >그룹장: {{ selectedGroup.groupowner }}</v-list-item-title
-                        >
-                        <v-btn @click="applyGroup(selectedGroup.groupname)">그룹 신청하기</v-btn>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
+                  <v-card v-if="selectedGroup">
+                    <v-card-text>
+                      <h5>그룹명</h5>
+                      <p class="display-2 text--primary">{{ selectedGroup.groupname }}</p>
+                      <h5>그룹설명</h5>
+                      <h3>{{ selectedGroup.groupdes }}</h3>
+                      <h5>그룹장</h5>
+                      <p>{{ selectedGroup.groupowner }}</p>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn cl text @click="applyGroup(selectedGroup.groupname)"
+                        >그룹 신청하기</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
                 </v-expand-transition>
               </v-card>
             </v-col>
@@ -184,6 +183,17 @@ export default {
             groupname: selectedGroup
           }
         });
+        this.$store.commit("ShowAlert", {
+          flag: true,
+          msg: "가입신청이 완료되었습니다",
+          color: "info"
+        });
+        setTimeout(() => {
+          this.$store.commit("ShowAlert", {
+            flag: false,
+            msg: ""
+          });
+        }, 700);
       } catch (err) {
         console.error(err);
       }

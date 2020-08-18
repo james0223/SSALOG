@@ -26,11 +26,14 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import Axios from "axios";
 
 Object.keys(rules).forEach(rule => {
   extend(rule, rules[rule]);
 });
 localize("ko", ko);
+
+/* eslint-enable */
 // Install components globally
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
@@ -49,3 +52,30 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount("#app");
+
+// auto refresh
+/* eslint-disable */
+axios.interceptors.response.use(
+  function(response) {
+    return response;
+  },
+  async function(error) {
+    if (error.response.status === 9999) {
+      const refreshToken = store.state.refreshToken;
+      try {
+        const { data } = await axios.post(`${store.state.ServerURL}/newuser/refresh`, null, {
+          headers: {
+            refreshToken: `Bearer ${refreshToken}`
+          }
+        });
+        store.commit("TOKEN", { accessToken: data.accessToken, refreshToken });
+        axios.defaults.headers.common.accessToken = data.accessToken;
+        error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+        return axios(error.config);
+      } catch (e) {
+        console.error(e);
+      }
+      // window.location.reload();
+    }
+  }
+);
