@@ -114,7 +114,8 @@ export default {
         iterable.forEach(element => {
           const lengths = 20; // 표시할 글자수 기준
           const temp = element;
-          if (temp.title.length > lengths) {
+          console.log(temp.title);
+          if (temp.title && temp.title.length > lengths) {
             temp.title = temp.title.substr(0, lengths - 2).concat("...");
           }
           if (temp.keyword && temp.keyword.length !== 0) {
