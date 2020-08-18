@@ -4,71 +4,98 @@
       <v-col lg="10" cols="12">
         <!-- <v-card> -->
         <v-card class="pa-3 mb-10" color="transparent" tile>
-          <v-card-title
-            ><h2>{{ title }}</h2>
-            <v-spacer></v-spacer>
-            <div v-if="username === writerUsername">
-              <v-btn text @click="editSolution">수정</v-btn>
-              <v-btn text color="red" @click="isDelete = true">삭제</v-btn>
-              <v-dialog v-model="isDelete" max-width="60vh">
-                <v-card>
-                  <v-card-title>
-                    <h5>글 삭제</h5>
-                  </v-card-title>
-                  <v-card-text>정말 삭제하시겠어요?</v-card-text>
-                  <v-card-text>삭제 이후에는 복구할 수 없습니다.</v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="red" text @click="deleteSolution">삭제</v-btn>
-                    <v-btn color="grey" text @click="isDelete = false">취소</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </div>
+          <h3 title="스크랩한 사용자수" class="ma-2 frontcorner text--white">
+            <v-icon @click="doScrap" style="cursor:pointer;" color="#f8f8f8">mdi-star</v-icon>
+            {{ like }}
+          </h3>
+          <img
+            v-if="!scrapped"
+            class="corner"
+            src="@/assets/images/corner/corner_normal.png"
+            title="스크랩한 사용자수"
+            alt="scrap number"
+          />
+          <img
+            v-if="scrapped"
+            class="corner"
+            src="@/assets/images/corner/corner_scrapped.png"
+            title="스크랩한 사용자수"
+            alt="scrap number"
+          />
+          <v-card-title>
+            <h2>{{ title }}</h2>
           </v-card-title>
-          <v-card-text
-            ><v-row>
-              <v-col
-                ><h3>
+          <v-card-text>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <h3>
                   문제 :
                   <span
                     class="innerLink blue--text"
                     @click="$router.push({ name: 'ProblemDetail', params: { id: problemNum } })"
                     outlined
                     >{{ problemNum }} {{ problemTitle }}</span
-                  ><v-btn
+                  >
+                  <v-btn
                     height="1rem"
                     class="ml-1 mb-1 pb-1 no-background-hover"
                     text
                     @click="goSite(`https://www.acmicpc.net/problem/${problemNum}`)"
                   >
-                    <img style="height:1.5rem;" src="@/assets/images/boj.png" />백준</v-btn
-                  >
+                    <img style="height:1.5rem;" src="@/assets/images/boj.png" />백준
+                  </v-btn>
                 </h3>
               </v-col>
-              <v-col
-                ><h3>작성일 : {{ updatedDate }}</h3></v-col
-              ></v-row
-            >
-          </v-card-text>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="3"><v-icon>mdi-lead-pencil</v-icon> 언어: {{ language }} </v-col>
-              <v-col cols="12" sm="3"><v-icon>mdi-memory</v-icon> 메모리: {{ memory }}KB </v-col>
-              <v-col cols="12" sm="3"><v-icon>mdi-timer</v-icon> 시간: {{ time }}MS </v-col>
-              <v-col cols="12" sm="3"
-                ><v-icon>mdi-sort-variant</v-icon> 코드길이: {{ len }}B
+              <v-col cols="12" sm="6">
+                <h3>작성일 : {{ updatedDate }}</h3>
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-text v-if="!!keyword">
+          <v-card-text>
+            <v-row>
+              <v-col cols="12" sm="3">
+                <v-icon>mdi-lead-pencil</v-icon>
+                언어: {{ language }}
+              </v-col>
+              <v-col cols="12" sm="3">
+                <v-icon>mdi-memory</v-icon>
+                메모리: {{ memory }}KB
+              </v-col>
+              <v-col cols="12" sm="3">
+                <v-icon>mdi-timer</v-icon>
+                시간: {{ time }}MS
+              </v-col>
+              <v-col cols="12" sm="3">
+                <v-icon>mdi-sort-variant</v-icon>
+                코드길이: {{ len }}B
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-text class="pb-0" v-if="!!keyword">
             사용한 알고리즘
             <v-chip-group>
-              <v-chip outlined v-for="(key, i) in keyword" :key="i">
-                {{ key }}
-              </v-chip>
+              <v-chip outlined v-for="(key, i) in keyword" :key="i">{{ key }}</v-chip>
             </v-chip-group>
           </v-card-text>
+          <v-card-title class="ma-0 pa-0" v-if="username === writerUsername">
+            <v-spacer></v-spacer>
+            <v-btn text @click="editSolution">수정</v-btn>
+            <v-btn text color="red" @click="isDelete = true">삭제</v-btn>
+            <v-dialog v-model="isDelete" max-width="60vh">
+              <v-card>
+                <v-card-title>
+                  <h5>글 삭제</h5>
+                </v-card-title>
+                <v-card-text>정말 삭제하시겠어요?</v-card-text>
+                <v-card-text>삭제 이후에는 복구할 수 없습니다.</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="red" text @click="deleteSolution">삭제</v-btn>
+                  <v-btn color="grey" text @click="isDelete = false">취소</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-card-title>
         </v-card>
         <v-card flat color="transparent" min-height="40vh" class="pa-0 pa-sm-3 mb-10">
           <v-card-text class="pa-0 pa-sm-3">
@@ -94,16 +121,17 @@
                 @click.stop="dialog = true"
                 v-bind="attrs"
                 v-on="on"
-                ><v-icon color="blue-grey darken-1">mdi-code-braces</v-icon></v-btn
               >
+                <v-icon color="blue-grey darken-1">mdi-code-braces</v-icon>
+              </v-btn>
             </template>
             <span>제출 코드 보기</span>
           </v-tooltip>
           <v-tooltip v-if="username && username !== writerUsername" bottom>
             <template v-slot:activator="{ on }">
-              <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="doScrap"
-                ><v-icon :disabled="!scrapped" color="yellow accent-4">mdi-star</v-icon></v-btn
-              >
+              <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="doScrap">
+                <v-icon :disabled="!scrapped" color="yellow accent-4">mdi-star</v-icon>
+              </v-btn>
             </template>
             <span>스크랩</span>
           </v-tooltip>
@@ -114,10 +142,10 @@
               <v-card-title class="headline">
                 {{ writerNickname }}님의 코드
                 <v-spacer></v-spacer>
-                <v-btn color="info" small text v-clipboard:copy="code" @click="showCopyMsg">
-                  복사하기
-                </v-btn></v-card-title
-              >
+                <v-btn color="info" small text v-clipboard:copy="code" @click="showCopyMsg"
+                  >복사하기</v-btn
+                >
+              </v-card-title>
               <editor-content
                 class="main_content code_area editor__content article"
                 :editor="codeview"
@@ -134,13 +162,17 @@
           v-once
           v-if="tocLoaded"
         >
-          <v-card-title><h5>목 차</h5></v-card-title>
+          <v-card-title>
+            <h5>목 차</h5>
+          </v-card-title>
           <v-list color="transparent" dense>
             <v-list-item-group v-model="TOC" color="primary">
               <v-list-item v-for="(item, i) in TOC" :key="i">
                 <v-list-item-content>
-                  <v-list-item-title @click="$vuetify.goTo(`[id='${item.id}']`)" v-text="item.data">
-                  </v-list-item-title>
+                  <v-list-item-title
+                    @click="$vuetify.goTo(`[id='${item.id}']`)"
+                    v-text="item.data"
+                  ></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -255,6 +287,7 @@ export default {
       problemNum: null,
       problemTitle: null,
       title: null,
+      like: null,
       writerUsername: null,
       updatedDate: null,
       language: null,
@@ -354,7 +387,19 @@ export default {
     doScrap() {
       // alert("스크랩");
       // console.log("스크랩");
+      if (!this.nickname) {
+        this.ShowAlert({
+          flag: true,
+          msg: "로그인 후 이용가능해요.",
+          color: "info"
+        });
+        setTimeout(() => {
+          this.ShowAlert({ flag: false, msg: "" });
+        }, 2000);
+        return;
+      }
       if (!this.scrapped) {
+        this.like += 1;
         axios
           .post(
             `${this.ServerURL}/user/scrap/do_scrap`,
@@ -371,6 +416,7 @@ export default {
             console.log(error);
           });
       } else {
+        this.like -= 1;
         axios
           .delete(`${this.ServerURL}/user/scrap/stop_scrap`, {
             params: { Scoring: this.$route.params.id }
@@ -386,13 +432,20 @@ export default {
       }
     },
     showCopyMsg() {
-      this.ShowAlert({ flag: true, msg: "클립보드에 복사되었습니다.", color: "info" });
+      this.ShowAlert({
+        flag: true,
+        msg: "클립보드에 복사되었습니다.",
+        color: "info"
+      });
       setTimeout(() => {
         this.ShowAlert({ flag: false, msg: "" });
       }, 2000);
     },
     editSolution() {
-      this.$router.push({ name: "WriteLog", params: { id: this.$route.params.id } });
+      this.$router.push({
+        name: "WriteLog",
+        params: { id: this.$route.params.id }
+      });
     },
     async deleteSolution() {
       try {
@@ -423,6 +476,7 @@ export default {
             Scoring: pageId
           }
         });
+        this.like = res.data.like;
         this.title = res.data.title;
         this.keyword = res.data.keyword;
         this.problemNum = res.data.problemid;
@@ -519,5 +573,20 @@ export default {
 }
 .no-background-hover::before {
   background-color: transparent !important;
+}
+.frontcorner {
+  color: #f8f8f8;
+  z-index: 3;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 5rem;
+}
+.corner {
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  right: 0px;
+  height: 5rem;
 }
 </style>
