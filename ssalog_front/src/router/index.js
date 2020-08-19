@@ -222,7 +222,7 @@ router.beforeEach(function(to, from, next) {
       return routeInfo.meta.authRequired;
     })
   ) {
-    if (store.state.accessToken == null) {
+    if (store.state.accessToken == null && store.state.refreshToken == null) {
       // eslint-disable-next-line
       !(to.path === "/Login") && store.commit("FormerLink", to.path);
       store.commit("ShowAlert", {

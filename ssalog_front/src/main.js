@@ -26,7 +26,6 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
-import { flatMapComponents } from "vue-router/src/util/resolve-components";
 
 Object.keys(rules).forEach(rule => {
   extend(rule, rules[rule]);
@@ -72,10 +71,12 @@ axios.interceptors.response.use(
             refreshToken: `Bearer ${refreshToken}`
           }
         });
-        store.commit("TOKEN", { accessToken: data.accessToken, refreshToken });
-        axios.defaults.headers.common.accessToken = data.accessToken;
-        error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
-        return axios(error.config);
+        if (data.accessToken != null) {
+          store.commit("TOKEN", { accessToken: data.accessToken, refreshToken });
+          axios.defaults.headers.common.accessToken = data.accessToken;
+          error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          return axios(error.config);
+        }
       } catch (e) {
         // 리프레시 토큰이 만료되었거나 뭔가 정상이 아닐때
         store.commit("LOGOUT");
