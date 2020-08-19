@@ -75,47 +75,48 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		String username = null;
 		String jwtToken = null;
 		String jwtToken2 = null;
-		if(refreshToken != null) {
+		if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
 			System.out.println("dd!!!");
 			jwtToken2 = refreshToken.substring(7);
 			//jwtToken = requestTokenHeader.substring(7);
 			response.setHeader("jwtToken2", jwtToken2);
 			chain.doFilter(request, response);
-		}
-		// Bearer를 앞에 쓰는 이유눈 업계 표준, 함부로 바꿔서 사용하면 안된다. ex) ssalog로 바꿔서 쓰려고 했는데 클날뻔...ㅎㅎ
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			System.out.println("??????????????????????????????????????????");
-			jwtToken = requestTokenHeader.substring(7);
-			logger.info("token in requestfilter: " + jwtToken);
+		}else {
+			// Bearer를 앞에 쓰는 이유눈 업계 표준, 함부로 바꿔서 사용하면 안된다. ex) ssalog로 바꿔서 쓰려고 했는데 클날뻔...ㅎㅎ
+			if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+				System.out.println("??????????????????????????????????????????");
+				jwtToken = requestTokenHeader.substring(7);
+				logger.info("token in requestfilter: " + jwtToken);
 
-			try {
-				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-			} catch (IllegalArgumentException e) {
-				logger.warn("Unable to get JWT Token");
+				try {
+					username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+				} catch (IllegalArgumentException e) {
+					logger.warn("Unable to get JWT Token");
+				}
+				catch (ExpiredJwtException e) {
+					username = e.getClaims().getSubject();  
+					logger.info("[access token이 만료된 사용자 이름123] " + username);
+					response.setHeader("error", "expired");
+					//        			webhook w = new webhook();
+					//        			w.send(e.toString() + "\n토큰 만료 error");
+				}
+			} else {
+				logger.warn("JWT Token does not begin with Bearer String");
 			}
-			catch (ExpiredJwtException e) {
-				username = e.getClaims().getSubject();  
-				logger.info("[access token이 만료된 사용자 이름123] " + username);
-				response.setHeader("error", "expired");
-				//        			webhook w = new webhook();
-				//        			w.send(e.toString() + "\n토큰 만료 error");
-			}
-		} else {
-			logger.warn("JWT Token does not begin with Bearer String");
-		}
 
-		if (username == null) {
-			logger.info("token maybe expired: username is null.");
-		} else if (redisTemplate.opsForValue().get(jwtToken) != null) {
-			logger.warn("this token already logout!");
-		} else {
-			//DB access 대신에 파싱한 정보로 유저 만들기!
-			Authentication authen =  getAuthentication(jwtToken);
-			//만든 authentication 객체로 매번 인증받기
-			SecurityContextHolder.getContext().setAuthentication(authen);
-			response.setHeader("jwtToken", jwtToken);
-			response.setHeader("username", username);
+			if (username == null) {
+				logger.info("token maybe expired: username is null.");
+			} else if (redisTemplate.opsForValue().get(jwtToken) != null) {
+				logger.warn("this token already logout!");
+			} else {
+				//DB access 대신에 파싱한 정보로 유저 만들기!
+				Authentication authen =  getAuthentication(jwtToken);
+				//만든 authentication 객체로 매번 인증받기
+				SecurityContextHolder.getContext().setAuthentication(authen);
+				response.setHeader("jwtToken", jwtToken);
+				response.setHeader("username", username);
+			}
+			chain.doFilter(request, response);
 		}
-		chain.doFilter(request, response);
 	}
 }
