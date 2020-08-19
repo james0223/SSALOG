@@ -60,22 +60,38 @@ axios.interceptors.response.use(
   },
   async function(error) {
     // 9999 에러나 401 에러가 발생하고, 리프레시 토큰이 있을때
+
     if (
       (error.response.status === 9999 || error.response.status === 401) &&
       store.state.refreshToken
     ) {
-      const refreshToken = store.state.refreshToken;
       try {
-        const { data } = await axios.post(`${store.state.ServerURL}/newuser/refresh`, null, {
+        const refreshToken = store.state.refreshToken;
+        axios.defaults.headers.common.accessToken = null;
+        const res = await axios.post(`${store.state.ServerURL}/newuser/refresh`, null, {
           headers: {
             refreshToken: `Bearer ${refreshToken}`
           }
         });
-        if (data.accessToken != null) {
-          store.commit("TOKEN", { accessToken: data.accessToken, refreshToken });
-          axios.defaults.headers.common.accessToken = data.accessToken;
-          error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+        if (res.success === true) {
+          store.commit("TOKEN", { accessToken: res.data.accessToken, refreshToken });
+          axios.defaults.headers.common.accessToken = res.data.accessToken;
+          error.config.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
           return axios(error.config);
+        } else {
+          store.commit("LOGOUT");
+          store.commit("ShowAlert", {
+            flag: true,
+            msg: "리프레시 토큰이 만료되었습니다. 다시 로그인하세요",
+            color: "error"
+          });
+          setTimeout(() => {
+            store.commit("ShowAlert", {
+              flag: false,
+              msg: ""
+            });
+            router.push("/Login");
+          }, 1000);
         }
       } catch (e) {
         // 리프레시 토큰이 만료되었거나 뭔가 정상이 아닐때
