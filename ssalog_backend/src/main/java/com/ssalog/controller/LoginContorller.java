@@ -209,7 +209,7 @@ public class LoginContorller {
                 System.out.println();
                 //둘이 일치하고 만료도 안됐으면 재발급 해주기.
                 if (refreshToken.equals(refreshTokenFromDb) && !jwtTokenUtil.isTokenExpired(refreshToken)) {
-                	
+                	System.out.println("보내줍니다 !");
                     final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                     String newtok =  jwtTokenUtil.generateAccessToken(userDetails);
                     map.put("success", true);
