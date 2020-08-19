@@ -110,20 +110,26 @@ export default new Vuex.Store({
   actions: {
     async LOGIN({ commit, dispatch }, loginData) {
       axios.defaults.headers.common.Authorization = ``;
-      const { data } = await axios.post(`${this.state.ServerURL}/newuser/login`, null, {
+
+      const res = await axios.post(`${this.state.ServerURL}/newuser/login`, null, {
         params: {
           ...loginData
         }
       });
-      commit("LOGIN", {
-        nickname: data.nickname,
-        username: loginData.username
-      });
-      commit("TOKEN", {
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken
-      });
-      dispatch("Thumbnail", loginData.username);
+      if (res.data === "") {
+        // eslint-disable-next-line
+        await Promise.reject("비밀번호가 다릅니다");
+      } else {
+        commit("LOGIN", {
+          nickname: res.data.nickname,
+          username: loginData.username
+        });
+        commit("TOKEN", {
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken
+        });
+        dispatch("Thumbnail", loginData.username);
+      }
     },
     async LOGOUT({ commit }) {
       await axios.post(`${this.state.ServerURL}/user/out`);
