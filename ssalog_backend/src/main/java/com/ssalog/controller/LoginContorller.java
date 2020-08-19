@@ -214,6 +214,7 @@ public class LoginContorller {
                     String newtok =  jwtTokenUtil.generateAccessToken(userDetails);
                     map.put("success", true);
                     map.put("accessToken", newtok);
+                    System.out.println("accessToken = " + newtok);
                 } else {
                     map.put("success", false);
                     map.put("msg", "refresh token is expired.");
