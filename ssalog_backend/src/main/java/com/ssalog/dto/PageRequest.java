@@ -47,4 +47,7 @@ public class PageRequest {
 	public org.springframework.data.domain.PageRequest ofs3() {
 		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "all_cnt");
 	}
+	public org.springframework.data.domain.PageRequest ofs4() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, Sort.by("regdate").descending().and(Sort.by("regtime").descending()));
+	}
 }

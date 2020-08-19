@@ -81,7 +81,7 @@ public class SearchContoller {
 	@ApiOperation(value ="[post username 조회] 해당 username을 가진 사용자가 포스팅한 글들을 모두 찾아온다.")
 	@GetMapping("/to_username")
 	public ResponseEntity<Page<PostSub>> findBykeyword(@RequestParam("username") String username, PageRequest pageable){
-		return new ResponseEntity<Page<PostSub>>(postSubService.select_by_username(username, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<Page<PostSub>>(postSubService.select_by_username(username, pageable.ofs4()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[잔디 심을때 필요한거] 전달한 username에 해당하는 user의 date와 count 값을 가진 json이 list형태로 날아감.")
