@@ -22,13 +22,13 @@
               block
               >{{ ownerName }}</v-btn
             >
-            <v-card-title class id="relative_wrapper">
-              <v-avatar size="100%" class="mt-2 mx-auto">
-                <img :src="writerThumbnail" />
+            <v-card-title class="px-0" id="relative_wrapper">
+              <v-avatar size="9vw" class="mt-2 mx-auto">
+                <v-img :src="writerThumbnail"></v-img>
               </v-avatar>
               <v-btn
                 v-if="nickname && nickname !== ownerName"
-                class="thumbnailplus"
+                class="thumbnailplus d-none d-lg-flex"
                 height="40"
                 width="40"
                 fab
