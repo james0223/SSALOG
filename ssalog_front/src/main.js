@@ -73,6 +73,7 @@ axios.interceptors.response.use(
             refreshToken: `Bearer ${refreshToken}`
           }
         });
+        console.log("리프레시 토큰", refreshToken);
         console.log("재요청 결과", res);
         if (res.success === true) {
           store.commit("TOKEN", { accessToken: res.data.accessToken, refreshToken });
