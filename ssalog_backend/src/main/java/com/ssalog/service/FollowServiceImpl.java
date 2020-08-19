@@ -115,8 +115,8 @@ public class FollowServiceImpl implements FollowService{
 			long following_num = followRepository.countByFollowing_nickname(nickname);
 			long scraped_num = scrapRepository.countByScrapeduser_nickname(nickname);
 			long post_su = postSubRepository.countByUsername(ac.getUsername());
-			long level = post_su/20;
-			double exp =((post_su%20.0)/20.0)*100; 
+			long level = post_su/10;
+			double exp =((post_su%10.0)/10.0)*100; 
 			m.put("imgpath", imgpath);
 			m.put("follow_num", follow_num);
 			m.put("following_num", following_num);
