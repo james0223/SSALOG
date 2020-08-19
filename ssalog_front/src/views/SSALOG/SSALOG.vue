@@ -22,7 +22,10 @@
               block
               >{{ ownerName }}</v-btn
             >
-            <v-card-title class="mb-4" id="relative_wrapper">
+            <v-card-title class id="relative_wrapper">
+              <v-avatar size="100%" class="mt-2 mx-auto">
+                <img :src="writerThumbnail" />
+              </v-avatar>
               <v-btn
                 v-if="nickname && nickname !== ownerName"
                 class="thumbnailplus"
@@ -34,9 +37,6 @@
               >
                 <v-icon :disabled="!isfollow" color="red">mdi-heart</v-icon>
               </v-btn>
-              <v-avatar size="100%" class="mt-2 mx-auto">
-                <img :src="writerThumbnail" />
-              </v-avatar>
               <v-dialog
                 v-if="nickname && nickname === ownerName"
                 v-model="thumbnailDialog"
@@ -137,19 +137,19 @@
                 <v-icon :color="levelColor" large>mdi-numeric-{{ level }}</v-icon>
               </v-progress-circular>
             </div>
-            <v-row justify="center" class="d-none d-lg-flex pb-2">
-              <v-col title="following" class="pr-3 pl-6">
+            <v-row justify="center" no-gutters class="d-none d-lg-flex py-3">
+              <v-col cols="4" title="following" class="text-center">
                 <v-icon>mdi-account-heart</v-icon>
-                {{ following }}
               </v-col>
-              <v-col title="follower" class="px-0">
+              <v-col cols="4" title="follower" class="text-center">
                 <v-icon>mdi-account-arrow-left</v-icon>
-                {{ follower }}
               </v-col>
-              <v-col title="scrap" class="pl-3 pr-6">
+              <v-col cols="4" title="scrap" class="text-center">
                 <v-icon>mdi-star</v-icon>
-                {{ scrapSu }}
               </v-col>
+              <v-col cols="4" title="following" class="text-center">{{ following }}</v-col>
+              <v-col cols="4" title="follower" class="text-center">{{ follower }}</v-col>
+              <v-col cols="4" title="scrap" class="text-center">{{ scrapSu }}</v-col>
             </v-row>
           </v-card>
           <v-tabs vertical :color="ColorSet.Prime" background-color="transparent" class="my-1">

@@ -112,7 +112,7 @@ export default {
             username: owneremail.data // 수정필요
           }
         });
-        this.solutions = res.data.content.reverse();
+        this.solutions = res.data.content;
         const iterable = this.solutions;
         iterable.forEach(element => {
           // const lengths = 20; // 표시할 글자수 기준

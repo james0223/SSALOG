@@ -42,6 +42,27 @@
           >{{ item.title }}</span
         >
       </template>
+      <template v-slot:[`item.nickname`]="{ item }">
+        <span
+          style="cursor:pointer"
+          @click="$router.push({ name: 'SSalogMain', params: { nickname: item.nickname } })"
+          >{{ item.nickname }}</span
+        >
+      </template>
+      <template v-slot:[`item.problemid`]="{ item }">
+        <span
+          style="cursor:pointer"
+          @click="$router.push({ name: 'ProblemDetail', params: { id: item.problemid } })"
+          >{{ item.problemid }}</span
+        >
+      </template>
+      <template v-slot:[`item.problemname`]="{ item }">
+        <span
+          style="cursor:pointer"
+          @click="$router.push({ name: 'ProblemDetail', params: { id: item.problemid } })"
+          >{{ item.problemname }}</span
+        >
+      </template>
       <template v-slot:[`item.keyword`]="{ item }">
         <span :title="item.keyword">{{ item.keyword2 }}</span>
       </template>
