@@ -75,7 +75,7 @@ public class SearchContoller {
 	@ApiOperation(value ="[post keyword 조회] list로 전달한 keyword를 모두 사용하여 해결한 포스팅한 글들을 찾아온다.")
 	@GetMapping("/to_keyword")
 	public ResponseEntity<Page<Problem>> findBykeyword(@RequestParam(value ="param[]") String[] keyword, PageRequest pageable){
-		return new ResponseEntity<Page<Problem>>(problemService.findkey(keyword, pageable.of()),HttpStatus.OK);
+		return new ResponseEntity<Page<Problem>>(problemService.findkey(keyword, pageable.ofs3()),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value ="[post username 조회] 해당 username을 가진 사용자가 포스팅한 글들을 모두 찾아온다.")
