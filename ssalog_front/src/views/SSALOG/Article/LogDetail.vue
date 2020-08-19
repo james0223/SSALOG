@@ -136,11 +136,21 @@
         </v-tooltip>
         <v-tooltip v-if="username && username !== writerUsername" bottom>
           <template v-slot:activator="{ on }">
-            <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="doScrap">
+            <v-btn outlined icon x-large class="mt-3 mb-2 mr-4" v-on="on" @click="doScrap">
               <v-icon :disabled="!scrapped" :color="ColorSet.Sub">mdi-star</v-icon>
             </v-btn>
           </template>
           <span>스크랩</span>
+        </v-tooltip>
+        <v-tooltip v-if="tocLoaded" bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn outlined icon x-large class="mt-3 mb-2" v-on="on" @click="showTOC = !showTOC">
+              <v-icon>{{
+                showTOC ? "mdi-card-bulleted-off-outline" : "mdi-card-bulleted-outline"
+              }}</v-icon>
+            </v-btn>
+          </template>
+          <span>목차</span>
         </v-tooltip>
 
         <!--          dialog 부분-->
@@ -159,31 +169,31 @@
             />
           </v-card>
         </v-dialog>
+        <v-card
+          elevation="8"
+          min-height="15vh"
+          width="15vw"
+          class="mx-8 table_of_contents"
+          v-once
+          v-if="tocLoaded && showTOC"
+        >
+          <v-card-title class="index_title">
+            <h5>목 차</h5>
+          </v-card-title>
+          <v-list color="transparent" dense>
+            <v-list-item-group v-model="TOC" color="primary">
+              <v-list-item v-for="(item, i) in TOC" :key="i">
+                <v-list-item-content>
+                  <v-list-item-title
+                    @click="$vuetify.goTo(`[id='${item.id}']`)"
+                    v-text="item.data"
+                  ></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </div>
-      <v-card
-        elevation="8"
-        min-height="15vh"
-        width="15vw"
-        class="mx-8 table_of_contents"
-        v-once
-        v-if="tocLoaded"
-      >
-        <v-card-title class="index_title">
-          <h5>목 차</h5>
-        </v-card-title>
-        <v-list color="transparent" dense>
-          <v-list-item-group v-model="TOC" color="primary">
-            <v-list-item v-for="(item, i) in TOC" :key="i">
-              <v-list-item-content>
-                <v-list-item-title
-                  @click="$vuetify.goTo(`[id='${item.id}']`)"
-                  v-text="item.data"
-                ></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -283,6 +293,7 @@ export default {
         }
       ],
       // tocData
+      showTOC: true,
       tocLoaded: false,
       TOC: null,
       routeId: null,
@@ -523,7 +534,9 @@ export default {
     // },
     setTOC(toc) {
       this.TOC = toc;
-      this.tocLoaded = true;
+      if (this.TOC.length && this.TOC.length !== 0) {
+        this.tocLoaded = true;
+      }
     }
   }
 };
@@ -563,24 +576,13 @@ export default {
 .code_button {
   position: fixed;
   top: 25vh;
-  /*top: 10vh;*/
-  /*width: 4rem;*/
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*-webkit-box-align: center;*/
-  /*align-items: center;*/
-  /*background: rgb(248, 249, 250);*/
-  /*border-width: 1px;*/
-  /*border-style: solid;*/
-  /*border-color: rgb(241, 243, 245);*/
-  /*border-image: initial;*/
-  /*border-radius: 2rem;*/
-  /*padding: 0.5rem;*/
+  right: 17vh;
 }
 .table_of_contents {
   opacity: 0.8;
   position: fixed;
-  top: 40vh;
+  right: 3rem;
+  top: 38vh;
   /* background: #8dffb3 !important; */
 }
 .innerLink {
