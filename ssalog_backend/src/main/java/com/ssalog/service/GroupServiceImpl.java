@@ -355,23 +355,20 @@ public class GroupServiceImpl implements GroupService{
 			return "fail";
 		}
 	}
-
 	@Override
 	public String delete_group(String username, String groupname) {
-		// TODO Auto-generated method stub
-		return null;
+		GroupDTO gd = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
+		if(gd != null) {
+			List<GroupRegist> gr = groupRegistRepository.findByGroupdto_groupname(groupname);
+			List<Groupdetail> gdi = groupDetailRepository.findByGroupdto_groupname(groupname);
+			List<GroupGoal> gg = groupGoalRepository.findByGroupdto_groupname(groupname);
+			if(gr.size() != 0) {groupRegistRepository.deleteAll(gr);}
+			if(gdi.size() != 0) {groupDetailRepository.deleteAll(gdi);}
+			if(gg.size() != 0) {groupGoalRepository.deleteAll(gg);}
+			groupRepository.delete(gd);
+			return "success";
+		}else {
+			return "fail";
+		}
 	}
-	
-//	@Override
-//	public String delete_group(String username, String groupname) {
-//		GroupDTO gd = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
-//		if(gd != null) {
-//			groupDetailRepository.findBy
-//			groupRepository.delete(gd);
-//			groupDetailRepository
-//			return "success";
-//		}else {
-//			return "fail";
-//		}
-//	}
 }
