@@ -172,11 +172,9 @@
           <div class="py-12"></div>
           <div class="iCountUp"></div>
           <v-container class="pa-12">
-            <h3 class="display-2 font-weight-bold mb-3 text-uppercase text-center">
-              사용법
-            </h3>
+            <h3 class="display-2 font-weight-bold mb-3 text-uppercase text-center"></h3>
 
-            <v-row justify="end" class="mb-5  pr-12 mr-12">
+            <v-row justify="center" class="mb-5">
               <v-btn
                 outlined
                 fab
@@ -189,10 +187,16 @@
               </v-btn>
             </v-row>
 
-            <v-carousel cycle height="85vh" whide-delimiter-background show-arrows-on-hover>
+            <v-carousel
+              class="mx-auto"
+              height="80vh"
+              style="max-width:80%;"
+              show-arrows-on-hover
+              hide-delimiter-background
+            >
               <v-carousel-item v-for="slide in slides" :key="slide.id">
-                <v-sheet color="white" height="100%">
-                  <v-row class="fill-width fill-height" align="center" justify="center">
+                <v-sheet color="white" height="90%">
+                  <v-row class="fill-width fill-height" align="center">
                     <img :src="slide.image" height="100%" width="100%" contain />
                     <!-- <div class="display-3">
                       <h6 black>{{ slide.desc }}</h6>
