@@ -124,13 +124,13 @@
       </v-container>
     </v-app-bar>
     <!--    햄버거 버튼 넣기 위한 nav drawer-->
-    <v-navigation-drawer v-model="drawer" app right>
-      <v-list nav>
-        <v-list-item v-for="(item, i) in items" :key="i" @click="userMenu(i)">
-          <v-list-item-title v-text="item"></v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    <!--    <v-navigation-drawer v-model="drawer" app right>-->
+    <!--      <v-list nav>-->
+    <!--        <v-list-item v-for="(item, i) in items" :key="i" @click="userMenu(i)">-->
+    <!--          <v-list-item-title v-text="item"></v-list-item-title>-->
+    <!--        </v-list-item>-->
+    <!--      </v-list>-->
+    <!--    </v-navigation-drawer>-->
   </nav>
 </template>
 
