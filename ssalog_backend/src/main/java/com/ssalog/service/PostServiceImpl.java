@@ -119,6 +119,7 @@ public class PostServiceImpl implements PostService{
 	public void update_problem(Problem pr, Post p) {
 		if(pr == null) {
 			pr = new Problem();
+			pr.setStarter(p.getUsername());
 		}
 		pr.setName(p.getProblemname());
 		pr.setAll_cnt(pr.getAll_cnt()+1);

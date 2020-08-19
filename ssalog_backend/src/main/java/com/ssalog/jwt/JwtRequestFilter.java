@@ -84,7 +84,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}else {
 			// Bearer를 앞에 쓰는 이유눈 업계 표준, 함부로 바꿔서 사용하면 안된다. ex) ssalog로 바꿔서 쓰려고 했는데 클날뻔...ㅎㅎ
 			if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-				System.out.println("??????????????????????????????????????????");
 				jwtToken = requestTokenHeader.substring(7);
 				logger.info("token in requestfilter: " + jwtToken);
 
@@ -97,13 +96,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 					username = e.getClaims().getSubject();  
 					logger.info("[access token이 만료된 사용자 이름123] " + username);
 					response.setHeader("error", "expired");
-					//        			webhook w = new webhook();
-					//        			w.send(e.toString() + "\n토큰 만료 error");
 				}
 			} else {
 				logger.warn("JWT Token does not begin with Bearer String");
 			}
-
 			if (username == null) {
 				logger.info("token maybe expired: username is null.");
 			} else if (redisTemplate.opsForValue().get(jwtToken) != null) {
