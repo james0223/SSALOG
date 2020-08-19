@@ -151,7 +151,6 @@ public class GroupServiceImpl implements GroupService{
 			// regist에서 삭제하고, 해당 user를 groupdetail에 넣어주면됨
 			Optional<GroupRegist> gr = groupRegistRepository.findById(regid);
 			if(gr.isPresent()) {
-				String reg_user = gr.get().getAccount().getUsername();
 				groupRegistRepository.delete(gr.get());
 				return "success";
 			}
@@ -356,4 +355,23 @@ public class GroupServiceImpl implements GroupService{
 			return "fail";
 		}
 	}
+
+	@Override
+	public String delete_group(String username, String groupname) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+//	@Override
+//	public String delete_group(String username, String groupname) {
+//		GroupDTO gd = groupRepository.findByAccount_usernameAndGroupname(username, groupname);
+//		if(gd != null) {
+//			groupDetailRepository.findBy
+//			groupRepository.delete(gd);
+//			groupDetailRepository
+//			return "success";
+//		}else {
+//			return "fail";
+//		}
+//	}
 }

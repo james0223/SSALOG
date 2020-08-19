@@ -146,6 +146,13 @@ public class GroupController {
 		String username = response.getHeader("username");
 		return new ResponseEntity<String>(groupService.delete_goal(username, id),HttpStatus.OK);
 	}
+	
+	@DeleteMapping("user/grouping/delete_group")
+	@ApiOperation(value = "[그룹을 삭제합니다.] 그룹이름을 줘서 삭제합니다, 관리자만이 삭제할 수 있습니다.")
+	public ResponseEntity<String> delete_goal(HttpServletResponse response,@RequestParam("groupname") String groupname) {
+		String username = response.getHeader("username");
+		return new ResponseEntity<String>(groupService.delete_group(username, groupname),HttpStatus.OK);
+	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");

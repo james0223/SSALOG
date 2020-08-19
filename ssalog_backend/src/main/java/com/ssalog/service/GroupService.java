@@ -31,4 +31,5 @@ public interface GroupService {
 	public Boolean group_kick(String username, String groupname, String wantkick);
 	public String Check_Role(String groupname, String nickname);
 	public String delete_goal(String username, long id);
+	public String delete_group(String username, String groupname);
 }
