@@ -215,6 +215,8 @@ java -jar SSalog_ver1.0-0.0.1-SNAPSHOT.jar
 
 </details>
 
+## 📚[Documentation](https://www.notion.so/SSAFY-2-1-2afd33bdfb9d4831af618d4ab914a0ea)
+
 ## 🗃Project Folder
 
 ```
