@@ -49,7 +49,10 @@
                 <template v-slot="{ item }">
                   <v-list-item>
                     <v-list-item-content>
-                      <v-list-item-title> {{ item.name }}</v-list-item-title>
+                      <v-list-item-title>
+                        <v-icon color="success">mdi-check-bold</v-icon>
+                        {{ item.name }}</v-list-item-title
+                      >
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-btn depressed small v-bind:href="`${item.route}`">
@@ -75,7 +78,9 @@
                 <template v-slot="{ item }">
                   <v-list-item>
                     <v-list-item-content>
-                      <v-list-item-title> {{ item.name }}</v-list-item-title>
+                      <v-list-item-title>
+                        <v-icon color="error">mdi-close</v-icon> {{ item.name }}</v-list-item-title
+                      >
                     </v-list-item-content>
                   </v-list-item>
                 </template>
