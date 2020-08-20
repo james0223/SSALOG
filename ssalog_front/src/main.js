@@ -74,7 +74,7 @@ axios.interceptors.response.use(
         });
         console.log("리프레시 토큰", refreshToken);
         console.log("재요청 결과", res);
-        if (res.success === true) {
+        if (res.data.success === true) {
           store.commit("TOKEN", { accessToken: res.data.accessToken, refreshToken });
           axios.defaults.headers.common.accessToken = res.data.accessToken;
           error.config.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
