@@ -74,6 +74,9 @@ const getDefaultState = () => {
 export default new Vuex.Store({
   state: getDefaultState(),
   plugins: [createPersistedState()],
+  getters: {
+    isDark: state => state.isDark
+  },
   mutations: {
     NicknameChange(state, payload) {
       state.nickname = payload;
