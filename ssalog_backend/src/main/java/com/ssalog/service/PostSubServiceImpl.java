@@ -11,13 +11,10 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Problem;
-import com.ssalog.dto.jandi;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.PostSubRepository;
 import com.ssalog.repository.ProblemRepository;
@@ -71,7 +68,6 @@ public class PostSubServiceImpl implements PostSubService{
 				}
 			}
 		}
-		//System.out.println(list.size() + " ddddddddddd");
 		Iterator<Object> it = sortByValue(result).iterator();
 		int k = 0;
 		Map<String, Integer> result2 = new TreeMap<String, Integer>();
@@ -79,7 +75,6 @@ public class PostSubServiceImpl implements PostSubService{
             if(k == num) break;
 			String temp = (String) it.next();
 			result2.put(temp,result.get(temp));
-            //System.out.println(temp + " = " + result.get(temp));
             k++;
         }
 		return result2;
@@ -99,7 +94,6 @@ public class PostSubServiceImpl implements PostSubService{
                 return ((Comparable) v2).compareTo(v1);
             }
         });
-        //Collections.reverse(list);
         return list;
     }
 	@Override
@@ -113,10 +107,8 @@ public class PostSubServiceImpl implements PostSubService{
 		Map<String, Integer> result = new TreeMap<String, Integer>();
 		if(problem != null) {
 			Map<String, Integer> m = problem.getKey();
-			//		long div = problem.getAll_cnt();
 			for (String key : m.keySet()) {
 				Integer value = m.get(key);
-				//            double val = Math.round((((double)value/div)*100)*10)/10.0;
 				result.put(key, value);
 			}
 		}

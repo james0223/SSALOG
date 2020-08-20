@@ -86,7 +86,6 @@ public class Mail {
             }
         }
         String AuthenticationKey = temp.toString();
-        //System.out.println(AuthenticationKey);
         return AuthenticationKey;
 	}
 }

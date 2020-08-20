@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import com.ssalog.dto.Post;
-import com.ssalog.dto.PostSub;
 public interface PostRepository extends MongoRepository<Post,String>, additionalRepository{
 	public Page<Post> findByProblemid(String problemid, Pageable pageable);
 	public Post findByScoring(String Scoring);

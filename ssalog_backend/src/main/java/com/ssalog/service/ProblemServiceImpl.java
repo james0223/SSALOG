@@ -6,11 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.ssalog.dto.Account;
-import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Problem;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.PostRepository;

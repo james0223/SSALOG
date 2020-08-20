@@ -1,6 +1,5 @@
 package com.ssalog.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.base.Optional;
 import com.ssalog.config.webhook;
-import com.ssalog.dto.Comment;
 import com.ssalog.dto.PageRequest;
 import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;

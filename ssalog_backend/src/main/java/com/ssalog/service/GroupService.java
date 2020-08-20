@@ -4,14 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.ssalog.dto.GroupDTO;
-import com.ssalog.dto.GroupGoal;
-import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
-import com.ssalog.dto.Problem;
 
 public interface GroupService {
 
@@ -23,7 +19,6 @@ public interface GroupService {
 	public Map<String, String> checkGoal(String groupname,String problemid);
 	public String applyreject(String username,String groupname, Long regid);
 	public Map<String, GroupRole> myGroup(String username);
-	//public void teamstatus(String nickname, String groupname, Date limit);
 	public List<Map<String,Object>> preGoal(String nickname, String groupname, PageRequest pageable);
 	public List<Map<String,Object>> postGoal(String nickname, String groupname, PageRequest pageable);
 	public List<Map<String, Object>> Mymember(String username, String groupname);

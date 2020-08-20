@@ -3,7 +3,6 @@ package com.ssalog.service;
 import java.util.List;
 
 import com.ssalog.dto.Comment;
-import com.ssalog.dto.Post;
 
 public interface CommentService {
 	public int write_comment(String post_pk,String comment,String username);

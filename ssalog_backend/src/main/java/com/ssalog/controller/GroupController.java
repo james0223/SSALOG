@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
@@ -24,13 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.config.webhook;
 import com.ssalog.dto.GroupDTO;
-import com.ssalog.dto.GroupGoal;
-import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
-import com.ssalog.dto.Groupdetail;
 import com.ssalog.dto.PageRequest;
-import com.ssalog.dto.Problem;
-import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.service.GroupService;
 
 import io.swagger.annotations.ApiOperation;

@@ -2,7 +2,6 @@ package com.ssalog.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,9 +36,7 @@ import com.ssalog.service.AccountService;
 import com.ssalog.service.JwtUserDetailsService;
 import com.ssalog.util.Mail;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ResponseHeader;
 
 //http://i3b101.p.ssafy.io:8080/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -162,7 +158,7 @@ public class LoginContorller {
 //        redisTemplate.opsForValue().set(accessToken, true);
 //        redisTemplate.expire(accessToken, 10*6*1000, TimeUnit.MILLISECONDS);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
     @ApiOperation(value = "[비밀번호 변경] 비밀번호 변경하는 api")
     @PutMapping(path="/user/change_pw")
@@ -175,17 +171,6 @@ public class LoginContorller {
     public ResponseEntity<Boolean> find_pw(@RequestParam("username") String username) {
        return new ResponseEntity<Boolean>(accountService.find_pw(username), HttpStatus.OK);
     }
-    
-    
-//    @ApiOperation(value = "[비밀번호 찾기 - 변경](p-013_비밀번호찾기) 비밀번호 찾기기능을 이용해 토큰을 전달해, 해당 계정이 존재하면, 페이지 이동 후 비밀번호를 변경한다.")
-//    @PutMapping(path="/user/change_pw")
-//    public ResponseEntity<Boolean> find_changepw(HttpServletResponse response, @RequestParam("password") String password) {
-//    	String username = response.getHeader("username");
-//       Account ac = accountRepository.findByUsername(username);
-//       ac.setPassword(bcryptEncoder.encode(password));
-//       accountRepository.save(ac);
-//       return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-//    }
     
     @ApiOperation(value = "[Token refresh 기능] 클라이언트가 받은 refresh token을 이용해, db에 존재하는 값과 일치하면, 신규 Token 갱신과정을 진행한다.")
     @PostMapping(path="/newuser/refresh")
@@ -243,11 +228,6 @@ public class LoginContorller {
     	String ran = m.sendMail(email,1);
     	//System.out.println("호출완료!");
     	return new ResponseEntity<String>(ran,HttpStatus.OK);
-    } 
-    @GetMapping(path="/newuser/test")
-    public void test123() {
-    	//System.out.println("호출완료!");
-    	System.out.println(bcryptEncoder.encode("123"));
     } 
     @ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
