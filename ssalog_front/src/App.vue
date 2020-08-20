@@ -7,6 +7,30 @@
     <v-snackbar :color="alertColor" :value="showAlert" centered multi-line>
       {{ AlertMessage }}
     </v-snackbar>
+    <img
+      v-if="!isDark && $route.name !== 'Home'"
+      height="12vh"
+      class="bottomButton d-none d-sm-flex"
+      src="@/assets/images/corner/corner_bottom_purple.png"
+      alt="changeDarkmod"
+    />
+    <img
+      v-if="isDark && $route.name !== 'Home'"
+      height="12vh"
+      class="bottomButton d-none d-sm-flex"
+      src="@/assets/images/corner/corner_bottom_green.png"
+      alt="changeDarkmod"
+    />
+    <v-btn
+      fab
+      :color="isDark ? ColorSet.Sub : ColorSet.Mid"
+      :dark="!isDark"
+      v-if="$route.name !== 'Home'"
+      class="bottomButton d-none d-sm-flex"
+      @click="$store.commit('ChangeDark')"
+    >
+      <v-icon>{{ isDark ? "mdi-weather-sunny" : "mdi-weather-night" }}</v-icon></v-btn
+    >
   </v-app>
 </template>
 
@@ -34,7 +58,7 @@ export default {
       }
     }
   },
-  computed: mapState(["showAlert", "AlertMessage", "alertColor", "isDark"]),
+  computed: mapState(["showAlert", "AlertMessage", "alertColor", "isDark", "ColorSet"]),
   watch: {
     // eslint-disable-next-line
     AlertMessage: function(newVal) {
@@ -61,5 +85,11 @@ export default {
 .Background_dark {
   overflow: auto;
   background: #1a1d22 !important;
+}
+.bottomButton {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 99;
 }
 </style>
