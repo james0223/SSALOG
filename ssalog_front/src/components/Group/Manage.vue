@@ -124,7 +124,7 @@
         <v-card class="mt-3" height="80vh">
           <v-card flat class="mb-3">
             <v-toolbar-title>회원 관리</v-toolbar-title>
-            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="45" height="350">
+            <v-virtual-scroll :items="groupMember" :item-height="45" height="328">
               <template v-slot="{ item }">
                 <v-list-item>
                   <v-list-item-avatar size="42">
@@ -153,7 +153,7 @@
               v-if="applicants.length"
               :items="applicants"
               :item-height="35"
-              min-height="300"
+              height="300"
             >
               <template v-slot="{ item }">
                 <v-list-item>
