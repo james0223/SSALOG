@@ -119,7 +119,7 @@
       <div class="ml-8 mt-5 code_button">
         <v-tooltip bottom>
           <!-- eslint-disable-next-line -->
-            <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ on, attrs }">
             <v-btn
               outlined
               x-large

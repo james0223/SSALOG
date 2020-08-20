@@ -2,7 +2,7 @@
   <v-card color="transparent" flat height="70vh" class="mx-7 my-15">
     <v-card color="transparent" flat class="mb-5">
       <v-toolbar-title>이전 과제 목록</v-toolbar-title>
-      <v-simple-table height="20vh">
+      <v-simple-table height="30vh">
         <template v-slot:default>
           <thead>
             <tr>
@@ -29,46 +29,59 @@
     </v-card>
     <v-card color="transparent" flat height="45vh">
       <v-toolbar-title class="mb-4">제출 목록</v-toolbar-title>
-      <v-card min-width="40%" height="35vh" class="d-inline-block mx-5">
-        <v-subheader
-          >제출자 <v-spacer></v-spacer>
-          <h4>{{ solvedNum }}명</h4></v-subheader
-        >
-        <v-divider></v-divider>
-        <v-virtual-scroll :items="solvedMembers" :item-height="50" height="500">
-          <template v-slot="{ item }">
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title> {{ item.name }}</v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-btn depressed small v-bind:href="`${item.route}`">
-                  풀이 보러 가기
-                  <v-icon color="secondary" right>
-                    mdi-open-in-new
-                  </v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </template>
-        </v-virtual-scroll>
-      </v-card>
-      <v-card min-width="40%" height="35vh" class="d-inline-block">
-        <v-subheader
-          >미제출자 <v-spacer></v-spacer>
-          <h4>{{ unsolvedNum }}명</h4></v-subheader
-        >
-        <v-divider></v-divider>
-        <v-virtual-scroll :items="unsolvedMembers" :item-height="50" height="500">
-          <template v-slot="{ item }">
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title> {{ item.name }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </v-virtual-scroll>
-      </v-card>
+      <v-container>
+        <v-row>
+          <v-col cols="6">
+            <v-card width="30vw" height="35vh" class="d-inline-block mx-5">
+              <v-subheader
+                >제출자 <v-spacer></v-spacer>
+                <h4>{{ solvedNum }}명</h4></v-subheader
+              >
+              <v-divider></v-divider>
+              <v-virtual-scroll :items="solvedMembers" :item-height="50" height="285">
+                <template v-slot="{ item }">
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        ><v-icon color="success">mdi-check-bold</v-icon>
+                        {{ item.name }}</v-list-item-title
+                      >
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-btn depressed small v-bind:href="`${item.route}`">
+                        풀이 보러 가기
+                        <v-icon color="secondary" right>
+                          mdi-open-in-new
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                </template>
+              </v-virtual-scroll>
+            </v-card>
+          </v-col>
+          <v-col cols="6">
+            <v-card width="30vw" height="35vh" class="d-inline-block">
+              <v-subheader
+                >미제출자 <v-spacer></v-spacer>
+                <h4>{{ unsolvedNum }}명</h4></v-subheader
+              >
+              <v-divider></v-divider>
+              <v-virtual-scroll :items="unsolvedMembers" :item-height="50" height="285">
+                <template v-slot="{ item }">
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        ><v-icon color="error">mdi-close</v-icon> {{ item.name }}</v-list-item-title
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
+              </v-virtual-scroll>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
   </v-card>
 </template>

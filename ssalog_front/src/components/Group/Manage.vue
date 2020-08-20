@@ -29,7 +29,7 @@
               <v-row>
                 <v-col cols="6">
                   <ValidationObserver ref="form">
-                    <v-card flat class="mx-3" width="19vw" height="46vh">
+                    <v-card flat class="ml-10" width="19vw" height="46vh">
                       <form @submit.prevent="makeHW">
                         <ValidationProvider name="문제 제목" rules="required|max:20">
                           <v-text-field
@@ -124,10 +124,10 @@
         <v-card class="mt-3" height="80vh">
           <v-card flat class="mb-3">
             <v-toolbar-title>회원 관리</v-toolbar-title>
-            <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" min-height="20vh">
+            <v-virtual-scroll :items="groupMember" :item-height="45" height="328">
               <template v-slot="{ item }">
                 <v-list-item>
-                  <v-list-item-avatar size="48">
+                  <v-list-item-avatar size="42">
                     <v-img :src="ImgURL + item.img"> </v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -153,48 +153,34 @@
               v-if="applicants.length"
               :items="applicants"
               :item-height="35"
-              min-height="30vh"
+              height="300"
             >
               <template v-slot="{ item }">
-                <v-expansion-panels>
-                  <v-expansion-panel>
-                    <v-expansion-panel-header>
-                      <v-list-item>
-                        <v-list-item-avatar size="32">
-                          <v-img :src="ImgURL + item.img"> </v-img>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                          <v-list-item-title>{{ item.nickname }}</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                      <v-app-bar flat dense color="white">
-                        {{ item.introduce }}
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          color="success"
-                          class="mr-3"
-                          tile
-                          small
-                          icon
-                          @click.prevent="acceptApplicant(item)"
-                        >
-                          <v-icon>mdi-check-bold</v-icon>
-                        </v-btn>
-                        <v-btn
-                          color="error"
-                          tile
-                          small
-                          icon
-                          @click.prevent="declineApplicant(item)"
-                        >
-                          <v-icon>mdi-close-circle</v-icon>
-                        </v-btn>
-                      </v-app-bar>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panels>
+                <v-list-item>
+                  <v-list-item-avatar size="32">
+                    <v-img :src="ImgURL + item.img"> </v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.nickname }}</v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <v-btn
+                      color="success"
+                      class="mr-3"
+                      tile
+                      small
+                      icon
+                      @click.prevent="acceptApplicant(item)"
+                    >
+                      <v-icon>mdi-check-bold</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                  <v-list-item-action>
+                    <v-btn color="error" tile small icon @click.prevent="declineApplicant(item)">
+                      <v-icon>mdi-close-circle</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
               </template>
             </v-virtual-scroll>
             <h4 class="mt-5 ml-5" v-else>가입신청한 회원이 없습니다😭</h4>
