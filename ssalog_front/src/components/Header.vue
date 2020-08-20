@@ -1,6 +1,5 @@
 <template>
   <nav>
-    <v-btn class="hiddenbutton" @click="$store.commit('ChangeDark')"></v-btn>
     <v-app-bar class="Header" :dark="isDark" color="transparent" max-height="65">
       <v-container fluid>
         <v-row class="align-center">
@@ -195,13 +194,5 @@ export default {
 <style scoped>
 .pointButton {
   cursor: pointer;
-}
-.hiddenbutton {
-  position: fixed;
-  width: 10 !important;
-  bottom: 0;
-  opacity: 0;
-  right: 0;
-  z-index: 99;
 }
 </style>
