@@ -1,36 +1,57 @@
 <template>
-  <v-card color="transparent" flat width="30vw" height="70vh" class="mx-7 my-15">
-    <v-toolbar-title>그룹 멤버</v-toolbar-title>
-    <v-divider></v-divider>
-    <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" height="600">
-      <template v-slot="{ item }">
-        <v-list-item>
-          <v-list-item-avatar size="48">
-            <v-img :src="ImgURL + item.img"> </v-img>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.nickname }}</v-list-item-title>
-          </v-list-item-content>
-          <v-spacer></v-spacer>
-          <v-list-item-action>
-            <v-btn v-if="item.role === 'owner'" color="amber lighten-2" tile large icon>
-              <v-icon>mdi-trophy-award</v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </template>
-    </v-virtual-scroll>
-  </v-card>
+  <v-container>
+    <v-row>
+      <v-col cols="6">
+        <v-card color="transparent" flat width="30vw" height="70vh" class="mx-7 my-15">
+          <v-toolbar-title>그룹 멤버</v-toolbar-title>
+          <v-divider></v-divider>
+          <v-virtual-scroll class="mt-5" :items="groupMember" :item-height="50" height="600">
+            <template v-slot="{ item }">
+              <v-list-item>
+                <v-list-item-avatar size="48">
+                  <v-img :src="ImgURL + item.img"> </v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.nickname }}</v-list-item-title>
+                </v-list-item-content>
+                <v-spacer></v-spacer>
+                <v-list-item-action>
+                  <v-btn v-if="item.role === 'owner'" color="amber lighten-2" tile large icon>
+                    <v-icon>mdi-trophy-award</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </template>
+          </v-virtual-scroll>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <div class="group_anime_label">
+          <h1>총 {{ groupMember.length }}명의</h1>
+          <h2>인원이 참여하고 있습니다</h2>
+        </div>
+
+        <lottie :options="defaultOptions"></lottie>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import Lottie from "@/components/lottie.vue";
 import { mapState } from "vuex";
+// eslint-disable-next-line
+import * as group_member_anim from "@/assets/images/group/group_main.json";
 
 export default {
   name: "GroupList",
+  components: {
+    lottie: Lottie
+  },
   data() {
     return {
-      groupMember: []
+      groupMember: [],
+      defaultOptions: { animationData: group_member_anim }
     };
   },
   methods: {
@@ -73,4 +94,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.group_anime_label {
+  position: fixed;
+  top: 250px;
+  margin-left: 40px;
+}
+</style>
