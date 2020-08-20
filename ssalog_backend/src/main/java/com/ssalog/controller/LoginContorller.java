@@ -244,6 +244,11 @@ public class LoginContorller {
     	//System.out.println("호출완료!");
     	return new ResponseEntity<String>(ran,HttpStatus.OK);
     } 
+    @GetMapping(path="/newuser/test")
+    public void test123() {
+    	//System.out.println("호출완료!");
+    	System.out.println(bcryptEncoder.encode("123"));
+    } 
     @ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");
