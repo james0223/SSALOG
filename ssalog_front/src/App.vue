@@ -1,5 +1,5 @@
 <template>
-  <v-app class="Background">
+  <v-app :class="{ Background: !isDark, Background_dark: isDark }">
     <Header></Header>
     <!-- <v-container> -->
     <router-view :key="$route.fullPath" class="mb-6"></router-view>
@@ -34,7 +34,7 @@ export default {
       }
     }
   },
-  computed: mapState(["showAlert", "AlertMessage", "alertColor"]),
+  computed: mapState(["showAlert", "AlertMessage", "alertColor", "isDark"]),
   watch: {
     // eslint-disable-next-line
     AlertMessage: function(newVal) {
@@ -57,5 +57,9 @@ export default {
     rgba(255, 255, 255, 1) 66%,
     rgba(237, 237, 237, 1) 100%
   ) !important;
+}
+.Background_dark {
+  overflow: auto;
+  background: #1a1d22 !important;
 }
 </style>

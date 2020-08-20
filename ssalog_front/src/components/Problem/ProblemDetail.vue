@@ -1,11 +1,16 @@
 <template>
   <div>
-    <v-btn tile class="rounded-t-lg" color="blue-grey darken-3" dark @click="$router.go(-1)"
+    <v-btn
+      tile
+      :dark="!isDark"
+      class="rounded-t-lg"
+      :color="isDark ? ColorSet.Sub : 'blue-grey darken-3'"
+      @click="$router.go(-1)"
       >뒤로가기</v-btn
     >
     <v-row justify="center">
       <v-col cols="12" class="pt-0">
-        <v-card class="CardCss mb-4 pt-7 px-7" elevation="6" tile>
+        <v-card :dark="isDark" class="CardCss mb-4 pt-7 px-7" elevation="6" :outlined="isDark" tile>
           <img
             v-if="isSolved && pioneer !== nickname"
             class="corner"
@@ -86,6 +91,7 @@
                       >
                         <v-carousel-item v-for="(language, i) in languages" :key="i">
                           <v-card
+                            :dark="isDark"
                             height="100%"
                             class="d-flex flex-column align-center justify-space-around"
                             flat
@@ -105,7 +111,11 @@
                               <h3 class="my-0">{{ userAvgData.memory }} kb</h3>
                             </v-card-title>
                             <v-card-title v-show="!userAvgData.time">
-                              <img src="@/assets/images/idk.png" alt="idk" />
+                              <img
+                                :class="{ 'image-to-dark': isDark }"
+                                src="@/assets/images/idk.png"
+                                alt="idk"
+                              />
                             </v-card-title>
                             <v-card-title class="text-center" v-show="!userAvgData.time">
                               <h6>해당언어로 등록된 리뷰가 없습니다.</h6>
@@ -149,24 +159,27 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card tile class="pa-7" elevation="4">
+        <v-card :dark="isDark" :outlined="isDark" tile class="pa-7" elevation="4">
           <v-card-title>
             <h2>리뷰 목록</h2>
             <v-spacer></v-spacer>
-            <v-select
-              class="narrow"
-              background-color="blue-grey lighten-1"
-              dark
-              :items="
-                languages.map(item => {
-                  return item.lang;
-                })
-              "
-              v-model="selectedLang"
-              label="Solo field"
-              solo
-              dense
-            ></v-select>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn color="blue-grey lighten-1" dark v-bind="attrs" v-on="on">
+                  {{ selectedLang }}
+                  <v-icon>mdi-chevron-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list :dark="isDark">
+                <v-list-item
+                  v-for="(language, idx) in languages"
+                  :key="idx"
+                  @click="chageLang(idx)"
+                >
+                  <v-list-item-title>{{ language.lang }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-card-title>
           <v-card-text>
             <v-data-table
@@ -218,6 +231,7 @@
 
 <script>
 import axios from "axios";
+import "@/assets/Main.css";
 import { mapState } from "vuex";
 import DoughNutChart from "../DoughnutChart.vue";
 
@@ -296,6 +310,9 @@ export default {
     };
   },
   methods: {
+    chageLang(idx) {
+      this.selectedLang = this.languages[idx].lang;
+    },
     async fetchSolutionNumb() {
       try {
         const { data } = await this.$http.get(
@@ -422,7 +439,7 @@ export default {
         if (content > 1.2 * this.userAvgData.memory) return "amber darken-1";
         if (content < 0.7 * this.userAvgData.memory) return "green accent-2";
       }
-      return "white";
+      return "transparent";
     }
   },
   mounted() {
@@ -433,7 +450,7 @@ export default {
     this.fetchIsSolved();
   },
   computed: {
-    ...mapState(["ServerURL", "username", "nickname", "ServerURL"]),
+    ...mapState(["ServerURL", "username", "nickname", "ServerURL", "ColorSet", "isDark"]),
     isPioneer() {
       return this.nickname && this.pioneer === this.nickname;
     },
@@ -443,7 +460,7 @@ export default {
   },
   watch: {
     // eslint-disable-next-line
-    SolutionPage: function () {
+    SolutionPage: function() {
       this.fetchSolvingData();
     },
     selectedLang() {
@@ -453,10 +470,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.narrow {
-  max-width: 30vh;
-}
+<style lang="scss" scoped>
 .chart-container {
   flex-grow: 1;
   min-height: 0;
@@ -471,7 +485,5 @@ export default {
   top: 0px;
   right: 0px;
   height: 7rem;
-}
-.CardCss {
 }
 </style>

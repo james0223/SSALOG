@@ -86,7 +86,11 @@ export default new Vuex.Store({
       state.username = payload.username;
     },
     LOGOUT(state) {
+      const bef = state.isDark;
       Object.assign(state, getDefaultState());
+      if (bef) {
+        state.isDark = true;
+      }
     },
     TOKEN(state, payload) {
       const { accessToken, refreshToken } = payload;

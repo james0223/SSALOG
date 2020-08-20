@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>문제</h1>
+    <h1 :class="{ dark: isDark }">문제</h1>
     <SearchBar
       :SelectedCategoryIdx="Number($route.query.categoryIdx)"
       :Q="$route.query.q"
       :Keywords="$route.query.keywords"
     />
-    <v-card color="transparent" class="pa-10" v-if="isNoResult" flat>
+    <v-card :dark="isDark" color="transparent" class="pa-10" v-if="isNoResult" flat>
       <v-row justify="center">
         <v-col cols="8">
           <v-card-title class="pb-1">
@@ -22,7 +22,7 @@
               <span class="info--text">개척자</span>가 되어주세요!
             </h3>
           </v-card-text>
-          <v-card-text class="text--secondary ml-1">
+          <v-card-text class="ml-1">
             개척자란?
             <br />문제에 처음으로 리뷰를 등록하는 유저에게 부여되는 칭호입니다.
           </v-card-text>
@@ -30,6 +30,7 @@
         <v-col cols="4">
           <v-card-text>
             <v-img
+              :class="{ 'image-to-dark': isDark }"
               class="mx-auto"
               src="@/assets/images/sorry.png"
               height="20vh"
@@ -95,7 +96,12 @@
       </v-col>
       <v-col v-for="(problem, i) in problems" :key="i" cols="12">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
-          <v-card @click="visitProblemDeatil(problem.problemid)" :elevation="hover ? 12 : 2">
+          <v-card
+            :dark="isDark"
+            :outlined="isDark"
+            @click="visitProblemDeatil(problem.problemid)"
+            :elevation="hover ? 12 : 2"
+          >
             <img
               v-if="problem.starter === username"
               class="corner"
@@ -129,7 +135,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import axios from "axios";
+import "@/assets/Main.css";
 // 요청에 배열 담을 때 필요
 import SearchBar from "@/components/SearchBar.vue";
 import qs from "qs";
@@ -215,6 +223,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["isDark"]),
     username() {
       return this.$store.state.username;
     },

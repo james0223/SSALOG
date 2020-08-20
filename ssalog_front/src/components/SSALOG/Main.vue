@@ -33,7 +33,7 @@
               >
             </h4>
           </v-col>
-          <v-col cols="3" class="d-flex justify-center"
+          <v-col cols="3" class="d-flex justify-end"
             ><h4 class="font-weight-light mb-1">키워드</h4></v-col
           >
           <v-col cols="3" class="text-end"><h4 class="font-weight-light mb-1">작성일자</h4></v-col>
@@ -41,8 +41,8 @@
         <v-divider></v-divider>
         <v-row v-if="isNoSolve">
           <v-col>
-            <p class="p-2 text-center text--secondary">👨🏻‍🎓알고리즘 박사가 되는 그날까지👨‍🎓</p>
-            <p class="p-3 text-center text--secondary">📙쌀로그에서 알고리즘을 정리하기🧾</p>
+            <p class="p-2 text-center">👨🏻‍🎓알고리즘 박사가 되는 그날까지👨‍🎓</p>
+            <p class="p-3 text-center">📙쌀로그에서 알고리즘을 정리하기🧾</p>
           </v-col>
         </v-row>
         <v-list color="transparent">

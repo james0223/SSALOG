@@ -1,6 +1,6 @@
 <template>
   <v-container my-16>
-    <v-card color="transparent" flat class="mx-auto" max-width="50vw">
+    <v-card :outlined="isDark" :dark="isDark" flat class="mx-auto" max-width="50vw">
       <v-card-title class="title font-weight-regular">
         <h1>비밀번호 찾기</h1>
       </v-card-title>
@@ -37,7 +37,7 @@
 
 <script>
 import axios from "axios";
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "FindPass",
@@ -49,6 +49,7 @@ export default {
       loading: false
     };
   },
+  computed: mapState(["isDark"]),
   methods: {
     ...mapMutations(["ShowAlert"]),
     async findPassReq() {

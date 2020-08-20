@@ -1,6 +1,15 @@
 #relative_wrapper {
   position: relative;
 }
+.dark {
+  color: white;
+}
+.image-to-dark {
+  filter: invert(100%);
+}
+.greenButton {
+  color: black !important;
+}
 
 .to_pointer {
   cursor: pointer;
