@@ -29,7 +29,7 @@
               <v-row>
                 <v-col cols="6">
                   <ValidationObserver ref="form">
-                    <v-card flat class="mx-3" width="19vw" height="46vh">
+                    <v-card flat class="ml-10" width="19vw" height="46vh">
                       <form @submit.prevent="makeHW">
                         <ValidationProvider name="문제 제목" rules="required|max:20">
                           <v-text-field
