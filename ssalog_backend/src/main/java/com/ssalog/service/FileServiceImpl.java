@@ -1,13 +1,11 @@
 
 package com.ssalog.service;
 
-import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,13 +29,13 @@ public class FileServiceImpl implements FileService{
 		if (multipartFile != null && !multipartFile.isEmpty()) {
 			String originFileName = multipartFile.getOriginalFilename();
 			String type = FilenameUtils.getExtension(originFileName);
-			if(type.equals("jpg") || type.equals("png") || type.equals("jpeg")) {
+			if(type.equalsIgnoreCase("jpg") || type.equalsIgnoreCase("png") || type.equalsIgnoreCase("jpeg")) {
 				String rootPath = "/home/ubuntu/apps/upload"; //servletContext.getRealPath("/upload");
+				Account ac = accountRepository.findByUsername(username);
 				System.out.println("rootpath = " + rootPath);
+				fileRepository.delete_file(username, rootPath, ac.getImgpath());
 				Map<String, String> m = fileRepository.saveFile(multipartFile, rootPath, username);
 				String imgPath = m.get("saveFileName");
-				Account ac = accountRepository.findByUsername(username);
-				fileRepository.delete_file(username, rootPath, ac.getImgpath());
 				ac.setImgpath(imgPath);
 				accountRepository.save(ac);
 				return 1;

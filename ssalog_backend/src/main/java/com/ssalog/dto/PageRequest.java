@@ -24,9 +24,10 @@ public class PageRequest {
 		return size;
 	}
 	public void setSize(int size) {
-		int DEFAULT_SIZE = 10;
-		int MAX_SIZE = 50;
-		this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
+		//int DEFAULT_SIZE = 10;
+		//int MAX_SIZE = 50;
+		//this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
+		this.size = size;
 	}
 	public Sort.Direction getDirection() {
 		return direction;
@@ -37,5 +38,16 @@ public class PageRequest {
 	public org.springframework.data.domain.PageRequest of() {
 		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "regdate");
 	}
-	
+	public org.springframework.data.domain.PageRequest ofs() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "time");
+	}
+	public org.springframework.data.domain.PageRequest ofs2() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "groupname");
+	}
+	public org.springframework.data.domain.PageRequest ofs3() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, direction, "all_cnt");
+	}
+	public org.springframework.data.domain.PageRequest ofs4() {
+		return org.springframework.data.domain.PageRequest.of(page-1, size, Sort.by("regdate").descending().and(Sort.by("regtime").descending()));
+	}
 }

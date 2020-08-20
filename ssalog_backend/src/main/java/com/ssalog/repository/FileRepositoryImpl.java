@@ -3,21 +3,16 @@ package com.ssalog.repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-
 @Repository
 public class FileRepositoryImpl implements FileRepository{
 	public Map<String, String> saveFile(MultipartFile multipartFile, String rootPath, String username){
 		Map<String, String> map = new HashMap<String, String>();
-		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
 		String saveFolder = "resources/upload";
 		String totalSaveFolder = rootPath;// + File.separator;//+ saveFolder;
 		
@@ -58,6 +53,9 @@ public class FileRepositoryImpl implements FileRepository{
 	}
 	public void delete_file(String username, String rootPath, String filename) {
 		//String saveFolder = "resources/upload";
+		if(filename == null) {
+			return;
+		}
 		String totalSaveFolder = rootPath;//+ File.separator+ saveFolder;
 		File file = new File(totalSaveFolder, filename);
 		if(file.exists()) {

@@ -1,0 +1,52 @@
+#relative_wrapper {
+  position: relative;
+}
+.dark {
+  color: white;
+}
+.image-to-dark {
+  filter: invert(100%);
+}
+.greenButton {
+  color: black !important;
+}
+
+.to_pointer {
+  cursor: pointer;
+}
+.thumbnailplus {
+  position: absolute;
+  z-index: 99;
+  top: 82%;
+  left: 82%;
+  transform: translate(-50%, -50%);
+}
+#showLevel {
+  position: absolute;
+  top: 18%;
+  left: 5%;
+}
+.card_mother {
+  position: relative;
+}
+.absolute_card {
+  width: 11vw;
+  position: fixed;
+  top: 4rem;
+  left: 13vw;
+  opacity: 0.9 !important;
+}
+.profile_card {
+  opacity: 0.9 !important;
+  background: rgb(26, 69, 255);
+  background: linear-gradient(
+    326deg,
+    rgba(26, 69, 255, 1) 0%,
+    rgba(141, 255, 179, 0.8018557764902836) 98%
+  );
+}
+.table_back {
+  /* opacity: 0.5;
+  background: rgb(148,163,175);
+background: linear-gradient(173deg, rgba(148,163,175,1) 0%, rgba(255,255,255,1) 100%); */
+}

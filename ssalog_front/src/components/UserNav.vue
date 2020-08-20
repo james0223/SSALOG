@@ -2,7 +2,7 @@
   <v-card flat height="60vh">
     <v-row justify="center" bottom>
       <div id="nothing">
-        <v-avatar size="260" class="mt-8">
+        <v-avatar size="240" class="mt-8">
           <img :src="userThumbnail" />
         </v-avatar>
 
@@ -37,7 +37,7 @@
       </div>
     </v-row>
     <v-row justify="center">
-      <h3>{{ this.$store.state.username }}</h3>
+      <h3>{{ this.$store.state.nickname }}</h3>
     </v-row>
     <v-row justify="center">
       <v-btn outlined large class="mt-6 mb-5" @click="dialog = true">Edit Profile</v-btn>

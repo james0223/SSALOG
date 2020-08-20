@@ -1,10 +1,8 @@
 
 package com.ssalog.repository;
 
-import java.io.File;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileRepository {

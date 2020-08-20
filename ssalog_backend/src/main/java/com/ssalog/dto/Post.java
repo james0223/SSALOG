@@ -1,14 +1,8 @@
 package com.ssalog.dto;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-import javax.persistence.Id;
-
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 
@@ -21,25 +15,26 @@ public class Post {
 	private String username;
 	private String code;
 	private String language;
-	private String len;
-	private String memory;
+	private int len;
+	private int memory;
 	private String problemid;
 	private String problemname;
-	private String time;
+	private int time;
 	private String html;
 	private List<String> keyword;
 	private List<Comment> comment;
 	private int like;
-	@CreationTimestamp
-	private Date regdate;
+	private String regdate;
+	private String regtime;
 	private Boolean iswrite;
+	private String nickname;
+	private String title;
 	
 	public Post() {}
 
-	
-	public Post(String scoring, String username, String code, String language, String len, String memory,
-			String problemid, String problemname, String time, String html, List<String> keyword, List<Comment> comment,
-			int like, Date regdate, Boolean iswrite) {
+	public Post(String scoring, String username, String code, String language, int len, int memory, String problemid,
+			String problemname, int time, String html, List<String> keyword, List<Comment> comment, int like,
+			String regdate, String regtime, Boolean iswrite, String nickname, String title) {
 		super();
 		this.scoring = scoring;
 		this.username = username;
@@ -55,19 +50,11 @@ public class Post {
 		this.comment = comment;
 		this.like = like;
 		this.regdate = regdate;
+		this.regtime = regtime;
 		this.iswrite = iswrite;
+		this.nickname = nickname;
+		this.title = title;
 	}
-
-	
-	public Boolean getIswrite() {
-		return iswrite;
-	}
-
-
-	public void setIswrite(Boolean iswrite) {
-		this.iswrite = iswrite;
-	}
-
 
 	public String getScoring() {
 		return scoring;
@@ -101,19 +88,19 @@ public class Post {
 		this.language = language;
 	}
 
-	public String getLen() {
+	public int getLen() {
 		return len;
 	}
 
-	public void setLen(String len) {
+	public void setLen(int len) {
 		this.len = len;
 	}
 
-	public String getMemory() {
+	public int getMemory() {
 		return memory;
 	}
 
-	public void setMemory(String memory) {
+	public void setMemory(int memory) {
 		this.memory = memory;
 	}
 
@@ -133,11 +120,11 @@ public class Post {
 		this.problemname = problemname;
 	}
 
-	public String getTime() {
+	public int getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(int time) {
 		this.time = time;
 	}
 
@@ -173,15 +160,50 @@ public class Post {
 		this.like = like;
 	}
 
-	public Date getRegdate() {
+	public String getRegdate() {
 		return regdate;
 	}
 
-	public void setRegdate(Date regdate) {
+	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
+
+	public String getRegtime() {
+		return regtime;
+	}
+
+	public void setRegtime(String regtime) {
+		this.regtime = regtime;
+	}
+
+	public Boolean getIswrite() {
+		return iswrite;
+	}
+
+	public void setIswrite(Boolean iswrite) {
+		this.iswrite = iswrite;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	
 
+	
+	
 	
 }
 //code: "사용자가 푼코드 "

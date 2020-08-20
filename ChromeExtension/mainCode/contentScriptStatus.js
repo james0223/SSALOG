@@ -12,8 +12,8 @@ if (userNode) {
       let domparser = new DOMParser();
       var codeData = {
         scoring: elem[0].innerHTML,
-        problemname: elem[2].firstChild.getAttribute("data-original-title"),
-        problemid: elem[2].firstChild.innerText,
+        problemname: elem[2].lastChild.getAttribute("data-original-title"),
+        problemid: elem[2].lastChild.innerText,
         memory: elem[4].innerText,
         time: elem[5].innerText,
         language: elem[6].firstChild.innerText,
@@ -27,14 +27,6 @@ if (userNode) {
         console.log(codeData);
 
         var httpRequest = new XMLHttpRequest();
-        // httpRequest.onreadystatechange = function () {
-        //   if (
-        //     httpRequest.readyState == XMLHttpRequest.DONE &&
-        //     httpRequest.status == 200
-        //   ) {
-        //     alert(httpRequest.responseText);
-        //   }
-        // };
         httpRequest.open(
           "POST",
           "https://ssalog.gq/api/newuser/post/write/",
@@ -63,16 +55,59 @@ if (userNode) {
       let solutionConfigs = solution.closest("tr").childNodes;
       // 이렇게 하면 외부 콜백함수에 변수를 담아 사용할 수 있다.
       var portal = document.createElement("button");
-      portal.innerText = "Go to SSaLog";
+      portal.setAttribute(
+        "style",
+        "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;  border-top-left-radius: 5px; "
+      );
+      portal.innerText = "SSALOG";
+
+      portal.addEventListener("mouseover", (event) => {
+        // console.dir(event.target)
+        event.target.setAttribute(
+          "style",
+          "background-color: green; margin-left : 10px; border: 1px solid green; color : white;  "
+        );
+        event.target.innerText = "Write>>";
+      });
+      portal.addEventListener("mouseout", (event) => {
+        // console.dir(event.target)
+        event.target.setAttribute(
+          "style",
+          "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;  "
+        );
+        event.target.innerText = "SSALOG";
+      });
+      portal.addEventListener("click", (event) => addListener(solutionConfigs));
+
       solution.innerText = "맞았습니다!!  ";
       solution.append(portal);
-      portal.addEventListener("click", (event) => addListener(solutionConfigs));
     }
     var target = document.querySelector(".result-text");
     var observer = new MutationObserver(function (mutations) {
       if (target.firstChild.innerText === "맞았습니다!!") {
         var portal = document.createElement("button");
-        portal.innerText = "Go to SSaLog";
+        portal.innerText = "SSALOG";
+        portal.setAttribute(
+          "style",
+          "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;"
+        );
+
+        portal.addEventListener("mouseover", (event) => {
+          // console.dir(event.target)
+          event.target.setAttribute(
+            "style",
+            "background-color: green; margin-left : 10px; border: 1px solid green; color : white;  "
+          );
+          event.target.innerText = "Write>>";
+        });
+        portal.addEventListener("mouseout", (event) => {
+          // console.dir(event.target)
+          event.target.setAttribute(
+            "style",
+            "background-color: rgba(0,0,0,0); margin-left : 10px; border: 1px solid green;  "
+          );
+          event.target.innerText = "SSALOG";
+        });
         target.firstChild.innerText = "맞았습니다!!  ";
         target.firstChild.append(portal);
         // target.firstChild.innerHTML = '<button id="ssalogTrigger">SSALOG</button>'
@@ -91,22 +126,3 @@ if (userNode) {
     observer.observe(target, config);
   }
 }
-
-// chrome.storage.sync.get(function (data) {
-//     // 일단 필요없음
-// });
-
-//무작정 이렇게 떼버리면 새로고침하면 작동안함
-// chrome.storage.sync.remove('isSubmit');
-
-// if (document.getElementById("status-table").lastChild.firstChild.getElementsByClassName('result-wait').length !== 0) {
-//     // 진행중인 경우 result-judging 도 넣어야 할 거 같은데
-//     // c로 바로 끝나는거 확인
-//     alert('문제를 풀러 왔구나')
-//     // document.getElementsByClassName('result-text')[0].firstChild.addEventListener('load', function(event) {
-//     //     alert('how do i know')
-//     // })
-
-// } else {
-//     alert('문제를 풀지 않는구나')
-// }

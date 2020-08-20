@@ -1,9 +1,7 @@
 <template>
-  <div>
-    검색
-    <SearchBar SelectedCategoryIdx="0" />
-    최근에 많이 검색된 내용
-  </div>
+  <v-container>
+    <SearchBar :SelectedCategoryIdx="0" />
+  </v-container>
 </template>
 
 <script>

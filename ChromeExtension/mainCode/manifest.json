@@ -1,24 +1,23 @@
 {
   "name": "SSaLog",
-  "version": "1.0",
+  "version": "1.2",
   "description": "알고리즘 포트폴리오 작성을 도와줘요",
   "manifest_version": 2,
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
+  
   "content_scripts": [
-    {
-      "matches": [
-        "https://*.acmicpc.net/submit/*"
-      ],
-      "run_at": "document_idle",
-      "js": ["contentScriptSubmit.js"]
-    },
     {
       "matches": [
         "https://*.acmicpc.net/status*"
@@ -33,11 +32,5 @@
       "run_at": "document_idle",
       "js": ["ssafy.js"]
     }
-  ],
-  "permissions": [
-    "webNavigation",
-    "activeTab",
-    "storage",
-    "alarms"
   ]
 }
