@@ -1,9 +1,7 @@
 package com.ssalog.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.ssalog.dto.Account;
 import com.ssalog.dto.Post;
-import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Scrap;
 import com.ssalog.dto.Scrapedpost;
 import com.ssalog.repository.AccountRepository;
@@ -71,7 +68,6 @@ public class ScrapServiceImpl implements ScrapService {
 	@Override
 	public List<Scrapedpost> get_scrapList(String nickname){
 		List<Scrap> li = scrapRepository.findByScrap_nickname(nickname);
-		Map<Integer, Scrapedpost> m = new HashMap<>();
 		List<Scrapedpost> list = new ArrayList<>();
 		for(int i=0; i<li.size(); i++) {
 			Scrapedpost p = postSubRepository.findByScoring((li.get(i).getScraped()));
@@ -104,7 +100,5 @@ public class ScrapServiceImpl implements ScrapService {
 		else {
 			return 0;
 		}
-
-		//System.out.println(postRepository.findlikesu(username).get(0)+ " 입니다!");
 	}
 }

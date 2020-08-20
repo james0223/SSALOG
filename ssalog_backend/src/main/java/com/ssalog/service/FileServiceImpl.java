@@ -1,13 +1,11 @@
 
 package com.ssalog.service;
 
-import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

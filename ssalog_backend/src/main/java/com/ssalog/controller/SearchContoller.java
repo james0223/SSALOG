@@ -1,33 +1,24 @@
 package com.ssalog.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.config.webhook;
-import com.ssalog.dto.Account;
 import com.ssalog.dto.AccountSub;
 import com.ssalog.dto.PageRequest;
-import com.ssalog.dto.Post;
 import com.ssalog.dto.PostSub;
 import com.ssalog.dto.Problem;
 import com.ssalog.service.AccountService;
@@ -41,7 +32,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("newuser/search")
 public class SearchContoller {
-	private Logger logger = LoggerFactory.getLogger(ApplicationRunner.class);
 	
 	@Autowired
 	private AccountService accountService;

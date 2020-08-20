@@ -1,6 +1,5 @@
 package com.ssalog.service;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,10 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.swing.text.DateFormatter;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +19,6 @@ import com.ssalog.dto.GroupRegist;
 import com.ssalog.dto.GroupRole;
 import com.ssalog.dto.Groupdetail;
 import com.ssalog.dto.PostSub;
-import com.ssalog.dto.Problem;
 import com.ssalog.repository.AccountRepository;
 import com.ssalog.repository.GroupDetailRepository;
 import com.ssalog.repository.GroupGoalRepository;
@@ -31,7 +26,6 @@ import com.ssalog.repository.GroupRegistRepository;
 import com.ssalog.repository.GroupRepository;
 import com.ssalog.repository.PostRepository;
 import com.ssalog.repository.PostSubRepository;
-import com.ssalog.repository.ProblemRepository;
 
 @Transactional
 @Service
@@ -231,14 +225,7 @@ public class GroupServiceImpl implements GroupService{
 				m.put("mention",list.get(i).getMention());
 				lm.add(m);
 			}
-			//			String[] slist = new String[list.size()];
-			//			Map<String, String> m = new HashMap<>();
 			return lm;
-			//			for(int i=0; i<list.size(); i++) {
-			//				GroupGoal gg = list.get(i);
-			//				slist[i] = gg.getProblemid();
-			//			}
-			//			return postRepository.solved_list(slist, pageable);
 		}
 		return null;
 	}
@@ -259,13 +246,6 @@ public class GroupServiceImpl implements GroupService{
 				lm.add(m);
 			}
 			return lm;
-			//			String[] slist = new String[list.size()];
-			//			Map<String, String> m = new HashMap<>();
-			//			for(int i=0; i<list.size(); i++) {
-			//				GroupGoal gg = list.get(i);
-			//				slist[i] = gg.getProblemid();
-			//			}
-			//			return postRepository.solved_list(slist, pageable);
 		}
 		return null;
 	}

@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssalog.config.webhook;
 import com.ssalog.dto.Comment;
-import com.ssalog.dto.Post;
-import com.ssalog.dto.Problem;
 import com.ssalog.service.CommentService;
 import com.ssalog.service.PostService;
 
@@ -66,34 +64,11 @@ public class CommentController {
 		commentService.update_comment(message, id, username);
 		return new ResponseEntity<String>("수정 완료!", HttpStatus.OK);
 	}
-	
-//	@PostMapping("user/post/write_subcomment")
-//	@ApiOperation(value = "[대댓글 작성] 상위 댓글의 id와 작성할 comment dto을 줘서 대댓글을 작성한다, 로그인을 해야 작성이 가능함")
-//	public ResponseEntity<String> write_subcomment(@RequestParam("id") String id, @RequestBody Comment comment) {
-//		commentService.update_comment(comment, id);
-//		return new ResponseEntity<String>("수정 완료!", HttpStatus.OK);
-//	}
-//	@ApiOperation(value ="[test]")
-//	@PostMapping("/newuser/test1")
-//	public void test2(@RequestBody Comment comment, @RequestParam("id") String id){
-//		commentService.update_comment(comment, id);
-//	}
 	@ApiOperation(value ="[test]")
 	@PostMapping("/newuser/test2")
 	public void test3(@RequestParam("id") String id, @RequestBody Comment comment){
 		commentService.update_subcomment(id, comment);
 	}
-//	@PostMapping("user/post/write_subcomment")
-//	@ApiOperation(value = "[대댓글작성] 대댓글을 작성한다, 로그인을 해야 작성이 가능함, 만약 해당하는 댓글이 존재 하지 않으면 400 error 발생시킨다.")
-//	public ResponseEntity<String> write_subcomment(HttpServletResponse response,@RequestParam("uniqueid") String uniqueid,@RequestBody Comment comment) {
-//		String username = response.getHeader("username");
-//		int flag = postService.write_subcomment(uniqueid, comment, username);
-//		if(flag == 1) {
-//			return new ResponseEntity<String>("success", HttpStatus.OK);
-//		}else {
-//			return new ResponseEntity<String>("not exist!",HttpStatus.BAD_REQUEST);
-//		}
-//	}
 	@ExceptionHandler(Exception.class)
 	public void nullex(HttpServletResponse response,Exception e) {
 		String username = response.getHeader("username");

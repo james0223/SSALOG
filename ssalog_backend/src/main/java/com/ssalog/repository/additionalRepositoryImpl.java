@@ -2,16 +2,11 @@ package com.ssalog.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;

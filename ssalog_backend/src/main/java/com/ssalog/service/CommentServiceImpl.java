@@ -94,27 +94,6 @@ public class CommentServiceImpl implements CommentService{
 		comment.setUsername(username);
 		postRepository.update_comment(comment,id);
 	}
-	//	@Override
-	//	@Transactional
-	//	public int write_subcomment(String uniqueid,Comment comment,String username) {
-	//		Comment com= commentRepository.findByUniqueid(uniqueid);
-	//		if(com != null) {
-	//			List<Comment> clist = com.getSubcomment();
-	//			if(clist == null) {
-	//				clist = new ArrayList<>();
-	//			}
-	//			String uid = username+UUID.randomUUID().toString();
-	//			comment.setUniqueid(uid);
-	//			comment.setUserid(username);
-	//			clist.add(comment);
-	//			com.setSubcomment(clist);
-	//			commentRepository.save(com);
-	//			return 1;
-	//		}
-	//		else {
-	//			return 2;
-	//		}
-	//	}
 	public void write_subcomment(String id, Comment comment) {
 		postRepository.write_subcomment(id, comment);
 	}

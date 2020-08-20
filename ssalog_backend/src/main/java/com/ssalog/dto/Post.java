@@ -1,14 +1,8 @@
 package com.ssalog.dto;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-import javax.persistence.Id;
-
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 
