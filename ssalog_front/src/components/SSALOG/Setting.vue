@@ -66,7 +66,7 @@
             <v-spacer></v-spacer>
             <v-btn :color="ColorSet.Prime" text @click="checkNickname">중복확인</v-btn>
             <v-dialog v-model="changeNick.dialog" max-width="60vh">
-              <v-card>
+              <v-card :dark="isDark" :outlined="isDark">
                 <v-card-title>
                   <h5>{{ changeNick.data }} (은)는 사용가능한 닉네임입니다!</h5>
                 </v-card-title>
@@ -100,7 +100,7 @@
             <v-btn :color="ColorSet.Sub" fab v-bind="attrs" v-on="on" @click="getForm">+</v-btn>
           </template>
 
-          <v-card>
+          <v-card :dark="isDark" :outlined="isDark">
             <v-card-title>
               <h2>내 양식 설정</h2>
             </v-card-title>
@@ -111,121 +111,230 @@
                 v-slot="{ commands, isActive }"
                 style="border-bottom:1px solid black"
               >
-                <div class="menubar">
+                <div :class="{ menubar_dark: isDark, menubar: !isDark }">
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.bold() }"
+                    :class="{
+                      'is-active': isActive.bold(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.bold"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/bold.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/bold.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.italic() }"
+                    :class="{
+                      'is-active': isActive.italic(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.italic"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/italic.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/italic.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.strike() }"
+                    :class="{
+                      'is-active': isActive.strike(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.strike"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/strike.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/strike.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.underline() }"
+                    :class="{
+                      'is-active': isActive.underline(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.underline"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/underline.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/underline.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.code() }"
+                    :class="{
+                      'is-active': isActive.code(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.code"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/code.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/code.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.paragraph() }"
+                    :class="{
+                      'is-active': isActive.paragraph(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.paragraph"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/paragraph.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/paragraph.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+                    :class="{
+                      'is-active': isActive.heading({ level: 1 }),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.heading({ level: 1 })"
                   >
                     H1
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+                    :class="{
+                      'is-active': isActive.heading({ level: 2 }),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.heading({ level: 2 })"
                   >
                     H2
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+                    :class="{
+                      'is-active': isActive.heading({ level: 3 }),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.heading({ level: 3 })"
                   >
                     H3
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.bullet_list() }"
+                    :class="{
+                      'is-active': isActive.bullet_list(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.bullet_list"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/ul.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/ul.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.ordered_list() }"
+                    :class="{
+                      'is-active': isActive.ordered_list(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.ordered_list"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/ol.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/ol.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.blockquote() }"
+                    :class="{
+                      'is-active': isActive.blockquote(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.blockquote"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/quote.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/quote.svg"
+                    />
                   </button>
 
                   <button
-                    class="menubar__button"
-                    :class="{ 'is-active': isActive.code_block() }"
+                    :class="{
+                      'is-active': isActive.code_block(),
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
                     @click="commands.code_block"
                   >
-                    <img class="icon" src="@/assets/tiptap/icons/code.svg" />
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/code.svg"
+                    />
                   </button>
 
-                  <button class="menubar__button" @click="commands.horizontal_rule">
-                    <img class="icon" src="@/assets/tiptap/icons/hr.svg" />
+                  <button
+                    :class="{
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
+                    @click="commands.horizontal_rule"
+                  >
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/hr.svg"
+                    />
                   </button>
 
-                  <button class="menubar__button" @click="commands.undo">
-                    <img class="icon" src="@/assets/tiptap/icons/undo.svg" />
+                  <button
+                    :class="{
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
+                    @click="commands.undo"
+                  >
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/undo.svg"
+                    />
                   </button>
 
-                  <button class="menubar__button" @click="commands.redo">
-                    <img class="icon" src="@/assets/tiptap/icons/redo.svg" />
+                  <button
+                    :class="{
+                      menubar_dark__button: isDark,
+                      menubar__button: !isDark
+                    }"
+                    @click="commands.redo"
+                  >
+                    <img
+                      :class="{ 'image-to-dark': isDark }"
+                      class="icon"
+                      src="@/assets/tiptap/icons/redo.svg"
+                    />
                   </button>
                 </div>
               </editor-menu-bar>
@@ -332,7 +441,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ColorSet"]),
+  computed: mapState(["ColorSet", "isDark"]),
   methods: {
     async getForm() {
       this.changeForm.dialog = true;

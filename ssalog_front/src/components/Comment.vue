@@ -1,5 +1,5 @@
 <template>
-  <v-card flat color="transparent">
+  <v-card :dark="isDark" flat color="transparent">
     <v-divider></v-divider>
     <v-card-title>{{ comments.length }}개의 댓글</v-card-title>
     <v-card-actions v-if="nickname">
@@ -9,7 +9,6 @@
         outlined
         v-model="myComment"
         label="건전한 댓글을 달아주세요 :)"
-        background-color="white"
       ></v-textarea>
     </v-card-actions>
     <v-card-actions v-if="nickname">
@@ -37,7 +36,7 @@
           <v-icon>mdi-window-close</v-icon>
         </v-btn>
         <v-dialog v-model="isDelete" max-width="60vh">
-          <v-card>
+          <v-card :outlined="isDark" :dark="isDark">
             <v-card-title>
               <h5>댓글 삭제</h5>
             </v-card-title>
@@ -81,7 +80,7 @@ export default {
       comments: []
     };
   },
-  computed: mapState(["ServerURL", "nickname", "username", "ColorSet"]),
+  computed: mapState(["ServerURL", "nickname", "username", "ColorSet", "isDark"]),
   mounted() {
     this.getComments();
   },

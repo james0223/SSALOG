@@ -1,6 +1,6 @@
 <template>
   <v-container my-16>
-    <v-card color="transparent" flat class="mx-auto" max-width="50vw">
+    <v-card :dark="isDark" color="transparent" flat class="mx-auto" max-width="50vw">
       <v-card-text class="text-center">
         <v-avatar class="elevation-12 mb-12" size="200">
           <v-img src="@/assets/images/logo.jpg"></v-img>
@@ -22,6 +22,7 @@
 
 <script>
 import ByEmail from "@/components/SignUp/ByEmail.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "SignUp",
@@ -33,6 +34,7 @@ export default {
       step: "main"
     };
   },
+  computed: mapState(["isDark"]),
   methods: {
     goBack() {
       if (this.step === "main") {

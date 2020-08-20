@@ -1,5 +1,7 @@
 <template>
   <v-card
+    :dark="isDark"
+    :outlined="isDark"
     height="100%"
     elevation="8"
     :width="imageHeight ? '95vw' : '76vw'"
@@ -56,7 +58,7 @@
                     <v-icon small dark>mdi-camera</v-icon>
                   </v-btn>
                 </template>
-                <v-card style="padding:16px;">
+                <v-card :outlined="isDark" :dark="isDark" style="padding:16px;">
                   <v-card-title>
                     <span class="headline">프로필사진 관리</span>
                   </v-card-title>

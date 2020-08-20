@@ -1,26 +1,29 @@
 <template>
   <v-container class="mt-16">
     <div class="d-flex justify-space-between">
-      <h1>쌀로그</h1>
+      <h1 :class="{ dark: isDark }">쌀로그</h1>
       <v-btn
         @click="$router.push({ name: 'SSalogMain', params: { nickname } })"
         tile
+        :outlined="isDark"
+        :dark="!isDark"
         v-if="nickname"
-        color="#2E6FF2"
-        dark
+        :color="`${isDark ? ColorSet.Sub : ColorSet.Prime}`"
         class="animate__animated animate__bounce "
         >내 쌀로그</v-btn
       >
     </div>
     <SearchBar :SelectedCategoryIdx="3" :Q="$route.query.q" :Keywords="$route.query.keywords" />
-    <h2 class="text-center mt-10" v-if="isNoResult">검색결과가 없습니다 :P</h2>
-    <h2 v-if="!isNoResult">
+    <h2 :class="{ dark: isDark }" class="text-center mt-10" v-if="isNoResult">
+      검색결과가 없습니다 :P
+    </h2>
+    <h2 :class="{ dark: isDark }" v-if="!isNoResult">
       {{ searchData.nickname ? `${searchData.nickname}님에 대한 검색결과입니다.` : null }}
     </h2>
     <v-row>
       <v-col v-if="!nickname && showCard && !isNoResult" cols="12" sm="3">
         <v-hover v-slot:default="{ hover }">
-          <v-card class="toNewbee" height="100%" dark elevation="8">
+          <v-card tile class="toNewbee" height="100%" dark elevation="8">
             <v-card-title>
               <h4 class="ml-3 mt-5">
                 쌀로그의 회원이<br />
@@ -49,8 +52,9 @@
       <v-col v-for="(user, i) in users" :key="i" cols="12" sm="3">
         <v-hover style="cursor:pointer" v-slot:default="{ hover }">
           <v-card
+            :dark="isDark"
+            :outlined="isDark"
             tile
-            color="transparent"
             @click="visitUserDetail(user.nickname)"
             align="center"
             :elevation="hover ? 12 : 2"
@@ -82,6 +86,7 @@
 
 <script>
 import axios from "axios";
+import "@/assets/Main.css";
 import InfiniteLoading from "vue-infinite-loading";
 import SearchBar from "@/components/SearchBar.vue";
 import { mapState } from "vuex";
@@ -109,7 +114,7 @@ export default {
       isError: false
     };
   },
-  computed: mapState(["nickname"]),
+  computed: mapState(["nickname", "isDark", "ColorSet"]),
 
   methods: {
     infiniteHandler($state) {

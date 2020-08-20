@@ -12,6 +12,8 @@
         <v-col v-for="(user, i) in users" :key="i" cols="3">
           <v-hover style="cursor:pointer" v-slot:default="{ hover }">
             <v-card
+              :outlined="isDark"
+              :dark="isDark"
               color="transparent"
               @click="visitUserDetail(i)"
               align="center"

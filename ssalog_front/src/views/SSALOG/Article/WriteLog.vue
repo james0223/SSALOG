@@ -2,53 +2,60 @@
   <v-container class="pa-0">
     <template v-if="resData !== undefined">
       <div class="my-15 text-center">
-        <h1>쌀로그 {{ isUpdating ? "수정" : "작성 " }}</h1>
+        <h1 :class="{ dark: isDark }">쌀로그 {{ isUpdating ? "수정" : "작성 " }}</h1>
       </div>
       <v-row>
         <v-col cols="12" md="6">
-          <v-col cols="12" class="pa-0">
-            <h2>
-              <v-icon>mdi-feather</v-icon>문제: {{ resData.problemid }} -
-              {{ resData.problemname }}
-            </h2>
-          </v-col>
-          <v-row class="mt-10 mb-12">
-            <v-col cols="12" md="6">
-              <v-icon>mdi-lead-pencil</v-icon>
-              언어: {{ resData.language }}
+          <v-card :dark="isDark" class="ma-0 pa-0" flat color="transparent">
+            <v-col cols="12" class="pa-0">
+              <h2>
+                <v-icon>mdi-feather</v-icon>문제: {{ resData.problemid }} -
+                {{ resData.problemname }}
+              </h2>
             </v-col>
-            <v-col cols="12" md="6">
-              <v-icon>mdi-memory</v-icon>
-              메모리: {{ resData.memory }}KB
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-icon>mdi-timer</v-icon>
-              시간: {{ resData.time }}MS
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-icon>mdi-sort-variant</v-icon>
-              코드길이: {{ resData.len }}B
-            </v-col>
-          </v-row>
-          <div class="editor" spellcheck="false">
-            <editor-menu-bubble :editor="codearea" :keep-in-bounds="keepInBounds" v-slot="{ menu }">
-              <div
-                class="menububble"
-                :class="{ 'is-active': menu.isActive }"
-                :style="`left: ${menu.left + 50}px; top: ${menu.top}px;`"
+            <v-row class="mt-10 mb-12">
+              <v-col cols="12" md="6">
+                <v-icon>mdi-lead-pencil</v-icon>
+                언어: {{ resData.language }}
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-icon>mdi-memory</v-icon>
+                메모리: {{ resData.memory }}KB
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-icon>mdi-timer</v-icon>
+                시간: {{ resData.time }}MS
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-icon>mdi-sort-variant</v-icon>
+                코드길이: {{ resData.len }}B
+              </v-col>
+            </v-row>
+            <div class="editor" spellcheck="false">
+              <editor-menu-bubble
+                :editor="codearea"
+                :keep-in-bounds="keepInBounds"
+                v-slot="{ menu }"
               >
-                <button class="menububble__button red" @click="menububbleClick">
-                  <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
-                  <v-icon color="white">mdi-chevron-triple-right</v-icon>
-                </button>
-              </div>
-            </editor-menu-bubble>
-            <editor-content
-              class="editor__content usercode"
-              :editor="codearea"
-              style="height : 100vh;"
-            />
-          </div>
+                <div
+                  class="menububble"
+                  :class="{ 'is-active': menu.isActive }"
+                  :style="`left: ${menu.left + 50}px; top: ${menu.top}px;`"
+                >
+                  <button class="menububble__button red" @click="menububbleClick">
+                    <!-- <img class="icon" src="@/assets/tiptap/icons/bold.svg" /> -->
+                    <v-icon color="white">mdi-chevron-triple-right</v-icon>
+                  </button>
+                </div>
+              </editor-menu-bubble>
+              <editor-content
+                :class="{ editor_dark__content: isDark, editor__content: !isDark }"
+                class=" usercode"
+                :editor="codearea"
+                style="height : 100vh;"
+              />
+            </div>
+          </v-card>
         </v-col>
         <v-col cols="12" md="6">
           <v-col cols="12" class="px-0">
@@ -61,8 +68,8 @@
                     </v-btn>
                   </template>
 
-                  <v-card>
-                    <v-card-title class="headline white lighten-2">
+                  <v-card :dark="isDark" :outlined="isDark">
+                    <v-card-title class="headline lighten-2">
                       Tooltip
                     </v-card-title>
 
@@ -118,13 +125,15 @@
           </v-col>
           <div class="editor" spellcheck="false">
             <v-text-field
+              :dark="isDark"
               outlined
               :color="ColorSet.Prime"
               label="글 제목"
-              autofocus="true"
+              autofocus
               v-model="title"
             ></v-text-field>
             <v-select
+              :dark="isDark"
               class="my-0"
               v-model="SelectedProblemCategory"
               :items="$store.state.ProblemCategory"
@@ -248,13 +257,17 @@
                 </div>
               </editor-menu-bar>
             </v-card>
-            <v-card elevation="8" tile class="pt-2 main_input">
+            <v-card elevation="8" :dark="isDark" tile class="pt-2 main_input">
               <div v-on:click="select()">
-                <editor-content class="editor__content article" :editor="editor" />
+                <editor-content
+                  :class="{ editor_dark__content: isDark, editor__content: !isDark }"
+                  class="article"
+                  :editor="editor"
+                />
               </div>
             </v-card>
             <br />
-            <v-btn :color="ColorSet.Prime" large dark tile block @click="write">
+            <v-btn :color="ColorSet.Prime" large dark tile :outlined="isDark" block @click="write">
               {{ isUpdating ? "수정하기" : "작성하기 " }}</v-btn
             >
           </div>
@@ -408,7 +421,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL", "nickname", "username", "ColorSet"]),
+  computed: mapState(["ServerURL", "nickname", "username", "ColorSet", "isDark"]),
   beforeDestroy() {
     this.editor.destroy();
   },

@@ -2,10 +2,10 @@
   <v-container>
     <v-row no-gutters class="mt-16">
       <v-col cols="12" sm="5">
-        <v-card rounded="false" outlined class="pa-9" height="600px" align="center">
+        <v-card tile :outlined="isDark" :dark="isDark" class="pa-9" height="600px" align="center">
           <v-card-title class="pa-0 mb-7 justify-space-between">
             <h1 class="ma-0" style="font-family: 'Do Hyeon', sans-serif;">쌀로그인</h1>
-            <v-btn @click="$router.push({ name: 'Home' })" color="secondary" fab dark>
+            <v-btn @click="$router.push({ name: 'Home' })" fab dark>
               <v-icon>mdi-home-outline</v-icon>
             </v-btn>
             <!-- <v-img
@@ -37,11 +37,20 @@
               <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
             </v-card-text>
             <v-card-actions class="px-0 mt-4">
-              <v-btn block color="success" tile @click="onSubmit()">로그인</v-btn>
+              <v-btn
+                :class="`${isDark ? 'greenButton' : ''}`"
+                block
+                :color="isDark ? ColorSet.Sub : 'success'"
+                tile
+                @click="onSubmit()"
+                >로그인</v-btn
+              >
             </v-card-actions>
 
             <v-card-actions class="px-0 my-3">
-              <v-btn block color="primary" tile @click="toRegister()">회원 가입</v-btn>
+              <v-btn block :color="isDark ? ColorSet.Prime : 'primary'" tile @click="toRegister()"
+                >회원 가입</v-btn
+              >
             </v-card-actions>
             <small style="cursor:pointer" @click="$router.push({ name: 'FindPass' })"
               >비밀번호찾기</small
@@ -57,6 +66,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import "@/assets/Main.css";
+
 export default {
   name: "Login",
   data() {
@@ -70,6 +82,7 @@ export default {
       loading: false
     };
   },
+  computed: mapState(["isDark", "ColorSet"]),
   methods: {
     async onSubmit() {
       if (!this.loginData.username || !this.loginData.password) {

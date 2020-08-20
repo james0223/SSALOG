@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col lg="10" cols="12">
-      <v-card class="mt-2 pa-3 mb-10" color="transparent" tile>
+      <v-card :dark="isDark" :outlined="isDark" class="mt-2 pa-3 mb-10" tile>
         <h3 v-show="!scrapped" title="스크랩한 사용자수" class="ma-2 frontcorner">
           <v-icon @click="doScrap" style="cursor:pointer;" color="#f8f8f8">mdi-star</v-icon>
           {{ like }}
@@ -89,7 +89,7 @@
           <v-btn text @click="editSolution">수정</v-btn>
           <v-btn text color="red" @click="isDelete = true">삭제</v-btn>
           <v-dialog v-model="isDelete" max-width="60vh">
-            <v-card>
+            <v-card :dark="isDark" :outlined="isDark">
               <v-card-title>
                 <h5>글 삭제</h5>
               </v-card-title>
@@ -107,7 +107,8 @@
       <v-card flat color="transparent" min-height="40vh" class="pa-0 pa-sm-3 mb-10">
         <v-card-text class="pa-0 pa-sm-3">
           <editor-content
-            class="main_content editor__content article text-sm-caption text-md-subtitle-1"
+            :class="{ editor_dark__content: isDark, editor__content: !isDark }"
+            class="main_content article text-sm-caption text-md-subtitle-1"
             :editor="editor"
           />
         </v-card-text>
@@ -119,7 +120,7 @@
       <div class="ml-8 mt-5 code_button">
         <v-tooltip bottom>
           <!-- eslint-disable-next-line -->
-            <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ on, attrs }">
             <v-btn
               outlined
               x-large
@@ -155,7 +156,7 @@
 
         <!--          dialog 부분-->
         <v-dialog v-model="dialog" width="50vw" height="50vh">
-          <v-card>
+          <v-card :dark="isDark" :outlined="isDark">
             <v-card-title class="headline">
               {{ writerNickname }}님의 코드
               <v-spacer></v-spacer>
@@ -164,7 +165,8 @@
               >
             </v-card-title>
             <editor-content
-              class="main_content code_area editor__content article"
+              :class="{ editor_dark__content: isDark, editor__content: !isDark }"
+              class="main_content code_area article"
               :editor="codeview"
             />
           </v-card>
@@ -372,7 +374,7 @@ export default {
       })
     };
   },
-  computed: mapState(["ServerURL", "ImgURL", "nickname", "username", "ColorSet"]),
+  computed: mapState(["ServerURL", "ImgURL", "nickname", "username", "ColorSet", "isDark"]),
   created() {
     this.getSSALOG(this.$route.params.id);
     if (this.$store.state.nickname != null) {
@@ -546,8 +548,7 @@ export default {
 .v-application code {
   all: unset;
   /* border: 1px solid #ddd; */
-  border-left: 2px solid #5086f2;
-  background: #fbfbfb;
+
   page-break-inside: avoid;
   font-family: monospace;
   line-height: 1.6;
@@ -560,6 +561,7 @@ export default {
   /* font-size: 1rem; */
   overflow-x: auto;
 }
+
 .content-title {
   font-size: 3rem;
   line-height: 1.5;

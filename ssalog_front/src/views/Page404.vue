@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card class="mt-15" color="transparent" flat>
+    <v-card :dark="$store.state.isDark" class="mt-15" color="transparent" flat>
       <v-card-title>404 Page Not Found :(</v-card-title>
       <v-card-text>페이지를 찾을 수 없습니다.</v-card-text>
       <v-card-actions>
