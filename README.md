@@ -2,7 +2,7 @@
 
 ![버전](https://img.shields.io/badge/%20version-1.0-green)![node버전](https://img.shields.io/badge/node-12.18.2-green)
 
-## 🚀Demo Link https://ssalog.gq/
+## 🚀Demo Link ~~https://ssalog.gq/~~ < 현재 ES2가 닫혀 폐쇄됨
 
 ## 프로젝트 요약
 
